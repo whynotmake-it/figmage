@@ -6,8 +6,21 @@ publish_to: none
 environment:
   sdk: ">=3.0.0 <4.0.0"
 
+dependencies:
+  args: ^2.4.1
+  cli_completion: ^0.3.0
+  mason_logger: ^0.2.5
+  pub_updater: ^0.3.0
+  figmage_api:
+    git:
+      url: https://github.com/whynotmake-it/figmage.git
+      path: packages/figmage_api
+
 dev_dependencies:
+  build_runner: ^2.4.4
+  build_verify: ^3.1.0
+  build_version: ^2.1.1
+  test: ^1.24.2
   lints: ^2.1.1
   mocktail: ^1.0.0
-  test: ^1.19.2
   melos: ^3.1.1

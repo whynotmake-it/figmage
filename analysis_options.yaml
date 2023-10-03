@@ -12,3 +12,4 @@ linter:
     - prefer_final_in_for_each
     - use_super_parameters
     - sort_constructors_first
+    

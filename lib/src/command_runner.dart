@@ -8,7 +8,7 @@ import 'package:pub_updater/pub_updater.dart';
 
 const executableName = 'figmage';
 const packageName = 'figmage';
-const description = 'A Very Good Project created by Very Good CLI.';
+const description = 'A CLI tool for generating Figma styles for Flutter';
 
 /// {@template figmage_command_runner}
 /// A [CommandRunner] for the CLI.
@@ -39,7 +39,8 @@ class FigmageCommandRunner extends CompletionCommandRunner<int> {
       );
 
     // Add sub commands
-    addCommand(SampleCommand(logger: _logger));
+    addCommand(ForgeCommand(logger: _logger));
+    addCommand(ReforgeCommand(logger: _logger));
     addCommand(UpdateCommand(logger: _logger, pubUpdater: _pubUpdater));
   }
 

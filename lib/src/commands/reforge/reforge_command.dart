@@ -1,29 +1,28 @@
 import 'package:args/command_runner.dart';
 import 'package:mason_logger/mason_logger.dart';
 
-/// {@template sample_command}
-///
-/// `figmage sample`
-/// A [Command] to exemplify a sub command
+/// {@template reforge_command}
+/// A [Command] that updates an existing package.
 /// {@endtemplate}
-class SampleCommand extends Command<int> {
-  /// {@macro sample_command}
-  SampleCommand({
+class ReforgeCommand extends Command<int> {
+  /// {@macro reforge_command}
+  ReforgeCommand({
     required Logger logger,
   }) : _logger = logger {
-    argParser.addFlag(
-      'cyan',
-      abbr: 'c',
-      help: 'Prints the same joke, but in cyan',
-      negatable: false,
+    argParser.addOption(
+      "token",
+      abbr: "t",
+      mandatory: true,
+      help: "Your figma API token",
     );
   }
 
   @override
-  String get description => 'A sample sub command that just prints one joke';
+  String get description =>
+      'This command reforges an existing package from your figma file.';
 
   @override
-  String get name => 'sample';
+  String get name => 'reforge';
 
   final Logger _logger;
 

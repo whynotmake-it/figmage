@@ -12,6 +12,7 @@ dependencies:
   figma: ^7.0.0
   mason_logger: ^0.2.5
   pub_updater: ^0.3.0
+  source_gen: ^1.4.0
   
 dev_dependencies:
   build_runner: ^2.4.4

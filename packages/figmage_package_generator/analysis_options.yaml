@@ -4,7 +4,7 @@ analyzer:
   exclude:
     - '**/*.freezed.dart'
     - '**/*.g.dart'
-    - 'brick/'
+    - 'lib/src/brick/'
 
 linter:
   rules:

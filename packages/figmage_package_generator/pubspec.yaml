@@ -12,4 +12,5 @@ dev_dependencies:
   test: ^1.19.2
 dependencies:
   mason: ^0.1.0-dev.51
+  package_config: ^2.1.0
   

@@ -28,10 +28,8 @@ class ReforgeCommand extends Command<int> {
 
   @override
   Future<int> run() async {
-    var output = 'Which unicorn has a cold? The Achoo-nicorn!';
-    if (argResults?['cyan'] == true) {
-      output = lightCyan.wrap(output)!;
-    }
+    final output = 'Which unicorn has a cold? The Achoo-nicorn!';
+
     _logger.info(output);
     return ExitCode.success.code;
   }

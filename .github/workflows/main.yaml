@@ -24,11 +24,10 @@ jobs:
       - name: 📚 Checkout
         uses: actions/checkout@v4
       
-      - name: 🐦 Setup Flutter
-        uses: subosito/flutter-action@v2
+      - name: 🎯 Setup Dart
+        uses: dart-lang/setup-dart@v1.5.1
         with:
-          channel: 'stable'
-          cache: true
+          sdk: 'stable'
       
       - name: Ⓜ️ Set up Melos
         uses: bluefireteam/melos-action@v2

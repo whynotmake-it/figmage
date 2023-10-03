@@ -23,11 +23,11 @@ abstract class _$VariableCWProxy {
 
   Variable hiddenFromPublishing(bool hiddenFromPublishing);
 
-  Variable valuesByMode(Map<String, VariableModeValue> valuesByMode);
+  Variable valuesByMode(Map<String, dynamic> valuesByMode);
 
   Variable scopes(List<String> scopes);
 
-  Variable codeSyntax(Map<String, dynamic> codeSyntax);
+  Variable codeSyntax(Map<String, String> codeSyntax);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Variable(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -44,9 +44,9 @@ abstract class _$VariableCWProxy {
     String? resolvedType,
     String? description,
     bool? hiddenFromPublishing,
-    Map<String, VariableModeValue>? valuesByMode,
+    Map<String, dynamic>? valuesByMode,
     List<String>? scopes,
-    Map<String, dynamic>? codeSyntax,
+    Map<String, String>? codeSyntax,
   });
 }
 
@@ -84,14 +84,14 @@ class _$VariableCWProxyImpl implements _$VariableCWProxy {
       this(hiddenFromPublishing: hiddenFromPublishing);
 
   @override
-  Variable valuesByMode(Map<String, VariableModeValue> valuesByMode) =>
+  Variable valuesByMode(Map<String, dynamic> valuesByMode) =>
       this(valuesByMode: valuesByMode);
 
   @override
   Variable scopes(List<String> scopes) => this(scopes: scopes);
 
   @override
-  Variable codeSyntax(Map<String, dynamic> codeSyntax) =>
+  Variable codeSyntax(Map<String, String> codeSyntax) =>
       this(codeSyntax: codeSyntax);
 
   @override
@@ -158,7 +158,7 @@ class _$VariableCWProxyImpl implements _$VariableCWProxy {
           valuesByMode == const $CopyWithPlaceholder() || valuesByMode == null
               ? _value.valuesByMode
               // ignore: cast_nullable_to_non_nullable
-              : valuesByMode as Map<String, VariableModeValue>,
+              : valuesByMode as Map<String, dynamic>,
       scopes: scopes == const $CopyWithPlaceholder() || scopes == null
           ? _value.scopes
           // ignore: cast_nullable_to_non_nullable
@@ -167,7 +167,7 @@ class _$VariableCWProxyImpl implements _$VariableCWProxy {
           codeSyntax == const $CopyWithPlaceholder() || codeSyntax == null
               ? _value.codeSyntax
               // ignore: cast_nullable_to_non_nullable
-              : codeSyntax as Map<String, dynamic>,
+              : codeSyntax as Map<String, String>,
     );
   }
 }
@@ -191,13 +191,10 @@ Variable _$VariableFromJson(Map<String, dynamic> json) => Variable(
       resolvedType: json['resolvedType'] as String,
       description: json['description'] as String,
       hiddenFromPublishing: json['hiddenFromPublishing'] as bool,
-      valuesByMode: (json['valuesByMode'] as Map<String, dynamic>).map(
-        (k, e) =>
-            MapEntry(k, VariableModeValue.fromJson(e as Map<String, dynamic>)),
-      ),
+      valuesByMode: json['valuesByMode'] as Map<String, dynamic>,
       scopes:
           (json['scopes'] as List<dynamic>).map((e) => e as String).toList(),
-      codeSyntax: json['codeSyntax'] as Map<String, dynamic>,
+      codeSyntax: Map<String, String>.from(json['codeSyntax'] as Map),
     );
 
 Map<String, dynamic> _$VariableToJson(Variable instance) => <String, dynamic>{

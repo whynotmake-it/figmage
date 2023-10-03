@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'variable.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 @CopyWith()
 class Variable extends Equatable {
   Variable({
@@ -32,9 +32,9 @@ class Variable extends Equatable {
   final String resolvedType;
   final String description;
   final bool hiddenFromPublishing;
-  final Map<String, VariableModeValue> valuesByMode;
+  final Map<String, dynamic> valuesByMode;
   final List<String> scopes;
-  final Map<String, dynamic> codeSyntax;
+  final Map<String, String> codeSyntax;
 
   @override
   List<Object?> get props => [

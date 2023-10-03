@@ -6,7 +6,7 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 part 'variables_response.g.dart';
 
 /// A response object containing [VariablesMeta] along with metadata.
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 @CopyWith()
 class VariablesResponse extends Equatable {
   VariablesResponse({

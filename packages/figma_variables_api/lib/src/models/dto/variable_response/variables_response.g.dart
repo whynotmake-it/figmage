@@ -93,5 +93,5 @@ Map<String, dynamic> _$VariablesResponseToJson(VariablesResponse instance) =>
     <String, dynamic>{
       'status': instance.status,
       'error': instance.error,
-      'meta': instance.meta,
+      'meta': instance.meta.toJson(),
     };

@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'variables_meta.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 @CopyWith()
 class VariablesMeta extends Equatable {
   VariablesMeta({

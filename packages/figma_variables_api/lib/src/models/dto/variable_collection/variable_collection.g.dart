@@ -166,7 +166,7 @@ Map<String, dynamic> _$VariableCollectionToJson(VariableCollection instance) =>
       'id': instance.id,
       'name': instance.name,
       'remote': instance.remote,
-      'modes': instance.modes,
+      'modes': instance.modes.map((e) => e.toJson()).toList(),
       'key': instance.key,
       'hiddenFromPublishing': instance.hiddenFromPublishing,
       'variableIds': instance.variableIds,

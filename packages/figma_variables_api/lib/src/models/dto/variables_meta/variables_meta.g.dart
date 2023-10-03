@@ -90,6 +90,7 @@ VariablesMeta _$VariablesMetaFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$VariablesMetaToJson(VariablesMeta instance) =>
     <String, dynamic>{
-      'variables': instance.variables,
-      'variableCollections': instance.variableCollections,
+      'variables': instance.variables.map((k, e) => MapEntry(k, e.toJson())),
+      'variableCollections':
+          instance.variableCollections.map((k, e) => MapEntry(k, e.toJson())),
     };

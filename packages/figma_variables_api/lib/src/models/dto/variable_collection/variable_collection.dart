@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'variable_collection.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 @CopyWith()
 class VariableCollection extends Equatable {
   VariableCollection({

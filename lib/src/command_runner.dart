@@ -2,13 +2,14 @@ import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:cli_completion/cli_completion.dart';
 import 'package:figmage/src/commands/commands.dart';
+import 'package:figmage/src/commands/reforge/reforge_command.dart';
 import 'package:figmage/src/version.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:pub_updater/pub_updater.dart';
 
 const executableName = 'figmage';
 const packageName = 'figmage';
-const description = 'A Very Good Project created by Very Good CLI.';
+const description = 'A CLI tool for generating Figma styles for Flutter';
 
 /// {@template figmage_command_runner}
 /// A [CommandRunner] for the CLI.
@@ -39,7 +40,8 @@ class FigmageCommandRunner extends CompletionCommandRunner<int> {
       );
 
     // Add sub commands
-    addCommand(SampleCommand(logger: _logger));
+    addCommand(ForgeCommand(logger: _logger));
+    addCommand(ReforgeCommand(logger: _logger));
     addCommand(UpdateCommand(logger: _logger, pubUpdater: _pubUpdater));
   }
 

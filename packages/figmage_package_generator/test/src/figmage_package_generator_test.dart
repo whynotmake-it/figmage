@@ -30,43 +30,39 @@ void main() {
         await testDirectory.delete(recursive: true);
       });
 
-      test('generates files', () async {
+      test('generates directory with files', () async {
         final files = await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
           description: "A test ",
         );
-        expect(files, isNotEmpty);
-      });
-
-      test('generates folder with package name', () async {
-        await sut.generate(
-          projectName: "figmage_example",
-          dir: testDirectory,
-          description: "A test ",
+        expect(
+          files,
+          isNotEmpty,
+          reason: "No files were generated",
         );
+
         final dir = Directory("${testDirectory.path}/figmage_example");
-        expect(await dir.exists(), isTrue);
-      });
-
-      test('generates pubspec.yaml', () async {
-        await sut.generate(
-          projectName: "figmage_example",
-          dir: testDirectory,
-          description: "A test ",
+        expect(
+          await dir.exists(),
+          isTrue,
+          reason: "Directory was not created",
         );
-        final file = File("${testDirectory.path}/figmage_example/pubspec.yaml");
-        expect(await file.exists(), isTrue);
-      });
 
-      test('generates README.md', () async {
-        await sut.generate(
-          projectName: "figmage_example",
-          dir: testDirectory,
-          description: "A test ",
+        final pubspec =
+            File("${testDirectory.path}/figmage_example/pubspec.yaml");
+        expect(
+          await pubspec.exists(),
+          isTrue,
+          reason: "pubspec.yaml was not created",
         );
-        final file = File("${testDirectory.path}/figmage_example/README.md");
-        expect(await file.exists(), isTrue);
+
+        final readme = File("${testDirectory.path}/figmage_example/README.md");
+        expect(
+          await readme.exists(),
+          isTrue,
+          reason: "README.md was not created",
+        );
       });
     });
   });

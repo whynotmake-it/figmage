@@ -71,12 +71,6 @@ class FigmaClient {
     return VariablesResponse.fromJson(json);
   }
 
-  /// Retrieves the published variables from the Figma file specified by [key].
-  Future<VariablesResponse> getPublishedVariables(String key) async {
-    final json = await _getFigma('/files/$key/variables/published');
-    return VariablesResponse.fromJson(json);
-  }
-
   /// Does a GET request towards the Figma API.
   Future<Map<String, dynamic>> _getFigma(
     String path, [

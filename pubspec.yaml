@@ -8,11 +8,13 @@ environment:
 
 dependencies:
   args: ^2.4.1
-  cli_completion: ^0.3.0
+  cli_completion: ^0.4.0
   figma: ^7.0.0
   mason_logger: ^0.2.5
   pub_updater: ^0.3.0
   source_gen: ^1.4.0
+  figmage_package_generator:
+    path: packages/figmage_package_generator
   
 dev_dependencies:
   build_runner: ^2.4.4

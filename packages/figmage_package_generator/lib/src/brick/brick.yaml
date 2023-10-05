@@ -1,0 +1,19 @@
+name: figmage_package_generator
+description: Generates an empty package for figmage
+repository: https://github.com/whynotmake-it/bricks
+version: 0.0.1
+
+environment:
+  mason: ">=0.1.0-dev.50 <0.1.0"
+
+vars:
+  project_name:
+    type: string
+    description: The package name
+    default: my_package
+    prompt: What is the project name?
+  description:
+    type: string
+    description: The package description
+    default: Why not make a dart package?
+    prompt: What is the project description?

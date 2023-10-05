@@ -1,7 +1,7 @@
 name: ci
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{#mustacheCase}}github.workflow{{/mustacheCase}}-${{#mustacheCase}}github.ref{{/mustacheCase}}
   cancel-in-progress: true
 
 on:
@@ -24,24 +24,17 @@ jobs:
       - name: 📚 Checkout
         uses: actions/checkout@v4
       
-      - name: 🎯 Setup Dart
-        uses: dart-lang/setup-dart@v1.5.1
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
-          sdk: 'stable'
+          channel: 'stable'
+          cache: true
       
       - name: Ⓜ️ Set up Melos
         uses: bluefireteam/melos-action@v2
 
       - name: 🧪 Run Analyze
         run: melos run analyze
-
-      - name: Set up environment variables for Figma API test
-        env:
-          FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
-          FIGMA_FILE_ID: ${{ secrets.FIGMA_FILE_ID }}
-        run: |
-          echo "FIGMA_TOKEN=${FIGMA_TOKEN}" >> $GITHUB_ENV
-          echo "FIGMA_FILE_ID=${FIGMA_FILE_ID}" >> $GITHUB_ENV
 
       - name: 📝 Run Test
         run: melos run coverage

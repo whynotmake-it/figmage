@@ -3,6 +3,21 @@
 
 /// A wrapper that wraps all available query values for the Figma API.
 class FigmaQuery {
+  const FigmaQuery({
+    this.ids,
+    this.scale,
+    this.format,
+    this.version,
+    this.depth,
+    this.geometry,
+    this.svgIncludeId,
+    this.svgSimplifyStroke,
+    this.useAbsoluteBounds,
+    this.pageSize,
+    this.cursor,
+    this.pluginData,
+  });
+
   /// Comma separated list of nodes that you care about in the document.
   /// If specified, only a subset of the document will be returned corresponding
   /// to the nodes listed, their children, and everything between the root node
@@ -53,23 +68,8 @@ class FigmaQuery {
   /// result in the `pluginData` and `sharedPluginData` properties.
   final String? pluginData;
 
-  const FigmaQuery({
-    this.ids,
-    this.scale,
-    this.format,
-    this.version,
-    this.depth,
-    this.geometry,
-    this.svgIncludeId,
-    this.svgSimplifyStroke,
-    this.useAbsoluteBounds,
-    this.pageSize,
-    this.cursor,
-    this.pluginData,
-  });
-
   Map<String, String?> get params {
-    var map = {
+    final map = {
       'ids': ids?.join(','),
       'scale': scale?.toString(),
       'format': format,

@@ -9,7 +9,7 @@ import 'package:test/test.dart';
   T Function(Map<String, dynamic>) fromJson,
 ) {
   final currentDirectory = Directory.current.path;
-  final filePath = '$currentDirectory/$relativePath';
+  final filePath = '$currentDirectory/test/src/mock_data/$relativePath';
 
   final jsonString = File(filePath).readAsStringSync();
   final jsonMap = json.decode(jsonString);
@@ -21,7 +21,7 @@ void main() {
   group('VariablesResponse', () {
     test('VariableCollection deserialization and serialization', () {
       final (variableCollection, jsonMap) = parseJsonFromFile(
-        'test/src/constants/variable_collection_example.json',
+        'variable_collection_example.json',
         (json) => VariableCollection.fromJson(json),
       );
 
@@ -51,7 +51,7 @@ void main() {
 
     test('Variable deserialization and serialization', () {
       final (variable, jsonMap) = parseJsonFromFile(
-        'test/src/constants/variable_example.json',
+        'variable_example.json',
         (json) => Variable.fromJson(json),
       );
 
@@ -76,7 +76,7 @@ void main() {
         {
           "WEB": "box-background-active",
           "ANDROID": "box-background-active",
-          "iOS": "box-background-active"
+          "iOS": "box-background-active",
         },
       );
 
@@ -89,7 +89,7 @@ void main() {
 
     test('VariablesResponse deserialization and serialization', () {
       final (variablesResponse, jsonMap) = parseJsonFromFile(
-        'test/src/constants/variables_response_example.json',
+        'variables_response_example.json',
         (json) => VariablesResponse.fromJson(json),
       );
 
@@ -157,6 +157,12 @@ void main() {
           'iOS': 'box-background-active',
         },
       );
+
+      // Serialize the Variable object back to JSON
+      final serializedJson = variablesResponse.toJson();
+
+      // Verify that the serialized JSON matches the original JSON
+      expect(serializedJson, jsonMap);
     });
   });
 }

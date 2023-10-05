@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:args/command_runner.dart';
+import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:mason_logger/mason_logger.dart';
 
 /// {@template forge_command}
@@ -30,8 +33,15 @@ class ForgeCommand extends Command<int> {
 
   @override
   Future<int> run() async {
-    final output = 'Which unicorn has a cold? The Achoo-nicorn!';
-    _logger.info(output);
+    final generator = FigmagePackageGenerator();
+    final targetDir = Directory.current;
+    final process = _logger.progress("Generating package");
+    await generator.generate(
+      projectName: "figmage_example",
+      dir: targetDir,
+      description: "A test ",
+    );
+    process.complete("Successfully generated package!");
     return ExitCode.success.code;
   }
 }

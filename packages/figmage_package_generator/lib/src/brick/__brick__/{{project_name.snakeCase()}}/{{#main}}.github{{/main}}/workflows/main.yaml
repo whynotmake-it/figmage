@@ -1,7 +1,7 @@
 name: ci
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{#mustacheCase}}github.workflow{{/mustacheCase}}-${{#mustacheCase}}github.ref{{/mustacheCase}}
   cancel-in-progress: true
 
 on:
@@ -24,10 +24,11 @@ jobs:
       - name: 📚 Checkout
         uses: actions/checkout@v4
       
-      - name: 🎯 Setup Dart
-        uses: dart-lang/setup-dart@v1.5.1
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
-          sdk: 'stable'
+          channel: 'stable'
+          cache: true
       
       - name: Ⓜ️ Set up Melos
         uses: bluefireteam/melos-action@v2

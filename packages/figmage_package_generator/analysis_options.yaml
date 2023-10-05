@@ -1,0 +1,15 @@
+include: package:lints/recommended.yaml
+
+analyzer:
+  exclude:
+    - '**/*.freezed.dart'
+    - '**/*.g.dart'
+    - 'lib/src/brick/'
+
+linter:
+  rules:
+    - require_trailing_commas
+    - prefer_final_locals
+    - prefer_final_in_for_each
+    - use_super_parameters
+    - sort_constructors_first

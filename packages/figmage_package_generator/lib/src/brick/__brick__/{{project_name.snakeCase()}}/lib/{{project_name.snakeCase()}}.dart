@@ -1,4 +1,6 @@
 /// {{{description}}}
 library {{project_name.snakeCase()}};
 
-export 'src/{{project_name.snakeCase()}}.dart';
+export 'src/colors.dart';
+export 'src/spacing.dart';
+export 'src/typography.dart';

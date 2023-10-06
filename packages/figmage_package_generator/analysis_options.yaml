@@ -1,15 +1,5 @@
-include: package:lints/recommended.yaml
+include: package:lintervention/analysis_options.yaml
 
 analyzer:
-  exclude:
-    - '**/*.freezed.dart'
-    - '**/*.g.dart'
+  exclude: 
     - 'lib/src/brick/**'
-
-linter:
-  rules:
-    - require_trailing_commas
-    - prefer_final_locals
-    - prefer_final_in_for_each
-    - use_super_parameters
-    - sort_constructors_first

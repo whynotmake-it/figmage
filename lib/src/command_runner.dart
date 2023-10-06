@@ -6,8 +6,13 @@ import 'package:figmage/src/version.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:pub_updater/pub_updater.dart';
 
+/// The name of the executable.
 const executableName = 'figmage';
+
+/// The name of the dart package.
 const packageName = 'figmage';
+
+/// The description of this dart package.
 const description = 'A CLI tool for generating Figma styles for Flutter';
 
 /// {@template figmage_command_runner}

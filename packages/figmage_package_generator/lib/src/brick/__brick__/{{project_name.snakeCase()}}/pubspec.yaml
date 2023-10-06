@@ -12,5 +12,5 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  lints: ^2.1.1
+  lintervention: ^0.1.1
   mocktail: ^1.0.0

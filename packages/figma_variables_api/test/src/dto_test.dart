@@ -322,7 +322,7 @@ void main() {
               'hiddenFromPublishing': false,
               'variableIds': ['VariableID:1:12'],
               'modes': [
-                {'modeId': '1:0', 'name': 'Mode 1'}
+                {'modeId': '1:0', 'name': 'Mode 1'},
               ],
             },
           },

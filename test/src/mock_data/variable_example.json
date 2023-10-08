@@ -1,0 +1,26 @@
+{
+  "id": "VariableID:28:11",
+  "name": "primary",
+  "remote": false,
+  "key": "d9cc111c73223a643eab988cd3c25ff3ba859564",
+  "variableCollectionId": "VariableCollectionId:28:10",
+  "resolvedType": "COLOR",
+  "description": "",
+  "hiddenFromPublishing": false,
+  "valuesByMode": {
+    "28:3": {
+      "r": 0.019999999552965164,
+      "g": 0,
+      "b": 1,
+      "a": 1
+    },
+    "28:4": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:28:12"
+    }
+  },
+  "scopes": [
+    "ALL_SCOPES"
+  ],
+  "codeSyntax": {}
+}

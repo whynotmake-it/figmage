@@ -40,8 +40,12 @@ class FigmaVariablesRepository implements VariablesRepository {
   /// type than [T].
   /// Example usage:
   /// ```dart
-  /// var colorMap = _createValueModeMap<VariableColorValue>(variables: variables, variableCollections: variableCollections');
-  /// print(colorMap); // e.g., {'light': {'green': 0xFF00FF00}, 'dark': {'green': 0xFF008000}}
+  /// var colorMap = _createValueModeMap<VariableColorValue>(
+  ///    variables: variables,
+  ///    variableCollections: variableCollections',
+  /// );
+  /// print(colorMap);
+  /// //e.g., {'light': {'green': 0xFF00FF00}, 'dark': {'green': 0xFF008000}}
   /// ```
   Map<String, Map<String, T>> createValueModeMap<T extends VariableValue>({
     required Map<String, Variable> variables,

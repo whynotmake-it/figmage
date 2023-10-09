@@ -29,18 +29,9 @@ jobs:
         with:
           sdk: 'stable'
       
-      - name: Ⓜ️ Set up Melos
-        uses: bluefireteam/melos-action@v2
-
-      - name: 🧪 Run Analyze
-        run: melos run analyze
-
-      - name: 📝 Run Test
-        run: melos run coverage
-      
       - name: 📊 Generate Coverage
         id: coverage-report
-        uses: whynotmake-it/dart-coverage-assistant@6d70fca0a216d191e399385cf82585f5ca86e6cd
+        uses: whynotmake-it/dart-coverage-assistant@392fb09c78b6abfa49179a9568f2827278835f17
       
       - name: 💬 Add sticky comment
         uses: marocchino/sticky-pull-request-comment@v2

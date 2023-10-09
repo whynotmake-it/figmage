@@ -8,6 +8,7 @@ on:
   push:
     branches:
       - main
+      - test/dart_coverage_assistant_test
   pull_request:
     branches:
       - main
@@ -45,7 +46,7 @@ jobs:
 
       - name: 📊 Generate Coverage
         id: coverage-report
-        uses: whynotmake-it/dart-coverage-assistant@788a48b32fc773c6ceeafde7f25493fd0bf2f0c2
+        uses: whynotmake-it/dart-coverage-assistant@ad772222c9be4b000a2f33c275b1c5c57654b441
         with:
           enforce_threshold: 'none'
           lower_threshold: 0

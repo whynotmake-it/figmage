@@ -33,7 +33,7 @@ jobs:
         id: coverage-report
         uses: whynotmake-it/dart-coverage-assistant@4bba5433edb3ef22a1432fb44830363e4673381e
         with:
-          enforce_threshold: 'false'
+          enforce_threshold: 'none'
       
       - name: 💬 Add sticky comment
         uses: marocchino/sticky-pull-request-comment@v2

@@ -1,4 +1,4 @@
-name: ci
+name: Continuous Integration
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -37,4 +37,14 @@ jobs:
 
       - name: 📝 Run Test
         run: melos run coverage
+      
+      - name: 📊 Generate Coverage
+        id: coverage-report
+        uses: whynotmake-it/dart-coverage-assistant@4878ba95f50f17281d4440ea5f49cae406847b6f
+      
+      - name: 💬 Add sticky comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: ${{ steps.coverage-report.outputs.message }}
+          
   

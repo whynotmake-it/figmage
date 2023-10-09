@@ -36,9 +36,11 @@ jobs:
       
       - name: 📊 Generate Coverage
         id: coverage-report
-        uses: whynotmake-it/dart-coverage-assistant@86e3d13e2e28e5337bf5aba87bff1f25dd3b54ba
+        uses: whynotmake-it/dart-coverage-assistant@0dd7963db792b61c24bf84ced7ffac808e386292
         with:
           enforce_threshold: 'none'
+          lower_threshold: 1
+          upper_threshold: 3
       
       - name: 💬 Add sticky comment
         uses: marocchino/sticky-pull-request-comment@v2

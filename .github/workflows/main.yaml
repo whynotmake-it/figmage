@@ -45,7 +45,7 @@ jobs:
 
       - name: 📊 Generate Coverage
         id: coverage-report
-        uses: whynotmake-it/dart-coverage-assistant@9c72140428f7df4187d639f44fd1b55154b3ec97
+        uses: whynotmake-it/dart-coverage-assistant@d13a25b4fd09b31b29e6f5c7568529e4fc028442
         with:
           enforce_threshold: 'none'
           lower_threshold: 0

@@ -3,6 +3,7 @@ import 'dart:isolate';
 
 import 'package:mason/mason.dart';
 
+/// The name of this package
 const packageName = 'figmage_package_generator';
 
 /// {@template figmage_package_generator}
@@ -21,6 +22,11 @@ class FigmagePackageGenerator {
     required String projectName,
     required String description,
     required Directory dir,
+    bool generateSpacers = true,
+    bool generatePaddings = true,
+    bool generateRadii = true,
+    bool generateStrings = true,
+    bool generateBools = true,
   }) async {
     final brick = await _getBrick();
 
@@ -28,6 +34,11 @@ class FigmagePackageGenerator {
     final vars = {
       'project_name': projectName,
       'description': description,
+      'generate_spacers': generateSpacers,
+      'generate_paddings': generatePaddings,
+      'generate_radii': generateRadii,
+      'generate_strings': generateStrings,
+      'generate_bools': generateBools,
     };
     final target = DirectoryGeneratorTarget(dir);
     await generator.hooks.preGen(vars: vars);

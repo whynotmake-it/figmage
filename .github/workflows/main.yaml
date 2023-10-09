@@ -28,18 +28,27 @@ jobs:
     steps:
       - name: 📚 Checkout
         uses: actions/checkout@v4
-      
+
       - name: 🎯 Setup Dart
         uses: dart-lang/setup-dart@v1.5.1
         with:
           sdk: 'stable'
-      
+
+      - name: Ⓜ️ Set up Melos
+        uses: bluefireteam/melos-action@v2
+
+      - name: 🧪 Run Analyze
+        run: melos run analyze
+
+      - name: 📝 Run Test
+        run: melos run coverage
+
       - name: 📊 Generate Coverage
         id: coverage-report
-        uses: whynotmake-it/dart-coverage-assistant@0dd7963db792b61c24bf84ced7ffac808e386292
+        uses: whynotmake-it/dart-coverage-assistant@4dbd53534bc1953733acbb3b882f1476b29059d0
         with:
           enforce_threshold: 'none'
-          lower_threshold: 1
+          lower_threshold: 0
           upper_threshold: 3
       
       - name: 💬 Add sticky comment

@@ -40,7 +40,7 @@ jobs:
       
       - name: 📊 Generate Coverage
         id: coverage-report
-        uses: whynotmake-it/dart-coverage-assistant@4878ba95f50f17281d4440ea5f49cae406847b6f
+        uses: whynotmake-it/dart-coverage-assistant@6d70fca0a216d191e399385cf82585f5ca86e6cd
       
       - name: 💬 Add sticky comment
         uses: marocchino/sticky-pull-request-comment@v2

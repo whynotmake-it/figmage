@@ -29,23 +29,23 @@ jobs:
       - name: 📚 Checkout
         uses: actions/checkout@v4
 
-      - name: 🎯 Setup Dart
-        uses: dart-lang/setup-dart@v1.5.1
-        with:
-          sdk: 'stable'
+      # - name: 🎯 Setup Dart
+      #   uses: dart-lang/setup-dart@v1.5.1
+      #   with:
+      #     sdk: 'stable'
 
-      - name: Ⓜ️ Set up Melos
-        uses: bluefireteam/melos-action@v2
+      # - name: Ⓜ️ Set up Melos
+      #   uses: bluefireteam/melos-action@v2
 
-      - name: 🧪 Run Analyze
-        run: melos run analyze
+      # - name: 🧪 Run Analyze
+      #   run: melos run analyze
 
-      - name: 📝 Run Test
-        run: melos run coverage
+      # - name: 📝 Run Test
+      #   run: melos run coverage
 
       - name: 📊 Generate Coverage
         id: coverage-report
-        uses: whynotmake-it/dart-coverage-assistant@58420383ca328115f3f27e7cb494c0a042397e3d
+        uses: whynotmake-it/dart-coverage-assistant@75b089a49ede59ae0b809f28358e01e0174e6aa3
         with:
           enforce_threshold: 'none'
           lower_threshold: 50

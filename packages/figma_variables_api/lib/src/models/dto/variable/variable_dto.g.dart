@@ -1,41 +1,41 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'variable.dart';
+part of 'variable_dto.dart';
 
 // **************************************************************************
 // CopyWithGenerator
 // **************************************************************************
 
-abstract class _$VariableCWProxy {
-  Variable id(String id);
+abstract class _$VariableDtoCWProxy {
+  VariableDto id(String id);
 
-  Variable name(String name);
+  VariableDto name(String name);
 
-  Variable remote(bool remote);
+  VariableDto remote(bool remote);
 
-  Variable key(String key);
+  VariableDto key(String key);
 
-  Variable variableCollectionId(String variableCollectionId);
+  VariableDto variableCollectionId(String variableCollectionId);
 
-  Variable resolvedType(String resolvedType);
+  VariableDto resolvedType(String resolvedType);
 
-  Variable description(String description);
+  VariableDto description(String description);
 
-  Variable hiddenFromPublishing(bool hiddenFromPublishing);
+  VariableDto hiddenFromPublishing(bool hiddenFromPublishing);
 
-  Variable valuesByMode(Map<String, dynamic> valuesByMode);
+  VariableDto valuesByMode(Map<String, dynamic> valuesByMode);
 
-  Variable scopes(List<String> scopes);
+  VariableDto scopes(List<String> scopes);
 
-  Variable codeSyntax(Map<String, String> codeSyntax);
+  VariableDto codeSyntax(Map<String, String> codeSyntax);
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Variable(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `VariableDto(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// Variable(...).copyWith(id: 12, name: "My name")
+  /// VariableDto(...).copyWith(id: 12, name: "My name")
   /// ````
-  Variable call({
+  VariableDto call({
     String? id,
     String? name,
     bool? remote,
@@ -50,59 +50,59 @@ abstract class _$VariableCWProxy {
   });
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfVariable.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfVariable.copyWith.fieldName(...)`
-class _$VariableCWProxyImpl implements _$VariableCWProxy {
-  const _$VariableCWProxyImpl(this._value);
+/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfVariableDto.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfVariableDto.copyWith.fieldName(...)`
+class _$VariableDtoCWProxyImpl implements _$VariableDtoCWProxy {
+  const _$VariableDtoCWProxyImpl(this._value);
 
-  final Variable _value;
-
-  @override
-  Variable id(String id) => this(id: id);
+  final VariableDto _value;
 
   @override
-  Variable name(String name) => this(name: name);
+  VariableDto id(String id) => this(id: id);
 
   @override
-  Variable remote(bool remote) => this(remote: remote);
+  VariableDto name(String name) => this(name: name);
 
   @override
-  Variable key(String key) => this(key: key);
+  VariableDto remote(bool remote) => this(remote: remote);
 
   @override
-  Variable variableCollectionId(String variableCollectionId) =>
+  VariableDto key(String key) => this(key: key);
+
+  @override
+  VariableDto variableCollectionId(String variableCollectionId) =>
       this(variableCollectionId: variableCollectionId);
 
   @override
-  Variable resolvedType(String resolvedType) =>
+  VariableDto resolvedType(String resolvedType) =>
       this(resolvedType: resolvedType);
 
   @override
-  Variable description(String description) => this(description: description);
+  VariableDto description(String description) => this(description: description);
 
   @override
-  Variable hiddenFromPublishing(bool hiddenFromPublishing) =>
+  VariableDto hiddenFromPublishing(bool hiddenFromPublishing) =>
       this(hiddenFromPublishing: hiddenFromPublishing);
 
   @override
-  Variable valuesByMode(Map<String, dynamic> valuesByMode) =>
+  VariableDto valuesByMode(Map<String, dynamic> valuesByMode) =>
       this(valuesByMode: valuesByMode);
 
   @override
-  Variable scopes(List<String> scopes) => this(scopes: scopes);
+  VariableDto scopes(List<String> scopes) => this(scopes: scopes);
 
   @override
-  Variable codeSyntax(Map<String, String> codeSyntax) =>
+  VariableDto codeSyntax(Map<String, String> codeSyntax) =>
       this(codeSyntax: codeSyntax);
 
   @override
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `Variable(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `VariableDto(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// Variable(...).copyWith(id: 12, name: "My name")
+  /// VariableDto(...).copyWith(id: 12, name: "My name")
   /// ````
-  Variable call({
+  VariableDto call({
     Object? id = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
     Object? remote = const $CopyWithPlaceholder(),
@@ -115,7 +115,7 @@ class _$VariableCWProxyImpl implements _$VariableCWProxy {
     Object? scopes = const $CopyWithPlaceholder(),
     Object? codeSyntax = const $CopyWithPlaceholder(),
   }) {
-    return Variable(
+    return VariableDto(
       id: id == const $CopyWithPlaceholder() || id == null
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
@@ -172,17 +172,17 @@ class _$VariableCWProxyImpl implements _$VariableCWProxy {
   }
 }
 
-extension $VariableCopyWith on Variable {
-  /// Returns a callable class that can be used as follows: `instanceOfVariable.copyWith(...)` or like so:`instanceOfVariable.copyWith.fieldName(...)`.
+extension $VariableDtoCopyWith on VariableDto {
+  /// Returns a callable class that can be used as follows: `instanceOfVariableDto.copyWith(...)` or like so:`instanceOfVariableDto.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
-  _$VariableCWProxy get copyWith => _$VariableCWProxyImpl(this);
+  _$VariableDtoCWProxy get copyWith => _$VariableDtoCWProxyImpl(this);
 }
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Variable _$VariableFromJson(Map<String, dynamic> json) => Variable(
+VariableDto _$VariableDtoFromJson(Map<String, dynamic> json) => VariableDto(
       id: json['id'] as String,
       name: json['name'] as String,
       remote: json['remote'] as bool,
@@ -197,7 +197,8 @@ Variable _$VariableFromJson(Map<String, dynamic> json) => Variable(
       codeSyntax: Map<String, String>.from(json['codeSyntax'] as Map),
     );
 
-Map<String, dynamic> _$VariableToJson(Variable instance) => <String, dynamic>{
+Map<String, dynamic> _$VariableDtoToJson(VariableDto instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'remote': instance.remote,

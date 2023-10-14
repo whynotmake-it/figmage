@@ -1,14 +1,14 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
-import 'package:figma_variables_api/src/models/dto/variable_mode/variable_mode.dart';
+import 'package:figma_variables_api/src/models/dto/variable_mode/variable_mode_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'variable_collection.g.dart';
+part 'variable_collection_dto.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 @CopyWith()
-class VariableCollection extends Equatable {
-  VariableCollection({
+class VariableCollectionDto extends Equatable {
+  VariableCollectionDto({
     required this.defaultModeId,
     required this.id,
     required this.name,
@@ -19,13 +19,13 @@ class VariableCollection extends Equatable {
     required this.variableIds,
   });
 
-  factory VariableCollection.fromJson(Map<String, dynamic> json) =>
-      _$VariableCollectionFromJson(json);
+  factory VariableCollectionDto.fromJson(Map<String, dynamic> json) =>
+      _$VariableCollectionDtoFromJson(json);
   final String defaultModeId;
   final String id;
   final String name;
   final bool remote;
-  final List<VariableMode> modes;
+  final List<VariableModeDto> modes;
   final String key;
   final bool hiddenFromPublishing;
   final List<String> variableIds;
@@ -42,5 +42,5 @@ class VariableCollection extends Equatable {
         variableIds,
       ];
 
-  Map<String, dynamic> toJson() => _$VariableCollectionToJson(this);
+  Map<String, dynamic> toJson() => _$VariableCollectionDtoToJson(this);
 }

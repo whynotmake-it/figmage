@@ -25,7 +25,7 @@ void main() {
         test('works for valid json', () {
           final (variableCollection, _) = parseJsonFromFile(
             'variable_collection_example.json',
-            (json) => VariableCollection.fromJson(json),
+            (json) => VariableCollectionDto.fromJson(json),
           );
           expect(variableCollection.defaultModeId, "1:0");
           expect(variableCollection.id, "VariableCollectionId:1:11");
@@ -34,7 +34,7 @@ void main() {
           expect(variableCollection.modes.length, 1);
           expect(
             variableCollection.modes[0],
-            VariableMode(modeId: "1:0", name: "Mode 1"),
+            VariableModeDto(modeId: "1:0", name: "Mode 1"),
           );
           expect(
             variableCollection.key,
@@ -47,19 +47,19 @@ void main() {
           final jsonString =
               '{"someKey": "value", "someOtherKey": "someOtherValue"}';
           expect(
-            () => VariableCollection.fromJson(json.decode(jsonString)),
+            () => VariableCollectionDto.fromJson(json.decode(jsonString)),
             throwsA(TypeMatcher<TypeError>()),
           );
         });
       });
       group('toJson', () {
         test('works for valid object', () {
-          final variableCollection = VariableCollection(
+          final variableCollection = VariableCollectionDto(
             defaultModeId: "1:0",
             id: "VariableCollectionId:1:11",
             name: "Sizes",
             remote: false,
-            modes: [VariableMode(modeId: "1:0", name: "Mode 1")],
+            modes: [VariableModeDto(modeId: "1:0", name: "Mode 1")],
             key: "0ef9b579fdfca25a909eddad6b0803bf428f1708",
             hiddenFromPublishing: false,
             variableIds: ["VariableID:1:12"],
@@ -91,7 +91,7 @@ void main() {
         test('works for valid json', () {
           final (variable, _) = parseJsonFromFile(
             'variable_example.json',
-            (json) => Variable.fromJson(json),
+            (json) => VariableDto.fromJson(json),
           );
           expect(variable.id, "VariableID:33:8");
           expect(variable.name, "box-background-active");
@@ -122,14 +122,14 @@ void main() {
           final jsonString =
               '{"someKey": "value", "someOtherKey": "someOtherValue"}';
           expect(
-            () => Variable.fromJson(json.decode(jsonString)),
+            () => VariableDto.fromJson(json.decode(jsonString)),
             throwsA(TypeMatcher<TypeError>()),
           );
         });
       });
       group('toJson', () {
         test('works for valid object', () {
-          final variable = Variable(
+          final variable = VariableDto(
             id: "VariableID:33:8",
             name: "box-background-active",
             remote: false,
@@ -186,7 +186,7 @@ void main() {
       test('works for valid json', () {
         final (variablesResponse, jsonMap) = parseJsonFromFile(
           'variables_response_example.json',
-          (json) => VariablesResponse.fromJson(json),
+          (json) => VariablesResponseDto.fromJson(json),
         );
 
         expect(variablesResponse.status, 200);
@@ -260,19 +260,19 @@ void main() {
         final jsonString =
             '{"someKey": "value", "someOtherKey": "someOtherValue"}';
         expect(
-          () => VariablesResponse.fromJson(json.decode(jsonString)),
+          () => VariablesResponseDto.fromJson(json.decode(jsonString)),
           throwsA(TypeMatcher<TypeError>()),
         );
       });
     });
     test('works for valid object', () {
       // Create an instance of your Dart class
-      final variablesResponse = VariablesResponse(
+      final variablesResponse = VariablesResponseDto(
         status: 200,
         error: false,
-        meta: VariablesMeta(
+        meta: VariablesMetaDto(
           variableCollections: {
-            'VariableCollectionId:1:11': VariableCollection(
+            'VariableCollectionId:1:11': VariableCollectionDto(
               defaultModeId: '1:0',
               id: 'VariableCollectionId:1:11',
               name: 'Sizes',
@@ -280,11 +280,11 @@ void main() {
               key: '0ef9b579fdfca25a909eddad6b0803bf428f1708',
               hiddenFromPublishing: false,
               variableIds: ['VariableID:1:12'],
-              modes: [VariableMode(modeId: '1:0', name: 'Mode 1')],
+              modes: [VariableModeDto(modeId: '1:0', name: 'Mode 1')],
             ),
           },
           variables: {
-            'VariableID:1:12': Variable(
+            'VariableID:1:12': VariableDto(
               id: 'VariableID:1:12',
               name: 'small',
               remote: false,

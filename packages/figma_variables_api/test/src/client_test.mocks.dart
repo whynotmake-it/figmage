@@ -6,7 +6,7 @@
 import 'dart:async' as _i4;
 
 import 'package:figma_variables_api/src/client.dart' as _i3;
-import 'package:figma_variables_api/src/models/dto/variable_response/variables_response.dart'
+import 'package:figma_variables_api/src/models/dto/variable_response/variables_response_dto.dart'
     as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -21,9 +21,9 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeVariablesResponse_0 extends _i1.SmartFake
-    implements _i2.VariablesResponse {
-  _FakeVariablesResponse_0(
+class _FakeVariablesResponseDto_0 extends _i1.SmartFake
+    implements _i2.VariablesResponseDto {
+  _FakeVariablesResponseDto_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -76,19 +76,19 @@ class MockFigmaClient extends _i1.Mock implements _i3.FigmaClient {
       ) as _i4.Future<Map<String, dynamic>>);
 
   @override
-  _i4.Future<_i2.VariablesResponse> getLocalVariables(String? key) =>
+  _i4.Future<_i2.VariablesResponseDto> getLocalVariables(String? key) =>
       (super.noSuchMethod(
         Invocation.method(
           #getLocalVariables,
           [key],
         ),
-        returnValue:
-            _i4.Future<_i2.VariablesResponse>.value(_FakeVariablesResponse_0(
+        returnValue: _i4.Future<_i2.VariablesResponseDto>.value(
+            _FakeVariablesResponseDto_0(
           this,
           Invocation.method(
             #getLocalVariables,
             [key],
           ),
         )),
-      ) as _i4.Future<_i2.VariablesResponse>);
+      ) as _i4.Future<_i2.VariablesResponseDto>);
 }

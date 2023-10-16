@@ -266,7 +266,6 @@ void main() {
       });
     });
     test('works for valid object', () {
-      // Create an instance of your Dart class
       final variablesResponse = VariablesResponseDto(
         status: 200,
         error: false,

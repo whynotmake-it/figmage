@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 
 import 'client_test.mocks.dart';
 
-Future<VariablesResponse> fetchLocaleVariables(
+Future<VariablesResponseDto> fetchLocaleVariables(
   FigmaClient client,
   String fileId,
 ) async {
@@ -24,16 +24,16 @@ void main() {
         () async {
       final client = MockFigmaClient();
       when(client.getLocalVariables('fileId')).thenAnswer(
-        (_) async => VariablesResponse(
+        (_) async => VariablesResponseDto(
           status: 200,
           error: false,
-          meta: VariablesMeta(variables: {}, variableCollections: {}),
+          meta: VariablesMetaDto(variables: {}, variableCollections: {}),
         ),
       );
 
       expect(
         await fetchLocaleVariables(client, 'fileId'),
-        isA<VariablesResponse>(),
+        isA<VariablesResponseDto>(),
       );
     });
 

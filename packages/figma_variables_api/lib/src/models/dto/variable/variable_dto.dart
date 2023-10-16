@@ -2,12 +2,12 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'variable.g.dart';
+part 'variable_dto.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 @CopyWith()
-class Variable extends Equatable {
-  Variable({
+class VariableDto extends Equatable {
+  VariableDto({
     required this.id,
     required this.name,
     required this.remote,
@@ -21,8 +21,9 @@ class Variable extends Equatable {
     required this.codeSyntax,
   });
 
-  factory Variable.fromJson(Map<String, dynamic> json) =>
-      _$VariableFromJson(json);
+  factory VariableDto.fromJson(Map<String, dynamic> json) =>
+      _$VariableDtoFromJson(json);
+
   final String id;
   final String name;
   final bool remote;
@@ -50,5 +51,5 @@ class Variable extends Equatable {
         codeSyntax,
       ];
 
-  Map<String, dynamic> toJson() => _$VariableToJson(this);
+  Map<String, dynamic> toJson() => _$VariableDtoToJson(this);
 }

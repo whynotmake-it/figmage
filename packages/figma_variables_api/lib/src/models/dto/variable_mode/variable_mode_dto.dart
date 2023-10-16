@@ -2,18 +2,18 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
 
-part 'variable_mode.g.dart';
+part 'variable_mode_dto.g.dart';
 
 @JsonSerializable()
 @CopyWith()
-class VariableMode extends Equatable {
-  VariableMode({
+class VariableModeDto extends Equatable {
+  VariableModeDto({
     required this.modeId,
     required this.name,
   });
 
-  factory VariableMode.fromJson(Map<String, dynamic> json) =>
-      _$VariableModeFromJson(json);
+  factory VariableModeDto.fromJson(Map<String, dynamic> json) =>
+      _$VariableModeDtoFromJson(json);
 
   final String modeId;
   final String name;
@@ -21,5 +21,5 @@ class VariableMode extends Equatable {
   @override
   List<Object?> get props => [modeId, name];
 
-  Map<String, dynamic> toJson() => _$VariableModeToJson(this);
+  Map<String, dynamic> toJson() => _$VariableModeDtoToJson(this);
 }

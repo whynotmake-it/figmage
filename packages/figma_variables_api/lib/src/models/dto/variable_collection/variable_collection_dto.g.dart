@@ -1,88 +1,90 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'variable_collection.dart';
+part of 'variable_collection_dto.dart';
 
 // **************************************************************************
 // CopyWithGenerator
 // **************************************************************************
 
-abstract class _$VariableCollectionCWProxy {
-  VariableCollection defaultModeId(String defaultModeId);
+abstract class _$VariableCollectionDtoCWProxy {
+  VariableCollectionDto defaultModeId(String defaultModeId);
 
-  VariableCollection id(String id);
+  VariableCollectionDto id(String id);
 
-  VariableCollection name(String name);
+  VariableCollectionDto name(String name);
 
-  VariableCollection remote(bool remote);
+  VariableCollectionDto remote(bool remote);
 
-  VariableCollection modes(List<VariableMode> modes);
+  VariableCollectionDto modes(List<VariableModeDto> modes);
 
-  VariableCollection key(String key);
+  VariableCollectionDto key(String key);
 
-  VariableCollection hiddenFromPublishing(bool hiddenFromPublishing);
+  VariableCollectionDto hiddenFromPublishing(bool hiddenFromPublishing);
 
-  VariableCollection variableIds(List<String> variableIds);
+  VariableCollectionDto variableIds(List<String> variableIds);
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `VariableCollection(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `VariableCollectionDto(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// VariableCollection(...).copyWith(id: 12, name: "My name")
+  /// VariableCollectionDto(...).copyWith(id: 12, name: "My name")
   /// ````
-  VariableCollection call({
+  VariableCollectionDto call({
     String? defaultModeId,
     String? id,
     String? name,
     bool? remote,
-    List<VariableMode>? modes,
+    List<VariableModeDto>? modes,
     String? key,
     bool? hiddenFromPublishing,
     List<String>? variableIds,
   });
 }
 
-/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfVariableCollection.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfVariableCollection.copyWith.fieldName(...)`
-class _$VariableCollectionCWProxyImpl implements _$VariableCollectionCWProxy {
-  const _$VariableCollectionCWProxyImpl(this._value);
+/// Proxy class for `copyWith` functionality. This is a callable class and can be used as follows: `instanceOfVariableCollectionDto.copyWith(...)`. Additionally contains functions for specific fields e.g. `instanceOfVariableCollectionDto.copyWith.fieldName(...)`
+class _$VariableCollectionDtoCWProxyImpl
+    implements _$VariableCollectionDtoCWProxy {
+  const _$VariableCollectionDtoCWProxyImpl(this._value);
 
-  final VariableCollection _value;
+  final VariableCollectionDto _value;
 
   @override
-  VariableCollection defaultModeId(String defaultModeId) =>
+  VariableCollectionDto defaultModeId(String defaultModeId) =>
       this(defaultModeId: defaultModeId);
 
   @override
-  VariableCollection id(String id) => this(id: id);
+  VariableCollectionDto id(String id) => this(id: id);
 
   @override
-  VariableCollection name(String name) => this(name: name);
+  VariableCollectionDto name(String name) => this(name: name);
 
   @override
-  VariableCollection remote(bool remote) => this(remote: remote);
+  VariableCollectionDto remote(bool remote) => this(remote: remote);
 
   @override
-  VariableCollection modes(List<VariableMode> modes) => this(modes: modes);
+  VariableCollectionDto modes(List<VariableModeDto> modes) =>
+      this(modes: modes);
 
   @override
-  VariableCollection key(String key) => this(key: key);
+  VariableCollectionDto key(String key) => this(key: key);
 
   @override
-  VariableCollection hiddenFromPublishing(bool hiddenFromPublishing) =>
+  VariableCollectionDto hiddenFromPublishing(bool hiddenFromPublishing) =>
       this(hiddenFromPublishing: hiddenFromPublishing);
 
   @override
-  VariableCollection variableIds(List<String> variableIds) =>
+  VariableCollectionDto variableIds(List<String> variableIds) =>
       this(variableIds: variableIds);
 
   @override
 
-  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `VariableCollection(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
+  /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `VariableCollectionDto(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
   /// ```dart
-  /// VariableCollection(...).copyWith(id: 12, name: "My name")
+  /// VariableCollectionDto(...).copyWith(id: 12, name: "My name")
   /// ````
-  VariableCollection call({
+  VariableCollectionDto call({
     Object? defaultModeId = const $CopyWithPlaceholder(),
     Object? id = const $CopyWithPlaceholder(),
     Object? name = const $CopyWithPlaceholder(),
@@ -92,7 +94,7 @@ class _$VariableCollectionCWProxyImpl implements _$VariableCollectionCWProxy {
     Object? hiddenFromPublishing = const $CopyWithPlaceholder(),
     Object? variableIds = const $CopyWithPlaceholder(),
   }) {
-    return VariableCollection(
+    return VariableCollectionDto(
       defaultModeId:
           defaultModeId == const $CopyWithPlaceholder() || defaultModeId == null
               ? _value.defaultModeId
@@ -113,7 +115,7 @@ class _$VariableCollectionCWProxyImpl implements _$VariableCollectionCWProxy {
       modes: modes == const $CopyWithPlaceholder() || modes == null
           ? _value.modes
           // ignore: cast_nullable_to_non_nullable
-          : modes as List<VariableMode>,
+          : modes as List<VariableModeDto>,
       key: key == const $CopyWithPlaceholder() || key == null
           ? _value.key
           // ignore: cast_nullable_to_non_nullable
@@ -133,25 +135,26 @@ class _$VariableCollectionCWProxyImpl implements _$VariableCollectionCWProxy {
   }
 }
 
-extension $VariableCollectionCopyWith on VariableCollection {
-  /// Returns a callable class that can be used as follows: `instanceOfVariableCollection.copyWith(...)` or like so:`instanceOfVariableCollection.copyWith.fieldName(...)`.
+extension $VariableCollectionDtoCopyWith on VariableCollectionDto {
+  /// Returns a callable class that can be used as follows: `instanceOfVariableCollectionDto.copyWith(...)` or like so:`instanceOfVariableCollectionDto.copyWith.fieldName(...)`.
   // ignore: library_private_types_in_public_api
-  _$VariableCollectionCWProxy get copyWith =>
-      _$VariableCollectionCWProxyImpl(this);
+  _$VariableCollectionDtoCWProxy get copyWith =>
+      _$VariableCollectionDtoCWProxyImpl(this);
 }
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-VariableCollection _$VariableCollectionFromJson(Map<String, dynamic> json) =>
-    VariableCollection(
+VariableCollectionDto _$VariableCollectionDtoFromJson(
+        Map<String, dynamic> json) =>
+    VariableCollectionDto(
       defaultModeId: json['defaultModeId'] as String,
       id: json['id'] as String,
       name: json['name'] as String,
       remote: json['remote'] as bool,
       modes: (json['modes'] as List<dynamic>)
-          .map((e) => VariableMode.fromJson(e as Map<String, dynamic>))
+          .map((e) => VariableModeDto.fromJson(e as Map<String, dynamic>))
           .toList(),
       key: json['key'] as String,
       hiddenFromPublishing: json['hiddenFromPublishing'] as bool,
@@ -160,7 +163,8 @@ VariableCollection _$VariableCollectionFromJson(Map<String, dynamic> json) =>
           .toList(),
     );
 
-Map<String, dynamic> _$VariableCollectionToJson(VariableCollection instance) =>
+Map<String, dynamic> _$VariableCollectionDtoToJson(
+        VariableCollectionDto instance) =>
     <String, dynamic>{
       'defaultModeId': instance.defaultModeId,
       'id': instance.id,

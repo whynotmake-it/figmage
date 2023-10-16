@@ -10,7 +10,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:figma_variables_api/src/models/dto/variable_response/variables_response.dart';
+import 'package:figma_variables_api/src/models/dto/variable_response/variables_response_dto.dart';
 import 'package:figma_variables_api/src/query.dart';
 import 'package:http/http.dart';
 import 'package:http2/http2.dart';
@@ -66,9 +66,9 @@ class FigmaClient {
   }
 
   /// Retrieves the local variables from the Figma file specified by [key].
-  Future<VariablesResponse> getLocalVariables(String key) async {
+  Future<VariablesResponseDto> getLocalVariables(String key) async {
     final json = await _getFigma('/files/$key/variables/local');
-    return VariablesResponse.fromJson(json);
+    return VariablesResponseDto.fromJson(json);
   }
 
   /// Does a GET request towards the Figma API.

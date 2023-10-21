@@ -34,3 +34,4 @@ dev_dependencies:
   melos: ^3.1.1
   freezed: ^2.4.3
   json_serializable: ^6.7.1
+  build_test: ^2.2.1

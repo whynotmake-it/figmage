@@ -145,10 +145,10 @@ void main() {
               "iOS": "box-background-active",
             },
             valuesByMode: {
-              "33:0": {
-                "type": "VARIABLE_ALIAS",
-                "id": "VariableID:28:14",
-              },
+              "33:0": VariableModeAliasDto(
+                id: "VariableID:28:14",
+                type: 'VARIABLE_ALIAS',
+              ),
             },
           );
 
@@ -295,10 +295,10 @@ void main() {
               scopes: ['ALL_SCOPES'],
               codeSyntax: {},
               valuesByMode: {
-                "33:0": {
-                  "type": "VARIABLE_ALIAS",
-                  "id": "VariableID:28:14",
-                },
+                "33:0": VariableModeAliasDto(
+                  id: "VariableID:28:14",
+                  type: 'VARIABLE_ALIAS',
+                ),
               },
             ),
           },

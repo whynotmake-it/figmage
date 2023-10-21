@@ -1,5 +1,6 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
+import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'variable_dto.g.dart';
@@ -32,7 +33,7 @@ class VariableDto extends Equatable {
   final String resolvedType;
   final String description;
   final bool hiddenFromPublishing;
-  final Map<String, dynamic> valuesByMode;
+  final Map<String, VariableModeValueDto> valuesByMode;
   final List<String> scopes;
   final Map<String, String> codeSyntax;
 

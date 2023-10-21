@@ -19,20 +19,19 @@ mixin _$AliasOr<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(T data) data,
-    required TResult Function(String type, String id, AliasOr<T> aliasOrValue)
-        alias,
+    required TResult Function(String id, AliasOr<T> aliasOrValue) alias,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(T data)? data,
-    TResult? Function(String type, String id, AliasOr<T> aliasOrValue)? alias,
+    TResult? Function(String id, AliasOr<T> aliasOrValue)? alias,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(T data)? data,
-    TResult Function(String type, String id, AliasOr<T> aliasOrValue)? alias,
+    TResult Function(String id, AliasOr<T> aliasOrValue)? alias,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -140,8 +139,7 @@ class _$AliasDataImpl<T> extends AliasData<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(T data) data,
-    required TResult Function(String type, String id, AliasOr<T> aliasOrValue)
-        alias,
+    required TResult Function(String id, AliasOr<T> aliasOrValue) alias,
   }) {
     return data(this.data);
   }
@@ -150,7 +148,7 @@ class _$AliasDataImpl<T> extends AliasData<T> {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(T data)? data,
-    TResult? Function(String type, String id, AliasOr<T> aliasOrValue)? alias,
+    TResult? Function(String id, AliasOr<T> aliasOrValue)? alias,
   }) {
     return data?.call(this.data);
   }
@@ -159,7 +157,7 @@ class _$AliasDataImpl<T> extends AliasData<T> {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(T data)? data,
-    TResult Function(String type, String id, AliasOr<T> aliasOrValue)? alias,
+    TResult Function(String id, AliasOr<T> aliasOrValue)? alias,
     required TResult orElse(),
   }) {
     if (data != null) {
@@ -216,7 +214,7 @@ abstract class _$$AliasImplCopyWith<T, $Res> {
           _$AliasImpl<T> value, $Res Function(_$AliasImpl<T>) then) =
       __$$AliasImplCopyWithImpl<T, $Res>;
   @useResult
-  $Res call({String type, String id, AliasOr<T> aliasOrValue});
+  $Res call({String id, AliasOr<T> aliasOrValue});
 
   $AliasOrCopyWith<T, $Res> get aliasOrValue;
 }
@@ -232,15 +230,10 @@ class __$$AliasImplCopyWithImpl<T, $Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? type = null,
     Object? id = null,
     Object? aliasOrValue = null,
   }) {
     return _then(_$AliasImpl<T>(
-      type: null == type
-          ? _value.type
-          : type // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -264,12 +257,8 @@ class __$$AliasImplCopyWithImpl<T, $Res>
 /// @nodoc
 
 class _$AliasImpl<T> extends Alias<T> {
-  const _$AliasImpl(
-      {required this.type, required this.id, required this.aliasOrValue})
-      : super._();
+  const _$AliasImpl({required this.id, required this.aliasOrValue}) : super._();
 
-  @override
-  final String type;
   @override
   final String id;
   @override
@@ -277,7 +266,7 @@ class _$AliasImpl<T> extends Alias<T> {
 
   @override
   String toString() {
-    return 'AliasOr<$T>.alias(type: $type, id: $id, aliasOrValue: $aliasOrValue)';
+    return 'AliasOr<$T>.alias(id: $id, aliasOrValue: $aliasOrValue)';
   }
 
   @override
@@ -285,14 +274,13 @@ class _$AliasImpl<T> extends Alias<T> {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AliasImpl<T> &&
-            (identical(other.type, type) || other.type == type) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.aliasOrValue, aliasOrValue) ||
                 other.aliasOrValue == aliasOrValue));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, type, id, aliasOrValue);
+  int get hashCode => Object.hash(runtimeType, id, aliasOrValue);
 
   @JsonKey(ignore: true)
   @override
@@ -304,30 +292,29 @@ class _$AliasImpl<T> extends Alias<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function(T data) data,
-    required TResult Function(String type, String id, AliasOr<T> aliasOrValue)
-        alias,
+    required TResult Function(String id, AliasOr<T> aliasOrValue) alias,
   }) {
-    return alias(type, id, aliasOrValue);
+    return alias(id, aliasOrValue);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(T data)? data,
-    TResult? Function(String type, String id, AliasOr<T> aliasOrValue)? alias,
+    TResult? Function(String id, AliasOr<T> aliasOrValue)? alias,
   }) {
-    return alias?.call(type, id, aliasOrValue);
+    return alias?.call(id, aliasOrValue);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(T data)? data,
-    TResult Function(String type, String id, AliasOr<T> aliasOrValue)? alias,
+    TResult Function(String id, AliasOr<T> aliasOrValue)? alias,
     required TResult orElse(),
   }) {
     if (alias != null) {
-      return alias(type, id, aliasOrValue);
+      return alias(id, aliasOrValue);
     }
     return orElse();
   }
@@ -366,12 +353,10 @@ class _$AliasImpl<T> extends Alias<T> {
 
 abstract class Alias<T> extends AliasOr<T> {
   const factory Alias(
-      {required final String type,
-      required final String id,
+      {required final String id,
       required final AliasOr<T> aliasOrValue}) = _$AliasImpl<T>;
   const Alias._() : super._();
 
-  String get type;
   String get id;
   AliasOr<T> get aliasOrValue;
   @JsonKey(ignore: true)

@@ -23,7 +23,7 @@ abstract class _$VariableDtoCWProxy {
 
   VariableDto hiddenFromPublishing(bool hiddenFromPublishing);
 
-  VariableDto valuesByMode(Map<String, dynamic> valuesByMode);
+  VariableDto valuesByMode(Map<String, VariableModeValueDto> valuesByMode);
 
   VariableDto scopes(List<String> scopes);
 
@@ -44,7 +44,7 @@ abstract class _$VariableDtoCWProxy {
     String? resolvedType,
     String? description,
     bool? hiddenFromPublishing,
-    Map<String, dynamic>? valuesByMode,
+    Map<String, VariableModeValueDto>? valuesByMode,
     List<String>? scopes,
     Map<String, String>? codeSyntax,
   });
@@ -84,7 +84,7 @@ class _$VariableDtoCWProxyImpl implements _$VariableDtoCWProxy {
       this(hiddenFromPublishing: hiddenFromPublishing);
 
   @override
-  VariableDto valuesByMode(Map<String, dynamic> valuesByMode) =>
+  VariableDto valuesByMode(Map<String, VariableModeValueDto> valuesByMode) =>
       this(valuesByMode: valuesByMode);
 
   @override
@@ -158,7 +158,7 @@ class _$VariableDtoCWProxyImpl implements _$VariableDtoCWProxy {
           valuesByMode == const $CopyWithPlaceholder() || valuesByMode == null
               ? _value.valuesByMode
               // ignore: cast_nullable_to_non_nullable
-              : valuesByMode as Map<String, dynamic>,
+              : valuesByMode as Map<String, VariableModeValueDto>,
       scopes: scopes == const $CopyWithPlaceholder() || scopes == null
           ? _value.scopes
           // ignore: cast_nullable_to_non_nullable
@@ -191,7 +191,9 @@ VariableDto _$VariableDtoFromJson(Map<String, dynamic> json) => VariableDto(
       resolvedType: json['resolvedType'] as String,
       description: json['description'] as String,
       hiddenFromPublishing: json['hiddenFromPublishing'] as bool,
-      valuesByMode: json['valuesByMode'] as Map<String, dynamic>,
+      valuesByMode: (json['valuesByMode'] as Map<String, dynamic>).map(
+        (k, e) => MapEntry(k, VariableModeValueDto.fromJson(e)),
+      ),
       scopes:
           (json['scopes'] as List<dynamic>).map((e) => e as String).toList(),
       codeSyntax: Map<String, String>.from(json['codeSyntax'] as Map),
@@ -207,7 +209,8 @@ Map<String, dynamic> _$VariableDtoToJson(VariableDto instance) =>
       'resolvedType': instance.resolvedType,
       'description': instance.description,
       'hiddenFromPublishing': instance.hiddenFromPublishing,
-      'valuesByMode': instance.valuesByMode,
+      'valuesByMode':
+          instance.valuesByMode.map((k, e) => MapEntry(k, e.toJson())),
       'scopes': instance.scopes,
       'codeSyntax': instance.codeSyntax,
     };

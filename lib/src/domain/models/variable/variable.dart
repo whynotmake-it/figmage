@@ -8,6 +8,12 @@ const String kResolvedTypeNumber = 'FLOAT';
 const String kResolvedTypeColor = 'COLOR';
 const String kResolvedTypeBoolean = 'BOOLEAN';
 
+/// Represents a Figma variable with different data types.
+///
+/// The [Variable] class is used to model Figma variables with various data types.
+/// It provides constructors for different types of variables: boolean, float, color, and string.
+///
+/// The [Variable] class is part of a sealed union type, and each constructor is associated with a specific data type.
 @Freezed()
 class Variable with _$Variable {
   factory Variable.boolean({

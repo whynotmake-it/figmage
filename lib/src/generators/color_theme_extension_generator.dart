@@ -40,7 +40,7 @@ List<Field> _getExtensionModesFields(
 ) {
   final result = <Field>[];
   colorMaps.forEach((modeName, colorValues) {
-    final assignment = refer('BatteryColorsThemeExtension').newInstance(
+    final assignment = refer(className).newInstance(
       [],
       colorValues.map(
         (colorName, colorValue) => MapEntry(

@@ -3,8 +3,6 @@ import 'package:figmage/src/generators/color_theme_extension_generator.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:test/test.dart';
 
-import 'util/printer_asset_writer.dart';
-
 void main() {
   tearDown(() {
     // Increment this after each test so the next test has it's own package
@@ -24,12 +22,9 @@ void main() {
 
     final srcs = _createPackageStub();
 
-    //final writer = PrintAssetWriter();
-
     await testBuilder(
       builder,
       srcs,
-      //writer: writer,
       generateFor: {'$_pkgName|lib/test_lib.dart'},
       outputs: {
         '$_pkgName|lib/test_lib.g.dart': _expectedString,

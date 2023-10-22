@@ -79,19 +79,19 @@ Class _getColorThemeExtensionClass(
       )
       ..extend =
           refer('ThemeExtension<$className>', 'package:flutter/material.dart')
-      ..constructors.add(getConstructor(namesList))
+      ..constructors.add(_getConstructor(namesList))
       ..fields.addAll(
         _getColorThemeExtensionClassFields(namesList),
       )
       ..methods.addAll([
-        getCopyWith(namesList, className),
-        getLerp(namesList, className),
+        _getCopyWith(namesList, className),
+        _getLerp(namesList, className),
         //TODO getToString()
       ]),
   );
 }
 
-Method getLerp(List<String> namesList, String className) {
+Method _getLerp(List<String> namesList, String className) {
   return Method(
     (b) => b
       ..annotations.add(refer('override'))
@@ -135,7 +135,7 @@ Map<String, Expression> _getLerpBodyExpression(List<String> namesList) {
   return res;
 }
 
-Method getCopyWith(List<String> namesList, String className) {
+Method _getCopyWith(List<String> namesList, String className) {
   return Method(
     (method) => method
       ..annotations.add(refer('override'))
@@ -155,11 +155,11 @@ Method getCopyWith(List<String> namesList, String className) {
       )
       ..returns = refer(className)
       ..body = refer(className)
-          .newInstance([], getCopyWithBodyExpression(namesList)).code,
+          .newInstance([], _getCopyWithBodyExpression(namesList)).code,
   );
 }
 
-Map<String, Expression> getCopyWithBodyExpression(List<String> namesList) {
+Map<String, Expression> _getCopyWithBodyExpression(List<String> namesList) {
   final res = <String, Expression>{};
   for (final name in namesList) {
     res[name] = refer(name).ifNullThen(refer('this.$name'));
@@ -187,7 +187,7 @@ List<Field> _getColorThemeExtensionClassFields(
   return result;
 }
 
-Constructor getConstructor(List<String> nameList) {
+Constructor _getConstructor(List<String> nameList) {
   return Constructor(
     (constructor) => constructor
       ..constant = true

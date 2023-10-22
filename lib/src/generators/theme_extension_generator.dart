@@ -13,6 +13,40 @@ typedef ValueArguments = ({
   List<Reference> typeArguments
 });
 
+/// A generator for theme extension classes.
+///
+/// The [ThemeExtensionGenerator] class is designed to create theme extension
+/// classes based on provided parameters. It assumes that you might need
+/// your themes in different modes (e.g. light and dark mode for color theme).
+///
+/// The [ThemeExtensionGenerator] takes the following parameters:
+///
+/// - [className]: The name of the generated theme extension class.
+/// - [extensionSymbol]: The symbol (e.g., Color, TextStyle) used in the theme
+///   extension.
+/// - [extensionSymbolUrl]: The URL for the symbol, typically a package URL.
+/// - [valueToConstructorArguments]: A function that converts a value to the
+///   constructor arguments required for the extension symbol.
+/// - [valueMaps]: A map with the following structure:
+///   <ModeName<ValueName<Value>>>
+///
+/// The generated theme extension class includes methods like `copyWith` and
+/// `lerp` for easy theme modification and transitions.
+///
+/// Example usage:
+///
+/// ```dart
+/// final generator = ThemeExtensionGenerator<Color>(
+///   className: 'MyColorTheme',
+///   valueMaps: {
+///     'mode1': {'color1': Color(0xFF000000), 'color2': Color(0xFFFFFFFF)},
+///     'mode2': {'color1': Color(0xFF111111), 'color2': Color(0xFF222222)},
+///   },
+///   extensionSymbol: 'Color',
+///   extensionSymbolUrl: 'package:flutter/material.dart',
+///   valueToConstructorArguments: (Color value) => valueArgumentsForColor(value),
+/// );
+/// ```
 class ThemeExtensionGenerator<T> extends Generator {
   ThemeExtensionGenerator({
     required this.className,
@@ -118,7 +152,7 @@ class ThemeExtensionGenerator<T> extends Generator {
         )
         ..extend =
             refer('ThemeExtension<$className>', 'package:flutter/material.dart')
-        ..constructors.add(getConstructor(nameList: namesList))
+        ..constructors.add(_getConstructor(nameList: namesList))
         ..fields.addAll(
           _getColorThemeExtensionClassFields(
             nameList: namesList,
@@ -127,13 +161,13 @@ class ThemeExtensionGenerator<T> extends Generator {
           ),
         )
         ..methods.addAll([
-          getCopyWith(
+          _getCopyWith(
             namesList: namesList,
             className: className,
             extensionSymbol: extensionSymbol,
             extensionUrl: extensionSymbolUrl,
           ),
-          getLerp(
+          _getLerp(
             namesList: namesList,
             className: className,
             extensionSymbol: extensionSymbol,
@@ -143,7 +177,7 @@ class ThemeExtensionGenerator<T> extends Generator {
     );
   }
 
-  Method getLerp({
+  Method _getLerp({
     required List<String> namesList,
     required String className,
     required String extensionSymbol,
@@ -200,7 +234,7 @@ class ThemeExtensionGenerator<T> extends Generator {
     return res;
   }
 
-  Method getCopyWith({
+  Method _getCopyWith({
     required List<String> namesList,
     required String className,
     required String extensionSymbol,
@@ -226,12 +260,12 @@ class ThemeExtensionGenerator<T> extends Generator {
         ..returns = refer(className)
         ..body = refer(className).newInstance(
           [],
-          getCopyWithBodyExpression(namesList: namesList),
+          _getCopyWithBodyExpression(namesList: namesList),
         ).code,
     );
   }
 
-  Map<String, Expression> getCopyWithBodyExpression({
+  Map<String, Expression> _getCopyWithBodyExpression({
     required List<String> namesList,
   }) {
     final res = <String, Expression>{};
@@ -263,7 +297,7 @@ class ThemeExtensionGenerator<T> extends Generator {
     return result;
   }
 
-  Constructor getConstructor({required List<String> nameList}) {
+  Constructor _getConstructor({required List<String> nameList}) {
     return Constructor(
       (constructor) => constructor
         ..constant = true

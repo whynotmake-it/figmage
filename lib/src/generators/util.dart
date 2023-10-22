@@ -1,4 +1,4 @@
-bool ensureSameKeys(List<Map<String, int>> maps) {
+bool ensureSameKeys(List<Map<String, dynamic>> maps) {
   if (maps.isEmpty) return true;
   final firstKeys = maps[0].keys.toSet();
   for (final map in maps) {

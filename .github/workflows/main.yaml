@@ -1,4 +1,4 @@
-name: ci
+name: Continuous Integration
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -20,15 +20,20 @@ jobs:
     name: Build Check
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      id-token: write
+      contents: write
+      checks: write
+      pull-requests: write
     steps:
       - name: 📚 Checkout
         uses: actions/checkout@v4
-      
+
       - name: 🎯 Setup Dart
         uses: dart-lang/setup-dart@v1.5.1
         with:
           sdk: 'stable'
-      
+
       - name: Ⓜ️ Set up Melos
         uses: bluefireteam/melos-action@v2
 
@@ -37,4 +42,11 @@ jobs:
 
       - name: 📝 Run Test
         run: melos run coverage
-  
+
+      - name: 📊 Generate Coverage
+        id: coverage-report
+        uses: whynotmake-it/dart-coverage-assistant@d221ca8dc01c04908b2eae56e2ac591cea99741c
+        with:
+          enforce_threshold: 'single'
+          lower_threshold: 50
+          upper_threshold: 90

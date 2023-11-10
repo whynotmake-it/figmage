@@ -17,6 +17,13 @@ void main() {
     variableIds: [],
   );
 
+  group('copyWith', () {
+    test('updates the name', () {
+      final updatedVariableCollection = sut.copyWith(name: 'newName');
+      expect(updatedVariableCollection.name, 'newName');
+    });
+  });
+
   group('fromJson', () {
     test('works for valid json', () {
       final (variableCollection, _) = parseJsonFromFile(

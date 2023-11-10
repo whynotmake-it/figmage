@@ -7,6 +7,27 @@ import 'package:test/test.dart';
 import '../../../../util/parse_json_from_file.dart';
 
 void main() {
+  group('copyWith', () {
+    test('updates the name', () {
+      final variable = VariableDto(
+        id: "VariableID:33:8",
+        name: "box-background-active",
+        remote: false,
+        key: "db60e2b2141198dff74e59f329863257348ec9d6",
+        variableCollectionId: "VariableCollectionId:33:7",
+        resolvedType: "COLOR",
+        description: "",
+        hiddenFromPublishing: false,
+        scopes: [],
+        codeSyntax: {},
+        valuesByMode: {},
+      );
+
+      final updatedVariable = variable.copyWith(name: 'newName');
+
+      expect(updatedVariable.name, 'newName');
+    });
+  });
   group('props', () {
     test('contains the same amount of keys as json', () async {
       final (variable, json) = parseJsonFromFile(

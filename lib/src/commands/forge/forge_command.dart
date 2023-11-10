@@ -33,7 +33,7 @@ class ForgeCommand extends Command<int> {
 
   @override
   Future<int> run() async {
-    final generator = FigmagePackageGenerator();
+    const generator = FigmagePackageGenerator();
     final targetDir = Directory.current;
     final process = _logger.progress("Generating package");
     await generator.generate(

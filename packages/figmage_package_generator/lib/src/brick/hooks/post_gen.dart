@@ -12,6 +12,7 @@ Future<void> run(HookContext context) async {
   // Run `flutter packages get` after generation.
   final progress = context.logger.progress('Running pub get');
   await Process.run('dart', ['pub', 'get']);
+  await Process.run('dart', ['fix', '--apply']);
   progress.complete();
 
   if (context.vars['main'] == false) {

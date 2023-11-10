@@ -28,7 +28,7 @@ class ReforgeCommand extends Command<int> {
 
   @override
   Future<int> run() async {
-    final output = 'Which unicorn has a cold? The Achoo-nicorn!';
+    const output = 'Which unicorn has a cold? The Achoo-nicorn!';
 
     _logger.info(output);
     return ExitCode.success.code;

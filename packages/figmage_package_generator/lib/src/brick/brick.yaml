@@ -16,4 +16,29 @@ vars:
     type: string
     description: The package description
     default: Why not make a dart package?
-    prompt: What is the project description?
+    prompt: What is the project description?  
+  generate_spacers:
+    type: boolean
+    description: Whether to generate a file for spacers
+    default: true
+    prompt: Generate spacers?
+  generate_paddings:
+    type: boolean
+    description: Whether to generate a file for paddings
+    default: true
+    prompt: Generate paddings?
+  generate_radii:
+    type: boolean
+    description: Whether to generate a file for Radii
+    default: true
+    prompt: Generate radii?
+  generate_strings:
+    type: boolean
+    description: Whether to generate a file for Strings in Figma variables
+    default: true
+    prompt: Generate strings?
+  generate_bools:
+    type: boolean
+    description: Whether to generate a file for Bools in Figma variables
+    default: true
+    prompt: Generate bools?

@@ -4,39 +4,27 @@ import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:figmage/src/domain/repositories/repositories.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+/// Visible for testing
 @visibleForTesting
 typedef VariablesData = ({
   Map<String, Variable> variables,
   Map<String, VariableCollectionDto> variableCollections
 });
 
+/// The implementation of [VariablesRepository] for Figma.
 class FigmaVariablesRepository implements VariablesRepository {
-  /// Creates a map of Figma variable values organized by collection, mode, and variable name.
-  ///
-  /// This function takes a list of [Variable] instances and arranges their values in a
-  /// hierarchical map structure. The resulting map is organized by collection, mode,
-  /// and variable name. The type of value is specified by the generic type parameter [T],
-  /// and it is constrained to the subtype of [Variable] represented by [V].
-  ///
-  /// Parameters:
-  /// - [variables]: A list of [Variable] instances to extract values from.
-  /// - [useNames]: A boolean flag indicating whether to use variable names (true) or
-  ///   variable IDs (false) for map keys. Default is true.
-  ///
-  /// Generic Type Parameters:
-  /// - [T]: The data type of the variable values to be included in the map.
-  /// - [V]: A subtype of [Variable] representing the specific variable type for value extraction.
-  ///
-  /// Example:
-  /// ```dart
-  /// final variables = variables; // List of Variable instances;
-  ///
-  /// final valueMap = createValueModeMap<double, FloatVariable>(
-  ///   variables: variables,
-  ///   useNames: true,
-  /// );
-  /// ```
-  Map<String, Map<String, Map<String, T>>>
+  @override
+  Future<List<Variable>> getVariables({
+    required String fileId,
+    required String token,
+  }) async {
+    return fromDtoToModel(
+      await _getLocaleVariables(fileId: fileId, token: token),
+    );
+  }
+
+  @override
+  VariableValuesByIdByModeByCollection<T>
       createValueModeMap<T, V extends Variable>({
     required List<Variable> variables,
     bool useNames = true,
@@ -69,16 +57,8 @@ class FigmaVariablesRepository implements VariablesRepository {
           () => <String, T>{},
         );
 
-        final existingValue = modeMap.putIfAbsent(
-          useNames ? variable.name : variable.id,
-          () => (aliasOr as AliasOr<T>).resolveValue,
-        );
-
-        if (existingValue != (aliasOr as AliasOr<T>).resolveValue) {
-          print(
-            'Warning: Override value for variable ${variable.name} in mode $modeId.',
-          );
-        }
+        final valueKey = useNames ? variable.name : variable.id;
+        modeMap[valueKey] = (aliasOr as AliasOr<T>).resolveValue;
       });
     }
 
@@ -90,13 +70,14 @@ class FigmaVariablesRepository implements VariablesRepository {
     required String token,
   }) async {
     final client = FigmaClient(token);
+    // ignore: unnecessary_await_in_return
     return await client.getLocalVariables(fileId);
   }
 
   /// Converts a list of DTO variables into model variables.
   ///
-  /// Given a [VariablesResponseDto], this method processes the variables within it,
-  /// maps them to model variables, and returns a list of variables.
+  /// Given a [VariablesResponseDto], this method processes the variables within
+  /// it, maps them to model variables, and returns a list of variables.
   @visibleForTesting
   List<Variable> fromDtoToModel(
     VariablesResponseDto variablesResponse,
@@ -205,16 +186,6 @@ class FigmaVariablesRepository implements VariablesRepository {
       }
     });
     return variables.toList();
-  }
-
-  @override
-  Future<List<Variable>> getVariables({
-    required String fileId,
-    required String token,
-  }) async {
-    return fromDtoToModel(
-      await _getLocaleVariables(fileId: fileId, token: token),
-    );
   }
 
   /// A helper function for resolving alias values within Figma variables.

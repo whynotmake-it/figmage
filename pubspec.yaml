@@ -14,15 +14,14 @@ dependencies:
     git:
       url: https://github.com/whynotmake-it/figmage.git
       path: packages/figmage_package_generator
+  figma_variables_api:
+    path: packages/figma_variables_api
   mason_logger: ^0.2.5
   pub_updater: ^0.3.0
   source_gen: ^1.4.0
-  figmage_package_generator:
-    path: packages/figmage_package_generator
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
-  figma_variables_api:
-    path: packages/figma_variables_api
+
   collection: ^1.18.0
 
 dev_dependencies:

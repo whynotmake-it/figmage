@@ -16,8 +16,9 @@ bool ensureSameKeys(List<Map<String, dynamic>> maps) {
 /// For example, `Number/NumberWith2Aliases` becomes `numberWith2Aliases`.
 String convertToValidVariableName(String variableName) {
   // Remove leading and trailing whitespace
-
-  final camelCasePath = switch (variableName.split("/").toList()) {
+  final pathSegments =
+      variableName.split("/").map((s) => s.removeInvalidCharacters()).toList();
+  final camelCasePath = switch (pathSegments) {
     [final first, ...final rest] => [
         first.toCamelCase().trim(),
         ...rest.map((e) => e.toTitleCase().trim()),
@@ -26,31 +27,16 @@ String convertToValidVariableName(String variableName) {
   };
 
   // Remove any non-alphanumeric characters except underscore
-  final camelCaseName = camelCasePath.join().replaceAll(RegExp(r'\W+'), '');
-
-  // Make sure the variable name starts with a letter or underscore
-  if (!RegExp('^[a-zA-Z_]').hasMatch(camelCaseName)) {
-    return '\$$camelCaseName';
-  }
-  return camelCaseName;
+  return camelCasePath.join().removeLeadingNumbers();
 }
 
 /// Converts a given class name to a valid dart class name.
 String convertToValidClassName(String className) {
-  final name = className
-      // Remove leading and trailing whitespace
+  return className
       .trim()
-      // Remove any non-alphanumeric characters
-      // TODO(tim): unit test this
-      .replaceAll(RegExp(r'\W+'), '');
-
-  // Make sure the class name starts with an uppercase letter
-  if (!RegExp('^[A-Z]').hasMatch(className)) {
-    // Capitalize the first character if it is not valid
-    return name[0].toUpperCase() + name.substring(1);
-  }
-
-  return name;
+      .removeInvalidCharacters()
+      .toTitleCase()
+      .removeLeadingNumbers();
 }
 
 extension on String {
@@ -63,4 +49,12 @@ extension on String {
   String toCamelCase() {
     return this[0].toLowerCase() + substring(1);
   }
+
+  /// Removes all invalid characters from a string, which includes all
+  /// non-alphanumeric characters and underscores.
+  String removeInvalidCharacters() => replaceAll(RegExp('[^a-zA-Z0-9]'), '');
+
+  /// Removes all leading numbers from a string.
+  String removeLeadingNumbers() =>
+      RegExp('[0-9]').hasMatch(this[0]) ? '\$$this' : this;
 }

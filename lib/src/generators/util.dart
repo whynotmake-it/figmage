@@ -30,8 +30,9 @@ String convertToValidVariableName(String variableName) {
         first.toCamelCase().trim(),
         ...rest.map((e) => e.toTitleCase().trim()),
       ],
-    // coverage:ignore-line
+    // coverage:ignore-start
     _ => throw StateError('Invalid path segments: $pathSegments'),
+    // coverage:ignore-end
   };
 
   return camelCasePath.join().removeLeadingNumbers();

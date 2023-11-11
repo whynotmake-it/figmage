@@ -58,6 +58,17 @@ void main() {
           equals(r'$123HelloWorldAgain'),
         );
       });
+
+      test('can deal with only numbers', () {
+        expect(
+          convertToValidVariableName('123'),
+          equals(r'$123'),
+        );
+        expect(
+          convertToValidVariableName('123/hello'),
+          equals(r'$123Hello'),
+        );
+      });
     });
   });
 

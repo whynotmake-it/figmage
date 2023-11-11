@@ -30,26 +30,23 @@ sealed class VariableModeValueDto {
 }
 
 @JsonSerializable()
-class VariableModeBooleanDto extends VariableModeValueDto {
+class VariableModeBooleanDto extends VariableModeValueDto with EquatableMixin {
   VariableModeBooleanDto({required this.value});
-
-  factory VariableModeBooleanDto.fromJson(Map<String, dynamic> json) =>
-      _$VariableModeBooleanDtoFromJson(json);
 
   final bool value;
 
   @override
   bool toJson() => value;
+
+  @override
+  List<Object?> get props => [value];
 }
 
 @JsonSerializable()
 class VariableModeNumberDto extends VariableModeValueDto with EquatableMixin {
   VariableModeNumberDto({required this.value});
 
-  factory VariableModeNumberDto.fromJson(Map<String, dynamic> json) =>
-      _$VariableModeNumberDtoFromJson(json);
-
-  final double value;
+  final num value;
 
   @override
   num toJson() => value;
@@ -61,9 +58,6 @@ class VariableModeNumberDto extends VariableModeValueDto with EquatableMixin {
 @JsonSerializable()
 class VariableModeStringDto extends VariableModeValueDto with EquatableMixin {
   VariableModeStringDto({required this.value});
-
-  factory VariableModeStringDto.fromJson(Map<String, dynamic> json) =>
-      _$VariableModeStringDtoFromJson(json);
 
   final String value;
 

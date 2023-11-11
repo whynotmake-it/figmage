@@ -1,4 +1,4 @@
-import 'package:figmage/src/domain/models/models.dart';
+import 'package:figmage/src/domain/models/style.dart';
 
 /// {@template styles_repository}
 /// This repository is responsible for fetching styles.

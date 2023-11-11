@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
+import 'package:figmage/src/domain/models/variable/variable.dart';
 
-import 'package:figmage/src/domain/models/models.dart';
 import 'package:test/test.dart';
 
 void main() {

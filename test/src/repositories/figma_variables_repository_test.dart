@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
+import 'package:figmage/src/domain/models/variable/variable.dart';
 
-import 'package:figmage/src/domain/models/models.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -26,7 +26,7 @@ void main() {
     test('Converts a  VariablesResponse DTO to VariablesData', () {
       final (variablesResponseDto, _) = parseJsonFromFile(
         'variables_response_example.json',
-        (json) => VariablesResponseDto.fromJson(json),
+        VariablesResponseDto.fromJson,
       );
       final repository = FigmaVariablesRepository();
       final variables = repository.fromDtoToModel(variablesResponseDto);
@@ -37,7 +37,7 @@ void main() {
     test('Converts a List<Variable> to a colorMap using names', () {
       final (variablesResponse, _) = parseJsonFromFile(
         'variables_response_example.json',
-        (json) => VariablesResponseDto.fromJson(json),
+        VariablesResponseDto.fromJson,
       );
       final repository = FigmaVariablesRepository();
       final variables = repository.fromDtoToModel(variablesResponse);
@@ -91,7 +91,7 @@ void main() {
     test('Converts a List<Variable> to a colorMap with ids', () {
       final (variablesResponse, _) = parseJsonFromFile(
         'variables_response_example.json',
-        (json) => VariablesResponseDto.fromJson(json),
+        VariablesResponseDto.fromJson,
       );
       final repository = FigmaVariablesRepository();
       final variables = repository.fromDtoToModel(variablesResponse);
@@ -101,45 +101,45 @@ void main() {
       );
 
       expect(
-        colorMap['VariableCollectionId:28:10']!['28:3']!['VariableID:28:11']!,
+        colorMap['VariableCollectionId:28:10']!['28:3']!['VariableID:28:11'],
         equals(4294967295),
       );
       expect(
-        colorMap['VariableCollectionId:28:10']!['28:3']!['VariableID:33:4']!,
+        colorMap['VariableCollectionId:28:10']!['28:3']!['VariableID:33:4'],
         equals(4294967295),
       );
       expect(
-        colorMap['VariableCollectionId:28:10']!['28:3']!['VariableID:114:5']!,
+        colorMap['VariableCollectionId:28:10']!['28:3']!['VariableID:114:5'],
         equals(4294967295),
       );
 
       expect(
-        colorMap['VariableCollectionId:28:10']!['28:4']!['VariableID:28:11']!,
+        colorMap['VariableCollectionId:28:10']!['28:4']!['VariableID:28:11'],
         equals(4278190080),
       );
       expect(
-        colorMap['VariableCollectionId:28:10']!['28:4']!['VariableID:33:4']!,
+        colorMap['VariableCollectionId:28:10']!['28:4']!['VariableID:33:4'],
         equals(4278190080),
       );
       expect(
-        colorMap['VariableCollectionId:28:10']!['28:4']!['VariableID:114:5']!,
+        colorMap['VariableCollectionId:28:10']!['28:4']!['VariableID:114:5'],
         equals(4278190080),
       );
 
       expect(
-        colorMap['VariableCollectionId:28:7']!['28:2']!['VariableID:28:9']!,
+        colorMap['VariableCollectionId:28:7']!['28:2']!['VariableID:28:9'],
         equals(4294967295),
       );
       expect(
-        colorMap['VariableCollectionId:28:7']!['28:2']!['VariableID:28:12']!,
+        colorMap['VariableCollectionId:28:7']!['28:2']!['VariableID:28:12'],
         equals(4278190080),
       );
       expect(
-        colorMap['VariableCollectionId:28:7']!['28:2']!['VariableID:33:2']!,
+        colorMap['VariableCollectionId:28:7']!['28:2']!['VariableID:33:2'],
         equals(4294967295),
       );
       expect(
-        colorMap['VariableCollectionId:28:7']!['28:2']!['VariableID:33:3']!,
+        colorMap['VariableCollectionId:28:7']!['28:2']!['VariableID:33:3'],
         equals(4278190080),
       );
     });
@@ -147,7 +147,7 @@ void main() {
     test('Converts a List<Variable> to a numberMap using names', () {
       final (variablesResponse, _) = parseJsonFromFile(
         'variables_response_example.json',
-        (json) => VariablesResponseDto.fromJson(json),
+        VariablesResponseDto.fromJson,
       );
       final repository = FigmaVariablesRepository();
       final variables = repository.fromDtoToModel(variablesResponse);
@@ -184,7 +184,7 @@ void main() {
     test('Converts a List<Variable> to a booleanMap using names', () {
       final (variablesResponse, _) = parseJsonFromFile(
         'variables_response_example.json',
-        (json) => VariablesResponseDto.fromJson(json),
+        VariablesResponseDto.fromJson,
       );
       final repository = FigmaVariablesRepository();
       final variables = repository.fromDtoToModel(variablesResponse);
@@ -200,7 +200,7 @@ void main() {
     test('Converts a List<Variable> to a stringMap using names', () {
       final (variablesResponse, _) = parseJsonFromFile(
         'variables_response_example.json',
-        (json) => VariablesResponseDto.fromJson(json),
+        VariablesResponseDto.fromJson,
       );
       final repository = FigmaVariablesRepository();
       final variables = repository.fromDtoToModel(variablesResponse);

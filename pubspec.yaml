@@ -9,7 +9,9 @@ environment:
 dependencies:
   args: ^2.4.1
   cli_completion: ^0.4.0
+  code_builder: ^4.7.0
   collection: ^1.18.0
+  dart_style: ^2.3.3
   figma: ^7.0.0
   figma_variables_api:
     path: packages/figma_variables_api
@@ -20,10 +22,10 @@ dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
   mason_logger: ^0.2.5
+  path: ^1.8.3
   pub_updater: ^0.3.0
   source_gen: ^1.4.0
   yaml: ^3.1.2
-  path: ^1.8.3
 
 dev_dependencies:
   build_runner: ^2.4.6

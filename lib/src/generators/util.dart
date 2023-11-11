@@ -41,7 +41,7 @@ String convertToValidClassName(String className) {
       // Remove leading and trailing whitespace
       .trim()
       // Remove any non-alphanumeric characters
-      // TODO unit
+      // TODO(tim): unit test this
       .replaceAll(RegExp(r'\W+'), '');
 
   // Make sure the class name starts with an uppercase letter

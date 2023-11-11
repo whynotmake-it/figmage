@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('generators util', () {
-    group('ensureSampleKeys', () {
+    group('ensureSameKeys', () {
       test('returns true when all maps have the same keys', () {
         final maps = [
           {'a': 1, 'b': 2},

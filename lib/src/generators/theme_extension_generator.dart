@@ -74,18 +74,30 @@ class ThemeExtensionGenerator<T> extends Generator {
   FutureOr<String> generate(
     LibraryReader library,
     BuildStep buildStep,
-  ) async {
-    final namesList = valueMaps.values.first.keys.toList();
+  ) async =>
+      justGenerate();
+
+  FutureOr<String> justGenerate() async {
+    final validValueMaps = valueMaps.map(
+      (key, value) => MapEntry(
+        convertToValidVariableName(key),
+        value.map(
+          (key, value) => MapEntry(convertToValidVariableName(key), value),
+        ),
+      ),
+    );
+    final namesList = validValueMaps.values.first.keys.toList();
+    final validClassName = convertToValidClassName(className);
     final extensionClass = _getThemeExtensionClass(
       namesList: namesList,
-      className: className,
+      className: validClassName,
       extensionSymbol: extensionSymbol,
       extensionSymbolUrl: extensionSymbolUrl,
     );
     final extensionModes = _getExtensionModesFields(
-      className: className,
+      className: validClassName,
       extensionSymbol: extensionSymbol,
-      valueMaps: valueMaps,
+      valueMaps: validValueMaps,
       extensionSymbolUrl: extensionSymbolUrl,
       valueToString: valueToConstructorArguments,
     );

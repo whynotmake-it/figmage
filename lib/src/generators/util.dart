@@ -18,25 +18,36 @@ String convertToValidVariableName(String variableName) {
   // Remove leading and trailing whitespace
   final pathSegments =
       variableName.split("/").map((s) => s.removeInvalidCharacters()).toList();
+  if (pathSegments.every((s) => s.isEmpty) || pathSegments.isEmpty) {
+    throw ArgumentError.value(
+      variableName,
+      'variableName',
+      'The variable name does not contain any valid characters.',
+    );
+  }
   final camelCasePath = switch (pathSegments) {
     [final first, ...final rest] => [
         first.toCamelCase().trim(),
         ...rest.map((e) => e.toTitleCase().trim()),
       ],
-    [] => <String>[],
+    // coverage:ignore-line
+    _ => throw StateError('Invalid path segments: $pathSegments'),
   };
 
-  // Remove any non-alphanumeric characters except underscore
   return camelCasePath.join().removeLeadingNumbers();
 }
 
 /// Converts a given class name to a valid dart class name.
 String convertToValidClassName(String className) {
-  return className
-      .trim()
-      .removeInvalidCharacters()
-      .toTitleCase()
-      .removeLeadingNumbers();
+  final filtered = className.trim().removeInvalidCharacters();
+  if (filtered.isEmpty) {
+    throw ArgumentError.value(
+      className,
+      'className',
+      'The class name does not contain any valid characters.',
+    );
+  }
+  return filtered.toTitleCase().removeLeadingNumbers();
 }
 
 extension on String {

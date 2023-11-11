@@ -27,6 +27,7 @@ scripts:
     run: dart test
     exec:
       concurrency: 6
+      failFast: true
     packageFilters:
       dirExists: test
     description: Run `dart test` for selected packages.
@@ -42,6 +43,8 @@ scripts:
       rm -rf coverage/test/
     exec:
       concurrency: 6
+      failFast: true
+
     packageFilters:
       dirExists: test
     description: Generate coverage for the selected package.

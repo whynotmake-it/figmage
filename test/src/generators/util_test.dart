@@ -69,6 +69,10 @@ void main() {
           equals(r'$123Hello'),
         );
       });
+
+      test('throws for empty string', () async {
+        expect(() => convertToValidVariableName(''), throwsArgumentError);
+      });
     });
   });
 
@@ -88,6 +92,10 @@ void main() {
         convertToValidClassName('123HelloWorld'),
         equals(r'$123HelloWorld'),
       );
+    });
+
+    test('throws for empty string', () async {
+      expect(() => convertToValidClassName(''), throwsArgumentError);
     });
   });
 }

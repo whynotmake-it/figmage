@@ -143,6 +143,15 @@ void main() {
       });
     });
 
+    group('forge command', () {
+      test('requires token argument', () async {
+        final result = await commandRunner.run(['forge']);
+        expect(result, equals(ExitCode.usage.code));
+        verify(() => logger.err('Both token and fileId are required.'))
+            .called(1);
+      });
+    });
+
     group('--verbose', () {
       test('enables verbose logging', () async {
         final result = await commandRunner.run(['--verbose']);

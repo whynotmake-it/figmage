@@ -23,7 +23,7 @@ Map<String, Expression> _getTextStyleExpressions({
     'fontWeight':
         refer('FontWeight').property('w${typeStyle.fontWeight?.toInt()}'),
     'fontStyle': refer('FontStyle')
-        .property(typeStyle.italic == true ? 'italic' : 'normal'),
+        .property(typeStyle.italic ?? false ? 'italic' : 'normal'),
     'letterSpacing': literal(typeStyle.letterSpacing),
     //'wordSpacing':
     //'textBaseline':

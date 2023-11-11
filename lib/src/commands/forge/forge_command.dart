@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
-import 'package:figmage/src/domain/models/models.dart';
+import 'package:figmage/src/domain/models/variable/variable.dart';
 import 'package:figmage/src/generators/color_theme_extension_generator.dart';
-import 'package:figmage/src/generators/theme_extension_generator.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:path/path.dart' as path;
@@ -20,16 +19,17 @@ class ForgeCommand extends Command<int> {
   ForgeCommand({
     required Logger logger,
   }) : _logger = logger {
-    argParser.addOption(
-      "token",
-      abbr: "t",
-      help: "Your figma API token",
-    );
-    argParser.addOption(
-      "fileId",
-      abbr: "f",
-      help: "Your figma file ID",
-    );
+    argParser
+      ..addOption(
+        "token",
+        abbr: "t",
+        help: "Your figma API token",
+      )
+      ..addOption(
+        "fileId",
+        abbr: "f",
+        help: "Your figma file ID",
+      );
   }
 
   @override
@@ -52,7 +52,7 @@ class ForgeCommand extends Command<int> {
       return ExitCode.usage.code;
     }
 
-    final packageGenerator = FigmagePackageGenerator();
+    const packageGenerator = FigmagePackageGenerator();
     final targetDir = Directory.current;
     final process = _logger.progress("Generating package");
     await packageGenerator.generate(
@@ -65,8 +65,8 @@ class ForgeCommand extends Command<int> {
     //VARIABLES
     final repo = FigmaVariablesRepository();
     final variables = await repo.getVariables(
-      fileId: fileId as String,
-      token: token as String,
+      fileId: fileId,
+      token: token,
     );
 
     if (maybeConfig == null || maybeConfig['colors'] == true) {
@@ -97,6 +97,7 @@ class ForgeCommand extends Command<int> {
   }
 }
 
+// ignore: public_member_api_docs
 Future<YamlMap?> readFigmageConfig(Logger logger) async {
   final projectRoot = Directory.current;
   final figmageConfigPath = path.join(projectRoot.path, 'figmage.yaml');
@@ -110,13 +111,15 @@ Future<YamlMap?> readFigmageConfig(Logger logger) async {
       final yamlMap = loadYaml(yamlString);
       return yamlMap as YamlMap?;
     } catch (e, _) {
-      logger.warn('Errors occurred while parsing the YAML file:');
-      logger.err(e.toString());
+      logger
+        ..warn('Errors occurred while parsing the YAML file:')
+        ..err(e.toString());
     }
   }
   return null;
 }
 
+// ignore: public_member_api_docs
 void appendListToFile(List<String> entries, String filePath) {
   final file = File(filePath);
 

@@ -17,7 +17,7 @@ void main() {
     final filePath = '$currentDirectory/test/src/mock_data/$relativePath';
 
     final jsonString = File(filePath).readAsStringSync();
-    final jsonMap = json.decode(jsonString);
+    final jsonMap = json.decode(jsonString) as Map<String, dynamic>;
 
     return (fromJson(jsonMap), jsonMap);
   }

@@ -271,12 +271,12 @@ LF:4
 LH:4
 end_of_record
 SF:/Users/tim/Developer/whynotmake.it/figmage/lib/src/domain/models/variable/alias_or/alias_or.dart
-DA:21,2
-DA:35,2
-DA:36,0
-DA:37,2
+DA:21,3
+DA:35,4
+DA:36,3
+DA:37,4
 LF:4
-LH:3
+LH:4
 end_of_record
 SF:/Users/tim/Developer/whynotmake.it/figmage/lib/src/generators/util.dart
 DA:2,3

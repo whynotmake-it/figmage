@@ -88,6 +88,11 @@ void main() {
           dir: testDirectory,
           description: "A test ",
         );
+        expect(files.any((element) => element.name == "colors.dart"), isTrue);
+        expect(
+          files.any((element) => element.name == "text_styles.dart"),
+          isTrue,
+        );
         expect(files.any((element) => element.name == "spacers.dart"), isTrue);
         expect(files.any((element) => element.name == "paddings.dart"), isTrue);
         expect(files.any((element) => element.name == "radii.dart"), isTrue);
@@ -99,11 +104,18 @@ void main() {
           projectName: "figmage_example",
           dir: testDirectory,
           description: "A test ",
+          generateColors: false,
+          generateTypography: false,
           generateSpacers: false,
           generatePaddings: false,
           generateRadii: false,
           generateStrings: false,
           generateBools: false,
+        );
+        expect(files.any((element) => element.name == "colors.dart"), isFalse);
+        expect(
+          files.any((element) => element.name == "text_styles.dart"),
+          isFalse,
         );
         expect(files.any((element) => element.name == "spacers.dart"), isFalse);
         expect(

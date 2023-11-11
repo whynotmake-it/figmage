@@ -22,6 +22,8 @@ class FigmagePackageGenerator {
     required String projectName,
     required String description,
     required Directory dir,
+    bool generateColors = true,
+    bool generateTypography = true,
     bool generateSpacers = true,
     bool generatePaddings = true,
     bool generateRadii = true,
@@ -34,6 +36,8 @@ class FigmagePackageGenerator {
     final vars = {
       'project_name': projectName,
       'description': description,
+      'generate_colors': generateColors,
+      'generate_typography': generateTypography,
       'generate_spacers': generateSpacers,
       'generate_paddings': generatePaddings,
       'generate_radii': generateRadii,

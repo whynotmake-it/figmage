@@ -2,7 +2,8 @@ import 'package:code_builder/code_builder.dart';
 import 'package:figma/figma.dart';
 import 'package:figmage/src/generators/theme_extension_generator.dart';
 
-ValueArguments textStyleFromFigmaTypeStyle(TypeStyle typeStyle) {
+// TODO(Jesper): fix all this
+ConstructorArguments _textStyleFromFigmaTypeStyle(TypeStyle typeStyle) {
   final textStyleExpressions = _getTextStyleExpressions(typeStyle: typeStyle);
   return (
     positionalArguments: [],
@@ -54,4 +55,20 @@ Expression _getTextDecoration(TextDecoration? decoration) {
       refer('TextDecoration', 'dart:ui').property('underline'),
     null => refer('TextDecoration').property('none'),
   };
+}
+
+/// {@template text_style_theme_extension_generator}
+/// A [ThemeExtensionGenerator] for text style themes from Figma's TypeStyle.
+/// {@endtemplate}
+class TextStyleThemeExtensionGenerator
+    extends ThemeExtensionGenerator<TypeStyle> {
+  /// {@macro text_style_theme_extension_generator}
+  TextStyleThemeExtensionGenerator({
+    required super.className,
+    required super.valuesByNameByMode,
+    super.extensionSymbolUrl = 'package:flutter/material.dart',
+  }) : super(
+          extensionSymbol: 'TextStyle',
+          valueToConstructorArguments: _textStyleFromFigmaTypeStyle,
+        );
 }

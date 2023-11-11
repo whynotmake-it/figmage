@@ -3,15 +3,12 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
 import 'package:figmage/src/domain/models/models.dart';
-import 'package:figmage/src/generators/builder/color_from_int_builder.dart';
+import 'package:figmage/src/generators/color_theme_extension_generator.dart';
 import 'package:figmage/src/generators/theme_extension_generator.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:mason_logger/mason_logger.dart';
-import 'package:yaml/yaml.dart';
 import 'package:path/path.dart' as path;
-
-const String colorExtensionSymbol = 'Color';
-const String colorExtensionSymbolUrl = 'package:flutter/material.dart';
+import 'package:yaml/yaml.dart';
 
 /// {@template forge_command}
 ///
@@ -46,9 +43,9 @@ class ForgeCommand extends Command<int> {
 
   @override
   Future<int> run() async {
-    final YamlMap? maybeConfig = await readFigmageConfig(_logger);
-    final token = argResults?['token'];
-    final fileId = argResults?['fileId'] ?? maybeConfig?['fileId'];
+    final maybeConfig = await readFigmageConfig(_logger);
+    final token = argResults?['token'] as String?;
+    final fileId = (argResults?['fileId'] ?? maybeConfig?['fileId']) as String?;
 
     if (token == null || fileId == null) {
       _logger.err('Both token and fileId are required.');
@@ -67,30 +64,28 @@ class ForgeCommand extends Command<int> {
 
     //VARIABLES
     final repo = FigmaVariablesRepository();
-    final variables = await repo.getVariables(fileId: fileId, token: token);
+    final variables = await repo.getVariables(
+      fileId: fileId as String,
+      token: token as String,
+    );
 
     if (maybeConfig == null || maybeConfig['colors'] == true) {
       //Generate colors from variables
       final collectionColorMaps =
           repo.createValueModeMap<int, ColorVariable>(variables: variables);
       final colorGenerators = collectionColorMaps.entries.map((entry) {
-        return ThemeExtensionGenerator<int>(
+        return ColorThemeExtensionGenerator(
           className: entry.key,
-          valueMaps: entry.value,
-          extensionSymbol: colorExtensionSymbol,
-          extensionSymbolUrl: colorExtensionSymbolUrl,
-          valueToConstructorArguments: colorFromIntBuilder,
+          valuesByNameByMode: entry.value,
         );
       }).toList();
       final colorExtensions = await Future.wait(
         colorGenerators.map(
           (g) => Future.value(
-            g.justGenerate(),
+            g.generate(),
           ),
         ),
       );
-
-      colorExtensions.insert(0, "import '$colorExtensionSymbolUrl';");
 
       appendListToFile(
         colorExtensions,
@@ -108,12 +103,13 @@ Future<YamlMap?> readFigmageConfig(Logger logger) async {
 
   final figmageConfigFile = File(figmageConfigPath);
 
+  // ignore: avoid_slow_async_io
   if (await figmageConfigFile.exists()) {
     try {
       final yamlString = await figmageConfigFile.readAsString();
-      final YamlMap? yamlMap = loadYaml(yamlString);
-      return yamlMap;
-    } catch (e, stack) {
+      final yamlMap = loadYaml(yamlString);
+      return yamlMap as YamlMap?;
+    } catch (e, _) {
       logger.warn('Errors occurred while parsing the YAML file:');
       logger.err(e.toString());
     }

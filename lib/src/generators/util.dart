@@ -1,3 +1,4 @@
+/// Makes sure that all maps in the list have the same keys.
 bool ensureSameKeys(List<Map<String, dynamic>> maps) {
   if (maps.isEmpty) return true;
   final firstKeys = maps[0].keys.toSet();
@@ -10,28 +11,56 @@ bool ensureSameKeys(List<Map<String, dynamic>> maps) {
   return true;
 }
 
+/// Converts a variable name from figma into a camelCase variable name.
+///
+/// For example, `Number/NumberWith2Aliases` becomes `numberWith2Aliases`.
 String convertToValidVariableName(String variableName) {
   // Remove leading and trailing whitespace
-  variableName = variableName.trim();
+
+  final camelCasePath = switch (variableName.split("/").toList()) {
+    [final first, ...final rest] => [
+        first.toCamelCase().trim(),
+        ...rest.map((e) => e.toTitleCase().trim()),
+      ],
+    [] => <String>[],
+  };
+
   // Remove any non-alphanumeric characters except underscore
-  variableName = variableName.replaceAll(RegExp(r'\W+'), '');
+  final camelCaseName = camelCasePath.join().replaceAll(RegExp(r'\W+'), '');
+
   // Make sure the variable name starts with a letter or underscore
-  if (!RegExp(r'^[a-zA-Z_]').hasMatch(variableName)) {
-    // Prepend an underscore if the first character is not valid
-    variableName = '_$variableName';
+  if (!RegExp('^[a-zA-Z_]').hasMatch(camelCaseName)) {
+    return '\$$camelCaseName';
   }
-  return variableName;
+  return camelCaseName;
 }
 
+/// Converts a given class name to a valid dart class name.
 String convertToValidClassName(String className) {
-  // Remove leading and trailing whitespace
-  className = className.trim();
-  // Remove any non-alphanumeric characters except underscore
-  className = className.replaceAll(RegExp(r'\W+'), '');
+  final name = className
+      // Remove leading and trailing whitespace
+      .trim()
+      // Remove any non-alphanumeric characters
+      // TODO unit
+      .replaceAll(RegExp(r'\W+'), '');
+
   // Make sure the class name starts with an uppercase letter
-  if (!RegExp(r'^[A-Z]').hasMatch(className)) {
+  if (!RegExp('^[A-Z]').hasMatch(className)) {
     // Capitalize the first character if it is not valid
-    className = className[0].toUpperCase() + className.substring(1);
+    return name[0].toUpperCase() + name.substring(1);
   }
-  return className;
+
+  return name;
+}
+
+extension on String {
+  /// Converts a string to title case.
+  String toTitleCase() {
+    return this[0].toUpperCase() + substring(1);
+  }
+
+  /// Converts a string to camel case.
+  String toCamelCase() {
+    return this[0].toLowerCase() + substring(1);
+  }
 }

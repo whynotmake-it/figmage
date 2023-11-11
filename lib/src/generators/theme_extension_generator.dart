@@ -1,34 +1,22 @@
-import 'dart:async';
 import 'dart:core';
 
-import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:figmage/src/generators/util.dart';
-import 'package:source_gen/source_gen.dart';
 
-typedef ValueArguments = ({
+/// A collection of all possible arguments that can be passed to a constructor.
+typedef ConstructorArguments = ({
   Iterable<Expression> positionalArguments,
   Map<String, Expression> namedArguments,
   List<Reference> typeArguments
 });
 
+/// {@template theme_extension_generator}
 /// A generator for theme extension classes.
 ///
 /// The [ThemeExtensionGenerator] class is designed to create theme extension
 /// classes based on provided parameters. It assumes that you might need
 /// your themes in different modes (e.g. light and dark mode for color theme).
-///
-/// The [ThemeExtensionGenerator] takes the following parameters:
-///
-/// - [className]: The name of the generated theme extension class.
-/// - [extensionSymbol]: The symbol (e.g., Color, TextStyle) used in the theme
-///   extension.
-/// - [extensionSymbolUrl]: The URL for the symbol, typically a package URL.
-/// - [valueToConstructorArguments]: A function that converts a value to the
-///   constructor arguments required for the extension symbol.
-/// - [valueMaps]: A map with the following structure:
-///   <ModeName<ValueName<Value>>>
 ///
 /// The generated theme extension class includes methods like `copyWith` and
 /// `lerp` for easy theme modification and transitions.
@@ -44,41 +32,54 @@ typedef ValueArguments = ({
 ///   },
 ///   extensionSymbol: 'Color',
 ///   extensionSymbolUrl: 'package:flutter/material.dart',
-///   valueToConstructorArguments: (Color value) => valueArgumentsForColor(value),
+///   valueToConstructorArguments: (Color value) =>
+///      valueArgumentsForColor(value),
 /// );
 /// ```
-class ThemeExtensionGenerator<T> extends Generator {
+/// {@endtemplate}
+class ThemeExtensionGenerator<T> {
+  /// {@macro theme_extension_generator}
   ThemeExtensionGenerator({
     required this.className,
-    required this.valueMaps,
+    required this.valuesByNameByMode,
     required this.extensionSymbol,
     required this.extensionSymbolUrl,
     required this.valueToConstructorArguments,
   }) : assert(
           ensureSameKeys(
-            valueMaps.values.toList(),
+            valuesByNameByMode.values.toList(),
           ),
+          'All value maps must have the same keys.',
         );
 
+  /// The name of the generated theme extension class.
   final String className;
-  final String extensionSymbol;
-  final String extensionSymbolUrl;
-  final ValueArguments Function(T value) valueToConstructorArguments;
 
-  final Map<String, Map<String, T>> valueMaps;
+  /// The symbol (e.g., Color, TextStyle) used in the theme
+  /// extension.
+  final String extensionSymbol;
+
+  /// The URL for the symbol, typically a package URL.
+  final String extensionSymbolUrl;
+
+  /// A function that converts a value to the constructor arguments required for
+  /// the extension symbol.
+  final ConstructorArguments Function(T value) valueToConstructorArguments;
+
+  /// A map with the following structure: <ModeName<ValueName, Value>>
+  final Map<String, Map<String, T>> valuesByNameByMode;
 
   final _dartfmt = DartFormatter();
-  final _emitter = DartEmitter(useNullSafetySyntax: true);
 
-  @override
-  FutureOr<String> generate(
-    LibraryReader library,
-    BuildStep buildStep,
-  ) async =>
-      justGenerate();
+  final _emitter = DartEmitter(
+    allocator: Allocator(),
+    useNullSafetySyntax: true,
+    orderDirectives: true,
+  );
 
-  FutureOr<String> justGenerate() async {
-    final validValueMaps = valueMaps.map(
+  /// Generates the theme extension class and returns it as a string.
+  String generate() {
+    final validValueMaps = valuesByNameByMode.map(
       (key, value) => MapEntry(
         convertToValidVariableName(key),
         value.map(
@@ -88,24 +89,39 @@ class ThemeExtensionGenerator<T> extends Generator {
     );
     final namesList = validValueMaps.values.first.keys.toList();
     final validClassName = convertToValidClassName(className);
-    final extensionClass = _getThemeExtensionClass(
+    final $class = _getClass(
       namesList: namesList,
       className: validClassName,
       extensionSymbol: extensionSymbol,
       extensionSymbolUrl: extensionSymbolUrl,
     );
-    final extensionModes = _getExtensionModesFields(
+    final modeConstants = _getExtensionModesFields(
       className: validClassName,
       extensionSymbol: extensionSymbol,
       valueMaps: validValueMaps,
       extensionSymbolUrl: extensionSymbolUrl,
       valueToString: valueToConstructorArguments,
     );
-    final extensionCode = extensionClass.accept(_emitter).toString();
-    final modeCodes = extensionModes
-        .map((mode) => mode.accept(_emitter).toString())
-        .join(' \n');
-    return _dartfmt.format('$extensionCode \n $modeCodes');
+
+    final $library = Library(
+      (l) => l
+        ..body.addAll(
+          [
+            $class,
+            ...modeConstants,
+          ],
+        ),
+    );
+
+    final result = '''
+      // coverage:ignore-file
+      // GENERATED CODE - DO NOT MODIFY BY HAND
+      // ignore_for_file: type=lint
+
+      ${$library.accept(_emitter)}
+    ''';
+
+    return _dartfmt.format(result);
   }
 
   List<Field> _getExtensionModesFields({
@@ -113,7 +129,7 @@ class ThemeExtensionGenerator<T> extends Generator {
     required Map<String, Map<String, T>> valueMaps,
     required String extensionSymbol,
     required String extensionSymbolUrl,
-    required ValueArguments Function(T value) valueToString,
+    required ConstructorArguments Function(T value) valueToString,
   }) {
     final result = <Field>[];
     valueMaps.forEach((modeName, values) {
@@ -147,14 +163,14 @@ class ThemeExtensionGenerator<T> extends Generator {
     return result;
   }
 
-  Class _getThemeExtensionClass({
+  Class _getClass({
     required String className,
     required List<String> namesList,
     required String extensionSymbol,
     required String extensionSymbolUrl,
   }) {
     return Class(
-      (colorClass) => colorClass
+      (c) => c
         ..name = className
         ..annotations.add(
           refer(
@@ -166,7 +182,7 @@ class ThemeExtensionGenerator<T> extends Generator {
             refer('ThemeExtension<$className>', 'package:flutter/material.dart')
         ..constructors.add(_getConstructor(nameList: namesList))
         ..fields.addAll(
-          _getColorThemeExtensionClassFields(
+          _getClassFields(
             nameList: namesList,
             extensionSymbol: extensionSymbol,
             extensionSymbolUrl: extensionSymbolUrl,
@@ -184,7 +200,7 @@ class ThemeExtensionGenerator<T> extends Generator {
             className: className,
             extensionSymbol: extensionSymbol,
           ),
-          //TODO getToString()
+          // TODO(JsprBllnbm): getToString()
         ]),
     );
   }
@@ -287,14 +303,13 @@ class ThemeExtensionGenerator<T> extends Generator {
     return res;
   }
 
-  List<Field> _getColorThemeExtensionClassFields({
+  List<Field> _getClassFields({
     required List<String> nameList,
     required String extensionSymbol,
     required String extensionSymbolUrl,
   }) {
-    final List<Field> result = [];
-    for (final name in nameList) {
-      result.add(
+    return [
+      for (final name in nameList)
         Field(
           (field) => field
             ..name = name
@@ -304,9 +319,7 @@ class ThemeExtensionGenerator<T> extends Generator {
               extensionSymbolUrl,
             ),
         ),
-      );
-    }
-    return result;
+    ];
   }
 
   Constructor _getConstructor({required List<String> nameList}) {
@@ -314,17 +327,17 @@ class ThemeExtensionGenerator<T> extends Generator {
       (constructor) => constructor
         ..constant = true
         ..optionalParameters.addAll(
-          List.generate(
-            nameList.length,
-            (index) => Parameter(
-              (parameter) => parameter
-                ..toThis = true
-                ..name = nameList[index]
-                ..required = true
-                ..named = true,
-            ),
-          ),
-        ), //
+          [
+            for (final name in nameList)
+              Parameter(
+                (parameter) => parameter
+                  ..toThis = true
+                  ..name = name
+                  ..required = true
+                  ..named = true,
+              ),
+          ],
+        ),
     );
   }
 }

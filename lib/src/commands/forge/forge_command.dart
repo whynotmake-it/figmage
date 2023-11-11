@@ -1,3 +1,5 @@
+// coverage:ignore-file
+// TODO(Jesper): when implemented add test
 import 'dart:io';
 
 import 'package:args/command_runner.dart';

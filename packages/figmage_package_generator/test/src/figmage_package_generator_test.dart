@@ -90,7 +90,7 @@ void main() {
         );
         expect(files.any((element) => element.name == "colors.dart"), isTrue);
         expect(
-          files.any((element) => element.name == "text_styles.dart"),
+          files.any((element) => element.name == "typography.dart"),
           isTrue,
         );
         expect(files.any((element) => element.name == "spacers.dart"), isTrue);
@@ -114,7 +114,7 @@ void main() {
         );
         expect(files.any((element) => element.name == "colors.dart"), isFalse);
         expect(
-          files.any((element) => element.name == "text_styles.dart"),
+          files.any((element) => element.name == "typography.dart"),
           isFalse,
         );
         expect(files.any((element) => element.name == "spacers.dart"), isFalse);

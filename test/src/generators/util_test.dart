@@ -74,7 +74,9 @@ void main() {
 
     test('converts leading numbers to valid class names', () {
       expect(
-          convertToValidClassName('123HelloWorld'), equals(r'$123HelloWorld'));
+        convertToValidClassName('123HelloWorld'),
+        equals(r'$123HelloWorld'),
+      );
     });
   });
 }

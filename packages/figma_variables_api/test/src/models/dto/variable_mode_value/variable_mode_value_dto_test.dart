@@ -82,7 +82,7 @@ void main() {
   group('VariableModeNumberDto', () {
     group('toJson', () {
       test('works', () {
-        final value = 42;
+        final value = 42.0;
         final result = VariableModeNumberDto(value: value).toJson();
         expect(result, equals(value));
       });

@@ -46,10 +46,10 @@ class VariableModeBooleanDto extends VariableModeValueDto with EquatableMixin {
 class VariableModeNumberDto extends VariableModeValueDto with EquatableMixin {
   VariableModeNumberDto({required this.value});
 
-  final num value;
+  final double value;
 
   @override
-  num toJson() => value;
+  double toJson() => value;
 
   @override
   List<Object?> get props => [value];

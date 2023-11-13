@@ -109,6 +109,48 @@ void main() {
       });
     });
 
+    group('allGenerationSettings', () {
+      test('contains all settings', () async {
+        expect(
+          fullExample.allGenerationSettings,
+          containsAll(
+            [
+              fullExample.colors,
+              fullExample.typography,
+              fullExample.strings,
+              fullExample.bools,
+              fullExample.spacers,
+              fullExample.paddings,
+              fullExample.radii,
+            ],
+          ),
+        );
+      });
+    });
+
+    group('suspiciousFromDefined', () {
+      test('is false for default', () async {
+        expect(
+          const Config(fileId: "", packageName: "").suspiciousFromDefined,
+          isFalse,
+        );
+      });
+
+      test('is true if one config includes from and generate false', () async {
+        const sus = Config(
+          fileId: "",
+          packageName: "",
+          paddings: GenerationSettings(
+            generate: false,
+            from: [
+              "oh/oh",
+            ],
+          ),
+        );
+        expect(sus.suspiciousFromDefined, isTrue);
+      });
+    });
+
     group('toMap', () {
       test('works for example object', () async {
         expect(fullExample.toJson(), full);

@@ -82,6 +82,16 @@ class Config with EquatableMixin {
   /// Borders generation settings, defaults to not generating borders.
   final GenerationSettings radii;
 
+  /// All generation settings.
+  List<GenerationSettings> get allGenerationSettings =>
+      [colors, typography, strings, bools, spacers, paddings, radii];
+
+  /// Whether any setting defines at least one `from` but has `generate: false`.
+  ///
+  /// Is used to warn the user that there might be a potential error.
+  bool get suspiciousFromDefined => allGenerationSettings
+      .any((element) => element.from.isNotEmpty && element.generate == false);
+
   /// Converts a [Config] to a map.
   Map<dynamic, dynamic> toJson() => _$ConfigToJson(this);
 

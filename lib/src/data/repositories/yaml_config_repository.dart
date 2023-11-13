@@ -20,30 +20,36 @@ class YamlConfigRepository implements ConfigRepository {
 
   @override
   FutureOr<Config> readConfigFromFile({
-    File file = const _DefaultFile(),
+    File? file,
   }) async {
     final configFile = switch (file) {
-      _DefaultFile() => File('./figmage.yaml'),
+      null => File('./figmage.yaml'),
       _ => file,
     };
-    _logger
-      ..level = Level.info
-      ..info('Reading config from ${configFile.path}');
+
+    _logger.info('Reading config from ${configFile.path}');
 
     final yamlMap = await _readYamlFile(configFile);
 
+    final Config config;
     try {
-      final config = Config.fromMap(yamlMap);
-      _logger
-        ..level = Level.verbose
-        ..info('Parsed Config: $config');
-
-      return config;
+      config = Config.fromMap(yamlMap);
     } catch (e) {
       throw FormatException(
         'Error when parsing config file: $e',
       );
     }
+    _logger.detail('Parsed Config: $config');
+
+    if (config.suspiciousFromDefined) {
+      _logger.warn(
+        'Your config includes at least one case in which you set a `generate` '
+        'flag to false but put entries into `from` list. Make sure this is '
+        'intended ',
+      );
+    }
+
+    return config;
   }
 
   /// Reads a YAML file and returns a [YamlMap].
@@ -61,19 +67,4 @@ class YamlConfigRepository implements ConfigRepository {
         ),
     };
   }
-}
-
-/// This helper class allows for a default file instance in
-/// [YamlConfigRepository]`.readConfigFromFile`.
-///
-/// You should never call any methods on instances of this class.
-class _DefaultFile implements File {
-  const _DefaultFile();
-
-  // coverage:ignore-start
-  @override
-  Never noSuchMethod(Invocation invocation) {
-    throw NoSuchMethodError.withInvocation(this, invocation);
-  }
-  // coverage:ignore-end
 }

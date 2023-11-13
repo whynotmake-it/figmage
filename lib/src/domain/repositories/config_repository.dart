@@ -9,9 +9,9 @@ import 'package:figmage/src/domain/models/config/config.dart';
 abstract interface class ConfigRepository {
   /// Reads a configuration [file] and returns a [Config].
   ///
-  /// If [file] is omitted, the implementation should try to read a sensible
-  /// default file.
+  /// If [file] is null or omitted, the implementation should try to read a
+  /// sensible default file.
   FutureOr<Config> readConfigFromFile({
-    File file,
+    File? file,
   });
 }

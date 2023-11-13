@@ -18,9 +18,6 @@ typedef ConstructorArguments = ({
 /// classes based on provided parameters. It assumes that you might need
 /// your themes in different modes (e.g. light and dark mode for color theme).
 ///
-/// The generated theme extension class includes methods like `copyWith` and
-/// `lerp` for easy theme modification and transitions.
-///
 /// Example usage:
 ///
 /// ```dart
@@ -43,8 +40,10 @@ class ThemeExtensionGenerator<T> {
     required this.className,
     required this.valuesByNameByMode,
     required this.extensionSymbol,
-    required this.extensionSymbolUrl,
-    required this.valueToConstructorArguments,
+    this.nullableBuildContextExtension = false,
+    this.valueToConstructorArguments,
+    this.extensionSymbolUrl,
+    this.lerpReference,
   }) : assert(
           ensureSameKeys(
             valuesByNameByMode.values.toList(),
@@ -59,15 +58,25 @@ class ThemeExtensionGenerator<T> {
   /// extension.
   final String extensionSymbol;
 
-  /// The URL for the symbol, typically a package URL.
-  final String extensionSymbolUrl;
+  /// The URL for the symbol, typically a package URL. If for a built in type is
+  /// generated this value should be null
+  final String? extensionSymbolUrl;
 
   /// A function that converts a value to the constructor arguments required for
-  /// the extension symbol.
-  final ConstructorArguments Function(T value) valueToConstructorArguments;
+  /// the extension symbol. Can be null if creating a ThemeExtension
+  /// for a built in literal type like double, int, num, String or bool
+  final ConstructorArguments Function(T value)? valueToConstructorArguments;
 
   /// A map with the following structure: <ModeName<ValueName, Value>>
   final Map<String, Map<String, T>> valuesByNameByMode;
+
+  /// A bool indicating if the BuildContextExtension should be nullable
+  bool nullableBuildContextExtension;
+
+  /// A [Reference] to a lerp function that can lerp [extensionSymbol].
+  /// If this value is null the generator assumes that [extensionSymbol]
+  /// implements a lerp function
+  final Reference? lerpReference;
 
   final _dartfmt = DartFormatter();
 
@@ -94,13 +103,18 @@ class ThemeExtensionGenerator<T> {
       className: validClassName,
       extensionSymbol: extensionSymbol,
       extensionSymbolUrl: extensionSymbolUrl,
+      lerpReference: lerpReference,
     );
     final modeConstants = _getExtensionModesFields(
       className: validClassName,
       extensionSymbol: extensionSymbol,
       valueMaps: validValueMaps,
       extensionSymbolUrl: extensionSymbolUrl,
-      valueToString: valueToConstructorArguments,
+      valueToConstructorArguments: valueToConstructorArguments,
+    );
+    final buildContextExtension = _getBuildContextExtension(
+      className: validClassName,
+      nullable: nullableBuildContextExtension,
     );
 
     final $library = Library(
@@ -108,6 +122,7 @@ class ThemeExtensionGenerator<T> {
         ..body.addAll(
           [
             $class,
+            buildContextExtension,
             ...modeConstants,
           ],
         ),
@@ -124,12 +139,36 @@ class ThemeExtensionGenerator<T> {
     return _dartfmt.format(result);
   }
 
+  Extension _getBuildContextExtension({
+    required String className,
+    required bool nullable,
+  }) {
+    final extensionName = '${className}BuildContextX';
+    return Extension(
+      (e) => e
+        ..name = extensionName
+        ..on = refer('BuildContext', 'package:flutter/widgets.dart')
+        ..methods.add(
+          Method(
+            (m) => m
+              ..name = convertToValidVariableName(className)
+              ..returns = refer('$className${nullable ? '?' : ''}')
+              ..type = MethodType.getter
+              ..lambda = true
+              ..body = Code('Theme.of(this).extension<$className>()'
+                  '${nullable ? '' : '!'}'),
+          ),
+        ),
+    );
+  }
+
   List<Field> _getExtensionModesFields({
     required String className,
     required Map<String, Map<String, T>> valueMaps,
     required String extensionSymbol,
-    required String extensionSymbolUrl,
-    required ConstructorArguments Function(T value) valueToString,
+    required String? extensionSymbolUrl,
+    required ConstructorArguments Function(T value)?
+        valueToConstructorArguments,
   }) {
     final result = <Field>[];
     valueMaps.forEach((modeName, values) {
@@ -137,14 +176,13 @@ class ThemeExtensionGenerator<T> {
         [],
         values.map(
           (name, value) {
-            final (:positionalArguments, :namedArguments, :typeArguments) =
-                valueToString(value);
             return MapEntry(
               name,
-              refer(extensionSymbol, extensionSymbolUrl).newInstance(
-                positionalArguments,
-                namedArguments,
-                typeArguments,
+              _generateValueExpression(
+                extensionSymbol,
+                extensionSymbolUrl,
+                value,
+                valueToConstructorArguments,
               ),
             );
           },
@@ -167,8 +205,17 @@ class ThemeExtensionGenerator<T> {
     required String className,
     required List<String> namesList,
     required String extensionSymbol,
-    required String extensionSymbolUrl,
+    required String? extensionSymbolUrl,
+    required Reference? lerpReference,
   }) {
+    final nullableSymbolReference = extensionSymbolUrl == null
+        ? refer(
+            '$extensionSymbol?',
+          )
+        : refer(
+            '$extensionSymbol?',
+            extensionSymbolUrl,
+          );
     return Class(
       (c) => c
         ..name = className
@@ -184,21 +231,20 @@ class ThemeExtensionGenerator<T> {
         ..fields.addAll(
           _getClassFields(
             nameList: namesList,
-            extensionSymbol: extensionSymbol,
-            extensionSymbolUrl: extensionSymbolUrl,
+            nullableSymbolReference: nullableSymbolReference,
           ),
         )
         ..methods.addAll([
           _getCopyWith(
             namesList: namesList,
             className: className,
-            extensionSymbol: extensionSymbol,
-            extensionUrl: extensionSymbolUrl,
+            nullableSymbolReference: nullableSymbolReference,
           ),
           _getLerp(
             namesList: namesList,
             className: className,
             extensionSymbol: extensionSymbol,
+            lerpReference: lerpReference,
           ),
           // TODO(JsprBllnbm): getToString()
         ]),
@@ -209,6 +255,7 @@ class ThemeExtensionGenerator<T> {
     required List<String> namesList,
     required String className,
     required String extensionSymbol,
+    required Reference? lerpReference,
   }) {
     return Method(
       (b) => b
@@ -239,6 +286,7 @@ class ThemeExtensionGenerator<T> {
                 _getLerpBodyExpression(
                   namesList: namesList,
                   extensionSymbol: extensionSymbol,
+                  lerpReference: lerpReference,
                 ),
               )
               .returned
@@ -250,14 +298,18 @@ class ThemeExtensionGenerator<T> {
   Map<String, Expression> _getLerpBodyExpression({
     required List<String> namesList,
     required String extensionSymbol,
+    required Reference? lerpReference,
   }) {
     final res = <String, Expression>{};
     for (final name in namesList) {
-      res[name] = refer('$extensionSymbol.lerp').call([
+      final positionalArguments = [
         refer(name),
         refer('other.$name'),
         refer('t'),
-      ]);
+      ];
+      res[name] = lerpReference == null
+          ? refer('$extensionSymbol.lerp').call(positionalArguments)
+          : lerpReference.call(positionalArguments);
     }
     return res;
   }
@@ -265,8 +317,7 @@ class ThemeExtensionGenerator<T> {
   Method _getCopyWith({
     required List<String> namesList,
     required String className,
-    required String extensionSymbol,
-    required String extensionUrl,
+    required Reference nullableSymbolReference,
   }) {
     return Method(
       (method) => method
@@ -278,10 +329,7 @@ class ThemeExtensionGenerator<T> {
             (index) => Parameter(
               (p) => p
                 ..name = namesList[index]
-                ..type = refer(
-                  '$extensionSymbol?',
-                  extensionUrl,
-                ),
+                ..type = nullableSymbolReference,
             ),
           ),
         )
@@ -305,8 +353,7 @@ class ThemeExtensionGenerator<T> {
 
   List<Field> _getClassFields({
     required List<String> nameList,
-    required String extensionSymbol,
-    required String extensionSymbolUrl,
+    required Reference nullableSymbolReference,
   }) {
     return [
       for (final name in nameList)
@@ -314,10 +361,7 @@ class ThemeExtensionGenerator<T> {
           (field) => field
             ..name = name
             ..modifier = FieldModifier.final$
-            ..type = refer(
-              '$extensionSymbol?',
-              extensionSymbolUrl,
-            ),
+            ..type = nullableSymbolReference,
         ),
     ];
   }
@@ -339,5 +383,47 @@ class ThemeExtensionGenerator<T> {
           ],
         ),
     );
+  }
+
+  Expression _generateValueExpression(
+    String extensionSymbol,
+    String? extensionSymbolUrl,
+    T value,
+    ConstructorArguments Function(T value)? valueToConstructorArguments,
+  ) {
+    if (_isBuiltinLiteralDartType(extensionSymbol)) {
+      return literal(value);
+    } else {
+      assert(
+          valueToConstructorArguments != null,
+          'Trying to construct an instance of $extensionSymbol,'
+          ' but the valueToConstructorArguments callback is null! ');
+      final symbolReference = extensionSymbolUrl == null
+          ? refer(
+              extensionSymbol,
+            )
+          : refer(
+              extensionSymbol,
+              extensionSymbolUrl,
+            );
+      final (:positionalArguments, :namedArguments, :typeArguments) =
+          valueToConstructorArguments!(value);
+      return symbolReference.newInstance(
+        positionalArguments,
+        namedArguments,
+        typeArguments,
+      );
+    }
+  }
+
+  bool _isBuiltinLiteralDartType(String type) {
+    const dartCoreLiteralTypes = <String>{
+      'int',
+      'double',
+      'num',
+      'bool',
+      'String',
+    };
+    return dartCoreLiteralTypes.contains(type);
   }
 }

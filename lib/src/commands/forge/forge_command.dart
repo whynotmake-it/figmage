@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
+import 'package:figmage/src/command_runner.dart';
 import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
 import 'package:figmage/src/generators/color_theme_extension_generator.dart';
@@ -22,8 +23,7 @@ class ForgeCommand extends Command<int> {
     required Logger logger,
     required FigmagePackageGenerator figmagePackageGenerator,
     required FigmaVariablesRepository figmaVariablesRepository,
-    required void Function(List<String> entries, String filePath)
-        appendCodeEntriesToFile,
+    required AppendCodeEntriesToFile appendCodeEntriesToFile,
   })  : _logger = logger,
         _figmaVariablesRepository = figmaVariablesRepository,
         _figmagePackageGenerator = figmagePackageGenerator,
@@ -51,8 +51,7 @@ class ForgeCommand extends Command<int> {
   final Logger _logger;
   final FigmagePackageGenerator _figmagePackageGenerator;
   final FigmaVariablesRepository _figmaVariablesRepository;
-  final void Function(List<String> entries, String filePath)
-      _appendCodeEntriesToFile;
+  final AppendCodeEntriesToFile _appendCodeEntriesToFile;
 
   @override
   Future<int> run() async {

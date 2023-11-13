@@ -3,6 +3,79 @@ import 'package:test/test.dart';
 
 void main() {
   group('Config', () {
+    late Map<dynamic, dynamic> minimal;
+    late Map<dynamic, dynamic> full;
+
+    late Config fullExample;
+
+    setUp(() {
+      minimal = {
+        "fileId": "fileId",
+        "packageName": "packageName",
+      };
+
+      full = {
+        ...minimal,
+        "packageDescription": "packageDescription",
+        "outputPath": "outputPath",
+        "colors": {
+          "generate": true,
+          "from": ["path1", "path2"],
+        },
+        "typography": {
+          "generate": true,
+          "from": ["path1", "path2"],
+        },
+        "strings": {
+          "generate": true,
+          "from": ["path1", "path2"],
+        },
+        "bools": {
+          "generate": true,
+          "from": ["path1", "path2"],
+        },
+        "spacers": {
+          "generate": true,
+          "from": ["path1", "path2"],
+        },
+        "paddings": {
+          "generate": true,
+          "from": ["path1", "path2"],
+        },
+        "radii": {
+          "generate": true,
+          "from": ["path1", "path2"],
+        },
+      };
+
+      fullExample = const Config(
+        fileId: "fileId",
+        packageName: "packageName",
+        packageDescription: "packageDescription",
+        packageDir: "outputPath",
+        colors: GenerationSettings(
+          from: ["path1", "path2"],
+        ),
+        typography: GenerationSettings(
+          from: ["path1", "path2"],
+        ),
+        strings: GenerationSettings(
+          from: ["path1", "path2"],
+        ),
+        bools: GenerationSettings(
+          from: ["path1", "path2"],
+        ),
+        spacers: GenerationSettings(
+          from: ["path1", "path2"],
+        ),
+        paddings: GenerationSettings(
+          from: ["path1", "path2"],
+        ),
+        radii: GenerationSettings(
+          from: ["path1", "path2"],
+        ),
+      );
+    });
     group('defaults', () {
       test('are correct', () {
         const sut = Config(fileId: "fileId", packageName: "packageName");
@@ -22,49 +95,6 @@ void main() {
     });
 
     group('fromMap', () {
-      late Map<dynamic, dynamic> minimal;
-      late Map<dynamic, dynamic> full;
-
-      setUp(() {
-        minimal = {
-          "fileId": "fileId",
-          "packageName": "packageName",
-        };
-
-        full = {
-          ...minimal,
-          "packageDescription": "packageDescription",
-          "colors": {
-            "generate": true,
-            "from": ["path1", "path2"],
-          },
-          "typography": {
-            "generate": true,
-            "from": ["path1", "path2"],
-          },
-          "strings": {
-            "generate": true,
-            "from": ["path1", "path2"],
-          },
-          "bools": {
-            "generate": true,
-            "from": ["path1", "path2"],
-          },
-          "spacers": {
-            "generate": true,
-            "from": ["path1", "path2"],
-          },
-          "paddings": {
-            "generate": true,
-            "from": ["path1", "path2"],
-          },
-          "radii": {
-            "generate": true,
-            "from": ["path1", "path2"],
-          },
-        };
-      });
-
       test('supports generation from minimal map', () async {
         final result = Config.fromMap(minimal);
         expect(
@@ -75,35 +105,13 @@ void main() {
 
       test('supports generation from full map', () async {
         final result = Config.fromMap(full);
-        expect(
-          result,
-          const Config(
-            fileId: "fileId",
-            packageName: "packageName",
-            packageDescription: "packageDescription",
-            colors: GenerationSettings(
-              from: ["path1", "path2"],
-            ),
-            typography: GenerationSettings(
-              from: ["path1", "path2"],
-            ),
-            strings: GenerationSettings(
-              from: ["path1", "path2"],
-            ),
-            bools: GenerationSettings(
-              from: ["path1", "path2"],
-            ),
-            spacers: GenerationSettings(
-              from: ["path1", "path2"],
-            ),
-            paddings: GenerationSettings(
-              from: ["path1", "path2"],
-            ),
-            radii: GenerationSettings(
-              from: ["path1", "path2"],
-            ),
-          ),
-        );
+        expect(result, fullExample);
+      });
+    });
+
+    group('toMap', () {
+      test('works for example object', () async {
+        expect(fullExample.toJson(), full);
       });
     });
   });

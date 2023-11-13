@@ -18,7 +18,11 @@ part 'config.g.dart';
 /// If you want to generate spacers, paddings or borders, you should consider
 /// configuring `GenerationSettings.from` to only generate from a specific path.
 /// {@endtemplate}
-@JsonSerializable(anyMap: true, checked: true)
+@JsonSerializable(
+  anyMap: true,
+  checked: true,
+  explicitToJson: true,
+)
 class Config with EquatableMixin {
   /// {@macro config}
   const Config({
@@ -78,6 +82,9 @@ class Config with EquatableMixin {
   /// Borders generation settings, defaults to not generating borders.
   final GenerationSettings radii;
 
+  /// Converts a [Config] to a map.
+  Map<dynamic, dynamic> toJson() => _$ConfigToJson(this);
+
   @override
   List<Object?> get props => [
         fileId,
@@ -115,6 +122,9 @@ class GenerationSettings with EquatableMixin {
 
   /// The paths to generate from, defaults to empty which means all paths.
   final Iterable<String> from;
+
+  /// Converts a [GenerationSettings] to a map.
+  Map<dynamic, dynamic> toJson() => _$GenerationSettingsToJson(this);
 
   @override
   List<Object?> get props => [generate, ...from];

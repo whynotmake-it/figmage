@@ -62,13 +62,13 @@ Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
       'packageName': instance.packageName,
       'packageDescription': instance.packageDescription,
       'outputPath': instance.packageDir,
-      'colors': instance.colors,
-      'typography': instance.typography,
-      'strings': instance.strings,
-      'bools': instance.bools,
-      'spacers': instance.spacers,
-      'paddings': instance.paddings,
-      'radii': instance.radii,
+      'colors': instance.colors.toJson(),
+      'typography': instance.typography.toJson(),
+      'strings': instance.strings.toJson(),
+      'bools': instance.bools.toJson(),
+      'spacers': instance.spacers.toJson(),
+      'paddings': instance.paddings.toJson(),
+      'radii': instance.radii.toJson(),
     };
 
 GenerationSettings _$GenerationSettingsFromJson(Map json) => $checkedCreate(

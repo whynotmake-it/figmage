@@ -14,7 +14,7 @@ void main() {
       test('works for num', () {
         final json = 42;
         final result = VariableModeValueDto.fromJson(json);
-        expect(result as VariableModeNumberDto, isA<VariableModeNumberDto>());
+        expect(result as VariableModeDoubleDto, isA<VariableModeDoubleDto>());
         expect(result.value, equals(json));
       });
 
@@ -83,21 +83,21 @@ void main() {
     group('toJson', () {
       test('works', () {
         final value = 42.0;
-        final result = VariableModeNumberDto(value: value).toJson();
+        final result = VariableModeDoubleDto(value: value).toJson();
         expect(result, equals(value));
       });
     });
 
     group('equality', () {
       test('same is equal', () {
-        final value = VariableModeNumberDto(value: 42);
-        final value2 = VariableModeNumberDto(value: 42);
+        final value = VariableModeDoubleDto(value: 42);
+        final value2 = VariableModeDoubleDto(value: 42);
         expect(value, equals(value2));
       });
 
       test('different is not equal', () {
-        final value = VariableModeNumberDto(value: 42);
-        final value2 = VariableModeNumberDto(value: 43);
+        final value = VariableModeDoubleDto(value: 42);
+        final value2 = VariableModeDoubleDto(value: 43);
         expect(value, isNot(equals(value2)));
       });
     });

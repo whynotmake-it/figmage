@@ -57,8 +57,8 @@ void main() {
           description: '',
           hiddenFromPublishing: false,
           valuesByMode: {
-            '0:0': VariableModeNumberDto(value: 1),
-            '1:0': VariableModeNumberDto(value: 0),
+            '0:0': VariableModeDoubleDto(value: 1),
+            '1:0': VariableModeDoubleDto(value: 0),
           },
           scopes: const ['ALL_SCOPES'],
           codeSyntax: const {},

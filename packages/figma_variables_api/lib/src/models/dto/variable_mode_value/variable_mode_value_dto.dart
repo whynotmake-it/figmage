@@ -10,7 +10,7 @@ sealed class VariableModeValueDto {
     if (json is bool) {
       return VariableModeBooleanDto(value: json);
     } else if (json is num) {
-      return VariableModeNumberDto(value: json.toDouble());
+      return VariableModeDoubleDto(value: json.toDouble());
     } else if (json is String) {
       return VariableModeStringDto(value: json);
     } else if (json is Map<String, dynamic>) {
@@ -43,8 +43,8 @@ class VariableModeBooleanDto extends VariableModeValueDto with EquatableMixin {
 }
 
 @JsonSerializable()
-class VariableModeNumberDto extends VariableModeValueDto with EquatableMixin {
-  VariableModeNumberDto({required this.value});
+class VariableModeDoubleDto extends VariableModeValueDto with EquatableMixin {
+  VariableModeDoubleDto({required this.value});
 
   final double value;
 

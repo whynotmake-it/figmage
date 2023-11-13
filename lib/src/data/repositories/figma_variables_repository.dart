@@ -1,7 +1,7 @@
 import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
-import 'package:figmage/src/domain/repositories/repositories.dart';
+import 'package:figmage/src/domain/repositories/variables_repository.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 /// Visible for testing

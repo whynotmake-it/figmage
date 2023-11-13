@@ -50,6 +50,7 @@ class Config with EquatableMixin {
   /// The directory to generate the package in, relative to the config file.
   ///
   /// Defaults to the current directory.
+  @JsonKey(name: 'outputPath')
   final String packageDir;
 
   /// Color generation settings, defaults to generating color tokens from

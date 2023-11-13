@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/repositories/config_repository.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:yaml/yaml.dart';
 
@@ -31,16 +30,36 @@ class YamlConfigRepository implements ConfigRepository {
       ..level = Level.info
       ..info('Reading config from ${configFile.path}');
 
-    return Config(fileId: "asd", packageName: "asd");
+    final yamlMap = await _readYamlFile(configFile);
+
+    try {
+      final config = Config.fromMap(yamlMap);
+      _logger
+        ..level = Level.verbose
+        ..info('Parsed Config: $config');
+
+      return config;
+    } catch (e) {
+      throw FormatException(
+        'Error when parsing config file: $e',
+      );
+    }
   }
 
   /// Reads a YAML file and returns a [YamlMap].
   Future<YamlMap> _readYamlFile(File file) async {
     if (file.existsSync() == false) {
-      throw ArgumentError.value(file, 'file', 'Config file does not exist.');
+      throw FileSystemException(
+        'Config file $file does not exist.',
+      );
     }
     final yamlString = await file.readAsString();
-    return loadYaml(yamlString) as YamlMap;
+    return switch (loadYaml(yamlString)) {
+      final YamlMap yamlMap => yamlMap,
+      _ => throw FormatException(
+          'Config file $file is not a valid YAML file.',
+        ),
+    };
   }
 }
 
@@ -51,8 +70,10 @@ class YamlConfigRepository implements ConfigRepository {
 class _DefaultFile implements File {
   const _DefaultFile();
 
+  // coverage:ignore-start
   @override
   Never noSuchMethod(Invocation invocation) {
     throw NoSuchMethodError.withInvocation(this, invocation);
   }
+  // coverage:ignore-end
 }

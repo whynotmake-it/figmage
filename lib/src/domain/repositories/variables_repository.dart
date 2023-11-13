@@ -1,4 +1,4 @@
-import 'package:figmage/src/domain/models/models.dart';
+import 'package:figmage/src/domain/models/variable/variable.dart';
 
 /// A map of variable values organized by collection, mode, and variable name.
 typedef VariableValuesByIdByModeByCollection<T>

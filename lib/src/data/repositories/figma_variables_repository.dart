@@ -1,6 +1,6 @@
 import 'package:figma_variables_api/figma_variables_api.dart';
-import 'package:figmage/src/domain/models/models.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
+import 'package:figmage/src/domain/models/variable/variable.dart';
 import 'package:figmage/src/domain/repositories/repositories.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -208,7 +208,7 @@ class FigmaVariablesRepository implements VariablesRepository {
           ),
         ),
       VariableModeBooleanDto() => AliasData(data: value.value as T),
-      VariableModeNumberDto() => AliasData(data: value.value as T),
+      VariableModeDoubleDto() => AliasData(data: value.value as T),
       VariableModeStringDto() => AliasData(data: value.value as T),
       VariableModeColorDto() => AliasData(data: value.value as T),
     };

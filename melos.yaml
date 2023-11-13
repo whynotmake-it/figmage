@@ -27,6 +27,7 @@ scripts:
     run: dart test
     exec:
       concurrency: 6
+      failFast: true
     packageFilters:
       dirExists: test
     description: Run `dart test` for selected packages.
@@ -37,11 +38,13 @@ scripts:
 
   coverage:select:
     run: |
-      dart test --coverage=coverage && 
-      dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info -c --report-on=lib &&
-      rm -rf coverage/test/
+      dart pub global run coverage:test_with_coverage
+      rm -rf -f coverage/test/
+      rm -f coverage/coverage.json
     exec:
       concurrency: 6
+      failFast: true
+
     packageFilters:
       dirExists: test
     description: Generate coverage for the selected package.

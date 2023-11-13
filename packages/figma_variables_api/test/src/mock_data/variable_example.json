@@ -1,0 +1,24 @@
+{
+  "id": "VariableID:33:8",
+  "name": "box-background-active",
+  "remote": false,
+  "key": "db60e2b2141198dff74e59f329863257348ec9d6",
+  "variableCollectionId": "VariableCollectionId:33:7",
+  "resolvedType": "COLOR",
+  "description": "",
+  "hiddenFromPublishing": false,
+  "valuesByMode": {
+    "33:0": {
+      "type": "VARIABLE_ALIAS",
+      "id": "VariableID:28:14"
+    }
+  },
+  "scopes": [
+    "ALL_SCOPES"
+  ],
+  "codeSyntax": {
+    "WEB": "box-background-active",
+    "ANDROID": "box-background-active",
+    "iOS": "box-background-active"
+  }
+}

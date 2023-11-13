@@ -38,7 +38,8 @@ scripts:
 
   coverage:select:
     run: |
-      dart pub global run coverage:test_with_coverage
+      dart test --coverage=coverage
+      dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info -c --report-on=lib
       rm -rf -f coverage/test/
       rm -f coverage/coverage.json
     exec:

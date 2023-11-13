@@ -12,6 +12,7 @@ dependencies:
   code_builder: ^4.7.0
   collection: ^1.18.0
   dart_style: ^2.3.3
+  equatable: ^2.0.5
   figma: ^7.0.0
   figma_variables_api:
     path: packages/figma_variables_api

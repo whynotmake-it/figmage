@@ -79,7 +79,7 @@ void main() {
     });
   });
 
-  group('VariableModeNumberDto', () {
+  group('VariableModeDoubleDto', () {
     group('toJson', () {
       test('works', () {
         final value = 42.0;

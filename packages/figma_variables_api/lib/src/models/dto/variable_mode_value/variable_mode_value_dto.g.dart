@@ -18,14 +18,14 @@ Map<String, dynamic> _$VariableModeBooleanDtoToJson(
       'value': instance.value,
     };
 
-VariableModeNumberDto _$VariableModeNumberDtoFromJson(
+VariableModeDoubleDto _$VariableModeDoubleDtoFromJson(
         Map<String, dynamic> json) =>
-    VariableModeNumberDto(
+    VariableModeDoubleDto(
       value: (json['value'] as num).toDouble(),
     );
 
-Map<String, dynamic> _$VariableModeNumberDtoToJson(
-        VariableModeNumberDto instance) =>
+Map<String, dynamic> _$VariableModeDoubleDtoToJson(
+        VariableModeDoubleDto instance) =>
     <String, dynamic>{
       'value': instance.value,
     };

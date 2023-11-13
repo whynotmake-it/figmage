@@ -39,8 +39,8 @@ scripts:
   coverage:select:
     run: |
       dart pub global run coverage:test_with_coverage
-      rm -rf coverage/test/
-      rm -rf coverage/coverage.json
+      rm -rf -f coverage/test/
+      rm -f coverage/coverage.json
     exec:
       concurrency: 6
       failFast: true

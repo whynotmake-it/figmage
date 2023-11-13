@@ -1,0 +1,93 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'config.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Config _$ConfigFromJson(Map json) => $checkedCreate(
+      'Config',
+      json,
+      ($checkedConvert) {
+        final val = Config(
+          fileId: $checkedConvert('fileId', (v) => v as String),
+          packageName: $checkedConvert('packageName', (v) => v as String),
+          packageDescription:
+              $checkedConvert('packageDescription', (v) => v as String? ?? ''),
+          packageDir: $checkedConvert('packageDir', (v) => v as String? ?? '.'),
+          colors: $checkedConvert(
+              'colors',
+              (v) => v == null
+                  ? const GenerationSettings()
+                  : GenerationSettings.fromJson(v as Map)),
+          typography: $checkedConvert(
+              'typography',
+              (v) => v == null
+                  ? const GenerationSettings()
+                  : GenerationSettings.fromJson(v as Map)),
+          strings: $checkedConvert(
+              'strings',
+              (v) => v == null
+                  ? const GenerationSettings()
+                  : GenerationSettings.fromJson(v as Map)),
+          bools: $checkedConvert(
+              'bools',
+              (v) => v == null
+                  ? const GenerationSettings()
+                  : GenerationSettings.fromJson(v as Map)),
+          spacers: $checkedConvert(
+              'spacers',
+              (v) => v == null
+                  ? const GenerationSettings(generate: false)
+                  : GenerationSettings.fromJson(v as Map)),
+          paddings: $checkedConvert(
+              'paddings',
+              (v) => v == null
+                  ? const GenerationSettings(generate: false)
+                  : GenerationSettings.fromJson(v as Map)),
+          radii: $checkedConvert(
+              'radii',
+              (v) => v == null
+                  ? const GenerationSettings(generate: false)
+                  : GenerationSettings.fromJson(v as Map)),
+        );
+        return val;
+      },
+    );
+
+Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
+      'fileId': instance.fileId,
+      'packageName': instance.packageName,
+      'packageDescription': instance.packageDescription,
+      'packageDir': instance.packageDir,
+      'colors': instance.colors,
+      'typography': instance.typography,
+      'strings': instance.strings,
+      'bools': instance.bools,
+      'spacers': instance.spacers,
+      'paddings': instance.paddings,
+      'radii': instance.radii,
+    };
+
+GenerationSettings _$GenerationSettingsFromJson(Map json) => $checkedCreate(
+      'GenerationSettings',
+      json,
+      ($checkedConvert) {
+        final val = GenerationSettings(
+          generate: $checkedConvert('generate', (v) => v as bool? ?? true),
+          from: $checkedConvert(
+              'from',
+              (v) =>
+                  (v as List<dynamic>?)?.map((e) => e as String) ??
+                  const <String>[]),
+        );
+        return val;
+      },
+    );
+
+Map<String, dynamic> _$GenerationSettingsToJson(GenerationSettings instance) =>
+    <String, dynamic>{
+      'generate': instance.generate,
+      'from': instance.from.toList(),
+    };

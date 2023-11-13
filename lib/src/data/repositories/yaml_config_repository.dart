@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/repositories/config_repository.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mason_logger/mason_logger.dart';
+import 'package:yaml/yaml.dart';
 
 /// {@template yaml_config_repository}
 /// A [ConfigRepository] that reads from a YAML file, `./figmage.yaml` by
@@ -30,6 +32,15 @@ class YamlConfigRepository implements ConfigRepository {
       ..info('Reading config from ${configFile.path}');
 
     return Config(fileId: "asd", packageName: "asd");
+  }
+
+  /// Reads a YAML file and returns a [YamlMap].
+  Future<YamlMap> _readYamlFile(File file) async {
+    if (file.existsSync() == false) {
+      throw ArgumentError.value(file, 'file', 'Config file does not exist.');
+    }
+    final yamlString = await file.readAsString();
+    return loadYaml(yamlString) as YamlMap;
   }
 }
 

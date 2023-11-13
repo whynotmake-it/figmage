@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'config.freezed.dart';
+part 'config.g.dart';
 
 /// {@template config}
 /// A configuration for the figmage forge command, typically parsed from a
@@ -17,67 +18,103 @@ part 'config.freezed.dart';
 /// If you want to generate spacers, paddings or borders, you should consider
 /// configuring `GenerationSettings.from` to only generate from a specific path.
 /// {@endtemplate}
-@freezed
-class Config with _$Config {
+@JsonSerializable(anyMap: true, checked: true)
+class Config with EquatableMixin {
   /// {@macro config}
-  const factory Config({
-    /// figma file ID.
-    required String fileId,
+  const Config({
+    required this.fileId,
+    required this.packageName,
+    this.packageDescription = '',
+    this.packageDir = '.',
+    this.colors = const GenerationSettings(),
+    this.typography = const GenerationSettings(),
+    this.strings = const GenerationSettings(),
+    this.bools = const GenerationSettings(),
+    this.spacers = const GenerationSettings(generate: false),
+    this.paddings = const GenerationSettings(generate: false),
+    this.radii = const GenerationSettings(generate: false),
+  });
 
-    /// The name of the generated dart package, e.g. figmage_example.
-    required String packageName,
+  /// Initializes a [Config] from a json map.
+  factory Config.fromMap(Map<dynamic, dynamic> json) => _$ConfigFromJson(json);
 
-    /// The description of the generated dart package.
-    @Default('') String packageDescription,
+  /// figma file ID.
+  final String fileId;
 
-    /// The directory to generate the package in, relative to the config file.
-    ///
-    /// Defaults to the current directory.
-    @Default('.') String packageDir,
+  /// The name of the generated dart package, e.g. figmage_example.
+  final String packageName;
 
-    /// Color generation settings, defaults to generating color tokens from
-    /// all paths.
-    @Default(GenerationSettings()) GenerationSettings colors,
+  /// The description of the generated dart package.
+  final String packageDescription;
 
-    /// Typography generation settings, defaults to generating typography tokens
-    /// from all paths.
-    @Default(GenerationSettings()) GenerationSettings typography,
+  /// The directory to generate the package in, relative to the config file.
+  ///
+  /// Defaults to the current directory.
+  final String packageDir;
 
-    /// String generation settings, defaults to generating string tokens from
-    /// all paths.
-    @Default(GenerationSettings()) GenerationSettings strings,
+  /// Color generation settings, defaults to generating color tokens from
+  /// all paths.
+  final GenerationSettings colors;
 
-    /// Boolean generation settings, defaults to generating boolean tokens from
-    /// all paths.
-    @Default(GenerationSettings()) GenerationSettings bools,
+  /// Typography generation settings, defaults to generating typography tokens
+  /// from all paths.
+  final GenerationSettings typography;
 
-    /// Spacers generation settings, defaults to not generating spacers.
-    @Default(GenerationSettings(generate: false)) GenerationSettings spacers,
+  /// String generation settings, defaults to generating string tokens from
+  /// all paths.
+  final GenerationSettings strings;
 
-    /// Paddings generation settings, defaults to not generating paddings.
-    @Default(GenerationSettings(generate: false)) GenerationSettings paddings,
+  /// Boolean generation settings, defaults to generating boolean tokens from
+  /// all paths.
+  final GenerationSettings bools;
 
-    /// Borders generation settings, defaults to not generating borders.
-    @Default(GenerationSettings(generate: false)) GenerationSettings radii,
-  }) = _Config;
+  /// Spacers generation settings, defaults to not generating spacers.
+  final GenerationSettings spacers;
 
-  const Config._();
+  /// Paddings generation settings, defaults to not generating paddings.
+  final GenerationSettings paddings;
+
+  /// Borders generation settings, defaults to not generating borders.
+  final GenerationSettings radii;
+
+  @override
+  List<Object?> get props => [
+        fileId,
+        packageName,
+        packageDescription,
+        packageDir,
+        colors,
+        typography,
+        strings,
+        bools,
+        spacers,
+        paddings,
+        radii,
+      ];
 }
 
 /// {@template generation_settings}
 /// Settings for generating a type of token. This includes whether or not to
 /// generate the token and which paths to generate from.
 /// {@endtemplate}
-@freezed
-sealed class GenerationSettings with _$Config {
+@JsonSerializable(anyMap: true, checked: true)
+class GenerationSettings with EquatableMixin {
   /// {@macro generation_settings}
-  const factory GenerationSettings({
-    /// Whether or not to generate the token, defaults to true.
-    @Default(true) bool generate,
+  const GenerationSettings({
+    @Default(true) this.generate = true,
+    @Default(<String>[]) this.from = const <String>[],
+  });
 
-    /// The paths to generate from, defaults to empty which means all paths.
-    @Default(<String>[]) Iterable<String> from,
-  }) = _GenerationSettings;
+  /// Initializes a [GenerationSettings] from a json map.
+  factory GenerationSettings.fromJson(Map<dynamic, dynamic> json) =>
+      _$GenerationSettingsFromJson(json);
 
-  const GenerationSettings._();
+  /// Whether or not to generate the token, defaults to true.
+  final bool generate;
+
+  /// The paths to generate from, defaults to empty which means all paths.
+  final Iterable<String> from;
+
+  @override
+  List<Object?> get props => [generate, from];
 }

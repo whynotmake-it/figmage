@@ -116,5 +116,5 @@ class GenerationSettings with EquatableMixin {
   final Iterable<String> from;
 
   @override
-  List<Object?> get props => [generate, from];
+  List<Object?> get props => [generate, ...from];
 }

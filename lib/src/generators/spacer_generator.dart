@@ -41,7 +41,7 @@ class SpacerGenerator {
   String generate() {
     final fieldName = convertToValidVariableName(numberReference.symbol!);
     final validValueNames = valueNames.map(convertToValidVariableName).toList();
-    final validClassName = 'Spacer${convertToValidClassName(className)}';
+    final validClassName = '${convertToValidClassName(className)}Spacer';
 
     final $class = _getClass(
       className: validClassName,

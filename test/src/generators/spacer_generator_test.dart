@@ -38,8 +38,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 @immutable
-class SpacerWeb {
-  const SpacerWeb(this.myNumbers);
+class WebSpacer {
+  const WebSpacer(this.myNumbers);
 
   final MyNumbers myNumbers;
 
@@ -56,8 +56,8 @@ class SpacerWeb {
   SizedBox get lVertical => SizedBox(height: myNumbers.l);
 }
 
-extension SpacerWebBuildContextX on BuildContext {
-  SpacerWeb get spacerWeb => SpacerWeb(myNumbers);
+extension WebSpacerBuildContextX on BuildContext {
+  WebSpacer get webSpacer => WebSpacer(myNumbers);
 }
 ''';
 const _expectedNullableSpacerClassString = '''
@@ -70,8 +70,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 @immutable
-class SpacerWeb {
-  const SpacerWeb(this.myNumbers);
+class WebSpacer {
+  const WebSpacer(this.myNumbers);
 
   final MyNumbers myNumbers;
 
@@ -88,7 +88,7 @@ class SpacerWeb {
   SizedBox get lVertical => SizedBox(height: myNumbers.l);
 }
 
-extension SpacerWebBuildContextX on BuildContext {
-  SpacerWeb? get spacerWeb => myNumbers == null ? null : SpacerWeb(myNumbers!);
+extension WebSpacerBuildContextX on BuildContext {
+  WebSpacer? get webSpacer => myNumbers == null ? null : WebSpacer(myNumbers!);
 }
 ''';

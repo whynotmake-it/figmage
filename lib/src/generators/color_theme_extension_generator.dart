@@ -18,6 +18,7 @@ class ColorThemeExtensionGenerator extends ThemeExtensionGenerator<int> {
     required super.className,
     required super.valuesByNameByMode,
     super.extensionSymbolUrl = 'package:flutter/material.dart',
+    super.buildContextExtensionNullable = false,
   }) : super(
           extensionSymbol: 'Color',
           valueToConstructorArguments: _colorFromIntBuilder,

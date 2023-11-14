@@ -67,6 +67,7 @@ class TextStyleThemeExtensionGenerator
     required super.className,
     required super.valuesByNameByMode,
     super.extensionSymbolUrl = 'package:flutter/material.dart',
+    super.buildContextExtensionNullable = false,
   }) : super(
           extensionSymbol: 'TextStyle',
           valueToConstructorArguments: _textStyleFromFigmaTypeStyle,

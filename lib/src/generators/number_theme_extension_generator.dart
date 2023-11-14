@@ -9,7 +9,7 @@ class NumberThemeExtensionGenerator extends ThemeExtensionGenerator<double> {
   NumberThemeExtensionGenerator({
     required super.className,
     required super.valuesByNameByMode,
-    super.nullableBuildContextExtension = false,
+    super.buildContextExtensionNullable = false,
   }) : super(
           extensionSymbol: 'double',
           lerpReference: const Reference(

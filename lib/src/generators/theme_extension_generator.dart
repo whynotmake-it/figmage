@@ -40,7 +40,7 @@ class ThemeExtensionGenerator<T> {
     required this.className,
     required this.valuesByNameByMode,
     required this.extensionSymbol,
-    this.nullableBuildContextExtension = false,
+    this.buildContextExtensionNullable = false,
     this.valueToConstructorArguments,
     this.extensionSymbolUrl,
     this.lerpReference,
@@ -58,8 +58,8 @@ class ThemeExtensionGenerator<T> {
   /// extension.
   final String extensionSymbol;
 
-  /// The URL for the symbol, typically a package URL. If for a built in type is
-  /// generated this value should be null
+  /// The URL for the symbol, typically a package URL. If generated for a
+  /// literal built-in type this value should be null
   final String? extensionSymbolUrl;
 
   /// A function that converts a value to the constructor arguments required for
@@ -71,7 +71,7 @@ class ThemeExtensionGenerator<T> {
   final Map<String, Map<String, T>> valuesByNameByMode;
 
   /// A bool indicating if the BuildContextExtension should be nullable
-  bool nullableBuildContextExtension;
+  bool buildContextExtensionNullable;
 
   /// A [Reference] to a lerp function that can lerp [extensionSymbol].
   /// If this value is null the generator assumes that [extensionSymbol]
@@ -114,7 +114,7 @@ class ThemeExtensionGenerator<T> {
     );
     final buildContextExtension = _getBuildContextExtension(
       className: validClassName,
-      nullable: nullableBuildContextExtension,
+      nullable: buildContextExtensionNullable,
     );
 
     final $library = Library(
@@ -144,6 +144,10 @@ class ThemeExtensionGenerator<T> {
     required bool nullable,
   }) {
     final extensionName = '${className}BuildContextX';
+    final bodySuffix = nullable ? '' : '!';
+    final returnTypeSuffix = nullable ? '?' : '';
+    final methodName = convertToValidVariableName(className);
+
     return Extension(
       (e) => e
         ..name = extensionName
@@ -151,12 +155,12 @@ class ThemeExtensionGenerator<T> {
         ..methods.add(
           Method(
             (m) => m
-              ..name = convertToValidVariableName(className)
-              ..returns = refer('$className${nullable ? '?' : ''}')
+              ..name = methodName
+              ..returns = refer('$className$returnTypeSuffix')
               ..type = MethodType.getter
               ..lambda = true
-              ..body = Code('Theme.of(this).extension<$className>()'
-                  '${nullable ? '' : '!'}'),
+              ..body =
+                  Code('Theme.of(this).extension<$className>()$bodySuffix'),
           ),
         ),
     );
@@ -178,7 +182,7 @@ class ThemeExtensionGenerator<T> {
           (name, value) {
             return MapEntry(
               name,
-              _generateValueExpression(
+              _getValueExpression(
                 extensionSymbol,
                 extensionSymbolUrl,
                 value,
@@ -385,7 +389,7 @@ class ThemeExtensionGenerator<T> {
     );
   }
 
-  Expression _generateValueExpression(
+  Expression _getValueExpression(
     String extensionSymbol,
     String? extensionSymbolUrl,
     T value,

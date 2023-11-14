@@ -19,7 +19,7 @@ void main() {
         'small': {'s': 1.0, 'm': 2.0},
         'large': {'s': 2.0, 'm': 4.0},
       },
-      nullableBuildContextExtension: true,
+      buildContextExtensionNullable: true,
     );
     expect(
       generator.generate(),

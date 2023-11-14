@@ -82,7 +82,7 @@ void main() {
         },
       },
       extensionSymbolUrl: 'dart:ui',
-      nullableBuildContextExtension: true,
+      buildContextExtensionNullable: true,
     );
 
     expect(

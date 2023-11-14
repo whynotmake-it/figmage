@@ -19,7 +19,7 @@ void main() {
         'mode 1': {'color1': 0xFF000000, 'color2': 0xFFFFFFFF},
         'mode2': {'color1': 0xFF111111, 'color2': 0xFF222222},
       },
-      nullableBuildContextExtension: true,
+      buildContextExtensionNullable: true,
     );
     expect(
       generator.generate(),

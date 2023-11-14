@@ -151,7 +151,7 @@ class ThemeExtensionGenerator<T> {
     return Extension(
       (e) => e
         ..name = extensionName
-        ..on = refer('BuildContext', 'package:flutter/widgets.dart')
+        ..on = refer('BuildContext')
         ..methods.add(
           Method(
             (m) => m

@@ -2,9 +2,17 @@ import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:cli_completion/cli_completion.dart';
 import 'package:figmage/src/commands/commands.dart';
+import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
 import 'package:figmage/src/version.dart';
+import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:pub_updater/pub_updater.dart';
+
+///A typedef for a function that can be used to append strings to a file
+typedef AppendCodeEntriesToFile = void Function(
+  List<String> entries,
+  String filePath,
+);
 
 /// The name of the executable.
 const executableName = 'figmage';
@@ -27,8 +35,17 @@ class FigmageCommandRunner extends CompletionCommandRunner<int> {
   FigmageCommandRunner({
     Logger? logger,
     PubUpdater? pubUpdater,
+    FigmagePackageGenerator? figmagePackageGenerator,
+    FigmaVariablesRepository? figmaVariablesRepository,
+    AppendCodeEntriesToFile? appendCodeEntriesToFile,
   })  : _logger = logger ?? Logger(),
         _pubUpdater = pubUpdater ?? PubUpdater(),
+        _figmagePackageGenerator =
+            figmagePackageGenerator ?? const FigmagePackageGenerator(),
+        _figmaVariablesRepository =
+            figmaVariablesRepository ?? FigmaVariablesRepository(),
+        _appendCodeEntriesToFile =
+            appendCodeEntriesToFile ?? appendToFileIfExisting,
         super(executableName, description) {
     // Add root options and flags
     argParser
@@ -44,7 +61,14 @@ class FigmageCommandRunner extends CompletionCommandRunner<int> {
       );
 
     // Add sub commands
-    addCommand(ForgeCommand(logger: _logger));
+    addCommand(
+      ForgeCommand(
+        logger: _logger,
+        figmagePackageGenerator: _figmagePackageGenerator,
+        figmaVariablesRepository: _figmaVariablesRepository,
+        appendCodeEntriesToFile: _appendCodeEntriesToFile,
+      ),
+    );
     addCommand(ReforgeCommand(logger: _logger));
     addCommand(UpdateCommand(logger: _logger, pubUpdater: _pubUpdater));
   }
@@ -54,6 +78,10 @@ class FigmageCommandRunner extends CompletionCommandRunner<int> {
 
   final Logger _logger;
   final PubUpdater _pubUpdater;
+  final FigmagePackageGenerator _figmagePackageGenerator;
+  final FigmaVariablesRepository _figmaVariablesRepository;
+
+  final AppendCodeEntriesToFile _appendCodeEntriesToFile;
 
   @override
   Future<int> run(Iterable<String> args) async {

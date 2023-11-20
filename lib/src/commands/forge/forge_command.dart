@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
+import 'package:figmage/src/command_runner.dart';
 import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
 import 'package:figmage/src/generators/color_theme_extension_generator.dart';
@@ -20,7 +21,13 @@ class ForgeCommand extends Command<int> {
   /// {@macro forge_command}
   ForgeCommand({
     required Logger logger,
-  }) : _logger = logger {
+    required FigmagePackageGenerator figmagePackageGenerator,
+    required FigmaVariablesRepository figmaVariablesRepository,
+    required AppendCodeEntriesToFile appendCodeEntriesToFile,
+  })  : _logger = logger,
+        _figmaVariablesRepository = figmaVariablesRepository,
+        _figmagePackageGenerator = figmagePackageGenerator,
+        _appendCodeEntriesToFile = appendCodeEntriesToFile {
     argParser
       ..addOption(
         "token",
@@ -42,6 +49,9 @@ class ForgeCommand extends Command<int> {
   String get name => 'forge';
 
   final Logger _logger;
+  final FigmagePackageGenerator _figmagePackageGenerator;
+  final FigmaVariablesRepository _figmaVariablesRepository;
+  final AppendCodeEntriesToFile _appendCodeEntriesToFile;
 
   @override
   Future<int> run() async {
@@ -54,10 +64,9 @@ class ForgeCommand extends Command<int> {
       return ExitCode.usage.code;
     }
 
-    const packageGenerator = FigmagePackageGenerator();
     final targetDir = Directory.current;
     final process = _logger.progress("Generating package");
-    await packageGenerator.generate(
+    await _figmagePackageGenerator.generate(
       projectName: "figmage_example",
       dir: targetDir,
       description: "A test ",
@@ -65,16 +74,15 @@ class ForgeCommand extends Command<int> {
     process.complete("Successfully generated package!");
 
     //VARIABLES
-    final repo = FigmaVariablesRepository();
-    final variables = await repo.getVariables(
+    final variables = await _figmaVariablesRepository.getVariables(
       fileId: fileId,
       token: token,
     );
 
     if (maybeConfig == null || maybeConfig['colors'] == true) {
       //Generate colors from variables
-      final collectionColorMaps =
-          repo.createValueModeMap<int, ColorVariable>(variables: variables);
+      final collectionColorMaps = _figmaVariablesRepository
+          .createValueModeMap<int, ColorVariable>(variables: variables);
       final colorGenerators = collectionColorMaps.entries.map((entry) {
         return ColorThemeExtensionGenerator(
           className: entry.key,
@@ -89,7 +97,7 @@ class ForgeCommand extends Command<int> {
         ),
       );
 
-      appendListToFile(
+      _appendCodeEntriesToFile(
         colorExtensions,
         '${Directory.current.path}/figmage_example/lib/src/tokens/colors.dart',
       );
@@ -122,12 +130,14 @@ Future<YamlMap?> readFigmageConfig(Logger logger) async {
 }
 
 // ignore: public_member_api_docs
-void appendListToFile(List<String> entries, String filePath) {
+void appendToFileIfExisting(List<String> entries, String filePath) {
   final file = File(filePath);
 
   // Create the file if it doesn't exist
   if (!file.existsSync()) {
-    file.createSync(recursive: true);
+    throw StateError(
+      'Tried to add code to a file that did not exist: $filePath',
+    );
   }
 
   // Open the file in append mode

@@ -3,7 +3,7 @@ import 'package:dart_style/dart_style.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 
-///{@space_generator_template}
+///{@template space_generator}
 ///A generator for a spacer class.
 ///{@endtemplate}
 class SpacerGenerator implements ThemeClassGenerator {

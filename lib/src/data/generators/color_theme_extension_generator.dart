@@ -1,5 +1,5 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:figmage/src/generators/theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/values_by_mode_theme_extension_generator.dart';
 
 ConstructorArguments _colorFromIntBuilder(int value) {
   return (
@@ -10,9 +10,10 @@ ConstructorArguments _colorFromIntBuilder(int value) {
 }
 
 /// {@template color_theme_extension_generator}
-/// A [ThemeExtensionGenerator] for color themes from integers.
+/// A [ValuesByModeThemeExtensionGenerator] for color themes from integers.
 /// {@endtemplate}
-class ColorThemeExtensionGenerator extends ThemeExtensionGenerator<int> {
+class ColorThemeExtensionGenerator
+    extends ValuesByModeThemeExtensionGenerator<int> {
   /// {@macro color_theme_extension_generator}
   ColorThemeExtensionGenerator({
     required super.className,

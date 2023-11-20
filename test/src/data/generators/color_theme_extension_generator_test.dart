@@ -1,4 +1,4 @@
-import 'package:figmage/src/generators/color_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/color_theme_extension_generator.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -39,7 +39,6 @@ const _expectedColorThemeExtensionString = '''
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 @immutable
 class MyColorTheme extends ThemeExtension<MyColorTheme> {
@@ -104,7 +103,6 @@ const _expectedNullableColorThemeExtensionString = '''
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 @immutable
 class MyColorTheme extends ThemeExtension<MyColorTheme> {

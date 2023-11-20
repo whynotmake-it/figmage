@@ -1,4 +1,4 @@
-import 'package:figmage/src/generators/number_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/number_theme_extension_generator.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -40,7 +40,6 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 @immutable
 class MyNumbersTheme extends ThemeExtension<MyNumbersTheme> {
@@ -107,7 +106,6 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 @immutable
 class MyNumbersTheme extends ThemeExtension<MyNumbersTheme> {

@@ -1,6 +1,6 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:figma/figma.dart';
-import 'package:figmage/src/generators/theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/values_by_mode_theme_extension_generator.dart';
 
 // TODO(Jesper): fix all this
 ConstructorArguments _textStyleFromFigmaTypeStyle(TypeStyle typeStyle) {
@@ -58,10 +58,11 @@ Expression _getTextDecoration(TextDecoration? decoration) {
 }
 
 /// {@template text_style_theme_extension_generator}
-/// A [ThemeExtensionGenerator] for text style themes from Figma's TypeStyle.
+/// A [ValuesByModeThemeExtensionGenerator] for text style themes from Figma's
+/// TypeStyle.
 /// {@endtemplate}
 class TextStyleThemeExtensionGenerator
-    extends ThemeExtensionGenerator<TypeStyle> {
+    extends ValuesByModeThemeExtensionGenerator<TypeStyle> {
   /// {@macro text_style_theme_extension_generator}
   TextStyleThemeExtensionGenerator({
     required super.className,

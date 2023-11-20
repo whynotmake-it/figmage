@@ -1,11 +1,12 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
-import 'package:figmage/src/generators/util.dart';
+import 'package:figmage/src/data/generators/generator_util.dart';
+import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 
-///{@space_generator_template}
+///{@template space_generator}
 ///A generator for a spacer class.
 ///{@endtemplate}
-class SpacerGenerator {
+class SpacerGenerator implements ThemeClassGenerator {
   ///{@macro space_generator_template}
   SpacerGenerator({
     required this.className,
@@ -17,17 +18,17 @@ class SpacerGenerator {
           'The symbol can"t be null when generating a spacer generator',
         );
 
-  ///The of the generated spacer class. Assembled as: 'Spacer$className'
+  @override
   final String className;
+
+  @override
+  bool buildContextExtensionNullable;
 
   ///The [Reference] for the class which is providing values for the spacers
   final Reference numberReference;
 
   ///The names of the values
   final List<String> valueNames;
-
-  /// A bool indicating if the BuildContextExtension should be nullable
-  bool buildContextExtensionNullable;
 
   final _dartfmt = DartFormatter();
 
@@ -37,7 +38,7 @@ class SpacerGenerator {
     orderDirectives: true,
   );
 
-  ///Generates a spacer class
+  @override
   String generate() {
     final fieldName = convertToValidVariableName(numberReference.symbol!);
     final validValueNames = valueNames.map(convertToValidVariableName).toList();
@@ -67,9 +68,8 @@ class SpacerGenerator {
     );
 
     final result = '''
-      // coverage:ignore-file
-      // GENERATED CODE - DO NOT MODIFY BY HAND
-      // ignore_for_file: type=lint
+      ${ThemeClassGenerator.generatedFilePrefix}
+
 
       ${$library.accept(_emitter)}
     ''';

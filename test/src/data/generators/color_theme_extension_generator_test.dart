@@ -1,4 +1,4 @@
-import 'package:figmage/src/generators/color_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/color_theme_extension_generator.dart';
 import 'package:test/test.dart';
 
 void main() {

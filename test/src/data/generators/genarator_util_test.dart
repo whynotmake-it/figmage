@@ -1,4 +1,4 @@
-import 'package:figmage/src/generators/util.dart';
+import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:test/test.dart';
 
 void main() {

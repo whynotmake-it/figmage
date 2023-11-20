@@ -2,7 +2,9 @@ import 'dart:core';
 
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
-import 'package:figmage/src/generators/util.dart';
+import 'package:figmage/src/data/generators/generator_util.dart';
+import 'package:figmage/src/domain/generators/theme_class_generator.dart';
+import 'package:figmage/src/domain/generators/theme_extension_generator.dart';
 
 /// A collection of all possible arguments that can be passed to a constructor.
 typedef ConstructorArguments = ({
@@ -14,9 +16,10 @@ typedef ConstructorArguments = ({
 /// {@template theme_extension_generator}
 /// A generator for theme extension classes.
 ///
-/// The [ThemeExtensionGenerator] class is designed to create theme extension
-/// classes based on provided parameters. It assumes that you might need
-/// your themes in different modes (e.g. light and dark mode for color theme).
+/// The [ValuesByModeThemeExtensionGenerator] class is designed to create theme
+/// extension classes based on provided parameters. It assumes that you might
+/// need your themes in different modes (e.g. light and dark mode for color
+/// theme).
 ///
 /// Example usage:
 ///
@@ -34,9 +37,10 @@ typedef ConstructorArguments = ({
 /// );
 /// ```
 /// {@endtemplate}
-class ThemeExtensionGenerator<T> {
+abstract class ValuesByModeThemeExtensionGenerator<T>
+    implements ThemeExtensionGenerator<T> {
   /// {@macro theme_extension_generator}
-  ThemeExtensionGenerator({
+  ValuesByModeThemeExtensionGenerator({
     required this.className,
     required this.valuesByNameByMode,
     required this.extensionSymbol,
@@ -51,16 +55,17 @@ class ThemeExtensionGenerator<T> {
           'All value maps must have the same keys.',
         );
 
-  /// The name of the generated theme extension class.
+  @override
   final String className;
 
-  /// The symbol (e.g., Color, TextStyle) used in the theme
-  /// extension.
+  @override
   final String extensionSymbol;
 
-  /// The URL for the symbol, typically a package URL. If generated for a
-  /// literal built-in type this value should be null
+  @override
   final String? extensionSymbolUrl;
+
+  @override
+  final bool buildContextExtensionNullable;
 
   /// A function that converts a value to the constructor arguments required for
   /// the extension symbol. Can be null if creating a ThemeExtension
@@ -69,9 +74,6 @@ class ThemeExtensionGenerator<T> {
 
   /// A map with the following structure: <ModeName<ValueName, Value>>
   final Map<String, Map<String, T>> valuesByNameByMode;
-
-  /// A bool indicating if the BuildContextExtension should be nullable
-  bool buildContextExtensionNullable;
 
   /// A [Reference] to a lerp function that can lerp [extensionSymbol].
   /// If this value is null the generator assumes that [extensionSymbol]
@@ -86,7 +88,7 @@ class ThemeExtensionGenerator<T> {
     orderDirectives: true,
   );
 
-  /// Generates the theme extension class and returns it as a string.
+  @override
   String generate() {
     final validValueMaps = valuesByNameByMode.map(
       (key, value) => MapEntry(
@@ -129,9 +131,7 @@ class ThemeExtensionGenerator<T> {
     );
 
     final result = '''
-      // coverage:ignore-file
-      // GENERATED CODE - DO NOT MODIFY BY HAND
-      // ignore_for_file: type=lint
+      ${ThemeClassGenerator.generatedFilePrefix}
 
       ${$library.accept(_emitter)}
     ''';

@@ -1,4 +1,4 @@
-import 'package:figmage/src/generators/number_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/number_theme_extension_generator.dart';
 import 'package:test/test.dart';
 
 void main() {

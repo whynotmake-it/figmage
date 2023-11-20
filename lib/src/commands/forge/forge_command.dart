@@ -4,9 +4,9 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:figmage/src/command_runner.dart';
+import 'package:figmage/src/data/generators/color_theme_extension_generator.dart';
 import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
-import 'package:figmage/src/generators/color_theme_extension_generator.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:path/path.dart' as path;

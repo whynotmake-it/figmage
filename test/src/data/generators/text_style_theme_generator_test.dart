@@ -1,5 +1,5 @@
 import 'package:figma/figma.dart';
-import 'package:figmage/src/generators/text_style_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/text_style_theme_extension_generator.dart';
 import 'package:test/test.dart';
 
 void main() {

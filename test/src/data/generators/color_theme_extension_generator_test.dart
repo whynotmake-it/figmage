@@ -39,7 +39,6 @@ const _expectedColorThemeExtensionString = '''
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 @immutable
 class MyColorTheme extends ThemeExtension<MyColorTheme> {
@@ -104,7 +103,6 @@ const _expectedNullableColorThemeExtensionString = '''
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 @immutable
 class MyColorTheme extends ThemeExtension<MyColorTheme> {

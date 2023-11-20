@@ -104,7 +104,6 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 @immutable
 class MyTextStyles extends ThemeExtension<MyTextStyles> {
@@ -189,6 +188,7 @@ const MyTextStyles mode2MyTextStyles = MyTextStyles(
   ),
 );
 ''';
+
 const _expectedNullableTextStyleThemeExtensionString = '''
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
@@ -198,7 +198,6 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 @immutable
 class MyTextStyles extends ThemeExtension<MyTextStyles> {

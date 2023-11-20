@@ -1,4 +1,10 @@
+import 'package:figmage/src/data/repositories/figma_styles_repository.dart';
 import 'package:figmage/src/domain/models/style.dart';
+import 'package:riverpod/riverpod.dart';
+
+/// A provider for a [StylesRepository] that fetches styles from Figma.
+final stylesRepositoryProvider =
+    Provider<StylesRepository>((ref) => FigmaStylesRepository());
 
 /// {@template styles_repository}
 /// This repository is responsible for fetching styles.

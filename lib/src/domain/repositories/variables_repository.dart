@@ -1,8 +1,14 @@
+import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
+import 'package:riverpod/riverpod.dart';
 
 /// A map of variable values organized by collection, mode, and variable name.
 typedef VariableValuesByIdByModeByCollection<T>
     = Map<String, Map<String, Map<String, T>>>;
+
+/// A provider for a [VariablesRepository] that fetches variables from Figma.
+final variablesRepositoryProvider =
+    Provider<VariablesRepository>((ref) => FigmaVariablesRepository());
 
 /// {@template variables_repository}
 /// A repository for fetching variable values from a Figma file.

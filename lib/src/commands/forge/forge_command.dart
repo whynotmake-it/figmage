@@ -3,36 +3,39 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:figmage/src/command_runner.dart';
 import 'package:figmage/src/data/generators/color_theme_extension_generator.dart';
-import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
+import 'package:figmage/src/domain/providers/config_providers.dart';
+import 'package:figmage/src/domain/providers/figmage_package_generator_providers.dart';
+import 'package:figmage/src/domain/providers/logger_providers.dart';
+import 'package:figmage/src/domain/repositories/variables_repository.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:path/path.dart' as path;
+import 'package:riverpod/riverpod.dart';
 import 'package:yaml/yaml.dart';
 
 /// {@template forge_command}
 ///
-/// `figmage forge`
+/// `figmage forge <path> --token <token> --fileId <fileId>`
 /// A [Command] to exemplify a sub command
 /// {@endtemplate}
 class ForgeCommand extends Command<int> {
   /// {@macro forge_command}
-  ForgeCommand({
-    required Logger logger,
-    required FigmagePackageGenerator figmagePackageGenerator,
-    required FigmaVariablesRepository figmaVariablesRepository,
-    required AppendCodeEntriesToFile appendCodeEntriesToFile,
-  })  : _logger = logger,
-        _figmaVariablesRepository = figmaVariablesRepository,
-        _figmagePackageGenerator = figmagePackageGenerator,
-        _appendCodeEntriesToFile = appendCodeEntriesToFile {
+  ForgeCommand(this._container) {
     argParser
+      ..addOption(
+        "path",
+        defaultsTo: ".",
+        help: '''
+          The ouptut path for the generated package. Defaults to the current directory.
+        ''',
+      )
       ..addOption(
         "token",
         abbr: "t",
         help: "Your figma API token",
+        mandatory: true,
       )
       ..addOption(
         "fileId",
@@ -41,23 +44,28 @@ class ForgeCommand extends Command<int> {
       );
   }
 
-  @override
-  String get description =>
-      'This command forges a new package from your figma file.';
+  final ProviderContainer _container;
 
   @override
   String get name => 'forge';
 
-  final Logger _logger;
-  final FigmagePackageGenerator _figmagePackageGenerator;
-  final FigmaVariablesRepository _figmaVariablesRepository;
-  final AppendCodeEntriesToFile _appendCodeEntriesToFile;
+  @override
+  String get description =>
+      'This command forges a new package from your figma file.';
+
+  Logger get _logger => _container.read(loggerProvider);
+
+  VariablesRepository get _figmaVariablesRepository =>
+      _container.read(variablesRepositoryProvider);
+
+  FigmagePackageGenerator get _figmagePackageGenerator =>
+      _container.read(figmagePackageGeneratorProvider);
 
   @override
   Future<int> run() async {
-    final maybeConfig = await readFigmageConfig(_logger);
     final token = argResults?['token'] as String?;
-    final fileId = (argResults?['fileId'] ?? maybeConfig?['fileId']) as String?;
+    final maybeConfig = await _container.read(configProvider(null).future);
+    final fileId = (argResults?['fileId'] ?? maybeConfig?.fileId) as String?;
 
     if (token == null || fileId == null) {
       _logger.err('Both token and fileId are required.');
@@ -105,49 +113,4 @@ class ForgeCommand extends Command<int> {
 
     return ExitCode.success.code;
   }
-}
-
-// ignore: public_member_api_docs
-Future<YamlMap?> readFigmageConfig(Logger logger) async {
-  final projectRoot = Directory.current;
-  final figmageConfigPath = path.join(projectRoot.path, 'figmage.yaml');
-
-  final figmageConfigFile = File(figmageConfigPath);
-
-  // ignore: avoid_slow_async_io
-  if (await figmageConfigFile.exists()) {
-    try {
-      final yamlString = await figmageConfigFile.readAsString();
-      final yamlMap = loadYaml(yamlString);
-      return yamlMap as YamlMap?;
-    } catch (e, _) {
-      logger
-        ..warn('Errors occurred while parsing the YAML file:')
-        ..err(e.toString());
-    }
-  }
-  return null;
-}
-
-// ignore: public_member_api_docs
-void appendToFileIfExisting(List<String> entries, String filePath) {
-  final file = File(filePath);
-
-  // Create the file if it doesn't exist
-  if (!file.existsSync()) {
-    throw StateError(
-      'Tried to add code to a file that did not exist: $filePath',
-    );
-  }
-
-  // Open the file in append mode
-  final sink = file.openWrite(mode: FileMode.append);
-
-  // Append each entry to the file, separated by a line break
-  for (final entry in entries) {
-    sink.write('$entry\n');
-  }
-
-  // Close the file
-  sink.close();
 }

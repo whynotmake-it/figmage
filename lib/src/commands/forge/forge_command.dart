@@ -3,17 +3,13 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:figmage/src/data/generators/color_theme_extension_generator.dart';
-import 'package:figmage/src/domain/models/variable/variable.dart';
-import 'package:figmage/src/domain/providers/config_providers.dart';
+import 'package:figmage/src/commands/shared/forge_settings_providers.dart';
 import 'package:figmage/src/domain/providers/figmage_package_generator_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/repositories/variables_repository.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:mason_logger/mason_logger.dart';
-import 'package:path/path.dart' as path;
 import 'package:riverpod/riverpod.dart';
-import 'package:yaml/yaml.dart';
 
 /// {@template forge_command}
 ///
@@ -41,6 +37,12 @@ class ForgeCommand extends Command<int> {
         "fileId",
         abbr: "f",
         help: "Your figma file ID",
+      )
+      ..addOption(
+        "configPath",
+        abbr: "c",
+        defaultsTo: "./figmage.yaml",
+        help: 'Path to your figmage.yaml config file.',
       );
   }
 
@@ -63,54 +65,43 @@ class ForgeCommand extends Command<int> {
 
   @override
   Future<int> run() async {
-    final token = argResults?['token'] as String?;
-    final maybeConfig = await _container.read(configProvider(null).future);
-    final fileId = (argResults?['fileId'] ?? maybeConfig?.fileId) as String?;
+    final FigmageSettings settings;
 
-    if (token == null || fileId == null) {
-      _logger.err('Both token and fileId are required.');
+    try {
+      settings = await _container.read(
+        settingsProvider((argResults: argResults!,)).future,
+      );
+    } catch (e) {
+      _logger.err(e.toString());
       return ExitCode.usage.code;
     }
 
-    final targetDir = Directory.current;
+    final variablesProcess = _logger.progress("Fetching variables");
+    final variables = await _figmaVariablesRepository.getVariables(
+      fileId: settings.fileId,
+      token: settings.token,
+    );
+    if (variables.isEmpty) {
+      variablesProcess.complete(
+        """
+        No variables found in file ${settings.fileId}. Exiting without generating package.
+      """,
+      );
+      return ExitCode.success.code;
+    }
+
+    final targetDir = Directory(settings.path);
+    _logger.detail("Target directory: ${targetDir.path}");
     final process = _logger.progress("Generating package");
     await _figmagePackageGenerator.generate(
       projectName: "figmage_example",
       dir: targetDir,
       description: "A test ",
     );
+
     process.complete("Successfully generated package!");
 
-    //VARIABLES
-    final variables = await _figmaVariablesRepository.getVariables(
-      fileId: fileId,
-      token: token,
-    );
-
-    if (maybeConfig == null || maybeConfig['colors'] == true) {
-      //Generate colors from variables
-      final collectionColorMaps = _figmaVariablesRepository
-          .createValueModeMap<int, ColorVariable>(variables: variables);
-      final colorGenerators = collectionColorMaps.entries.map((entry) {
-        return ColorThemeExtensionGenerator(
-          className: entry.key,
-          valuesByNameByMode: entry.value,
-        );
-      }).toList();
-      final colorExtensions = await Future.wait(
-        colorGenerators.map(
-          (g) => Future.value(
-            g.generate(),
-          ),
-        ),
-      );
-
-      _appendCodeEntriesToFile(
-        colorExtensions,
-        '${Directory.current.path}/figmage_example/lib/src/tokens/colors.dart',
-      );
-    }
-
+    // TODO(tim): fill files
     return ExitCode.success.code;
   }
 }

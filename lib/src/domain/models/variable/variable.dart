@@ -26,6 +26,8 @@ const String kResolvedTypeBoolean = 'BOOLEAN';
 /// associated with a specific data type.
 @Freezed()
 sealed class Variable with _$Variable {
+  const Variable._();
+
   /// A Figma variable with bool content.
   factory Variable.boolean({
     required String id,
@@ -93,4 +95,12 @@ sealed class Variable with _$Variable {
     required Map<String, String> collectionModeNames,
     required Map<String, AliasOr<String>> valuesByMode,
   }) = StringVariable;
+
+  /// Gets the full name of the variable.
+  ///
+  /// Used for filtering.
+  String get fullName => switch (variableCollectionName) {
+        "" => name,
+        _ => "$variableCollectionName/$name",
+      };
 }

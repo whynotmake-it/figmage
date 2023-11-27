@@ -116,6 +116,7 @@ void main() {
         variables.first.variableCollectionId,
         equals('VariableCollectionId:0:3'),
       );
+      expect(variables.first.variableCollectionName, "collection");
       expect(variables.first.scopes, equals(const ['ALL_SCOPES']));
       expect(variables.first.codeSyntax, equals(const {}));
       expect(variables.first.resolvedType, equals('COLOR'));

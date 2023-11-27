@@ -462,7 +462,7 @@ class __$$BooleanVariableImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$BooleanVariableImpl implements BooleanVariable {
+class _$BooleanVariableImpl extends BooleanVariable {
   _$BooleanVariableImpl(
       {required this.id,
       required this.name,
@@ -480,7 +480,8 @@ class _$BooleanVariableImpl implements BooleanVariable {
       : _scopes = scopes,
         _codeSyntax = codeSyntax,
         _collectionModeNames = collectionModeNames,
-        _valuesByMode = valuesByMode;
+        _valuesByMode = valuesByMode,
+        super._();
 
   @override
   final String id;
@@ -872,7 +873,7 @@ class _$BooleanVariableImpl implements BooleanVariable {
   }
 }
 
-abstract class BooleanVariable implements Variable {
+abstract class BooleanVariable extends Variable {
   factory BooleanVariable(
           {required final String id,
           required final String name,
@@ -888,6 +889,7 @@ abstract class BooleanVariable implements Variable {
           required final Map<String, String> collectionModeNames,
           required final Map<String, AliasOr<bool>> valuesByMode}) =
       _$BooleanVariableImpl;
+  BooleanVariable._() : super._();
 
   @override
   String get id;
@@ -1029,7 +1031,7 @@ class __$$FloatVariableImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$FloatVariableImpl implements FloatVariable {
+class _$FloatVariableImpl extends FloatVariable {
   _$FloatVariableImpl(
       {required this.id,
       required this.name,
@@ -1047,7 +1049,8 @@ class _$FloatVariableImpl implements FloatVariable {
       : _scopes = scopes,
         _codeSyntax = codeSyntax,
         _collectionModeNames = collectionModeNames,
-        _valuesByMode = valuesByMode;
+        _valuesByMode = valuesByMode,
+        super._();
 
   @override
   final String id;
@@ -1438,7 +1441,7 @@ class _$FloatVariableImpl implements FloatVariable {
   }
 }
 
-abstract class FloatVariable implements Variable {
+abstract class FloatVariable extends Variable {
   factory FloatVariable(
           {required final String id,
           required final String name,
@@ -1454,6 +1457,7 @@ abstract class FloatVariable implements Variable {
           required final Map<String, String> collectionModeNames,
           required final Map<String, AliasOr<double>> valuesByMode}) =
       _$FloatVariableImpl;
+  FloatVariable._() : super._();
 
   @override
   String get id;
@@ -1595,7 +1599,7 @@ class __$$ColorVariableImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ColorVariableImpl implements ColorVariable {
+class _$ColorVariableImpl extends ColorVariable {
   _$ColorVariableImpl(
       {required this.id,
       required this.name,
@@ -1613,7 +1617,8 @@ class _$ColorVariableImpl implements ColorVariable {
       : _scopes = scopes,
         _codeSyntax = codeSyntax,
         _collectionModeNames = collectionModeNames,
-        _valuesByMode = valuesByMode;
+        _valuesByMode = valuesByMode,
+        super._();
 
   @override
   final String id;
@@ -2004,7 +2009,7 @@ class _$ColorVariableImpl implements ColorVariable {
   }
 }
 
-abstract class ColorVariable implements Variable {
+abstract class ColorVariable extends Variable {
   factory ColorVariable(
           {required final String id,
           required final String name,
@@ -2020,6 +2025,7 @@ abstract class ColorVariable implements Variable {
           required final Map<String, String> collectionModeNames,
           required final Map<String, AliasOr<int>> valuesByMode}) =
       _$ColorVariableImpl;
+  ColorVariable._() : super._();
 
   @override
   String get id;
@@ -2161,7 +2167,7 @@ class __$$StringVariableImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$StringVariableImpl implements StringVariable {
+class _$StringVariableImpl extends StringVariable {
   _$StringVariableImpl(
       {required this.id,
       required this.name,
@@ -2179,7 +2185,8 @@ class _$StringVariableImpl implements StringVariable {
       : _scopes = scopes,
         _codeSyntax = codeSyntax,
         _collectionModeNames = collectionModeNames,
-        _valuesByMode = valuesByMode;
+        _valuesByMode = valuesByMode,
+        super._();
 
   @override
   final String id;
@@ -2571,7 +2578,7 @@ class _$StringVariableImpl implements StringVariable {
   }
 }
 
-abstract class StringVariable implements Variable {
+abstract class StringVariable extends Variable {
   factory StringVariable(
           {required final String id,
           required final String name,
@@ -2587,6 +2594,7 @@ abstract class StringVariable implements Variable {
           required final Map<String, String> collectionModeNames,
           required final Map<String, AliasOr<String>> valuesByMode}) =
       _$StringVariableImpl;
+  StringVariable._() : super._();
 
   @override
   String get id;

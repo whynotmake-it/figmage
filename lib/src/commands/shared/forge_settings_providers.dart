@@ -30,23 +30,19 @@ final settingsProvider = FutureProvider.autoDispose
   final config = await ref.watch(configProvider(configPath).future);
   final argResults = args.argResults;
 
-  try {
-    return (
-      token: switch (argResults['token']) {
-        final String token => token,
-        _ => throw ArgumentError.notNull('token'),
-      },
-      fileId: switch (argResults['fileId'] ?? config?.fileId) {
-        final String fileId => fileId,
-        _ => throw ArgumentError.notNull('fileId'),
-      },
-      path: switch (argResults['path']) {
-        final String path => path,
-        _ => throw ArgumentError.notNull('path'),
-      },
-      config: config
-    );
-  } catch (e) {
-    throw ArgumentError('Missing arguments');
-  }
+  return (
+    token: switch (argResults['token']) {
+      final String token => token,
+      _ => throw ArgumentError.notNull('token'),
+    },
+    fileId: switch (argResults['fileId'] ?? config.fileId) {
+      final String fileId => fileId,
+      _ => throw ArgumentError.notNull('fileId'),
+    },
+    path: switch (argResults['path']) {
+      final String path => path,
+      _ => throw ArgumentError.notNull('path'),
+    },
+    config: config
+  );
 });

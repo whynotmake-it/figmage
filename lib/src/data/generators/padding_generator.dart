@@ -177,7 +177,7 @@ class PaddingGenerator implements ThemeClassGenerator {
                 ..returns = edgeInsetsReference
                 ..type = MethodType.getter
                 ..lambda = true
-                ..body = _getSizedBoxExpression(
+                ..body = _getEdgeInsetsExpression(
                   valueName: name,
                   fieldName: fieldName,
                   type: type,
@@ -188,7 +188,7 @@ class PaddingGenerator implements ThemeClassGenerator {
     ];
   }
 
-  Code _getSizedBoxExpression({
+  Code _getEdgeInsetsExpression({
     required String valueName,
     required String fieldName,
     required _EdgeInsetsType type,

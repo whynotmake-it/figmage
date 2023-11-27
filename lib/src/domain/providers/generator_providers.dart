@@ -80,7 +80,7 @@ extension _VariableFilterX<T extends Variable> on Iterable<T> {
           for (final variable in this)
             if (variable.valuesByMode.containsKey(mode))
               variable.name: variable.valuesByMode[mode],
-        }
+        },
     };
   }
 }

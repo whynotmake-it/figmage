@@ -151,12 +151,12 @@ class GenerationNotifier
                 generatedFile: file,
                 variables: variables,
                 settings: settings,
-              )
+              ),
         ],
       );
       final result = {
         for (final file in allFiles)
-          if (file != null) file.$1: file.$2
+          if (file != null) file.$1: file.$2,
       };
       codeProgress.complete("Generated code for ${result.length} files");
       return result;

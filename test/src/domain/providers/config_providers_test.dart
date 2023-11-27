@@ -7,7 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
-import '../../../test_provider_listener.dart';
+import '../../../test_util/test_provider_listener.dart';
 
 class _MockConfigRepository extends Mock implements ConfigRepository {}
 

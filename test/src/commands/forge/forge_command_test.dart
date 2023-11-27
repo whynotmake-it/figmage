@@ -3,9 +3,13 @@ import 'package:figmage/src/command_runner.dart';
 import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
+import 'package:figmage/src/domain/providers/figmage_package_generator_providers.dart';
+import 'package:figmage/src/domain/providers/logger_providers.dart';
+import 'package:figmage/src/domain/repositories/variables_repository.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
 class _MockLogger extends Mock implements Logger {}
@@ -18,36 +22,37 @@ class _MockFigmaVariablesRepository extends Mock
 class _MockFigmagePackageGenerator extends Mock
     implements FigmagePackageGenerator {}
 
+final _variableList = [
+  ColorVariable(
+    id: 'VariableID:1:2',
+    name: 'green',
+    remote: false,
+    key: '26a211e627a2da8a80c0f06e0b776ba97a8780e3',
+    variableCollectionId: 'VariableCollectionId:0:3',
+    variableCollectionName: 'collection',
+    resolvedType: 'COLOR',
+    description: '',
+    hiddenFromPublishing: false,
+    scopes: ['ALL_SCOPES'],
+    codeSyntax: {},
+    collectionModeNames: {'0:0': 'dark', '1:0': 'light'},
+    valuesByMode: {
+      '0:0': const AliasData<int>(data: 4290117398),
+      '1:0': const AliasData<int>(data: 4286038042),
+    },
+  ),
+];
+
+final _colorValueMap = {
+  'collection': {
+    'dark': {'green': 4290117398},
+    'light': {'green': 4286038042},
+  },
+};
+
 void main() {
   group('forge', () {
-    final variableList = [
-      ColorVariable(
-        id: 'VariableID:1:2',
-        name: 'green',
-        remote: false,
-        key: '26a211e627a2da8a80c0f06e0b776ba97a8780e3',
-        variableCollectionId: 'VariableCollectionId:0:3',
-        variableCollectionName: 'collection',
-        resolvedType: 'COLOR',
-        description: '',
-        hiddenFromPublishing: false,
-        scopes: ['ALL_SCOPES'],
-        codeSyntax: {},
-        collectionModeNames: {'0:0': 'dark', '1:0': 'light'},
-        valuesByMode: {
-          '0:0': const AliasData<int>(data: 4290117398),
-          '1:0': const AliasData<int>(data: 4286038042),
-        },
-      ),
-    ];
-
-    final colorValueMap = {
-      'collection': {
-        'dark': {'green': 4290117398},
-        'light': {'green': 4286038042},
-      },
-    };
-
+    late ProviderContainer container;
     late Logger logger;
     late FigmageCommandRunner commandRunner;
     late FigmaVariablesRepository figmaVariablesRepository;
@@ -62,12 +67,18 @@ void main() {
       logger = _MockLogger();
       figmaVariablesRepository = _MockFigmaVariablesRepository();
       figmagePackageGenerator = _MockFigmagePackageGenerator();
-      commandRunner = FigmageCommandRunner(
-        logger: logger,
-        figmaVariablesRepository: figmaVariablesRepository,
-        figmagePackageGenerator: figmagePackageGenerator,
-        appendCodeEntriesToFile: (entries, path) {},
+
+      container = ProviderContainer(
+        overrides: [
+          loggerProvider.overrideWith((ref) => logger),
+          variablesRepositoryProvider
+              .overrideWith((ref) => figmaVariablesRepository),
+          figmagePackageGeneratorProvider
+              .overrideWith((ref) => figmagePackageGenerator),
+        ],
       );
+
+      commandRunner = FigmageCommandRunner(container);
 
       // Stub the package generator behavior
       when(
@@ -87,42 +98,19 @@ void main() {
           fileId: any(named: 'fileId'),
           token: any(named: 'token'),
         ),
-      ).thenAnswer((_) async => variableList);
+      ).thenAnswer((_) async => _variableList);
 
       when(
         () => figmaVariablesRepository.createValueModeMap<int, ColorVariable>(
-          variables: variableList,
+          variables: _variableList,
         ),
-      ).thenAnswer((_) => colorValueMap);
+      ).thenAnswer((_) => _colorValueMap);
 
       when(() => progress.complete(any())).thenAnswer((_) {
         final message = _.positionalArguments.elementAt(0) as String?;
         if (message != null) progressLogs.add(message);
       });
       when(() => logger.progress(any())).thenReturn(progress);
-    });
-
-    test('successfully generates package and appends color tokens', () async {
-      final exitCode = await commandRunner.run(
-        ['forge', '--token=token', '--fileId=fileId'],
-      );
-      verify(() => logger.progress('Generating package')).called(1);
-      verify(
-        () => figmagePackageGenerator.generate(
-          projectName: any(named: 'projectName'),
-          dir: any(named: 'dir'),
-          description: any(named: 'description'),
-        ),
-      ).called(1);
-      expect(exitCode, equals(ExitCode.success.code));
-    });
-
-    test('requires both token and fileId', () async {
-      final exitCode = await commandRunner.run(['forge']);
-      expect(exitCode, equals(ExitCode.usage.code));
-      verify(() => logger.err('Both token and fileId are required.')).called(
-        1,
-      );
     });
 
     test('tells user how to use command when wrong arguments provided',

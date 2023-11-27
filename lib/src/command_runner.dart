@@ -2,18 +2,11 @@ import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:cli_completion/cli_completion.dart';
 import 'package:figmage/src/commands/commands.dart';
+import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/providers/pub_updater_providers.dart';
 import 'package:figmage/src/version.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:riverpod/riverpod.dart';
-
-import 'domain/providers/logger_providers.dart';
-
-///A typedef for a function that can be used to append strings to a file
-typedef AppendCodeEntriesToFile = void Function(
-  List<String> entries,
-  String filePath,
-);
 
 /// The name of the executable.
 const executableName = 'figmage';

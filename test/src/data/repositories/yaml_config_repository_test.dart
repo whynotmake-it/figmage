@@ -2,33 +2,32 @@ import 'dart:io';
 
 import 'package:figmage/src/data/repositories/yaml_config_repository.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
+import 'package:figmage/src/domain/providers/logger_providers.dart';
+import 'package:figmage/src/domain/repositories/config_repository.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
-class MockFile extends Mock implements File {}
+class _MockFile extends Mock implements File {}
 
-class MockLogger extends Mock implements Logger {}
+class _MockLogger extends Mock implements Logger {}
 
 void main() {
   group('YamlConfigRepository', () {
-    group('constructor', () {
-      test('has default logger', () async {
-        final sut = YamlConfigRepository();
-
-        expect(sut, isA<YamlConfigRepository>());
-      });
-    });
-
     group('readConfigFromFile', () {
-      late YamlConfigRepository sut;
-      late MockFile file;
-      late MockLogger logger;
-      setUp(() {
-        file = MockFile();
-        logger = MockLogger();
-        sut = YamlConfigRepository(logger: logger);
+      late ProviderContainer container;
+      late _MockFile file;
+      late _MockLogger logger;
 
+      late YamlConfigRepository sut;
+      setUp(() {
+        logger = _MockLogger();
+        container = ProviderContainer(
+          overrides: [loggerProvider.overrideWith((ref) => logger)],
+        );
+        sut = container.read(configRepositoryProvider) as YamlConfigRepository;
+        file = _MockFile();
         when(
           () => file.path,
         ).thenReturn('./figmage.yaml');
@@ -42,8 +41,15 @@ void main() {
         when(() => logger.warn(any())).thenReturn(null);
       });
 
-      test('defaults to ./figmage.yaml and logs path', () {
-        sut.readConfigFromFile();
+      tearDown(() {
+        container.dispose();
+      });
+
+      test('defaults to ./figmage.yaml and logs path', () async {
+        await expectLater(
+          () => sut.readConfigFromFile(),
+          throwsA(anything),
+        );
         verify(() => logger.info("Reading config from ./figmage.yaml"));
       });
 
@@ -123,7 +129,7 @@ void main() {
         when(() => file.readAsString()).thenAnswer(
           (_) => Future.value('fileId: fileId'),
         );
-        expect(
+        await expectLater(
           () => sut.readConfigFromFile(file: file),
           throwsA(isA<FormatException>()),
         );

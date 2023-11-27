@@ -19,6 +19,9 @@ class _MockVariablesRepository extends Mock implements VariablesRepository {}
 
 class _MockArgResults extends Mock implements ArgResults {}
 
+/// A mock [GenerationNotifier] that does not run a `build` method.
+///
+/// Can be used to test the methods in isolation.
 class _MockNotifier extends GenerationNotifier {
   @override
   Future<ExitCode> build(ArgResults arg) async {
@@ -28,6 +31,7 @@ class _MockNotifier extends GenerationNotifier {
 
 void main() {
   group("GenerationNotifier", () {
+    late List<Override> overrides;
     late ProviderContainer container;
 
     late _MockVariablesRepository variablesRepository;
@@ -46,27 +50,25 @@ void main() {
       when(() => logger.progress(any())).thenReturn(_MockProgress());
 
       argResults = _MockArgResults();
-
-      container = ProviderContainer(
-        overrides: [
-          variablesRepositoryProvider
-              .overrideWith((ref) => variablesRepository),
-          loggerProvider.overrideWith((ref) => logger),
-          settingsProvider.overrideWith(
-            (ref, arg) => Future.value(
-              (
-                token: "token",
+      overrides = [
+        variablesRepositoryProvider.overrideWith((ref) => variablesRepository),
+        loggerProvider.overrideWith((ref) => logger),
+        settingsProvider.overrideWith(
+          (ref, arg) => Future.value(
+            (
+              token: "token",
+              fileId: "fileId",
+              path: "path",
+              config: const Config(
                 fileId: "fileId",
-                path: "path",
-                config: const Config(
-                  fileId: "fileId",
-                  packageName: "packageName",
-                ),
+                packageName: "packageName",
               ),
             ),
           ),
-          generationStateProvider.overrideWith(GenerationNotifier.new),
-        ],
+        ),
+      ];
+      container = ProviderContainer(
+        overrides: overrides,
       );
     });
     tearDown(() {
@@ -74,21 +76,15 @@ void main() {
     });
 
     test('getVariables', () async {
-      container.updateOverrides([
-        generationStateProvider.overrideWith(_MockNotifier.new),
-      ]);
+      container = ProviderContainer(
+        overrides: [
+          ...overrides,
+          generationStateProvider.overrideWith(_MockNotifier.new),
+        ],
+      );
       final sut = container.read(generationStateProvider(argResults).notifier);
       final settings = await container
           .read(settingsProvider((argResults: argResults)).future);
-
-      // ! This is called in the build method, so we need to reset it
-      verify(
-        () => variablesRepository.getVariables(
-          fileId: any(named: "fileId"),
-          token: any(named: "token"),
-        ),
-      ).called(1);
-
       final result = await sut.getVariables(settings);
 
       expect(result, mockVariables);

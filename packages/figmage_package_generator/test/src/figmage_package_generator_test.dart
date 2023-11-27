@@ -93,6 +93,7 @@ void main() {
           files.any((element) => element.name == "typography.dart"),
           isTrue,
         );
+        expect(files.any((element) => element.name == "numbers.dart"), isTrue);
         expect(files.any((element) => element.name == "spacers.dart"), isTrue);
         expect(files.any((element) => element.name == "paddings.dart"), isTrue);
         expect(files.any((element) => element.name == "radii.dart"), isTrue);
@@ -106,6 +107,7 @@ void main() {
           description: "A test ",
           generateColors: false,
           generateTypography: false,
+          generateNumbers: false,
           generateSpacers: false,
           generatePaddings: false,
           generateRadii: false,
@@ -117,6 +119,7 @@ void main() {
           files.any((element) => element.name == "typography.dart"),
           isFalse,
         );
+        expect(files.any((element) => element.name == "numbers.dart"), isFalse);
         expect(files.any((element) => element.name == "spacers.dart"), isFalse);
         expect(
           files.any((element) => element.name == "paddings.dart"),

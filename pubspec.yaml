@@ -15,7 +15,9 @@ dependencies:
   equatable: ^2.0.5
   figma: ^7.0.0
   figma_variables_api:
-    path: packages/figma_variables_api
+    git:
+      url: https://github.com/whynotmake-it/figmage.git
+      path: packages/figma_variables_api
   figmage_package_generator:
     git:
       url: https://github.com/whynotmake-it/figmage.git

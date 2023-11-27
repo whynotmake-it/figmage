@@ -13,7 +13,7 @@ typedef FigmageSettings = ({
   String token,
   String fileId,
   String path,
-  Config? config,
+  Config config,
 });
 
 /// Tries to parse the shared settings that are needed for the `forge` and
@@ -43,6 +43,6 @@ final settingsProvider = FutureProvider.autoDispose
       final String path => path,
       _ => throw ArgumentError.notNull('path'),
     },
-    config: config
+    config: config,
   );
 });

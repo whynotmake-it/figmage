@@ -34,6 +34,10 @@ void main() {
           "generate": true,
           "from": ["path1", "path2"],
         },
+        "numbers": {
+          "generate": true,
+          "from": ["path1", "path2"],
+        },
         "spacers": {
           "generate": true,
           "from": ["path1", "path2"],
@@ -65,6 +69,9 @@ void main() {
         bools: GenerationSettings(
           from: ["path1", "path2"],
         ),
+        numbers: GenerationSettings(
+          from: ["path1", "path2"],
+        ),
         spacers: GenerationSettings(
           from: ["path1", "path2"],
         ),
@@ -87,6 +94,8 @@ void main() {
         expect(sut.strings.from, isEmpty);
         expect(sut.bools.generate, isTrue);
         expect(sut.bools.from, isEmpty);
+        expect(sut.numbers.generate, isTrue);
+        expect(sut.numbers.from, isEmpty);
         expect(sut.spacers.generate, isFalse);
         expect(sut.spacers.from, isEmpty);
         expect(sut.paddings.generate, isFalse);
@@ -119,6 +128,7 @@ void main() {
               fullExample.typography,
               fullExample.strings,
               fullExample.bools,
+              fullExample.numbers,
               fullExample.spacers,
               fullExample.paddings,
               fullExample.radii,

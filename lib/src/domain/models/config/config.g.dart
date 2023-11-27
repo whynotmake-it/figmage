@@ -36,6 +36,11 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
               (v) => v == null
                   ? const GenerationSettings()
                   : GenerationSettings.fromJson(v as Map)),
+          numbers: $checkedConvert(
+              'numbers',
+              (v) => v == null
+                  ? const GenerationSettings()
+                  : GenerationSettings.fromJson(v as Map)),
           spacers: $checkedConvert(
               'spacers',
               (v) => v == null
@@ -66,6 +71,7 @@ Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
       'typography': instance.typography.toJson(),
       'strings': instance.strings.toJson(),
       'bools': instance.bools.toJson(),
+      'numbers': instance.numbers.toJson(),
       'spacers': instance.spacers.toJson(),
       'paddings': instance.paddings.toJson(),
       'radii': instance.radii.toJson(),

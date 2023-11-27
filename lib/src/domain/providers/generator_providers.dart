@@ -21,7 +21,8 @@ typedef GeneratorProviderArgs = ({
 final generatorProvider =
     Provider.family<ThemeClassGenerator?, GeneratorProviderArgs>(
   (ref, args) {
-    final type = TokenFileType.fromFilename(args.filename);
+    final type = TokenFileType.tryFromFilename(args.filename);
+    if (type == null || args.settings.generate == false) return null;
 
     final valuesByNameByMode = switch (type) {
       TokenFileType.color => args.variables.whereType<ColorVariable>(),

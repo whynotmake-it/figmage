@@ -42,12 +42,12 @@ class GenerationNotifier
     if (variablesAsync is AsyncError) return ExitCode.usage;
 
     final generatedFilesAsync = await AsyncValue.guard(
-      () => generatePackage(settings, variablesAsync.value!),
+      () => _generatePackage(settings, variablesAsync.value!),
     );
     if (generatedFilesAsync is AsyncError) return ExitCode.usage;
 
     final codeByFiles = await AsyncValue.guard(
-      () => generateCodeForFiles(
+      () => _generateCodeForFiles(
         generatedFiles: generatedFilesAsync.value!,
         variables: variablesAsync.value!,
         config: settings.config,
@@ -56,7 +56,7 @@ class GenerationNotifier
     if (generatedFilesAsync is AsyncError) return ExitCode.usage;
 
     final writeResult = await AsyncValue.guard(
-      () async => writeToFiles(codeByFiles.value!),
+      () async => _writeToFiles(codeByFiles.value!),
     );
     if (writeResult is AsyncError) return ExitCode.usage;
 
@@ -64,7 +64,7 @@ class GenerationNotifier
   }
 
   /// Gets variables from the figma file, or throws an error if none are found.
-  @visibleForTesting
+
   Future<List<Variable>> getVariables(
     FigmageSettings settings,
   ) async {
@@ -98,8 +98,7 @@ class GenerationNotifier
   }
 
   /// Gets variables from the figma file, or throws an error if none are found.
-  @visibleForTesting
-  Future<Iterable<File>> generatePackage(
+  Future<Iterable<File>> _generatePackage(
     FigmageSettings settings,
     List<Variable> variables,
   ) async {
@@ -115,12 +114,12 @@ class GenerationNotifier
             dir: Directory(settings.path),
             description: settings.config.packageDescription,
             generateColors: settings.config.colors.generate,
-            generateTypography: settings.config.typography.generate,
             generateNumbers: settings.config.numbers.generate,
             // TODO(tim): support better
             generatePaddings: settings.config.numbers.generate,
             generateSpacers: settings.config.numbers.generate,
             // TODO(tim): support at all
+            generateTypography: false,
             generateStrings: false,
             generateBools: false,
             generateRadii: false,
@@ -134,8 +133,7 @@ class GenerationNotifier
   }
 
   /// Generates codes for all relevant files from [generatedFiles]
-  @visibleForTesting
-  Future<Map<File, String>> generateCodeForFiles({
+  Future<Map<File, String>> _generateCodeForFiles({
     required Iterable<File> generatedFiles,
     required List<Variable> variables,
     required Config config,
@@ -147,7 +145,7 @@ class GenerationNotifier
         [
           for (final file in generatedFiles)
             if (_getSettingsForFile(file, config) case final settings?)
-              generateForFile(
+              _generateForFile(
                 generatedFile: file,
                 variables: variables,
                 settings: settings,
@@ -167,8 +165,7 @@ class GenerationNotifier
   }
 
   /// Generates code for a single file
-  @visibleForTesting
-  Future<(File, String)?> generateForFile({
+  Future<(File, String)?> _generateForFile({
     required File generatedFile,
     required List<Variable> variables,
     required GenerationSettings settings,
@@ -188,7 +185,7 @@ class GenerationNotifier
 
   /// Writes the generated code to the files
   @visibleForTesting
-  Iterable<File> writeToFiles(Map<File, String> codeByFiles) {
+  Iterable<File> _writeToFiles(Map<File, String> codeByFiles) {
     final logger = ref.read(loggerProvider);
     final writeProgress = logger.progress("Writing files...");
     final repo = ref.read(fileWriterRepositoryProvider);

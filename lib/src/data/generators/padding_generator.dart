@@ -3,11 +3,11 @@ import 'package:dart_style/dart_style.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 
-///{@template padding_generator}
-///A generator for a padding class.
-///{@endtemplate}
+/// {@template padding_generator}
+/// A generator for a padding class.
+/// {@endtemplate}
 class PaddingGenerator implements ThemeClassGenerator {
-  ///{@macro padding_generator_template}
+  /// {@macro padding_generator_template}
   PaddingGenerator({
     required this.className,
     required this.numberReference,
@@ -24,10 +24,10 @@ class PaddingGenerator implements ThemeClassGenerator {
   @override
   bool buildContextExtensionNullable;
 
-  ///The [Reference] for the class which is providing values for the spacers
+  /// The [Reference] for the class which is providing values for the spacers
   final Reference numberReference;
 
-  ///The names of the values
+  /// The names of the values
   final List<String> valueNames;
 
   final _dartfmt = DartFormatter();

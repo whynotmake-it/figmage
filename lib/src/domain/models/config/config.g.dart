@@ -11,8 +11,8 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
       json,
       ($checkedConvert) {
         final val = Config(
-          fileId: $checkedConvert('fileId', (v) => v as String),
           packageName: $checkedConvert('packageName', (v) => v as String),
+          fileId: $checkedConvert('fileId', (v) => v as String?),
           packageDescription:
               $checkedConvert('packageDescription', (v) => v as String? ?? ''),
           packageDir: $checkedConvert('outputPath', (v) => v as String? ?? '.'),
@@ -63,8 +63,8 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
     );
 
 Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
-      'fileId': instance.fileId,
       'packageName': instance.packageName,
+      'fileId': instance.fileId,
       'packageDescription': instance.packageDescription,
       'outputPath': instance.packageDir,
       'colors': instance.colors.toJson(),

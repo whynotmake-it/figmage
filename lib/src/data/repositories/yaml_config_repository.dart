@@ -31,6 +31,11 @@ class YamlConfigRepository implements ConfigRepository {
 
     _logger.info('Reading config from ${configFile.path}');
 
+    if (configFile.existsSync() == false) {
+      _logger.info('Config file not found, using default config.');
+      return const Config();
+    }
+
     final yamlMap = await _readYamlFile(configFile);
 
     final Config config;

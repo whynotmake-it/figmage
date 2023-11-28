@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:test/test.dart';
 
@@ -15,6 +14,10 @@ void main() {
     testDirectory = Directory("${Directory.current.path}/test_generated");
   });
 
+  tearDown(() {
+    testDirectory.deleteSync(recursive: true);
+  });
+
   group('can generate variables from test file', () {
     test('should generate variables', () async {
       final result = await Process.run(
@@ -22,13 +25,18 @@ void main() {
         [
           'bin/figmage.dart',
           'forge',
+          '--path',
           testDirectory.path,
           '--token',
           token,
-          '--file-id',
+          '--fileId',
           fileId,
         ],
       );
+      if (result.exitCode != 0) {
+        print(result.stdout);
+        print(result.stderr);
+      }
       expect(result.exitCode, 0);
     });
   });

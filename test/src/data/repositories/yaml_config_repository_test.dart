@@ -62,6 +62,14 @@ void main() {
         verify(() => file.existsSync()).called(1);
       });
 
+      test('returns default if file does not exist', () async {
+        when(() => file.existsSync()).thenReturn(false);
+        await expectLater(
+          await sut.readConfigFromFile(file: file),
+          const Config(),
+        );
+      });
+
       test('reads the file', () async {
         await sut.readConfigFromFile(file: file);
         verify(() => file.readAsString()).called(1);

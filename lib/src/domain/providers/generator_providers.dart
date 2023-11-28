@@ -6,6 +6,7 @@ import 'package:figmage/src/data/generators/spacer_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
+import 'package:figmage/src/domain/models/style/text_style.dart';
 import 'package:figmage/src/domain/util/variable_filter_extension.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:riverpod/riverpod.dart';
@@ -27,7 +28,8 @@ final generatorProvider =
 
     final filteredTokens = switch (type) {
       TokenFileType.color => args.tokens.whereType<DesignToken<int>>(),
-      TokenFileType.typography => args.tokens.whereType<DesignToken<int>>(),
+      TokenFileType.typography =>
+        args.tokens.whereType<DesignToken<TextStyle>>(),
       TokenFileType.numbers ||
       TokenFileType.spacers ||
       TokenFileType.paddings ||
@@ -37,6 +39,8 @@ final generatorProvider =
       TokenFileType.bools => args.tokens.whereType<DesignToken<bool>>(),
     }
         .filterByFrom(args.settings);
+    print(args.tokens);
+    print(filteredTokens);
     final valuesByNameByMode = filteredTokens.valuesByNameByMode;
 
     if (valuesByNameByMode.isEmpty) return null;

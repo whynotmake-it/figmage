@@ -1,17 +1,13 @@
 import 'package:equatable/equatable.dart';
-import 'package:figma/figma.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:meta/meta.dart';
-
-part 'text_style.dart';
-part 'color_style.dart';
 
 /// {@template design_style}
 /// A superlass for all design styles
 /// {@endtemplate}
 @immutable
-sealed class DesignStyle<T> with EquatableMixin implements DesignToken<T> {
+abstract class DesignStyle<T> with EquatableMixin implements DesignToken<T> {
   /// {@macro design_style}
   const DesignStyle({
     required this.id,

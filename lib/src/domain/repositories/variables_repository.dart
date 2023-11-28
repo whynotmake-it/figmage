@@ -23,7 +23,7 @@ abstract interface class VariablesRepository {
   ///
   /// Returns a list of [Variable] instances representing the variable values in
   /// the Figma file.
-  Future<List<Variable>> getVariables({
+  Future<List<Variable<dynamic>>> getVariables({
     required String fileId,
     required String token,
   });
@@ -57,8 +57,8 @@ abstract interface class VariablesRepository {
   /// );
   /// ```
   VariableValuesByIdByModeByCollection<T>
-      createValueModeMap<T, V extends Variable>({
-    required List<Variable> variables,
+      createValueModeMap<T, V extends Variable<dynamic>>({
+    required List<Variable<dynamic>> variables,
     bool useNames = true,
   });
 }

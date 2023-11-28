@@ -1,7 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:figma/figma.dart';
 import 'package:figmage/src/data/util/converters/color_conversion_x.dart';
+import 'package:figmage/src/domain/models/style/color_style.dart';
 import 'package:figmage/src/domain/models/style/design_style.dart';
+import 'package:figmage/src/domain/models/style/text_style.dart';
 import 'package:figmage/src/domain/repositories/styles_repository.dart';
 
 /// {@template figma_styles_repository}

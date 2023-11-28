@@ -1,7 +1,7 @@
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
 
-final mockBoolVariable = Variable.boolean(
+const mockBoolVariable = BoolVariable(
   id: "bool_id",
   name: "boolName",
   remote: false,
@@ -15,14 +15,14 @@ final mockBoolVariable = Variable.boolean(
   codeSyntax: {},
   collectionModeNames: {},
   valuesByMode: {
-    "light": const AliasOr.data(data: true),
-    "dark": const AliasOr.data(data: false),
+    "light": AliasOr<bool>.data(data: true),
+    "dark": AliasOr<bool>.data(data: false),
   },
 );
 
-final mockVariables = [
+final mockVariables = <Variable<dynamic>>[
   mockBoolVariable,
-  Variable.color(
+  const ColorVariable(
     id: "color_id",
     name: "colorName",
     remote: false,
@@ -36,11 +36,11 @@ final mockVariables = [
     codeSyntax: {},
     collectionModeNames: {},
     valuesByMode: {
-      "light": const AliasOr.data(data: 0xFF000000),
-      "dark": const AliasOr.data(data: 0xFFFFFFFF),
+      "light": AliasOr.data(data: 0xFF000000),
+      "dark": AliasOr.data(data: 0xFFFFFFFF),
     },
   ),
-  Variable.float(
+  const FloatVariable(
     id: "float_id",
     name: "floatName",
     remote: false,
@@ -54,11 +54,11 @@ final mockVariables = [
     codeSyntax: {},
     collectionModeNames: {},
     valuesByMode: {
-      "light": const AliasOr.data(data: 1),
-      "dark": const AliasOr.data(data: 0),
+      "light": AliasOr.data(data: 1),
+      "dark": AliasOr.data(data: 0),
     },
   ),
-  Variable.string(
+  const StringVariable(
     id: "string_id",
     name: "stringName",
     remote: false,
@@ -72,8 +72,27 @@ final mockVariables = [
     codeSyntax: {},
     collectionModeNames: {},
     valuesByMode: {
-      "light": const AliasOr.data(data: "light"),
-      "dark": const AliasOr.data(data: "dark"),
+      "light": AliasOr.data(data: "light"),
+      "dark": AliasOr.data(data: "dark"),
     },
   ),
 ];
+
+const mockVariableEmptyCollection = BoolVariable(
+  id: "bool_id",
+  name: "boolName",
+  remote: false,
+  key: "key",
+  variableCollectionId: "variableCollectionId",
+  variableCollectionName: "",
+  resolvedType: "BOOLEAN",
+  description: "description",
+  hiddenFromPublishing: false,
+  scopes: [],
+  codeSyntax: {},
+  collectionModeNames: {},
+  valuesByMode: {
+    "light": AliasOr<bool>.data(data: true),
+    "dark": AliasOr<bool>.data(data: false),
+  },
+);

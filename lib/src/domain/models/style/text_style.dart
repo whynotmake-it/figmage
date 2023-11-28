@@ -1,4 +1,5 @@
-part of 'design_style.dart';
+import 'package:figma/figma.dart';
+import 'package:figmage/src/domain/models/style/design_style.dart';
 
 /// {@template text_style}
 /// A style for typography.

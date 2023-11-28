@@ -4,11 +4,14 @@ import 'dart:io';
 import 'package:args/args.dart';
 import 'package:figmage/src/commands/shared/forge_settings_providers.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
+import 'package:figmage/src/domain/models/design_token.dart';
+import 'package:figmage/src/domain/models/style/design_style.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
 import 'package:figmage/src/domain/providers/figmage_package_generator_providers.dart';
 import 'package:figmage/src/domain/providers/generator_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/repositories/file_writer_repository.dart';
+import 'package:figmage/src/domain/repositories/styles_repository.dart';
 import 'package:figmage/src/domain/repositories/variables_repository.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:mason_logger/mason_logger.dart';
@@ -38,17 +41,24 @@ class GenerationNotifier
     }
 
     final variablesAsync = await AsyncValue.guard(() => getVariables(settings));
-    if (variablesAsync is AsyncError) return ExitCode.usage;
+
+    final stylesAsync = await AsyncValue.guard(() => _getStyles(settings));
+    if (stylesAsync is AsyncError) return ExitCode.usage;
+
+    final allTokens = <DesignToken<dynamic>>[
+      ...?variablesAsync.valueOrNull,
+      ...?stylesAsync.valueOrNull,
+    ];
 
     final generatedFilesAsync = await AsyncValue.guard(
-      () => _generatePackage(settings, variablesAsync.value!),
+      () => _generatePackage(settings, allTokens),
     );
     if (generatedFilesAsync is AsyncError) return ExitCode.usage;
 
     final codeByFiles = await AsyncValue.guard(
       () => _generateCodeForFiles(
         generatedFiles: generatedFilesAsync.value!,
-        variables: variablesAsync.value!,
+        variables: allTokens,
         config: settings.config,
       ),
     );
@@ -64,7 +74,7 @@ class GenerationNotifier
 
   /// Gets variables from the figma file, or throws an error if none are found.
 
-  Future<List<Variable>> getVariables(
+  Future<List<Variable<dynamic>>> getVariables(
     FigmageSettings settings,
   ) async {
     final logger = ref.read(loggerProvider);
@@ -96,10 +106,42 @@ class GenerationNotifier
     }
   }
 
+  Future<List<DesignStyle<dynamic>>> _getStyles(
+    FigmageSettings settings,
+  ) async {
+    final logger = ref.read(loggerProvider);
+    final stylesProgress = logger.progress("Fetching all styles...");
+    try {
+      final styles = await ref
+          .read(
+            stylesRepositoryProvider,
+          )
+          .getStyles(
+            fileId: settings.fileId,
+            token: settings.token,
+          );
+      switch (styles) {
+        case []:
+          stylesProgress.fail("No styles found");
+          throw ArgumentError.value(
+            styles,
+            "styles",
+            "No styles found in file ${settings.fileId}",
+          );
+        case [...]:
+          stylesProgress.complete("Found ${styles.length} variables");
+          return styles;
+      }
+    } catch (e) {
+      stylesProgress.fail("Failed to fetch variables: $e");
+      rethrow;
+    }
+  }
+
   /// Gets variables from the figma file, or throws an error if none are found.
   Future<Iterable<File>> _generatePackage(
     FigmageSettings settings,
-    List<Variable> variables,
+    List<DesignToken<dynamic>> variables,
   ) async {
     final logger = ref.read(loggerProvider);
     final packageProgress = logger.progress("Generating package...");
@@ -123,7 +165,8 @@ class GenerationNotifier
             generateBools: false,
             generateRadii: false,
           );
-      packageProgress.complete("Generated package at ${settings.path}");
+      packageProgress.complete("Generated package at ${settings.path} with "
+          "${files.length} files");
       return files;
     } catch (e) {
       packageProgress.fail("Failed to generate package: $e");
@@ -134,7 +177,7 @@ class GenerationNotifier
   /// Generates codes for all relevant files from [generatedFiles]
   Future<Map<File, String>> _generateCodeForFiles({
     required Iterable<File> generatedFiles,
-    required List<Variable> variables,
+    required List<DesignToken<dynamic>> variables,
     required Config config,
   }) async {
     final logger = ref.read(loggerProvider);
@@ -166,7 +209,7 @@ class GenerationNotifier
   /// Generates code for a single file
   Future<(File, String)?> _generateForFile({
     required File generatedFile,
-    required List<Variable> variables,
+    required List<DesignToken<dynamic>> variables,
     required GenerationSettings settings,
   }) async {
     final generator = ref.read(
@@ -178,6 +221,7 @@ class GenerationNotifier
         ),
       ),
     );
+    print(generator);
     if (generator == null) return null;
     return (generatedFile, generator.generate());
   }

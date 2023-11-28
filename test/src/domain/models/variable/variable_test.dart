@@ -6,11 +6,10 @@ void main() {
   group('Variable', () {
     group('fullName', () {
       test('should return the name if collection is empty', () {
-        final mockVariableWithEmptyCollection =
-            mockBoolVariable.copyWith(variableCollectionName: "");
+        expect(mockVariableEmptyCollection.variableCollectionName, "");
         expect(
-          mockVariableWithEmptyCollection.fullName,
-          mockVariableWithEmptyCollection.name,
+          mockVariableEmptyCollection.fullName,
+          mockVariableEmptyCollection.name,
         );
       });
       test('should put slash between collection name and variable name', () {

@@ -21,7 +21,7 @@ void main() {
         expect(
           variables,
           everyElement(
-            isA<Variable>().having(
+            isA<Variable<dynamic>>().having(
               (p0) => p0.variableCollectionName,
               "variable collection name",
               "collection1",
@@ -32,7 +32,7 @@ void main() {
     });
     group("valuesByNameByMode", () {
       test("should return an empty map if there are no variables", () {
-        final valuesByNameByMode = <Variable>[].valuesByNameByMode;
+        final valuesByNameByMode = <Variable<dynamic>>[].valuesByNameByMode;
         expect(valuesByNameByMode, isEmpty);
       });
       test("should return a map of values by name by mode", () {

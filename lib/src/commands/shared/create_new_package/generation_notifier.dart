@@ -11,7 +11,6 @@ import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/repositories/file_writer_repository.dart';
 import 'package:figmage/src/domain/repositories/variables_repository.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:path/path.dart';
 import 'package:riverpod/riverpod.dart';
@@ -184,7 +183,6 @@ class GenerationNotifier
   }
 
   /// Writes the generated code to the files
-  @visibleForTesting
   Iterable<File> _writeToFiles(Map<File, String> codeByFiles) {
     final logger = ref.read(loggerProvider);
     final writeProgress = logger.progress("Writing files...");

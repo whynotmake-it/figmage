@@ -156,7 +156,7 @@ void main() {
         "radii.dart",
         "strings.dart",
         "bools.dart",
-        "typography.dart"
+        "typography.dart",
       ]) {
         final generator = container.read(
           generatorProvider(

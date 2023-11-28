@@ -60,7 +60,7 @@ class FigmaClient {
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return jsonDecode(res.body);
       } else {
-        throw FigmaError(code: res.statusCode, message: res.body);
+        throw FigmaException(code: res.statusCode, message: res.body);
       }
     });
   }
@@ -82,7 +82,7 @@ class FigmaClient {
       if (res.statusCode >= 200 && res.statusCode < 300) {
         return jsonDecode(res.body);
       } else {
-        throw FigmaError(code: res.statusCode, message: res.body);
+        throw FigmaException(code: res.statusCode, message: res.body);
       }
     });
   }
@@ -172,8 +172,8 @@ class _Response {
 }
 
 /// An error from the [Figma API docs](https://www.figma.com/developers/api#errors).
-class FigmaError extends Error {
-  FigmaError({this.code, this.message});
+class FigmaException implements Exception {
+  const FigmaException({this.code, this.message});
 
   /// HTTP status code.
   final int? code;

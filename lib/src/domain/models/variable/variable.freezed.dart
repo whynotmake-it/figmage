@@ -873,7 +873,7 @@ class _$BooleanVariableImpl extends BooleanVariable {
   }
 }
 
-abstract class BooleanVariable extends Variable {
+abstract class BooleanVariable extends Variable implements DesignToken<bool> {
   factory BooleanVariable(
           {required final String id,
           required final String name,
@@ -1441,7 +1441,7 @@ class _$FloatVariableImpl extends FloatVariable {
   }
 }
 
-abstract class FloatVariable extends Variable {
+abstract class FloatVariable extends Variable implements DesignToken<double> {
   factory FloatVariable(
           {required final String id,
           required final String name,
@@ -2009,7 +2009,7 @@ class _$ColorVariableImpl extends ColorVariable {
   }
 }
 
-abstract class ColorVariable extends Variable {
+abstract class ColorVariable extends Variable implements DesignToken<int> {
   factory ColorVariable(
           {required final String id,
           required final String name,
@@ -2578,7 +2578,7 @@ class _$StringVariableImpl extends StringVariable {
   }
 }
 
-abstract class StringVariable extends Variable {
+abstract class StringVariable extends Variable implements DesignToken<String> {
   factory StringVariable(
           {required final String id,
           required final String name,

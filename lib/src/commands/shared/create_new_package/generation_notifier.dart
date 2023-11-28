@@ -174,7 +174,7 @@ class GenerationNotifier
         (
           filename: basename(generatedFile.path),
           settings: settings,
-          variables: variables,
+          tokens: variables,
         ),
       ),
     );

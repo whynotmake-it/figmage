@@ -70,8 +70,18 @@ class FigmaVariablesRepository implements VariablesRepository {
     required String token,
   }) async {
     final client = FigmaClient(token);
-    // ignore: unnecessary_await_in_return
-    return await client.getLocalVariables(fileId);
+    try {
+      // ignore: unnecessary_await_in_return
+      return await client.getLocalVariables(fileId);
+    } on FigmaException catch (e) {
+      if (e.code == 403) {
+        throw UnauthorizedVariablesException(e.message ?? "Unauthorized");
+      } else {
+        throw UnknownVariablesException(e.message);
+      }
+    } catch (e) {
+      throw UnknownVariablesException(e.toString());
+    }
   }
 
   /// Converts a list of DTO variables into model variables.

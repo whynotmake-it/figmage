@@ -5,7 +5,7 @@ import 'package:figmage/src/data/generators/padding_generator.dart';
 import 'package:figmage/src/data/generators/spacer_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
-import 'package:figmage/src/domain/models/variable/variable.dart';
+import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/util/variable_filter_extension.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:riverpod/riverpod.dart';
@@ -13,7 +13,7 @@ import 'package:riverpod/riverpod.dart';
 /// The arguments for the [generatorProvider]
 typedef GeneratorProviderArgs = ({
   String filename,
-  List<Variable> variables,
+  List<DesignToken<dynamic>> tokens,
   GenerationSettings settings,
 });
 
@@ -25,20 +25,19 @@ final generatorProvider =
     final type = TokenFileType.tryFromFilename(args.filename);
     if (type == null || args.settings.generate == false) return null;
 
-    final filteredVariables = switch (type) {
-      TokenFileType.color => args.variables.whereType<ColorVariable>(),
+    final filteredTokens = switch (type) {
+      TokenFileType.color => args.tokens.whereType<DesignToken<int>>(),
+      TokenFileType.typography => args.tokens.whereType<DesignToken<int>>(),
       TokenFileType.numbers ||
       TokenFileType.spacers ||
       TokenFileType.paddings ||
       TokenFileType.radii =>
-        args.variables.whereType<FloatVariable>(),
-      TokenFileType.strings => args.variables.whereType<StringVariable>(),
-      TokenFileType.bools => args.variables.whereType<BooleanVariable>(),
-      // TODO(tim): support
-      TokenFileType.typography => args.variables,
+        args.tokens.whereType<DesignToken<double>>(),
+      TokenFileType.strings => args.tokens.whereType<DesignToken<int>>(),
+      TokenFileType.bools => args.tokens.whereType<DesignToken<bool>>(),
     }
         .filterByFrom(args.settings);
-    final valuesByNameByMode = filteredVariables.valuesByNameByMode;
+    final valuesByNameByMode = filteredTokens.valuesByNameByMode;
 
     if (valuesByNameByMode.isEmpty) return null;
 
@@ -53,12 +52,12 @@ final generatorProvider =
         ),
       TokenFileType.spacers => SpacerGenerator(
           className: "ThemeSpacers",
-          valueNames: filteredVariables.map((e) => e.name).toList(),
+          valueNames: filteredTokens.map((e) => e.name).toList(),
           numberReference: const Reference("ThemeNumbers", "numbers.dart"),
         ),
       TokenFileType.paddings => PaddingGenerator(
           className: "ThemePaddings",
-          valueNames: filteredVariables.map((e) => e.name).toList(),
+          valueNames: filteredTokens.map((e) => e.name).toList(),
           numberReference: const Reference("ThemeNumbers", "numbers.dart"),
         ),
       TokenFileType.radii => null,

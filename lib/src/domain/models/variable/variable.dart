@@ -1,3 +1,4 @@
+import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -25,10 +26,11 @@ const String kResolvedTypeBoolean = 'BOOLEAN';
 /// The [Variable] class is part of a sealed union type, and each constructor is
 /// associated with a specific data type.
 @Freezed()
-sealed class Variable with _$Variable {
+sealed class Variable with _$Variable implements DesignToken<dynamic> {
   const Variable._();
 
   /// A Figma variable with bool content.
+  @Implements<DesignToken<bool>>()
   factory Variable.boolean({
     required String id,
     required String name,
@@ -46,6 +48,7 @@ sealed class Variable with _$Variable {
   }) = BooleanVariable;
 
   /// A Figma variable with float content.
+  @Implements<DesignToken<double>>()
   factory Variable.float({
     required String id,
     required String name,
@@ -63,6 +66,7 @@ sealed class Variable with _$Variable {
   }) = FloatVariable;
 
   /// A Figma variable with color content.
+  @Implements<DesignToken<int>>()
   factory Variable.color({
     required String id,
     required String name,
@@ -80,6 +84,7 @@ sealed class Variable with _$Variable {
   }) = ColorVariable;
 
   /// A Figma variable with string content.
+  @Implements<DesignToken<String>>()
   factory Variable.string({
     required String id,
     required String name,

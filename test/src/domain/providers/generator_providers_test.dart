@@ -3,6 +3,7 @@ import 'package:figmage/src/data/generators/number_theme_extension_generator.dar
 import 'package:figmage/src/data/generators/padding_generator.dart';
 import 'package:figmage/src/data/generators/spacer_generator.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
+import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
 import 'package:figmage/src/domain/providers/generator_providers.dart';
 import 'package:riverpod/riverpod.dart';
@@ -13,7 +14,7 @@ import '../../../test_util/mock/mock_variables.dart';
 void main() {
   group("generatorProvider", () {
     late ProviderContainer container;
-
+    final List<DesignToken<dynamic>> tokens = mockVariables.cast();
     setUp(() {
       container = ProviderContainer();
     });
@@ -26,7 +27,7 @@ void main() {
         generatorProvider(
           (
             filename: "unsupported",
-            variables: mockVariables,
+            tokens: tokens,
             settings: const GenerationSettings()
           ),
         ),
@@ -39,7 +40,7 @@ void main() {
         generatorProvider(
           (
             filename: "colors.dart",
-            variables: mockVariables,
+            tokens: tokens,
             settings: const GenerationSettings(generate: false)
           ),
         ),
@@ -51,7 +52,7 @@ void main() {
         generatorProvider(
           (
             filename: "colors.dart",
-            variables: [],
+            tokens: [],
             settings: const GenerationSettings()
           ),
         ),
@@ -63,7 +64,7 @@ void main() {
         generatorProvider(
           (
             filename: "colors.dart",
-            variables: mockVariables.whereType<StringVariable>().toList(),
+            tokens: mockVariables.whereType<StringVariable>().toList(),
             settings: const GenerationSettings()
           ),
         ),
@@ -76,7 +77,7 @@ void main() {
         generatorProvider(
           (
             filename: "colors.dart",
-            variables: mockVariables,
+            tokens: tokens,
             settings: const GenerationSettings()
           ),
         ),
@@ -96,7 +97,7 @@ void main() {
         generatorProvider(
           (
             filename: "numbers.dart",
-            variables: mockVariables,
+            tokens: tokens,
             settings: const GenerationSettings()
           ),
         ),
@@ -116,7 +117,7 @@ void main() {
         generatorProvider(
           (
             filename: "spacers.dart",
-            variables: mockVariables,
+            tokens: tokens,
             settings: const GenerationSettings()
           ),
         ),
@@ -135,7 +136,7 @@ void main() {
         generatorProvider(
           (
             filename: "paddings.dart",
-            variables: mockVariables,
+            tokens: tokens,
             settings: const GenerationSettings()
           ),
         ),
@@ -162,7 +163,7 @@ void main() {
           generatorProvider(
             (
               filename: filename,
-              variables: mockVariables,
+              tokens: mockVariables.cast(),
               settings: const GenerationSettings()
             ),
           ),

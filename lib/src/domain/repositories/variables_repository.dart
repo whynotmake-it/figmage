@@ -62,3 +62,43 @@ abstract interface class VariablesRepository {
     bool useNames = true,
   });
 }
+
+/// {@template variables_exception}
+/// Superclass for all styles repository exceptions.
+/// {@endtemplate}
+sealed class VariablesException implements Exception {
+  /// {@macro variables_exception}
+  const VariablesException();
+
+  /// The message of the exception.
+  String get message;
+}
+
+/// {@template unauthorized_variables_exception}
+/// Exception thrown when the user is not authorized to access the styles.
+/// {@endtemplate}
+class UnauthorizedVariablesException extends VariablesException {
+  /// {@macro unauthorized_variables_exception}
+  const UnauthorizedVariablesException(String? message)
+      : message = message ??
+            'Unauthorized. Make sure you have a valid access token '
+                'that can access the file and that you are a Figma Enterprise. '
+                'team member';
+
+  @override
+  final String message;
+}
+
+/// {@template unknown_variables_exception}
+/// An exception that is thrown during variables fetching, that can't be
+/// classified as any other exception.
+/// {@endtemplate}
+class UnknownVariablesException extends VariablesException {
+  /// {@macro unknown_variables_exception}
+  const UnknownVariablesException(String? message)
+      : message =
+            message ?? 'Unknown error happened during variables fetching.';
+
+  @override
+  final String message;
+}

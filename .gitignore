@@ -29,3 +29,5 @@ pubspec_overrides.yaml
 
 # Don't skip build test in CI
 dart_test.yaml
+
+.vscode/settings.json

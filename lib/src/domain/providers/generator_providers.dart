@@ -4,6 +4,8 @@ import 'package:figmage/src/data/generators/number_theme_extension_generator.dar
 import 'package:figmage/src/data/generators/padding_generator.dart';
 import 'package:figmage/src/data/generators/spacer_generator.dart';
 import 'package:figmage/src/data/generators/text_style_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/value_names_theme_class_generator.dart';
+import 'package:figmage/src/data/generators/values_by_mode_theme_extension_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
@@ -35,13 +37,12 @@ final generatorProvider =
       TokenFileType.color => ColorThemeExtensionGenerator(
           className: "ThemeColors",
           valuesByNameByMode:
-              filteredTokens.whereType<DesignToken<int>>().valuesByNameByMode,
+              filteredTokens.whereType<ColorStyle>().valuesByNameByMode,
         ),
       TokenFileType.numbers => NumberThemeExtensionGenerator(
           className: "ThemeNumbers",
-          valuesByNameByMode: filteredTokens
-              .whereType<DesignToken<double>>()
-              .valuesByNameByMode,
+          valuesByNameByMode:
+              filteredTokens.whereType<FloatVariable>().valuesByNameByMode,
         ),
       TokenFileType.spacers => SpacerGenerator(
           className: "ThemeSpacers",
@@ -51,7 +52,10 @@ final generatorProvider =
         ),
       TokenFileType.paddings => PaddingGenerator(
           className: "ThemePaddings",
-          valueNames: filteredTokens.map((e) => e.name).toList(),
+          valueNames: filteredTokens
+              .whereType<FloatVariable>()
+              .map((e) => e.name)
+              .toList(),
           numberReference: const Reference("ThemeNumbers", "numbers.dart"),
         ),
       TokenFileType.typography => TextStyleThemeExtensionGenerator(
@@ -63,6 +67,18 @@ final generatorProvider =
       TokenFileType.strings => null,
       TokenFileType.bools => null,
     };
-    return generator;
+    return switch (generator) {
+      ValuesByModeThemeExtensionGenerator(
+        valuesByNameByMode: Map(isEmpty: false),
+      ) =>
+        generator,
+      ValueNamesThemeClassGenerator(
+        valueNames: Iterable(
+          isEmpty: false,
+        )
+      ) =>
+        generator,
+      _ => null,
+    };
   },
 );

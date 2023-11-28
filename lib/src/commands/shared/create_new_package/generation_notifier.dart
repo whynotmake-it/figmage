@@ -200,8 +200,8 @@ class GenerationNotifier
       };
       codeProgress.complete("Generated code for ${result.length} files");
       return result;
-    } catch (_) {
-      codeProgress.fail("Failed to generate code");
+    } catch (e) {
+      codeProgress.fail("Failed to generate code: $e");
       rethrow;
     }
   }

@@ -2,12 +2,15 @@ import 'package:figmage/src/data/generators/color_theme_extension_generator.dart
 import 'package:figmage/src/data/generators/number_theme_extension_generator.dart';
 import 'package:figmage/src/data/generators/padding_generator.dart';
 import 'package:figmage/src/data/generators/spacer_generator.dart';
+import 'package:figmage/src/data/generators/text_style_theme_extension_generator.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
 import 'package:figmage/src/domain/providers/generator_providers.dart';
+import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
+import '../../../test_util/mock/mock_styles.dart';
 import '../../../test_util/mock/mock_variables.dart';
 
 void main() {
@@ -21,24 +24,11 @@ void main() {
       container.dispose();
     });
 
-    test("should return null for unsupported types", () {
-      final generator = container.read(
-        generatorProvider(
-          (
-            filename: "unsupported",
-            tokens: mockVariables,
-            settings: const GenerationSettings()
-          ),
-        ),
-      );
-      expect(generator, isNull);
-    });
-
     test("should return null if generation is disabled", () {
       final generator = container.read(
         generatorProvider(
           (
-            filename: "colors.dart",
+            type: TokenFileType.color,
             tokens: mockVariables,
             settings: const GenerationSettings(generate: false)
           ),
@@ -50,7 +40,7 @@ void main() {
       final generator = container.read(
         generatorProvider(
           (
-            filename: "colors.dart",
+            type: TokenFileType.color,
             tokens: [],
             settings: const GenerationSettings()
           ),
@@ -62,7 +52,7 @@ void main() {
       final generator = container.read(
         generatorProvider(
           (
-            filename: "colors.dart",
+            type: TokenFileType.color,
             tokens: mockVariables.whereType<StringVariable>().toList(),
             settings: const GenerationSettings()
           ),
@@ -71,11 +61,12 @@ void main() {
       expect(generator, isNull);
     });
 
-    test("should return a ColorThemeExtensionGenerator for colors", () {
+    test("should return a ColorThemeExtensionGenerator for color variables",
+        () {
       final generator = container.read(
         generatorProvider(
           (
-            filename: "colors.dart",
+            type: TokenFileType.color,
             tokens: mockVariables,
             settings: const GenerationSettings()
           ),
@@ -91,11 +82,53 @@ void main() {
       );
     });
 
-    test("should return a NumberThemeExtensionGenerator for numbers", () {
+    test("should return a ColorThemeExtensionGenerator for color styles", () {
       final generator = container.read(
         generatorProvider(
           (
-            filename: "numbers.dart",
+            type: TokenFileType.color,
+            tokens: mockStyles,
+            settings: const GenerationSettings()
+          ),
+        ),
+      );
+      expect(
+        generator,
+        isA<ColorThemeExtensionGenerator>().having(
+          (p0) => p0.valuesByNameByMode,
+          "valuesByNameByMode",
+          hasLength(1),
+        ),
+      );
+    });
+
+    test("should return a TextStyleThemeExtensionGenerator for text styles",
+        () {
+      final generator = container.read(
+        generatorProvider(
+          (
+            type: TokenFileType.typography,
+            tokens: mockStyles,
+            settings: const GenerationSettings()
+          ),
+        ),
+      );
+      expect(
+        generator,
+        isA<TextStyleThemeExtensionGenerator>().having(
+          (p0) => p0.valuesByNameByMode,
+          "valuesByNameByMode",
+          hasLength(1),
+        ),
+      );
+    });
+
+    test("should return a NumberThemeExtensionGenerator for number variables",
+        () {
+      final generator = container.read(
+        generatorProvider(
+          (
+            type: TokenFileType.numbers,
             tokens: mockVariables,
             settings: const GenerationSettings()
           ),
@@ -111,11 +144,11 @@ void main() {
       );
     });
 
-    test("should return a SpacerGenerator for spacers", () {
+    test("should return a SpacerGenerator for spacers with variables", () {
       final generator = container.read(
         generatorProvider(
           (
-            filename: "spacers.dart",
+            type: TokenFileType.spacers,
             tokens: mockVariables,
             settings: const GenerationSettings()
           ),
@@ -130,11 +163,11 @@ void main() {
         ),
       );
     });
-    test("should return a PaddingsGenerator for paddings", () {
+    test("should return a PaddingsGenerator for paddings with variables", () {
       final generator = container.read(
         generatorProvider(
           (
-            filename: "paddings.dart",
+            type: TokenFileType.paddings,
             tokens: mockVariables,
             settings: const GenerationSettings()
           ),
@@ -152,17 +185,16 @@ void main() {
 
     // TODO(tim): support these too:
     test("should return null for unsupported types", () {
-      for (final filename in [
-        "radii.dart",
-        "strings.dart",
-        "bools.dart",
-        "typography.dart",
+      for (final type in [
+        TokenFileType.radii,
+        TokenFileType.bools,
+        TokenFileType.strings,
       ]) {
         final generator = container.read(
           generatorProvider(
             (
-              filename: filename,
-              tokens: mockVariables.cast(),
+              type: type,
+              tokens: [...mockStyles, ...mockVariables],
               settings: const GenerationSettings()
             ),
           ),

@@ -1,5 +1,5 @@
 import 'package:figmage/src/domain/models/design_token.dart';
-import 'package:figmage/src/domain/models/style/color_style.dart';
+import 'package:figmage/src/domain/models/style/design_style.dart';
 import 'package:test/test.dart';
 
 void main() {

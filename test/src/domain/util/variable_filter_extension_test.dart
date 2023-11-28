@@ -1,6 +1,6 @@
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
-import 'package:figmage/src/domain/util/variable_filter_extension.dart';
+import 'package:figmage/src/domain/util/token_filter_x.dart';
 import 'package:test/test.dart';
 
 import '../../../test_util/mock/mock_variables.dart';

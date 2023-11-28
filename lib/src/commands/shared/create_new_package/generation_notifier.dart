@@ -212,10 +212,13 @@ class GenerationNotifier
     required List<DesignToken<dynamic>> variables,
     required GenerationSettings settings,
   }) async {
+    final tokenType =
+        TokenFileType.tryFromFilename(basename(generatedFile.path));
+    if (tokenType == null) return null;
     final generator = ref.read(
       generatorProvider(
         (
-          filename: basename(generatedFile.path),
+          type: tokenType,
           settings: settings,
           tokens: variables,
         ),

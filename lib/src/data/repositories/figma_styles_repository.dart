@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
-import 'package:figma/figma.dart' as figma;
+import 'package:figma/figma.dart';
+import 'package:figmage/src/data/util/converters/color_conversion_x.dart';
 import 'package:figmage/src/domain/models/style/design_style.dart';
 import 'package:figmage/src/domain/repositories/styles_repository.dart';
 
@@ -8,16 +9,15 @@ import 'package:figmage/src/domain/repositories/styles_repository.dart';
 /// {@endtemplate}
 class FigmaStylesRepository implements StylesRepository {
   @override
-  // TODO(timcreatedit): implement getStyles
   Future<List<DesignStyle<dynamic>>> getStyles({
     required String fileId,
     required String token,
   }) async {
-    final client = figma.FigmaClient(token);
-    final figma.StylesResponse stylesResponse;
+    final client = FigmaClient(token);
+    final StylesResponse stylesResponse;
     try {
       stylesResponse = await client.getFileStyles(fileId);
-    } on figma.FigmaException catch (e) {
+    } on FigmaException catch (e) {
       _throwError(e);
     }
 
@@ -27,15 +27,15 @@ class FigmaStylesRepository implements StylesRepository {
       return [];
     }
 
-    final figma.NodesResponse nodesResponse;
+    final NodesResponse nodesResponse;
     try {
       nodesResponse = await client.getFileNodes(
         fileId,
-        figma.FigmaQuery(
+        FigmaQuery(
           ids: styles.map((e) => e.nodeId).whereNotNull().toList(),
         ),
       );
-    } on figma.FigmaException catch (e) {
+    } on FigmaException catch (e) {
       _throwError(e);
     }
     final styleNodes = nodesResponse.nodes?.values.map((e) => e.document) ?? [];
@@ -43,32 +43,31 @@ class FigmaStylesRepository implements StylesRepository {
     return [
       for (final node in styleNodes)
         if (node != null)
-          if (_transformNode(node) case final style?) style
+          if (_transformNode(node) case final style?) style,
     ];
   }
 
-  DesignStyle<dynamic>? _transformNode(figma.Node node) {
+  DesignStyle<dynamic>? _transformNode(Node node) {
     return switch (node) {
-      figma.Text(
+      Text(
         :final id,
         :final name?,
         :final style?,
       ) =>
         TextStyle(id: id, name: name, value: style),
-      figma.Rectangle(
+      Rectangle(
         :final id,
         :final name?,
-        fills: [figma.Paint(:final color?), ...],
+        fills: [Paint(:final color?), ...],
       ) =>
-        ColorStyle(id: id, name: name, value: color),
-      // TODO(tim): support all types
+        ColorStyle(id: id, name: name, value: color.toValue()),
       _ => null,
     } as DesignStyle<dynamic>?;
   }
 
-  Never _throwError(figma.FigmaException e) {
+  Never _throwError(FigmaException e) {
     throw switch (e) {
-      figma.FigmaException(code: 403) => const UnauthorizedStylesException(),
+      FigmaException(code: 403) => const UnauthorizedStylesException(),
       _ => throw UnknownStylesException(e.message),
     };
   }

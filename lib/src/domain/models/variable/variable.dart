@@ -104,6 +104,7 @@ sealed class Variable with _$Variable implements DesignToken<dynamic> {
   /// Gets the full name of the variable.
   ///
   /// Used for filtering.
+  @override
   String get fullName => switch (variableCollectionName) {
         "" => name,
         _ => "$variableCollectionName/$name",

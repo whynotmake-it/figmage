@@ -221,7 +221,6 @@ class GenerationNotifier
         ),
       ),
     );
-    print(generator);
     if (generator == null) return null;
     return (generatedFile, generator.generate());
   }

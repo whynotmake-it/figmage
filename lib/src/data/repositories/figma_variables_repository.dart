@@ -186,7 +186,8 @@ class FigmaVariablesRepository implements VariablesRepository {
             collectionModeNames: collectionModeNames,
           ),
         _ => throw UnsupportedError(
-            "The variable type ${dtoVariable.resolvedType} is not supported"),
+            "The variable type ${dtoVariable.resolvedType} is not supported",
+          ),
       };
     });
     return variables.cast<Variable<dynamic>>().toList();

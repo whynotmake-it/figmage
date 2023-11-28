@@ -100,6 +100,9 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
         codeSyntax,
         collectionModeNames,
       ];
+
+  @override
+  bool? get stringify => true;
 }
 
 /// {@template color_variable}

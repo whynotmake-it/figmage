@@ -23,7 +23,7 @@ class _MockFigmagePackageGenerator extends Mock
     implements FigmagePackageGenerator {}
 
 final _variableList = [
-  ColorVariable(
+  const ColorVariable(
     id: 'VariableID:1:2',
     name: 'green',
     remote: false,
@@ -37,8 +37,8 @@ final _variableList = [
     codeSyntax: {},
     collectionModeNames: {'0:0': 'dark', '1:0': 'light'},
     valuesByMode: {
-      '0:0': const AliasData<int>(data: 4290117398),
-      '1:0': const AliasData<int>(data: 4286038042),
+      '0:0': AliasData<int>(data: 4290117398),
+      '1:0': AliasData<int>(data: 4286038042),
     },
   ),
 ];

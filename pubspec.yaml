@@ -2,6 +2,8 @@ name: figmage
 description: A CLI tool for generating Figma styles for Flutter
 version: 0.1.0+1
 publish_to: none
+executables:
+  figmage:
 
 environment:
   sdk: ">=3.0.0 <4.0.0"

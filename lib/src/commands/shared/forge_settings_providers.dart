@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:args/args.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/providers/config_providers.dart';
+import 'package:path/path.dart';
 import 'package:riverpod/riverpod.dart';
 
 /// The arguments for the [settingsProvider] famil.
@@ -22,10 +25,12 @@ typedef FigmageSettings = ({
 /// Throws an error if any aren't present.
 final settingsProvider = FutureProvider.autoDispose
     .family<FigmageSettings, SettingsProviderArgs>((ref, args) async {
-  final configPath = switch (args.argResults['configPath']) {
-    final String? configPath => configPath,
-    _ => null,
+  final dir = switch (args.argResults['path']) {
+    final String dir => Directory(dir),
+    _ => Directory.current,
   };
+
+  final configPath = join(dir.path, 'figmage.yaml');
 
   final config = await ref.watch(configProvider(configPath).future);
   final argResults = args.argResults;

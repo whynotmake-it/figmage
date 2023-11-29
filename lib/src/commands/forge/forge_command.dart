@@ -30,12 +30,6 @@ class ForgeCommand extends Command<int> {
         "fileId",
         abbr: "f",
         help: "Your figma file ID",
-      )
-      ..addOption(
-        "configPath",
-        abbr: "c",
-        defaultsTo: "./figmage.yaml",
-        help: 'Path to your figmage.yaml config file.',
       );
   }
 

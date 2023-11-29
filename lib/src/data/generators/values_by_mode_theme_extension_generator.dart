@@ -92,7 +92,10 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
   String generate() {
     final validValueMaps = valuesByNameByMode.map(
       (key, value) => MapEntry(
-        convertToValidVariableName(key),
+        switch (key) {
+          "" => "",
+          _ => convertToValidVariableName(key),
+        },
         value.map(
           (key, value) => MapEntry(convertToValidVariableName(key), value),
         ),

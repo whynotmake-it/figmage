@@ -1,7 +1,11 @@
+// Due to the analyer raising weird issues when using the const constructors,
+// we have to ignore the prefer_const_constructors rule.
+// ignore_for_file: prefer_const_constructors
+
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
 
-const mockBoolVariable = BoolVariable(
+final mockBoolVariable = BoolVariable(
   id: "bool_id",
   name: "boolName",
   remote: false,
@@ -22,7 +26,7 @@ const mockBoolVariable = BoolVariable(
 
 final mockVariables = <Variable<dynamic>>[
   mockBoolVariable,
-  const ColorVariable(
+  ColorVariable(
     id: "color_id",
     name: "colorName",
     remote: false,
@@ -40,7 +44,7 @@ final mockVariables = <Variable<dynamic>>[
       "dark": AliasOr.data(data: 0xFFFFFFFF),
     },
   ),
-  const FloatVariable(
+  FloatVariable(
     id: "float_id",
     name: "floatName",
     remote: false,
@@ -58,7 +62,7 @@ final mockVariables = <Variable<dynamic>>[
       "dark": AliasOr.data(data: 0),
     },
   ),
-  const StringVariable(
+  StringVariable(
     id: "string_id",
     name: "stringName",
     remote: false,
@@ -78,7 +82,7 @@ final mockVariables = <Variable<dynamic>>[
   ),
 ];
 
-const mockVariableEmptyCollection = BoolVariable(
+final mockVariableEmptyCollection = BoolVariable(
   id: "bool_id",
   name: "boolName",
   remote: false,

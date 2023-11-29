@@ -200,7 +200,7 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
           (b) => b
             ..modifier = FieldModifier.constant
             ..type = refer(className)
-            ..name = '$modeName$className'
+            ..name = convertToValidConstantName('$modeName$className')
             ..assignment = assignment.code,
         ),
       );

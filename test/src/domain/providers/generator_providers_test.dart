@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:figma/figma.dart';
 import 'package:figmage/src/data/generators/color_theme_extension_generator.dart';
 import 'package:figmage/src/data/generators/number_theme_extension_generator.dart';
 import 'package:figmage/src/data/generators/padding_generator.dart';
@@ -8,8 +7,7 @@ import 'package:figmage/src/data/generators/spacer_generator.dart';
 import 'package:figmage/src/data/generators/text_style_theme_extension_generator.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
-import 'package:figmage/src/domain/models/style/design_style.dart';
-import 'package:figmage/src/domain/models/tokens_by_file_type.dart';
+import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_file_type.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/figmage_package_generator_providers.dart';
 import 'package:figmage/src/domain/providers/generator_providers.dart';
@@ -20,6 +18,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
+import '../../../test_util/mock/mock_styles.dart';
 import '../../../test_util/mock/mock_variables.dart';
 
 class _MockLogger extends Mock implements Logger {}
@@ -42,11 +41,11 @@ void main() {
 
       mockTokensByFileType = TokensByFileType(
         colorTokens: [
-          const ColorStyle(id: "id", name: "name", value: 0xFFFFFFFF),
+          mockColorDesignStyle,
           // mockColorVariable,
         ],
         typographyTokens: [
-          TextStyle(id: "id", name: "name", value: TypeStyle()),
+          mockTextDesignStyle,
         ],
         numberTokens: [mockFloatVariable],
         boolTokens: [mockBoolVariable],

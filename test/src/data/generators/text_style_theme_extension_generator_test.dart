@@ -1,94 +1,58 @@
-import 'package:figma/figma.dart';
 import 'package:figmage/src/data/generators/text_style_theme_extension_generator.dart';
+import 'package:figmage/src/domain/models/text_style/text_style.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('Generates a ThemeExtension<MyTextStyles> output file', () async {
-    final generator = TextStyleThemeExtensionGenerator(
-      className: 'MyTextStyles',
-      valuesByNameByMode: {
-        'mode1': {
-          'textStyle1': TypeStyle(
-            fontSize: 16,
-            fontWeight: 500,
-            fontFamily: 'Roboto',
-            textDecoration: TextDecoration.underline,
-            letterSpacing: 1,
-          ),
-          'textStyle2': TypeStyle(
-            fontSize: 32,
-            fontWeight: 900,
-            fontFamily: 'Roboto',
-            textDecoration: TextDecoration.strikeThrough,
-            letterSpacing: 1,
-          ),
-        },
-        'mode2': {
-          'textStyle1': TypeStyle(
-            fontSize: 1,
-            fontWeight: 400,
-            fontFamily: 'Roboto',
-            textDecoration: TextDecoration.underline,
-            letterSpacing: 1,
-          ),
-          'textStyle2': TypeStyle(
-            fontSize: 2,
-            fontWeight: 400,
-            fontFamily: 'Roboto',
-            textDecoration: TextDecoration.strikeThrough,
-            letterSpacing: 1,
-          ),
-        },
+  group('TextStyleThemeExtensionsGenerator', () {
+    const valuesByNameByMode = {
+      'mode1': {
+        'textStyle1': TextStyle(
+          fontSize: 16,
+          fontFamily: 'Roboto',
+          decoration: TextDecoration.underline,
+        ),
+        'textStyle2': TextStyle(
+          fontSize: 24,
+          fontFamily: 'Roboto',
+          decoration: TextDecoration.lineThrough,
+        ),
       },
-      extensionSymbolUrl: 'dart:ui',
-    );
-    expect(generator.generate(), _expectedTextStyleThemeExtensionString);
-  });
-  test('Output file with nullable BuildContext extension', () async {
-    final generator = TextStyleThemeExtensionGenerator(
-      className: 'MyTextStyles',
-      valuesByNameByMode: {
-        'mode1': {
-          'textStyle1': TypeStyle(
-            fontSize: 16,
-            fontWeight: 500,
-            fontFamily: 'Roboto',
-            textDecoration: TextDecoration.underline,
-            letterSpacing: 1,
-          ),
-          'textStyle2': TypeStyle(
-            fontSize: 32,
-            fontWeight: 900,
-            fontFamily: 'Roboto',
-            textDecoration: TextDecoration.strikeThrough,
-            letterSpacing: 1,
-          ),
-        },
-        'mode2': {
-          'textStyle1': TypeStyle(
-            fontSize: 1,
-            fontWeight: 400,
-            fontFamily: 'Roboto',
-            textDecoration: TextDecoration.underline,
-            letterSpacing: 1,
-          ),
-          'textStyle2': TypeStyle(
-            fontSize: 2,
-            fontWeight: 400,
-            fontFamily: 'Roboto',
-            textDecoration: TextDecoration.strikeThrough,
-            letterSpacing: 1,
-          ),
-        },
+      'mode2': {
+        'textStyle1': TextStyle(
+          fontSize: 16,
+          fontFamily: 'Roboto',
+          fontWeight: 700,
+          decoration: TextDecoration.underline,
+        ),
+        'textStyle2': TextStyle(
+          fontSize: 24,
+          fontFamily: 'Roboto',
+          fontWeight: 700,
+          decoration: TextDecoration.lineThrough,
+        ),
       },
-      extensionSymbolUrl: 'dart:ui',
-      buildContextExtensionNullable: true,
-    );
+    };
+    test('Generates a ThemeExtension<MyTextStyles> output file', () async {
+      final generator = TextStyleThemeExtensionGenerator(
+        className: 'MyTextStyles',
+        valuesByNameByMode: valuesByNameByMode,
+        extensionSymbolUrl: 'dart:ui',
+      );
+      expect(generator.generate(), _expectedTextStyleThemeExtensionString);
+    });
+    test('Output file with nullable BuildContext extension', () async {
+      final generator = TextStyleThemeExtensionGenerator(
+        className: 'MyTextStyles',
+        valuesByNameByMode: valuesByNameByMode,
+        extensionSymbolUrl: 'dart:ui',
+        buildContextExtensionNullable: true,
+      );
 
-    expect(
-      generator.generate(),
-      _expectedNullableTextStyleThemeExtensionString,
-    );
+      expect(
+        generator.generate(),
+        _expectedNullableTextStyleThemeExtensionString,
+      );
+    });
   });
 }
 
@@ -114,38 +78,42 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
 
   const MyTextStyles.mode1()
       : textStyle1 = const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 1,
-          decoration: TextDecoration.underline,
           fontFamily: 'Roboto',
+          fontSize: 16.0,
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1.0,
+          height: 1.0,
+          decoration: TextDecoration.underline,
         ),
         textStyle2 = const TextStyle(
-          fontSize: 32,
-          fontWeight: FontWeight.w900,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 1,
-          decoration: TextDecoration.lineThrough,
           fontFamily: 'Roboto',
+          fontSize: 24.0,
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1.0,
+          height: 1.0,
+          decoration: TextDecoration.lineThrough,
         );
 
   const MyTextStyles.mode2()
       : textStyle1 = const TextStyle(
-          fontSize: 1,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 1,
-          decoration: TextDecoration.underline,
           fontFamily: 'Roboto',
+          fontSize: 16.0,
+          fontWeight: FontWeight.w700,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1.0,
+          height: 1.0,
+          decoration: TextDecoration.underline,
         ),
         textStyle2 = const TextStyle(
-          fontSize: 2,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 1,
-          decoration: TextDecoration.lineThrough,
           fontFamily: 'Roboto',
+          fontSize: 24.0,
+          fontWeight: FontWeight.w700,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1.0,
+          height: 1.0,
+          decoration: TextDecoration.lineThrough,
         );
 
   final TextStyle? textStyle1;
@@ -207,38 +175,42 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
 
   const MyTextStyles.mode1()
       : textStyle1 = const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 1,
-          decoration: TextDecoration.underline,
           fontFamily: 'Roboto',
+          fontSize: 16.0,
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1.0,
+          height: 1.0,
+          decoration: TextDecoration.underline,
         ),
         textStyle2 = const TextStyle(
-          fontSize: 32,
-          fontWeight: FontWeight.w900,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 1,
-          decoration: TextDecoration.lineThrough,
           fontFamily: 'Roboto',
+          fontSize: 24.0,
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1.0,
+          height: 1.0,
+          decoration: TextDecoration.lineThrough,
         );
 
   const MyTextStyles.mode2()
       : textStyle1 = const TextStyle(
-          fontSize: 1,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 1,
-          decoration: TextDecoration.underline,
           fontFamily: 'Roboto',
+          fontSize: 16.0,
+          fontWeight: FontWeight.w700,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1.0,
+          height: 1.0,
+          decoration: TextDecoration.underline,
         ),
         textStyle2 = const TextStyle(
-          fontSize: 2,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 1,
-          decoration: TextDecoration.lineThrough,
           fontFamily: 'Roboto',
+          fontSize: 24.0,
+          fontWeight: FontWeight.w700,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1.0,
+          height: 1.0,
+          decoration: TextDecoration.lineThrough,
         );
 
   final TextStyle? textStyle1;

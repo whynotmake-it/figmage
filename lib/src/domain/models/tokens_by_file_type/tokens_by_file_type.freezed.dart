@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$TokensByFileType {
   Iterable<DesignToken<int>> get colorTokens =>
       throw _privateConstructorUsedError;
-  Iterable<DesignToken<TypeStyle>> get typographyTokens =>
+  Iterable<DesignToken<TextStyle>> get typographyTokens =>
       throw _privateConstructorUsedError;
   Iterable<DesignToken<double>> get numberTokens =>
       throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $TokensByFileTypeCopyWith<$Res> {
   @useResult
   $Res call(
       {Iterable<DesignToken<int>> colorTokens,
-      Iterable<DesignToken<TypeStyle>> typographyTokens,
+      Iterable<DesignToken<TextStyle>> typographyTokens,
       Iterable<DesignToken<double>> numberTokens,
       Iterable<DesignToken<String>> stringTokens,
       Iterable<DesignToken<bool>> boolTokens});
@@ -73,7 +73,7 @@ class _$TokensByFileTypeCopyWithImpl<$Res, $Val extends TokensByFileType>
       typographyTokens: null == typographyTokens
           ? _value.typographyTokens
           : typographyTokens // ignore: cast_nullable_to_non_nullable
-              as Iterable<DesignToken<TypeStyle>>,
+              as Iterable<DesignToken<TextStyle>>,
       numberTokens: null == numberTokens
           ? _value.numberTokens
           : numberTokens // ignore: cast_nullable_to_non_nullable
@@ -100,7 +100,7 @@ abstract class _$$TokensByFileTypeImplCopyWith<$Res>
   @useResult
   $Res call(
       {Iterable<DesignToken<int>> colorTokens,
-      Iterable<DesignToken<TypeStyle>> typographyTokens,
+      Iterable<DesignToken<TextStyle>> typographyTokens,
       Iterable<DesignToken<double>> numberTokens,
       Iterable<DesignToken<String>> stringTokens,
       Iterable<DesignToken<bool>> boolTokens});
@@ -131,7 +131,7 @@ class __$$TokensByFileTypeImplCopyWithImpl<$Res>
       typographyTokens: null == typographyTokens
           ? _value.typographyTokens
           : typographyTokens // ignore: cast_nullable_to_non_nullable
-              as Iterable<DesignToken<TypeStyle>>,
+              as Iterable<DesignToken<TextStyle>>,
       numberTokens: null == numberTokens
           ? _value.numberTokens
           : numberTokens // ignore: cast_nullable_to_non_nullable
@@ -164,7 +164,7 @@ class _$TokensByFileTypeImpl extends _TokensByFileType {
   final Iterable<DesignToken<int>> colorTokens;
   @override
   @JsonKey()
-  final Iterable<DesignToken<TypeStyle>> typographyTokens;
+  final Iterable<DesignToken<TextStyle>> typographyTokens;
   @override
   @JsonKey()
   final Iterable<DesignToken<double>> numberTokens;
@@ -217,7 +217,7 @@ class _$TokensByFileTypeImpl extends _TokensByFileType {
 abstract class _TokensByFileType extends TokensByFileType {
   const factory _TokensByFileType(
       {final Iterable<DesignToken<int>> colorTokens,
-      final Iterable<DesignToken<TypeStyle>> typographyTokens,
+      final Iterable<DesignToken<TextStyle>> typographyTokens,
       final Iterable<DesignToken<double>> numberTokens,
       final Iterable<DesignToken<String>> stringTokens,
       final Iterable<DesignToken<bool>> boolTokens}) = _$TokensByFileTypeImpl;
@@ -226,7 +226,7 @@ abstract class _TokensByFileType extends TokensByFileType {
   @override
   Iterable<DesignToken<int>> get colorTokens;
   @override
-  Iterable<DesignToken<TypeStyle>> get typographyTokens;
+  Iterable<DesignToken<TextStyle>> get typographyTokens;
   @override
   Iterable<DesignToken<double>> get numberTokens;
   @override

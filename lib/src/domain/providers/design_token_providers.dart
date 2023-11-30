@@ -1,7 +1,7 @@
-import 'package:figma/figma.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/models/style/design_style.dart';
+import 'package:figmage/src/domain/models/text_style/text_style.dart';
 import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_file_type.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
@@ -38,7 +38,7 @@ final filteredTokensProvider =
         .whereType<DesignToken<int>>()
         .filterByFrom(settings.config.colors),
     typographyTokens: allTokens
-        .whereType<DesignToken<TypeStyle>>()
+        .whereType<DesignToken<TextStyle>>()
         .filterByFrom(settings.config.typography),
     numberTokens: allTokens
         .whereType<DesignToken<double>>()

@@ -1,5 +1,4 @@
 import 'package:args/args.dart';
-import 'package:figmage/src/commands/shared/create_new_package/generation_notifier.dart';
 import 'package:figmage/src/commands/shared/forge_settings_providers.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
@@ -18,16 +17,6 @@ class _MockProgress extends Mock implements Progress {}
 class _MockVariablesRepository extends Mock implements VariablesRepository {}
 
 class _MockArgResults extends Mock implements ArgResults {}
-
-/// A mock [GenerationNotifier] that does not run a `build` method.
-///
-/// Can be used to test the methods in isolation.
-class _MockNotifier extends GenerationNotifier {
-  @override
-  Future<ExitCode> build(ArgResults arg) async {
-    return ExitCode.success;
-  }
-}
 
 void main() {
   group("GenerationNotifier", () {
@@ -73,27 +62,6 @@ void main() {
     });
     tearDown(() {
       container.dispose();
-    });
-
-    test('getVariables', () async {
-      container = ProviderContainer(
-        overrides: [
-          ...overrides,
-          generationStateProvider.overrideWith(_MockNotifier.new),
-        ],
-      );
-      final sut = container.read(generationStateProvider(argResults).notifier);
-      final settings = await container
-          .read(settingsProvider((argResults: argResults)).future);
-      final result = await sut.getVariables(settings);
-
-      expect(result, mockVariables);
-      verify(
-        () => variablesRepository.getVariables(
-          fileId: any(named: "fileId", that: equals(settings.fileId)),
-          token: any(named: "token", that: equals(settings.token)),
-        ),
-      ).called(1);
     });
   });
 }

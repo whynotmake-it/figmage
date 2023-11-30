@@ -46,20 +46,27 @@ void main() {
       });
 
       test('defaults to ./figmage.yaml and logs path', () async {
-        await expectLater(
-          () => sut.readConfigFromFile(),
-          throwsA(anything),
-        );
-        verify(() => logger.info("Reading config from ./figmage.yaml"));
+        sut.readConfigFromFile();
+        verify(() => logger.info("Reading config from ./figmage.yaml"))
+            .called(1);
       });
 
-      test('checks if file exists', () async {
+      test('checks if file exists and returns default config if not', () async {
         when(() => file.existsSync()).thenReturn(false);
-        expect(
-          () async => await sut.readConfigFromFile(file: file),
-          throwsA(isA<FileSystemException>()),
-        );
+        final result = await sut.readConfigFromFile(file: file);
+        verify(
+          () => logger.info('Config file not found, using default config.'),
+        ).called(1);
+        expect(result, const Config());
         verify(() => file.existsSync()).called(1);
+      });
+
+      test('returns default if file does not exist', () async {
+        when(() => file.existsSync()).thenReturn(false);
+        await expectLater(
+          await sut.readConfigFromFile(file: file),
+          const Config(),
+        );
       });
 
       test('reads the file', () async {

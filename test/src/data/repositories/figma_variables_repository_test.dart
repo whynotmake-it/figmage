@@ -104,7 +104,7 @@ void main() {
       final repository = FigmaVariablesRepository();
       final variables = repository.fromDtoToModel(variablesResponseDto);
 
-      expect(variables, isA<List<Variable>>());
+      expect(variables, isA<List<Variable<dynamic>>>());
 // Specific expected equal statements for each field
       expect(
         variables.first.key,

@@ -23,7 +23,7 @@ abstract interface class VariablesRepository {
   ///
   /// Returns a list of [Variable] instances representing the variable values in
   /// the Figma file.
-  Future<List<Variable>> getVariables({
+  Future<List<Variable<dynamic>>> getVariables({
     required String fileId,
     required String token,
   });
@@ -57,8 +57,48 @@ abstract interface class VariablesRepository {
   /// );
   /// ```
   VariableValuesByIdByModeByCollection<T>
-      createValueModeMap<T, V extends Variable>({
-    required List<Variable> variables,
+      createValueModeMap<T, V extends Variable<dynamic>>({
+    required List<Variable<dynamic>> variables,
     bool useNames = true,
   });
+}
+
+/// {@template variables_exception}
+/// Superclass for all styles repository exceptions.
+/// {@endtemplate}
+sealed class VariablesException implements Exception {
+  /// {@macro variables_exception}
+  const VariablesException();
+
+  /// The message of the exception.
+  String get message;
+}
+
+/// {@template unauthorized_variables_exception}
+/// Exception thrown when the user is not authorized to access the styles.
+/// {@endtemplate}
+class UnauthorizedVariablesException extends VariablesException {
+  /// {@macro unauthorized_variables_exception}
+  const UnauthorizedVariablesException(String? message)
+      : message = message ??
+            'Unauthorized. Make sure you have a valid access token '
+                'that can access the file and that you are a Figma Enterprise. '
+                'team member';
+
+  @override
+  final String message;
+}
+
+/// {@template unknown_variables_exception}
+/// An exception that is thrown during variables fetching, that can't be
+/// classified as any other exception.
+/// {@endtemplate}
+class UnknownVariablesException extends VariablesException {
+  /// {@macro unknown_variables_exception}
+  const UnknownVariablesException(String? message)
+      : message =
+            message ?? 'Unknown error happened during variables fetching.';
+
+  @override
+  final String message;
 }

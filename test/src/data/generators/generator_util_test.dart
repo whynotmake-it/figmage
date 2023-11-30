@@ -76,6 +76,49 @@ void main() {
     });
   });
 
+  group("convertToValidConstantName", () {
+    test('converts path to camel case and adds k', () async {
+      expect(convertToValidConstantName('Hello/world'), equals('kHelloWorld'));
+      expect(
+        convertToValidConstantName('Hello/world/Again'),
+        equals('kHelloWorldAgain'),
+      );
+    });
+
+    test('removes non-alphanumeric characters', () {
+      expect(
+        convertToValidConstantName('Hello/world/Again!!'),
+        equals('kHelloWorldAgain'),
+      );
+      expect(
+        convertToValidConstantName('Hello/world/Again/123'),
+        equals('kHelloWorldAgain123'),
+      );
+    });
+
+    test('works with leading numbers', () {
+      expect(
+        convertToValidConstantName('123Hello/world/Again'),
+        equals('k123HelloWorldAgain'),
+      );
+    });
+
+    test('can deal with only numbers', () {
+      expect(
+        convertToValidConstantName('123'),
+        equals('k123'),
+      );
+      expect(
+        convertToValidConstantName('123/hello'),
+        equals('k123Hello'),
+      );
+    });
+
+    test('throws for empty string', () async {
+      expect(() => convertToValidConstantName(''), throwsArgumentError);
+    });
+  });
+
   group("convertToValidClassName", () {
     test('leaves valid class names unchanged', () {
       expect(convertToValidClassName('HelloWorld'), equals('HelloWorld'));
@@ -83,7 +126,7 @@ void main() {
     });
 
     test('converts leading lowercase letters to uppercase', () {
-      expect(convertToValidClassName('helloWorld'), equals('HelloWorld'));
+      expect(convertToValidClassName('hello/world'), equals('HelloWorld'));
       expect(convertToValidClassName('hello123'), equals('Hello123'));
     });
 

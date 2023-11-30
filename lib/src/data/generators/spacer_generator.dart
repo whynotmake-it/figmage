@@ -1,12 +1,13 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
+import 'package:figmage/src/data/generators/value_names_theme_class_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 
 ///{@template space_generator}
 ///A generator for a spacer class.
 ///{@endtemplate}
-class SpacerGenerator implements ThemeClassGenerator {
+class SpacerGenerator implements ValueNamesThemeClassGenerator {
   ///{@macro space_generator_template}
   SpacerGenerator({
     required this.className,
@@ -28,7 +29,8 @@ class SpacerGenerator implements ThemeClassGenerator {
   final Reference numberReference;
 
   ///The names of the values
-  final List<String> valueNames;
+  @override
+  final Iterable<String> valueNames;
 
   final _dartfmt = DartFormatter();
 

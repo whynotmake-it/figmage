@@ -7,14 +7,14 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 /// Visible for testing
 @visibleForTesting
 typedef VariablesData = ({
-  Map<String, Variable> variables,
+  Map<String, Variable<dynamic>> variables,
   Map<String, VariableCollectionDto> variableCollections
 });
 
 /// The implementation of [VariablesRepository] for Figma.
 class FigmaVariablesRepository implements VariablesRepository {
   @override
-  Future<List<Variable>> getVariables({
+  Future<List<Variable<dynamic>>> getVariables({
     required String fileId,
     required String token,
   }) async {
@@ -25,8 +25,8 @@ class FigmaVariablesRepository implements VariablesRepository {
 
   @override
   VariableValuesByIdByModeByCollection<T>
-      createValueModeMap<T, V extends Variable>({
-    required List<Variable> variables,
+      createValueModeMap<T, V extends Variable<dynamic>>({
+    required List<Variable<dynamic>> variables,
     bool useNames = true,
   }) {
     assert(
@@ -70,8 +70,18 @@ class FigmaVariablesRepository implements VariablesRepository {
     required String token,
   }) async {
     final client = FigmaClient(token);
-    // ignore: unnecessary_await_in_return
-    return await client.getLocalVariables(fileId);
+    try {
+      // ignore: unnecessary_await_in_return
+      return await client.getLocalVariables(fileId);
+    } on FigmaException catch (e) {
+      if (e.code == 403) {
+        throw UnauthorizedVariablesException(e.message ?? "Unauthorized");
+      } else {
+        throw UnknownVariablesException(e.message);
+      }
+    } catch (e) {
+      throw UnknownVariablesException(e.toString());
+    }
   }
 
   /// Converts a list of DTO variables into model variables.
@@ -79,11 +89,12 @@ class FigmaVariablesRepository implements VariablesRepository {
   /// Given a [VariablesResponseDto], this method processes the variables within
   /// it, maps them to model variables, and returns a list of variables.
   @visibleForTesting
-  List<Variable> fromDtoToModel(
+  List<Variable<dynamic>> fromDtoToModel(
     VariablesResponseDto variablesResponse,
   ) {
     final variableCollections = variablesResponse.meta.variableCollections;
     final dtoVariables = variablesResponse.meta.variables;
+
     final variables = dtoVariables.values.map((dtoVariable) {
       final variableCollection =
           variableCollections[dtoVariable.variableCollectionId];
@@ -93,99 +104,93 @@ class FigmaVariablesRepository implements VariablesRepository {
       };
       final collectionName = variableCollection.name;
 
-      if (dtoVariable.resolvedType == kResolvedTypeString) {
-        final variable = StringVariable(
-          id: dtoVariable.id,
-          name: dtoVariable.name,
-          remote: dtoVariable.remote,
-          key: dtoVariable.key,
-          variableCollectionId: dtoVariable.variableCollectionId,
-          variableCollectionName: collectionName,
-          resolvedType: dtoVariable.resolvedType,
-          description: dtoVariable.description,
-          hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
-          scopes: dtoVariable.scopes,
-          codeSyntax: dtoVariable.codeSyntax,
-          valuesByMode: dtoVariable.valuesByMode.map(
-            (key, value) => MapEntry(
-              key,
-              _resolveAlias(value: value, dtoVariables: dtoVariables),
+      return switch (dtoVariable.resolvedType) {
+        kResolvedTypeString => StringVariable(
+            id: dtoVariable.id,
+            name: dtoVariable.name,
+            remote: dtoVariable.remote,
+            key: dtoVariable.key,
+            variableCollectionId: dtoVariable.variableCollectionId,
+            variableCollectionName: collectionName,
+            resolvedType: dtoVariable.resolvedType,
+            description: dtoVariable.description,
+            hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
+            scopes: dtoVariable.scopes,
+            codeSyntax: dtoVariable.codeSyntax,
+            valuesByMode: dtoVariable.valuesByMode.map(
+              (key, value) => MapEntry(
+                key,
+                _resolveAlias(value: value, dtoVariables: dtoVariables),
+              ),
             ),
+            collectionModeNames: collectionModeNames,
           ),
-          collectionModeNames: collectionModeNames,
-        );
-        return variable;
-      } else if (dtoVariable.resolvedType == kResolvedTypeBoolean) {
-        final variable = BooleanVariable(
-          id: dtoVariable.id,
-          name: dtoVariable.name,
-          remote: dtoVariable.remote,
-          key: dtoVariable.key,
-          variableCollectionId: dtoVariable.variableCollectionId,
-          variableCollectionName: collectionName,
-          resolvedType: dtoVariable.resolvedType,
-          description: dtoVariable.description,
-          hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
-          scopes: dtoVariable.scopes,
-          codeSyntax: dtoVariable.codeSyntax,
-          valuesByMode: dtoVariable.valuesByMode.map(
-            (key, value) => MapEntry(
-              key,
-              _resolveAlias(value: value, dtoVariables: dtoVariables),
+        kResolvedTypeBoolean => BoolVariable(
+            id: dtoVariable.id,
+            name: dtoVariable.name,
+            remote: dtoVariable.remote,
+            key: dtoVariable.key,
+            variableCollectionId: dtoVariable.variableCollectionId,
+            variableCollectionName: collectionName,
+            resolvedType: dtoVariable.resolvedType,
+            description: dtoVariable.description,
+            hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
+            scopes: dtoVariable.scopes,
+            codeSyntax: dtoVariable.codeSyntax,
+            valuesByMode: dtoVariable.valuesByMode.map(
+              (key, value) => MapEntry(
+                key,
+                _resolveAlias(value: value, dtoVariables: dtoVariables),
+              ),
             ),
+            collectionModeNames: collectionModeNames,
           ),
-          collectionModeNames: collectionModeNames,
-        );
-        return variable;
-      } else if (dtoVariable.resolvedType == kResolvedTypeColor) {
-        final variable = ColorVariable(
-          id: dtoVariable.id,
-          name: dtoVariable.name,
-          remote: dtoVariable.remote,
-          key: dtoVariable.key,
-          variableCollectionId: dtoVariable.variableCollectionId,
-          variableCollectionName: collectionName,
-          resolvedType: dtoVariable.resolvedType,
-          description: dtoVariable.description,
-          hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
-          scopes: dtoVariable.scopes,
-          codeSyntax: dtoVariable.codeSyntax,
-          valuesByMode: dtoVariable.valuesByMode.map(
-            (key, value) => MapEntry(
-              key,
-              _resolveAlias(value: value, dtoVariables: dtoVariables),
+        kResolvedTypeColor => ColorVariable(
+            id: dtoVariable.id,
+            name: dtoVariable.name,
+            remote: dtoVariable.remote,
+            key: dtoVariable.key,
+            variableCollectionId: dtoVariable.variableCollectionId,
+            variableCollectionName: collectionName,
+            resolvedType: dtoVariable.resolvedType,
+            description: dtoVariable.description,
+            hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
+            scopes: dtoVariable.scopes,
+            codeSyntax: dtoVariable.codeSyntax,
+            valuesByMode: dtoVariable.valuesByMode.map(
+              (key, value) => MapEntry(
+                key,
+                _resolveAlias(value: value, dtoVariables: dtoVariables),
+              ),
             ),
+            collectionModeNames: collectionModeNames,
           ),
-          collectionModeNames: collectionModeNames,
-        );
-        return variable;
-      } else if (dtoVariable.resolvedType == kResolvedTypeNumber) {
-        final variable = FloatVariable(
-          id: dtoVariable.id,
-          name: dtoVariable.name,
-          remote: dtoVariable.remote,
-          key: dtoVariable.key,
-          variableCollectionId: dtoVariable.variableCollectionId,
-          variableCollectionName: collectionName,
-          resolvedType: dtoVariable.resolvedType,
-          description: dtoVariable.description,
-          hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
-          scopes: dtoVariable.scopes,
-          codeSyntax: dtoVariable.codeSyntax,
-          valuesByMode: dtoVariable.valuesByMode.map(
-            (key, value) => MapEntry(
-              key,
-              _resolveAlias(value: value, dtoVariables: dtoVariables),
+        kResolvedTypeNumber => FloatVariable(
+            id: dtoVariable.id,
+            name: dtoVariable.name,
+            remote: dtoVariable.remote,
+            key: dtoVariable.key,
+            variableCollectionId: dtoVariable.variableCollectionId,
+            variableCollectionName: collectionName,
+            resolvedType: dtoVariable.resolvedType,
+            description: dtoVariable.description,
+            hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
+            scopes: dtoVariable.scopes,
+            codeSyntax: dtoVariable.codeSyntax,
+            valuesByMode: dtoVariable.valuesByMode.map(
+              (key, value) => MapEntry(
+                key,
+                _resolveAlias(value: value, dtoVariables: dtoVariables),
+              ),
             ),
+            collectionModeNames: collectionModeNames,
           ),
-          collectionModeNames: collectionModeNames,
-        );
-        return variable;
-      } else {
-        throw TypeError();
-      }
+        _ => throw UnsupportedError(
+            "The variable type ${dtoVariable.resolvedType} is not supported",
+          ),
+      };
     });
-    return variables.toList();
+    return variables.cast<Variable<dynamic>>().toList();
   }
 
   /// A helper function for resolving alias values within Figma variables.

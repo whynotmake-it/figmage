@@ -1,6 +1,6 @@
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
-import 'package:figmage/src/domain/util/variable_filter_extension.dart';
+import 'package:figmage/src/domain/util/token_filter_x.dart';
 import 'package:test/test.dart';
 
 import '../../../test_util/mock/mock_variables.dart';
@@ -21,7 +21,7 @@ void main() {
         expect(
           variables,
           everyElement(
-            isA<Variable>().having(
+            isA<Variable<dynamic>>().having(
               (p0) => p0.variableCollectionName,
               "variable collection name",
               "collection1",
@@ -32,7 +32,7 @@ void main() {
     });
     group("valuesByNameByMode", () {
       test("should return an empty map if there are no variables", () {
-        final valuesByNameByMode = <Variable>[].valuesByNameByMode;
+        final valuesByNameByMode = <Variable<dynamic>>[].valuesByNameByMode;
         expect(valuesByNameByMode, isEmpty);
       });
       test("should return a map of values by name by mode", () {

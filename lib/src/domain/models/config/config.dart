@@ -27,8 +27,8 @@ part 'config.g.dart';
 class Config with EquatableMixin {
   /// {@macro config}
   const Config({
-    required this.fileId,
-    required this.packageName,
+    this.packageName = "figmage_package",
+    this.fileId,
     this.packageDescription = '',
     this.packageDir = '.',
     this.colors = const GenerationSettings(),
@@ -44,11 +44,11 @@ class Config with EquatableMixin {
   /// Initializes a [Config] from a json map.
   factory Config.fromMap(Map<dynamic, dynamic> json) => _$ConfigFromJson(json);
 
-  /// figma file ID.
-  final String fileId;
-
   /// The name of the generated dart package, e.g. figmage_example.
   final String packageName;
+
+  /// figma file ID.
+  final String? fileId;
 
   /// The description of the generated dart package.
   final String packageDescription;

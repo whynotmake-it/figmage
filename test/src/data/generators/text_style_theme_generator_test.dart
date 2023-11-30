@@ -112,6 +112,42 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
     required this.textStyle2,
   });
 
+  const MyTextStyles.mode1()
+      : textStyle1 = const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1,
+          decoration: TextDecoration.underline,
+          fontFamily: 'Roboto',
+        ),
+        textStyle2 = const TextStyle(
+          fontSize: 32,
+          fontWeight: FontWeight.w900,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1,
+          decoration: TextDecoration.lineThrough,
+          fontFamily: 'Roboto',
+        );
+
+  const MyTextStyles.mode2()
+      : textStyle1 = const TextStyle(
+          fontSize: 1,
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1,
+          decoration: TextDecoration.underline,
+          fontFamily: 'Roboto',
+        ),
+        textStyle2 = const TextStyle(
+          fontSize: 2,
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1,
+          decoration: TextDecoration.lineThrough,
+          fontFamily: 'Roboto',
+        );
+
   final TextStyle? textStyle1;
 
   final TextStyle? textStyle2;
@@ -150,43 +186,6 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
 extension MyTextStylesBuildContextX on BuildContext {
   MyTextStyles get myTextStyles => Theme.of(this).extension<MyTextStyles>()!;
 }
-
-const MyTextStyles mode1MyTextStyles = MyTextStyles(
-  textStyle1: TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    fontStyle: FontStyle.normal,
-    letterSpacing: 1,
-    decoration: TextDecoration.underline,
-    fontFamily: 'Roboto',
-  ),
-  textStyle2: TextStyle(
-    fontSize: 32,
-    fontWeight: FontWeight.w900,
-    fontStyle: FontStyle.normal,
-    letterSpacing: 1,
-    decoration: TextDecoration.lineThrough,
-    fontFamily: 'Roboto',
-  ),
-);
-const MyTextStyles mode2MyTextStyles = MyTextStyles(
-  textStyle1: TextStyle(
-    fontSize: 1,
-    fontWeight: FontWeight.w400,
-    fontStyle: FontStyle.normal,
-    letterSpacing: 1,
-    decoration: TextDecoration.underline,
-    fontFamily: 'Roboto',
-  ),
-  textStyle2: TextStyle(
-    fontSize: 2,
-    fontWeight: FontWeight.w400,
-    fontStyle: FontStyle.normal,
-    letterSpacing: 1,
-    decoration: TextDecoration.lineThrough,
-    fontFamily: 'Roboto',
-  ),
-);
 ''';
 
 const _expectedNullableTextStyleThemeExtensionString = '''
@@ -205,6 +204,42 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
     required this.textStyle1,
     required this.textStyle2,
   });
+
+  const MyTextStyles.mode1()
+      : textStyle1 = const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1,
+          decoration: TextDecoration.underline,
+          fontFamily: 'Roboto',
+        ),
+        textStyle2 = const TextStyle(
+          fontSize: 32,
+          fontWeight: FontWeight.w900,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1,
+          decoration: TextDecoration.lineThrough,
+          fontFamily: 'Roboto',
+        );
+
+  const MyTextStyles.mode2()
+      : textStyle1 = const TextStyle(
+          fontSize: 1,
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1,
+          decoration: TextDecoration.underline,
+          fontFamily: 'Roboto',
+        ),
+        textStyle2 = const TextStyle(
+          fontSize: 2,
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1,
+          decoration: TextDecoration.lineThrough,
+          fontFamily: 'Roboto',
+        );
 
   final TextStyle? textStyle1;
 
@@ -244,41 +279,4 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
 extension MyTextStylesBuildContextX on BuildContext {
   MyTextStyles? get myTextStyles => Theme.of(this).extension<MyTextStyles>();
 }
-
-const MyTextStyles mode1MyTextStyles = MyTextStyles(
-  textStyle1: TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
-    fontStyle: FontStyle.normal,
-    letterSpacing: 1,
-    decoration: TextDecoration.underline,
-    fontFamily: 'Roboto',
-  ),
-  textStyle2: TextStyle(
-    fontSize: 32,
-    fontWeight: FontWeight.w900,
-    fontStyle: FontStyle.normal,
-    letterSpacing: 1,
-    decoration: TextDecoration.lineThrough,
-    fontFamily: 'Roboto',
-  ),
-);
-const MyTextStyles mode2MyTextStyles = MyTextStyles(
-  textStyle1: TextStyle(
-    fontSize: 1,
-    fontWeight: FontWeight.w400,
-    fontStyle: FontStyle.normal,
-    letterSpacing: 1,
-    decoration: TextDecoration.underline,
-    fontFamily: 'Roboto',
-  ),
-  textStyle2: TextStyle(
-    fontSize: 2,
-    fontWeight: FontWeight.w400,
-    fontStyle: FontStyle.normal,
-    letterSpacing: 1,
-    decoration: TextDecoration.lineThrough,
-    fontFamily: 'Roboto',
-  ),
-);
 ''';

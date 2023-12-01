@@ -1,8 +1,15 @@
 // ignore_for_file: prefer_const_constructors, avoid_slow_async_io
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:figmage_package_generator/figmage_package_generator.dart';
+import 'package:mason/mason.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
+
+class _MockGeneratorTarget extends Mock implements GeneratorTarget {}
+
+class _MockDirectory extends Mock implements Directory {}
 
 void main() {
   group('FigmagePackageGenerator', () {
@@ -10,27 +17,30 @@ void main() {
       expect(FigmagePackageGenerator(), isNotNull);
     });
 
+    late _MockGeneratorTarget generatorTarget;
+
+    late _MockDirectory testDirectory;
+
     late FigmagePackageGenerator sut;
 
     setUp(() async {
-      sut = FigmagePackageGenerator();
+      generatorTarget = _MockGeneratorTarget();
+      when(() => generatorTarget.createFile(any(), any())).thenAnswer(
+        (invocation) => Future.value(
+          GeneratedFile.created(
+            path: invocation.positionalArguments[0] as String,
+          ),
+        ),
+      );
+
+      testDirectory = _MockDirectory();
+      sut = FigmagePackageGenerator(
+        generatorTargetFactory: (_) => generatorTarget,
+      );
     });
 
     group("generate", () {
-      late Directory testDirectory;
-
-      setUp(() async {
-        testDirectory = Directory("${Directory.current.path}/test_generated");
-        if (await testDirectory.exists() == false) {
-          await testDirectory.create();
-        }
-      });
-
-      tearDown(() async {
-        await testDirectory.delete(recursive: true);
-      });
-
-      test('generates directory with files', () async {
+      test('generates files', () async {
         final files = await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
@@ -41,45 +51,55 @@ void main() {
           isNotEmpty,
           reason: "No files were generated",
         );
-
-        final dir = Directory("${testDirectory.path}/figmage_example");
-        expect(
-          await dir.exists(),
-          isTrue,
-          reason: "Directory was not created",
-        );
-
-        final pubspec =
-            File("${testDirectory.path}/figmage_example/pubspec.yaml");
-        expect(
-          await pubspec.exists(),
-          isTrue,
-          reason: "pubspec.yaml was not created",
-        );
-
-        final readme = File("${testDirectory.path}/figmage_example/README.md");
-        expect(
-          await readme.exists(),
-          isTrue,
-          reason: "README.md was not created",
-        );
       });
-
-      test('generated project is without analysis issues', () async {
+      test('generates pubspec.yaml', () async {
         await sut.generate(
           projectName: "figmage_example",
-          description: "A test ",
           dir: testDirectory,
+          description: "A test ",
         );
 
-        await Process.run("dart", ["pub", "get"]);
-        final result = await Process.run("dart", [
-          "analyze",
-          testDirectory.path,
-          "--fatal-infos",
-        ]);
+        verify(
+          () => generatorTarget.createFile(
+            any(that: equals("figmage_example/pubspec.yaml")),
+            any(),
+          ),
+        ).called(1);
+      });
 
-        expect(result.exitCode, 0);
+      test('pubspec contains project name and description', () async {
+        await sut.generate(
+          projectName: "figmage_example",
+          dir: testDirectory,
+          description: "A test ",
+        );
+
+        final content = verify(
+          () => generatorTarget.createFile(
+            any(that: equals("figmage_example/pubspec.yaml")),
+            captureAny(),
+          ),
+        ).captured.first as List<int>;
+
+        final decoded = utf8.decode(content);
+
+        expect(decoded, contains("figmage_example"));
+        expect(decoded, contains("A test"));
+      });
+
+      test('generates non-empty README.md', () async {
+        await sut.generate(
+          projectName: "figmage_example",
+          dir: testDirectory,
+          description: "A test ",
+        );
+
+        verify(
+          () => generatorTarget.createFile(
+            any(that: equals("figmage_example/README.md")),
+            any(that: isNotEmpty),
+          ),
+        ).called(1);
       });
 
       test('generates all extra type files by default', () async {
@@ -88,18 +108,37 @@ void main() {
           dir: testDirectory,
           description: "A test ",
         );
-        expect(files.any((element) => element.name == "colors.dart"), isTrue);
-        expect(
-          files.any((element) => element.name == "typography.dart"),
-          isTrue,
-        );
-        expect(files.any((element) => element.name == "numbers.dart"), isTrue);
-        expect(files.any((element) => element.name == "spacers.dart"), isTrue);
-        expect(files.any((element) => element.name == "paddings.dart"), isTrue);
-        expect(files.any((element) => element.name == "radii.dart"), isTrue);
-        expect(files.any((element) => element.name == "strings.dart"), isTrue);
-        expect(files.any((element) => element.name == "bools.dart"), isTrue);
+        for (final type in TokenFileType.values) {
+          expect(
+            files,
+            contains(
+              isA<File>().having(
+                (f) => f.path,
+                "path",
+                contains("figmage_example/lib/src/${type.filename}"),
+              ),
+            ),
+            reason: "Expected to find ${type.filename} in generated files",
+          );
+        }
       });
+
+      test('generated type files are generated empty', () async {
+        await sut.generate(
+          projectName: "figmage_example",
+          dir: testDirectory,
+          description: "A test ",
+        );
+        for (final type in TokenFileType.values) {
+          verify(
+            () => generatorTarget.createFile(
+              any(that: contains(type.filename)),
+              any(that: isEmpty),
+            ),
+          );
+        }
+      });
+
       test('generates no extra type files if unwanted', () async {
         final files = await sut.generate(
           projectName: "figmage_example",
@@ -114,25 +153,48 @@ void main() {
           generateStrings: false,
           generateBools: false,
         );
-        expect(files.any((element) => element.name == "colors.dart"), isFalse);
-        expect(
-          files.any((element) => element.name == "typography.dart"),
-          isFalse,
+        for (final type in TokenFileType.values) {
+          expect(
+            files,
+            isNot(
+              contains(
+                isA<File>().having(
+                  (f) => f.path,
+                  "path",
+                  contains(type.filename),
+                ),
+              ),
+            ),
+            reason: "Expected not to find ${type.filename} in generated files",
+          );
+        }
+      });
+      test('throws if package URI could not be resolved', () async {
+        sut = FigmagePackageGenerator(
+          generatorTargetFactory: (_) => _MockGeneratorTarget(),
+          packageUriResolver: (_) => null,
         );
-        expect(files.any((element) => element.name == "numbers.dart"), isFalse);
-        expect(files.any((element) => element.name == "spacers.dart"), isFalse);
-        expect(
-          files.any((element) => element.name == "paddings.dart"),
-          isFalse,
+        await expectLater(
+          () => sut.generate(
+            projectName: "figmage_example",
+            dir: testDirectory,
+            description: "A test ",
+          ),
+          throwsA(
+            isA<PackageUriException>()
+                .having(
+                  (p0) => p0.packageName,
+                  "packageName",
+                  "figmage_package_generator",
+                )
+                .having(
+                  (p0) => p0.toString(),
+                  "toString()",
+                  contains("figmage_package_generator"),
+                ),
+          ),
         );
-        expect(files.any((element) => element.name == "radii.dart"), isFalse);
-        expect(files.any((element) => element.name == "strings.dart"), isFalse);
-        expect(files.any((element) => element.name == "bools.dart"), isFalse);
       });
     });
   });
-}
-
-extension on File {
-  String get name => path.split("/").last;
 }

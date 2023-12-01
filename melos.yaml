@@ -40,7 +40,7 @@ scripts:
 
   coverage:select:
     run: |
-      dart pub global run full_coverage
+      dart pub global run full_coverage --ignore '*}.dart'
       dart test --coverage=coverage
       dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info -c --report-on=lib
       rm -rf -f coverage/test/

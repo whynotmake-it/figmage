@@ -80,5 +80,39 @@ void main() {
         expect(TokenFileType.tryFromFilename("unknown.dart"), isNull);
       });
     });
+
+    group("className", () {
+      test('works for colors', () async {
+        expect(TokenFileType.color.className, equals("Colors"));
+      });
+
+      test('works for typography', () async {
+        expect(TokenFileType.typography.className, equals("Typography"));
+      });
+
+      test('works for numbers', () async {
+        expect(TokenFileType.numbers.className, equals("Numbers"));
+      });
+
+      test('works for spacers', () async {
+        expect(TokenFileType.spacers.className, equals("Spacers"));
+      });
+
+      test('works for paddings', () async {
+        expect(TokenFileType.paddings.className, equals("Paddings"));
+      });
+
+      test('works for radii', () async {
+        expect(TokenFileType.radii.className, equals("Radii"));
+      });
+
+      test('works for strings', () async {
+        expect(TokenFileType.strings.className, equals("Strings"));
+      });
+
+      test('works for bools', () async {
+        expect(TokenFileType.bools.className, equals("Bools"));
+      });
+    });
   });
 }

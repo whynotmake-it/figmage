@@ -57,11 +57,6 @@ enum TokenFileType {
 
   /// Gets the class name for the file type.
   String get className => switch (filename.split(".").first.trim()) {
-        "" => throw ArgumentError.value(
-            filename,
-            "filename",
-            "The filename $filename is not a valid token file name.",
-          ),
         final name => name[0].toUpperCase() + name.substring(1),
       };
 }

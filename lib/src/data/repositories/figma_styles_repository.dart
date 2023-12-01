@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:figma/figma.dart';
 import 'package:figmage/src/data/util/converters/color_conversion_x.dart';
+import 'package:figmage/src/data/util/converters/type_style_conversion_x.dart';
 import 'package:figmage/src/domain/models/style/design_style.dart';
 import 'package:figmage/src/domain/repositories/styles_repository.dart';
 
@@ -54,13 +55,13 @@ class FigmaStylesRepository implements StylesRepository {
         :final name?,
         :final style?,
       ) =>
-        TextStyle(id: id, name: name, value: style),
+        TextDesignStyle(id: id, name: name, value: style.toTextStyle()),
       Rectangle(
         :final id,
         :final name?,
         fills: [Paint(:final color?), ...],
       ) =>
-        ColorStyle(id: id, name: name, value: color.toValue()),
+        ColorDesignStyle(id: id, name: name, value: color.toValue()),
       _ => null,
     } as DesignStyle<dynamic>?;
   }

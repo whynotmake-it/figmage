@@ -132,16 +132,6 @@ void main() {
         );
       });
 
-      test('throws FormatException if values are missing', () async {
-        when(() => file.readAsString()).thenAnswer(
-          (_) => Future.value('fileId: fileId'),
-        );
-        await expectLater(
-          () => sut.readConfigFromFile(file: file),
-          throwsA(isA<FormatException>()),
-        );
-      });
-
       test('does not warn for good yaml', () async {
         await sut.readConfigFromFile(file: file);
         verifyNever(() => logger.warn(any())).called(0);

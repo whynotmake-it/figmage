@@ -1,13 +1,19 @@
-import 'package:figma/figma.dart';
 import 'package:figmage/src/domain/models/style/design_style.dart';
+import 'package:figmage/src/domain/models/text_style/text_style.dart';
 
-const mockColorStyle = ColorStyle(
+const mockColorDesignStyle = ColorDesignStyle(
   id: "color_id",
   name: "color_name",
   value: 0xFFFFFFFF,
 );
 
-final mockStyles = <DesignStyle<dynamic>>[
-  mockColorStyle,
-  TextStyle(id: "text_id", name: "text_name", value: TypeStyle()),
+const mockTextDesignStyle = TextDesignStyle(
+  id: "text_id",
+  name: "text_name",
+  value: TextStyle(fontFamily: "Inter", fontSize: 12),
+);
+
+const mockStyles = <DesignStyle<dynamic>>[
+  mockColorDesignStyle,
+  mockTextDesignStyle,
 ];

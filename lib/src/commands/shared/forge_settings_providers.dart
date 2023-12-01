@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:figmage/src/domain/models/config/config.dart';
+import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/providers/config_providers.dart';
 import 'package:path/path.dart';
 import 'package:riverpod/riverpod.dart';
@@ -9,14 +9,6 @@ import 'package:riverpod/riverpod.dart';
 /// The arguments for the [settingsProvider] famil.
 typedef SettingsProviderArgs = ({
   ArgResults argResults,
-});
-
-/// All settings that are used for the `forge` and `reforge` commands.
-typedef FigmageSettings = ({
-  String token,
-  String fileId,
-  String path,
-  Config config,
 });
 
 /// Tries to parse the shared settings that are needed for the `forge` and

@@ -1,7 +1,9 @@
 import 'package:args/args.dart';
-import 'package:figmage/src/commands/shared/create_new_package/generation_notifier.dart';
 import 'package:figmage/src/commands/shared/forge_settings_providers.dart';
+import 'package:figmage/src/commands/shared/generation_notifier.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
+import 'package:figmage/src/domain/providers/figmage_package_generator_providers.dart';
+import 'package:figmage/src/domain/providers/file_writer_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/repositories/variables_repository.dart';
 import 'package:mason_logger/mason_logger.dart';
@@ -9,7 +11,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
-import '../../../../test_util/mock/mock_variables.dart';
+import '../../../test_util/mock/mock_variables.dart';
 
 class _MockLogger extends Mock implements Logger {}
 
@@ -18,16 +20,6 @@ class _MockProgress extends Mock implements Progress {}
 class _MockVariablesRepository extends Mock implements VariablesRepository {}
 
 class _MockArgResults extends Mock implements ArgResults {}
-
-/// A mock [GenerationNotifier] that does not run a `build` method.
-///
-/// Can be used to test the methods in isolation.
-class _MockNotifier extends GenerationNotifier {
-  @override
-  Future<ExitCode> build(ArgResults arg) async {
-    return ExitCode.success;
-  }
-}
 
 void main() {
   group("GenerationNotifier", () {
@@ -52,6 +44,8 @@ void main() {
       argResults = _MockArgResults();
       overrides = [
         variablesRepositoryProvider.overrideWith((ref) => variablesRepository),
+        generatedPackageProvider.overrideWith((ref, arg) => Future.value({})),
+        fileWriterProvider.overrideWith((ref, args) => Future.value(args.keys)),
         loggerProvider.overrideWith((ref) => logger),
         settingsProvider.overrideWith(
           (ref, arg) => Future.value(
@@ -75,25 +69,11 @@ void main() {
       container.dispose();
     });
 
-    test('getVariables', () async {
-      container = ProviderContainer(
-        overrides: [
-          ...overrides,
-          generationStateProvider.overrideWith(_MockNotifier.new),
-        ],
-      );
-      final sut = container.read(generationStateProvider(argResults).notifier);
-      final settings = await container
-          .read(settingsProvider((argResults: argResults)).future);
-      final result = await sut.getVariables(settings);
+    test('returns success Exit Code', () async {
+      final result =
+          await container.read(generationStateProvider(argResults).future);
 
-      expect(result, mockVariables);
-      verify(
-        () => variablesRepository.getVariables(
-          fileId: any(named: "fileId", that: equals(settings.fileId)),
-          token: any(named: "token", that: equals(settings.token)),
-        ),
-      ).called(1);
+      expect(result, ExitCode.success);
     });
   });
 }

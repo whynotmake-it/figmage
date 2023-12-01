@@ -1,60 +1,53 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:figma/figma.dart';
 import 'package:figmage/src/data/generators/values_by_mode_theme_extension_generator.dart';
+import 'package:figmage/src/domain/models/text_style/text_style.dart';
 
 // TODO(Jesper): fix all this
-ConstructorArguments _textStyleFromFigmaTypeStyle(TypeStyle typeStyle) {
-  final textStyleExpressions = _getTextStyleExpressions(typeStyle: typeStyle);
+ConstructorArguments _textStyleConstructorArguments(TextStyle textStyle) {
   return (
     positionalArguments: [],
-    namedArguments: textStyleExpressions,
+    namedArguments: <String, Expression>{
+      'fontFamily': literal(textStyle.fontFamily),
+      'fontSize': literal(textStyle.fontSize),
+      'fontWeight': refer('FontWeight').property('w${textStyle.fontWeight}'),
+      'fontStyle': refer('FontStyle').property(
+        switch (textStyle.fontStyle) {
+          FontStyle.italic => 'italic',
+          FontStyle.normal => 'normal',
+        },
+      ),
+      'letterSpacing': literal(textStyle.letterSpacing),
+      'height': literal(textStyle.height),
+      'decoration': refer('TextDecoration').property(
+        switch (textStyle.decoration) {
+          TextDecoration.none => 'none',
+          TextDecoration.lineThrough => 'lineThrough',
+          TextDecoration.underline => 'underline',
+          TextDecoration.overline => 'overline',
+        },
+      ),
+      //'inherit':
+      //'color': Maybe from fills? API is weird
+      //'backgroundColor':
+      //'wordSpacing':
+      //'textBaseline':
+      //'leadingDistribution':
+      //'locale':
+      //'foreground':
+      //'background':
+      //'shadows':
+      //'fontFeatures':
+      //'fontVariations':
+      //'decorationColor':
+      //'decorationStyle':
+      //'decorationThickness':
+      //'debugLabel':
+      //'fontFamilyFallback':
+      //'package':
+      //'overflow':
+    },
     typeArguments: const []
   );
-}
-
-Map<String, Expression> _getTextStyleExpressions({
-  required TypeStyle typeStyle,
-}) {
-  return <String, Expression>{
-    //'inherit':
-    //'color': Maybe from fills? API is weird
-    //'backgroundColor':
-    'fontSize': literal(typeStyle.fontSize),
-    'fontWeight':
-        refer('FontWeight').property('w${typeStyle.fontWeight?.toInt()}'),
-    'fontStyle': refer('FontStyle')
-        .property(typeStyle.italic ?? false ? 'italic' : 'normal'),
-    'letterSpacing': literal(typeStyle.letterSpacing),
-    //'wordSpacing':
-    //'textBaseline':
-    //'height':
-    //'leadingDistribution':
-    //'locale':
-    //'foreground':
-    //'background':
-    //'shadows':
-    //'fontFeatures':
-    //'fontVariations':
-    'decoration': _getTextDecoration(typeStyle.textDecoration),
-    //'decorationColor':
-    //'decorationStyle':
-    //'decorationThickness':
-    //'debugLabel':
-    'fontFamily': literal(typeStyle.fontFamily),
-    //'fontFamilyFallback':
-    //'package':
-    //'overflow':
-  };
-}
-
-Expression _getTextDecoration(TextDecoration? decoration) {
-  return switch (decoration) {
-    TextDecoration.strikeThrough =>
-      refer('TextDecoration', 'dart:ui').property('lineThrough'),
-    TextDecoration.underline =>
-      refer('TextDecoration', 'dart:ui').property('underline'),
-    null => refer('TextDecoration').property('none'),
-  };
 }
 
 /// {@template text_style_theme_extension_generator}
@@ -62,7 +55,7 @@ Expression _getTextDecoration(TextDecoration? decoration) {
 /// TypeStyle.
 /// {@endtemplate}
 class TextStyleThemeExtensionGenerator
-    extends ValuesByModeThemeExtensionGenerator<TypeStyle> {
+    extends ValuesByModeThemeExtensionGenerator<TextStyle> {
   /// {@macro text_style_theme_extension_generator}
   TextStyleThemeExtensionGenerator({
     required super.className,
@@ -71,6 +64,6 @@ class TextStyleThemeExtensionGenerator
     super.buildContextExtensionNullable = false,
   }) : super(
           extensionSymbol: 'TextStyle',
-          valueToConstructorArguments: _textStyleFromFigmaTypeStyle,
+          valueToConstructorArguments: _textStyleConstructorArguments,
         );
 }

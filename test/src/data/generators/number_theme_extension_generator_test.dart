@@ -48,6 +48,14 @@ class MyNumbersTheme extends ThemeExtension<MyNumbersTheme> {
     required this.m,
   });
 
+  const MyNumbersTheme.small()
+      : s = 1.0,
+        m = 2.0;
+
+  const MyNumbersTheme.large()
+      : s = 2.0,
+        m = 4.0;
+
   final double? s;
 
   final double? m;
@@ -87,15 +95,6 @@ extension MyNumbersThemeBuildContextX on BuildContext {
   MyNumbersTheme get myNumbersTheme =>
       Theme.of(this).extension<MyNumbersTheme>()!;
 }
-
-const MyNumbersTheme smallMyNumbersTheme = MyNumbersTheme(
-  s: 1.0,
-  m: 2.0,
-);
-const MyNumbersTheme largeMyNumbersTheme = MyNumbersTheme(
-  s: 2.0,
-  m: 4.0,
-);
 ''';
 const _expectedNullableNumberExtensionString = '''
 // coverage:ignore-file
@@ -113,6 +112,14 @@ class MyNumbersTheme extends ThemeExtension<MyNumbersTheme> {
     required this.s,
     required this.m,
   });
+
+  const MyNumbersTheme.small()
+      : s = 1.0,
+        m = 2.0;
+
+  const MyNumbersTheme.large()
+      : s = 2.0,
+        m = 4.0;
 
   final double? s;
 
@@ -153,13 +160,4 @@ extension MyNumbersThemeBuildContextX on BuildContext {
   MyNumbersTheme? get myNumbersTheme =>
       Theme.of(this).extension<MyNumbersTheme>();
 }
-
-const MyNumbersTheme smallMyNumbersTheme = MyNumbersTheme(
-  s: 1.0,
-  m: 2.0,
-);
-const MyNumbersTheme largeMyNumbersTheme = MyNumbersTheme(
-  s: 2.0,
-  m: 4.0,
-);
 ''';

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // TODO(Jesper): when implemented add test
 import 'package:args/command_runner.dart';
-import 'package:figmage/src/commands/shared/create_new_package/generation_notifier.dart';
+import 'package:figmage/src/commands/shared/generation_notifier.dart';
 import 'package:riverpod/riverpod.dart';
 
 /// {@template forge_command}

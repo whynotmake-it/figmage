@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:figmage/src/domain/models/figmage_settings.dart';
-import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
+import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:riverpod/riverpod.dart';
 

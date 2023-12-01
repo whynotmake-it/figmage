@@ -85,7 +85,8 @@ final variablesProvider =
   }
 });
 
-/// Provides a Iterable of all styles obtained from the file in [FigmageSettings].
+/// Provides a Iterable of all styles obtained from the file in
+/// [FigmageSettings].
 ///
 /// This provider doesn't filter for anything yet.
 final stylesProvider =

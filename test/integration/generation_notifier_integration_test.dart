@@ -24,22 +24,27 @@ void main() {
   });
 
   group('can generate variables from test file', () {
-    test('should generate variables', () async {
-      final runner = FigmageCommandRunner(container);
-      await runner.run([
-        'forge',
-        '--token',
-        token,
-        '--fileId',
-        fileId,
-        '--path',
-        testDirectory.path,
-      ]);
+    test(
+      'should generate variables',
+      timeout: const Timeout(Duration(minutes: 1)),
+      () async {
+        final runner = FigmageCommandRunner(container);
+        await runner.run([
+          'forge',
+          '--token',
+          token,
+          '--fileId',
+          fileId,
+          '--path',
+          testDirectory.path,
+        ]);
 
-      final generatedFile = File(
-        "${testDirectory.path}/lib/src/generated/variables.dart",
-      );
-      expect(generatedFile.existsSync(), true);
-    });
+        final files = [
+          File("${testDirectory.path}/figmage_package/lib/src/colors.dart"),
+          File("${testDirectory.path}/figmage_package/lib/src/typography.dart"),
+        ];
+        expect(files.every((f) => f.existsSync()), true);
+      },
+    );
   });
 }

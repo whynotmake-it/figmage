@@ -8,6 +8,7 @@ import 'package:figmage/src/domain/providers/figmage_package_generator_providers
 import 'package:figmage/src/domain/providers/file_writer_providers.dart';
 import 'package:figmage/src/domain/providers/generator_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
+import 'package:figmage/src/domain/providers/post_generation_providers.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -43,11 +44,17 @@ class GenerationNotifier
     final generators = await ref.watch(generatorsProvider(settings).future);
 
     // write the files
-    await ref.watch(
+    final generatedFiles = await ref.watch(
       fileWriterProvider({
         for (final (file, generator) in generators) file: generator.generate(),
       }).future,
     );
+
+    try {
+      await ref.watch(postGenerationTasksProvider(generatedFiles).future);
+    } catch (e) {
+      logger.warn("Failed to run post generation tasks: $e");
+    }
 
     return ExitCode.success;
   }

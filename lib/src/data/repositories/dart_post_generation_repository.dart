@@ -41,6 +41,7 @@ class DartPostGenerationRepository implements PostGenerationRepository {
         .firstWhereOrNull((element) => element.path.endsWith('pubspec.yaml'));
 
     if (pubspecYaml == null) {
+      progress?.fail("No pubspec.yaml found in generated files");
       return files;
     }
 

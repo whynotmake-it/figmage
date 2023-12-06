@@ -30,13 +30,22 @@ class GenerationNotifier
     try {
       settings = await ref.watch(settingsProvider((argResults: arg)).future);
     } catch (e) {
-      logger.err("Not all settings are present: $e");
+      logger.err("Not all settings are present ($e)");
       rethrow;
     }
 
-    await ref.watch(
-      filteredTokensProvider(settings).future,
-    );
+    try {
+      await ref.watch(
+        filteredTokensProvider(settings).future,
+      );
+    } catch (e) {
+      logger
+        ..err("Neither styles nor variables could be obtained from file "
+            "${settings.fileId}")
+        ..info("Make sure the file's library is published.");
+      rethrow;
+    }
+
     final generatedFiles = await ref.watch(
       generatedPackageProvider(settings).future,
     );

@@ -79,8 +79,11 @@ final variablesProvider =
         varProgress.complete("Found ${variables.length} variables");
         return variables;
     }
+  } on VariablesException catch (e) {
+    varProgress.fail("Failed to fetch variables: ${e.message}");
+    rethrow;
   } catch (e) {
-    varProgress.fail("Failed to fetch variables: $e");
+    varProgress.fail("Failed to fetch variables for unknown reason ($e)");
     rethrow;
   }
 });
@@ -112,8 +115,11 @@ final stylesProvider =
         stylesProgress.complete("Found ${styles.length} variables");
         return styles;
     }
+  } on StylesException catch (e) {
+    stylesProgress.fail("Failed to fetch styles: ${e.message}");
+    rethrow;
   } catch (e) {
-    stylesProgress.fail("Failed to fetch styles: $e");
+    stylesProgress.fail("Failed to fetch styles for unknown reason: $e");
     rethrow;
   }
 });

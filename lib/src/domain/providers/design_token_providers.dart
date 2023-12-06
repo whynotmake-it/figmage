@@ -113,7 +113,7 @@ final stylesProvider =
         return styles;
     }
   } catch (e) {
-    stylesProgress.fail("Failed to fetch variables: $e");
+    stylesProgress.fail("Failed to fetch styles: $e");
     rethrow;
   }
 });

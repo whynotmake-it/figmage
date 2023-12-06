@@ -4,6 +4,7 @@ import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
+import 'package:path/path.dart';
 import 'package:riverpod/riverpod.dart';
 
 /// Provides the [FigmagePackageGenerator] instance.
@@ -27,7 +28,13 @@ final generatedPackageProvider =
       tokensByFileType.typographyTokens.isNotEmpty;
   final generateNumbers = settings.config.numbers.generate &&
       tokensByFileType.numberTokens.isNotEmpty;
-  final packageProgress = logger.progress("Generating package...");
+  if (basename(settings.path) != settings.config.packageName) {
+    logger.warn(
+        "The package name ${settings.config.packageName} does not match the "
+        "directory name ${basename(settings.path)}}.");
+  }
+  final packageProgress =
+      logger.progress("Generating package in ${settings.path}...");
 
   try {
     final files = await packageGenerator.generate(

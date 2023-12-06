@@ -7,7 +7,7 @@ import 'package:meta/meta.dart';
 extension TypeStyleConversionX on TypeStyle {
   /// Converts a [TypeStyle] to a [TextStyle].
   TextStyle toTextStyle() => TextStyle(
-        fontFamily: fontPostScriptName!,
+        fontFamily: fontFamily!,
         fontSize: fontSize!.toDouble(),
         fontWeight: convertFontWeight(fontWeight ?? 400),
         fontStyle: italic ?? false ? FontStyle.italic : FontStyle.normal,

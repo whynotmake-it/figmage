@@ -28,10 +28,11 @@ final generatedPackageProvider =
       tokensByFileType.typographyTokens.isNotEmpty;
   final generateNumbers = settings.config.numbers.generate &&
       tokensByFileType.numberTokens.isNotEmpty;
+  final dir = Directory(settings.path);
   if (basename(settings.path) != settings.config.packageName) {
     logger.warn(
         "The package name ${settings.config.packageName} does not match the "
-        "directory name ${basename(settings.path)}}.");
+        "directory name ${basename(dir.path)}}.");
   }
   final packageProgress =
       logger.progress("Generating package in ${settings.path}...");
@@ -39,7 +40,7 @@ final generatedPackageProvider =
   try {
     final files = await packageGenerator.generate(
       projectName: settings.config.packageName,
-      dir: Directory(settings.path),
+      dir: dir,
       description: settings.config.packageDescription,
       generateColors: generateColors,
       generateTypography: generateTypography,

@@ -37,14 +37,14 @@ class GenerationNotifier
     await ref.watch(
       filteredTokensProvider(settings).future,
     );
-    await ref.watch(
+    final generatedFiles = await ref.watch(
       generatedPackageProvider(settings).future,
     );
 
     final generators = await ref.watch(generatorsProvider(settings).future);
 
     // write the files
-    final generatedFiles = await ref.watch(
+    await ref.watch(
       fileWriterProvider({
         for (final (file, generator) in generators) file: generator.generate(),
       }).future,

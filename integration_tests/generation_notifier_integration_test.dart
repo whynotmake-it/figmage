@@ -44,7 +44,8 @@ void main() {
           final files = [
             File("${testDirectory.path}/figmage_package/lib/src/colors.dart"),
             File(
-                "${testDirectory.path}/figmage_package/lib/src/typography.dart"),
+              "${testDirectory.path}/figmage_package/lib/src/typography.dart",
+            ),
           ];
           expect(files.every((f) => f.existsSync()), true);
         },

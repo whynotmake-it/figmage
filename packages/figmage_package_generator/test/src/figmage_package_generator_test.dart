@@ -61,7 +61,7 @@ void main() {
 
         verify(
           () => generatorTarget.createFile(
-            any(that: equals("figmage_example/pubspec.yaml")),
+            any(that: equals("pubspec.yaml")),
             any(),
           ),
         ).called(1);
@@ -76,7 +76,7 @@ void main() {
 
         final content = verify(
           () => generatorTarget.createFile(
-            any(that: equals("figmage_example/pubspec.yaml")),
+            any(that: equals("pubspec.yaml")),
             captureAny(),
           ),
         ).captured.first as List<int>;
@@ -96,7 +96,7 @@ void main() {
 
         verify(
           () => generatorTarget.createFile(
-            any(that: equals("figmage_example/README.md")),
+            any(that: equals("README.md")),
             any(that: isNotEmpty),
           ),
         ).called(1);
@@ -115,7 +115,7 @@ void main() {
               isA<File>().having(
                 (f) => f.path,
                 "path",
-                contains("figmage_example/lib/src/${type.filename}"),
+                contains("lib/src/${type.filename}"),
               ),
             ),
             reason: "Expected to find ${type.filename} in generated files",

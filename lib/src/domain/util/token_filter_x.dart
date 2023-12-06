@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
@@ -15,11 +16,14 @@ extension TokenFilterX<X> on Iterable<DesignToken<X>> {
   ///
   // TODO(tim): this is in the repo I know but I didn't get how it works
   Map<String, Map<String, X>> get valuesByNameByMode {
-    final allModes = expand((variable) => variable.valuesByMode.keys).toSet();
+    final sorted = sortedBy((element) => element.name);
+    final allModes = expand((variable) => variable.valuesByMode.keys)
+        .toSet()
+        .sortedBy((mode) => mode);
     return {
       for (final mode in allModes)
         mode: {
-          for (final variable in this)
+          for (final variable in sorted)
             if (variable.valuesByMode.containsKey(mode))
               variable.name: switch (variable.valuesByMode[mode]) {
                 final AliasOr<X> alias => alias.resolveValue,

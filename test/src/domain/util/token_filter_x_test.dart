@@ -52,6 +52,30 @@ void main() {
           },
         });
       });
+
+      test("should order modes alphabetically", () {
+        final valuesByNameByMode = mockVariables.valuesByNameByMode;
+        expect(valuesByNameByMode.keys, containsAllInOrder(["dark", "light"]));
+      });
+
+      test("should order names alphabetically", () {
+        final valuesByNameByMode = mockVariables.valuesByNameByMode;
+        expect(
+          valuesByNameByMode.values,
+          everyElement(
+            isA<Map<String, dynamic>>().having(
+              (p0) => p0.keys,
+              "keys",
+              containsAllInOrder([
+                "boolName",
+                "colorName",
+                "floatName",
+                "stringName",
+              ]),
+            ),
+          ),
+        );
+      });
     });
   });
 }

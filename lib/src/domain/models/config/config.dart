@@ -170,6 +170,7 @@ class GenerationSettings with EquatableMixin {
 /// generate the token, which paths to generate from and whether or not to use
 /// google fonts.
 /// {@endtemplate}
+@JsonSerializable(anyMap: true, checked: true)
 class TypographyGenerationSettings extends GenerationSettings {
   /// {@macro typography_generation_settings}
   const TypographyGenerationSettings({
@@ -178,9 +179,17 @@ class TypographyGenerationSettings extends GenerationSettings {
     this.useGoogleFonts = true,
   });
 
+  /// Initializes a [TypographyGenerationSettings] from a json map.
+  factory TypographyGenerationSettings.fromJson(Map<dynamic, dynamic> json) =>
+      _$TypographyGenerationSettingsFromJson(json);
+
   /// Whether to use google fonts for obtaining the font families, defaults to
   /// true.
   final bool useGoogleFonts;
+
+  /// Converts a [TypographyGenerationSettings] to a map.
+  @override
+  Map<dynamic, dynamic> toJson() => _$TypographyGenerationSettingsToJson(this);
 
   @override
   List<Object?> get props => [...super.props, useGoogleFonts];

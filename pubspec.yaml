@@ -28,6 +28,7 @@ dependencies:
       url: https://github.com/whynotmake-it/figmage.git
       path: packages/figmage_package_generator
   freezed_annotation: ^2.4.1
+  google_fonts: ^6.1.0
   json_annotation: ^4.8.1
   mason_logger: ^0.2.5
   meta: ^1.11.0

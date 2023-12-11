@@ -87,6 +87,46 @@ void main() {
         expect(decoded, contains("A test"));
       });
 
+      test('pubspec contains google fonts dependency by default', () async {
+        await sut.generate(
+          projectName: "figmage_example",
+          dir: testDirectory,
+          description: "A test ",
+        );
+
+        final content = verify(
+          () => generatorTarget.createFile(
+            any(that: equals("figmage_example/pubspec.yaml")),
+            captureAny(),
+          ),
+        ).captured.first as List<int>;
+
+        final decoded = utf8.decode(content);
+
+        expect(decoded, contains("google_fonts: ^6.1.0"));
+      });
+
+      test('pubspec doesnt contain google_fonts dependency if unwanted',
+          () async {
+        await sut.generate(
+          projectName: "figmage_example",
+          dir: testDirectory,
+          description: "A test ",
+          useGoogleFonts: false,
+        );
+
+        final content = verify(
+          () => generatorTarget.createFile(
+            any(that: equals("figmage_example/pubspec.yaml")),
+            captureAny(),
+          ),
+        ).captured.first as List<int>;
+
+        final decoded = utf8.decode(content);
+
+        expect(decoded, isNot(contains("google_fonts: ^6.1.0")));
+      });
+
       test('generates non-empty README.md', () async {
         await sut.generate(
           projectName: "figmage_example",

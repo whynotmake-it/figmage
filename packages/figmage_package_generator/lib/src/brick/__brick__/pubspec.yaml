@@ -8,6 +8,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  {{#use_google_fonts}}google_fonts: ^6.1.0{{/use_google_fonts}}
 
 dev_dependencies:
   flutter_test:

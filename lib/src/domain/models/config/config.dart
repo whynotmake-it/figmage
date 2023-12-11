@@ -32,7 +32,7 @@ class Config with EquatableMixin {
     this.packageDescription = '',
     this.packageDir = '.',
     this.colors = const GenerationSettings(),
-    this.typography = const GenerationSettings(),
+    this.typography = const TypographyGenerationSettings(),
     this.strings = const GenerationSettings(),
     this.bools = const GenerationSettings(),
     this.numbers = const GenerationSettings(),
@@ -64,8 +64,8 @@ class Config with EquatableMixin {
   final GenerationSettings colors;
 
   /// Typography generation settings, defaults to generating typography tokens
-  /// from all paths.
-  final GenerationSettings typography;
+  /// from all paths and using google fonts.
+  final TypographyGenerationSettings typography;
 
   /// String generation settings, defaults to generating string tokens from
   /// all paths.
@@ -144,8 +144,8 @@ class Config with EquatableMixin {
 class GenerationSettings with EquatableMixin {
   /// {@macro generation_settings}
   const GenerationSettings({
-    @Default(true) this.generate = true,
-    @Default(<String>[]) this.from = const <String>[],
+    this.generate = true,
+    this.from = const <String>[],
   });
 
   /// Initializes a [GenerationSettings] from a json map.
@@ -163,4 +163,25 @@ class GenerationSettings with EquatableMixin {
 
   @override
   List<Object?> get props => [generate, ...from];
+}
+
+/// {@template typography_generation_settings}
+/// Settings for generating typography tokens. This includes whether or not to
+/// generate the token, which paths to generate from and whether or not to use
+/// google fonts.
+/// {@endtemplate}
+class TypographyGenerationSettings extends GenerationSettings {
+  /// {@macro typography_generation_settings}
+  const TypographyGenerationSettings({
+    super.generate,
+    super.from,
+    this.useGoogleFonts = true,
+  });
+
+  /// Whether to use google fonts for obtaining the font families, defaults to
+  /// true.
+  final bool useGoogleFonts;
+
+  @override
+  List<Object?> get props => [...super.props, useGoogleFonts];
 }

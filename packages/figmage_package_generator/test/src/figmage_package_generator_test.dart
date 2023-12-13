@@ -96,7 +96,7 @@ void main() {
 
         final content = verify(
           () => generatorTarget.createFile(
-            any(that: equals("figmage_example/pubspec.yaml")),
+            any(that: equals("pubspec.yaml")),
             captureAny(),
           ),
         ).captured.first as List<int>;
@@ -117,7 +117,7 @@ void main() {
 
         final content = verify(
           () => generatorTarget.createFile(
-            any(that: equals("figmage_example/pubspec.yaml")),
+            any(that: equals("pubspec.yaml")),
             captureAny(),
           ),
         ).captured.first as List<int>;

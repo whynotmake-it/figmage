@@ -71,7 +71,7 @@ void main() {
         verify(
           () => processRunner.call(
             'dart',
-            ['format'],
+            ['format', '.'],
             workingDirectory: 'dir',
           ),
         ).called(1);

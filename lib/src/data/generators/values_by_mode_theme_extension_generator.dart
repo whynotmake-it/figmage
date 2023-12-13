@@ -76,7 +76,7 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
   /// Is implemented for built in literal types like double, int, num, String or
   /// bool but has to be implemented for custom types.
   Expression getConstructorExpression(T value) {
-    if (_isBuiltinLiteralDartType(extensionSymbolReference)) {
+    if (extensionSymbolReference.isDartLiteralType) {
       return literal(value);
     } else {
       throw UnimplementedError(
@@ -335,30 +335,17 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
               "" => "standard",
               _ => convertToValidVariableName(modeName),
             }
-            ..initializers.addAll(
-              [
+            ..setInitializersAndConst(
+              emitter: _emitter,
+              constructorsByParamName: {
                 for (final MapEntry(key: name, :value) in valuesByName.entries)
-                  Code(
-                    '$name = ${getConstructorExpression(
-                      value,
-                    ).accept(_emitter)}',
+                  name: getConstructorExpression(
+                    value,
                   ),
-              ],
+              },
             ),
         ),
     ];
-  }
-
-  bool _isBuiltinLiteralDartType(Reference symbolReference) {
-    final type = symbolReference.symbol;
-    const dartCoreLiteralTypes = <String>{
-      'int',
-      'double',
-      'num',
-      'bool',
-      'String',
-    };
-    return dartCoreLiteralTypes.contains(type);
   }
 }
 
@@ -372,5 +359,35 @@ extension _ReferenceX on Reference {
       },
       url,
     );
+  }
+
+  bool get isDartLiteralType {
+    final type = symbol;
+    const dartCoreLiteralTypes = <String>{
+      'int',
+      'double',
+      'num',
+      'bool',
+      'String',
+    };
+    return dartCoreLiteralTypes.contains(type);
+  }
+}
+
+extension _ConstructorBuilderX on ConstructorBuilder {
+  ConstructorBuilder setInitializersAndConst({
+    required Map<String, Expression> constructorsByParamName,
+    required DartEmitter emitter,
+  }) {
+    initializers.addAll([
+      for (final MapEntry(key: name, value: expression)
+          in constructorsByParamName.entries)
+        Code('$name = ${expression.accept(emitter)}'),
+    ]);
+    constant = initializers.isEmpty ||
+        constructorsByParamName.values.every(
+          (element) => element.isConst || element is LiteralExpression,
+        );
+    return this;
   }
 }

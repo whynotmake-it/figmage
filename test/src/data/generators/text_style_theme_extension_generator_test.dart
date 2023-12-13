@@ -281,7 +281,7 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
     required this.textStyle2,
   });
 
-  const MyTextStyles.mode1()
+  MyTextStyles.mode1()
       : textStyle1 = GoogleFonts.getFont(
           'Roboto',
           fontSize: 16.0,
@@ -301,7 +301,7 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
           decoration: TextDecoration.lineThrough,
         );
 
-  const MyTextStyles.mode2()
+  MyTextStyles.mode2()
       : textStyle1 = GoogleFonts.getFont(
           'Roboto',
           fontSize: 16.0,

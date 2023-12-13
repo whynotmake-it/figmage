@@ -32,7 +32,7 @@ final generatedPackageProvider =
   if (basename(settings.path) != settings.config.packageName) {
     logger.warn(
         "The package name ${settings.config.packageName} does not match the "
-        "directory name ${basename(dir.path)}}.");
+        "directory name ${basename(dir.path)}.");
   }
   final packageProgress =
       logger.progress("Generating package in ${settings.path}...");

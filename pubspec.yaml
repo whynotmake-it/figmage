@@ -12,7 +12,7 @@ dependencies:
   args: ^2.4.1
   cli_completion: ^0.4.0
   code_builder: ^4.7.0
-  collection: ^1.18.0
+  collection: ">=1.17.2 <2.0.0"
   dart_style: ^2.3.3
   equatable: ^2.0.5
   figma:
@@ -31,7 +31,7 @@ dependencies:
   google_fonts: ^6.1.0
   json_annotation: ^4.8.1
   mason_logger: ^0.2.5
-  meta: ^1.11.0
+  meta: ">=1.9.1 <2.0.0"
   path: ^1.8.3
   pub_updater: ^0.3.0
   riverpod: ^2.4.6

@@ -32,20 +32,23 @@ void main() {
         ),
       },
     };
-    test('Generates a ThemeExtension<MyTextStyles> output file', () async {
+    test('generates correct output file without google fonts', () async {
       final generator = TextStyleThemeExtensionGenerator(
         className: 'MyTextStyles',
         valuesByNameByMode: valuesByNameByMode,
         extensionSymbolUrl: 'dart:ui',
+        useGoogleFonts: false,
       );
       expect(generator.generate(), _expectedTextStyleThemeExtensionString);
     });
-    test('Output file with nullable BuildContext extension', () async {
+    test('generates correct output file with nullable BuildContext extension',
+        () async {
       final generator = TextStyleThemeExtensionGenerator(
         className: 'MyTextStyles',
         valuesByNameByMode: valuesByNameByMode,
         extensionSymbolUrl: 'dart:ui',
         buildContextExtensionNullable: true,
+        useGoogleFonts: false,
       );
 
       expect(

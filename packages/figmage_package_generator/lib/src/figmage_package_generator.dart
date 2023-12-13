@@ -63,6 +63,7 @@ class FigmagePackageGenerator {
       'generate_paddings': generatePaddings,
       'generate_radii': generateRadii,
       'generate_strings': generateStrings,
+      'generate_bools': generateBools,
       'use_google_fonts': useGoogleFonts,
     };
     final target = _generatorTargetFactory(dir);

@@ -64,8 +64,10 @@ void main() {
         valuesByNameByMode: valuesByNameByMode,
         useGoogleFonts: true,
       );
-      expect(generator.generate(),
-          _expectedTextStyleThemeExtensionStringWithGoogleFonts);
+      expect(
+        generator.generate(),
+        _expectedTextStyleThemeExtensionStringWithGoogleFonts,
+      );
     });
   });
 }

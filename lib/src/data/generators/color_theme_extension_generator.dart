@@ -6,10 +6,6 @@ const _colorReference = Reference(
   'package:flutter/material.dart',
 );
 
-Expression _colorFromIntBuilder(int value) {
-  return _colorReference.newInstance([refer('0x${value.toRadixString(16)}')]);
-}
-
 /// {@template color_theme_extension_generator}
 /// A [ValuesByModeThemeExtensionGenerator] for color themes from integers.
 /// {@endtemplate}
@@ -21,7 +17,12 @@ class ColorThemeExtensionGenerator
     required super.valuesByNameByMode,
     super.buildContextExtensionNullable = false,
   }) : super(
-          valueToConstructorExpression: _colorFromIntBuilder,
           extensionSymbolReference: _colorReference,
         );
+
+  @override
+  Expression getConstructorExpression(int value) {
+    final valueString = value.toRadixString(16).padLeft(8, '0');
+    return _colorReference.constInstance([refer('0x$valueString')]);
+  }
 }

@@ -36,7 +36,6 @@ void main() {
       final generator = TextStyleThemeExtensionGenerator(
         className: 'MyTextStyles',
         valuesByNameByMode: valuesByNameByMode,
-        extensionSymbolUrl: 'dart:ui',
         useGoogleFonts: false,
       );
       expect(generator.generate(), _expectedTextStyleThemeExtensionString);
@@ -46,7 +45,6 @@ void main() {
       final generator = TextStyleThemeExtensionGenerator(
         className: 'MyTextStyles',
         valuesByNameByMode: valuesByNameByMode,
-        extensionSymbolUrl: 'dart:ui',
         buildContextExtensionNullable: true,
         useGoogleFonts: false,
       );
@@ -66,8 +64,6 @@ const _expectedTextStyleThemeExtensionString = '''
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-
-import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -163,8 +159,6 @@ const _expectedNullableTextStyleThemeExtensionString = '''
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-
-import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

@@ -38,7 +38,6 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
     required this.valuesByNameByMode,
     required this.extensionSymbolReference,
     this.buildContextExtensionNullable = false,
-    this.valueToConstructorExpression,
     this.lerpReference,
   }) : assert(
           ensureSameKeys(
@@ -56,20 +55,12 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
   @override
   final bool buildContextExtensionNullable;
 
-  /// A function that converts a value to the constructor expression
-  /// that initializes the extension symbol.
-  /// Can be null if creating a ThemeExtension for a built in literal type like
-  /// double, int, num, String or bool
-  final Expression Function(
-    T value,
-  )? valueToConstructorExpression;
-
   /// A map with the following structure: <ModeName<ValueName, Value>>
   final Map<String, Map<String, T>> valuesByNameByMode;
 
   /// A [Reference] to a lerp function that can lerp [extensionSymbolReference].
-  /// If this value is null the generator assumes that [extensionSymbolReference]
-  /// implements a lerp function
+  /// If this value is null the generator assumes that
+  /// [extensionSymbolReference] implements a lerp function
   final Reference? lerpReference;
 
   final _dartfmt = DartFormatter();
@@ -79,6 +70,20 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
     useNullSafetySyntax: true,
     orderDirectives: true,
   );
+
+  /// Converts a value to the constructor expression
+  /// that initializes the extension symbol.
+  /// Is implemented for built in literal types like double, int, num, String or
+  /// bool but has to be implemented for custom types.
+  Expression getConstructorExpression(T value) {
+    if (_isBuiltinLiteralDartType(extensionSymbolReference)) {
+      return literal(value);
+    } else {
+      throw UnimplementedError(
+        "Not implemented for type ${extensionSymbolReference.symbol}",
+      );
+    }
+  }
 
   @override
   String generate() {
@@ -333,7 +338,7 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
               [
                 for (final MapEntry(key: name, :value) in valuesByName.entries)
                   Code(
-                    '$name = ${_getValueExpression(
+                    '$name = ${getConstructorExpression(
                       value,
                     ).accept(_emitter)}',
                   ),
@@ -341,25 +346,6 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
             ),
         ),
     ];
-  }
-
-  Expression _getValueExpression(
-    T value,
-  ) {
-    if (_isBuiltinLiteralDartType(extensionSymbolReference)) {
-      return literal(value);
-    } else {
-      assert(
-          valueToConstructorExpression != null,
-          'Trying to construct an instance of $extensionSymbolReference,'
-          ' but the valueToConstructorArguments callback is null! ');
-
-      return valueToConstructorExpression!(value).call(
-        [],
-        {},
-        [extensionSymbolReference],
-      );
-    }
   }
 
   bool _isBuiltinLiteralDartType(Reference symbolReference) {

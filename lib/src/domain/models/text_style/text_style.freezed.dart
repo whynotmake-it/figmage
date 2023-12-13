@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$TextStyle {
   String get fontFamily => throw _privateConstructorUsedError;
+  String get fontFamilyPostScriptName => throw _privateConstructorUsedError;
   double get fontSize => throw _privateConstructorUsedError;
   int get fontWeight => throw _privateConstructorUsedError;
   TextDecoration get decoration => throw _privateConstructorUsedError;
@@ -37,6 +38,7 @@ abstract class $TextStyleCopyWith<$Res> {
   @useResult
   $Res call(
       {String fontFamily,
+      String fontFamilyPostScriptName,
       double fontSize,
       int fontWeight,
       TextDecoration decoration,
@@ -60,6 +62,7 @@ class _$TextStyleCopyWithImpl<$Res, $Val extends TextStyle>
   @override
   $Res call({
     Object? fontFamily = null,
+    Object? fontFamilyPostScriptName = null,
     Object? fontSize = null,
     Object? fontWeight = null,
     Object? decoration = null,
@@ -72,6 +75,10 @@ class _$TextStyleCopyWithImpl<$Res, $Val extends TextStyle>
       fontFamily: null == fontFamily
           ? _value.fontFamily
           : fontFamily // ignore: cast_nullable_to_non_nullable
+              as String,
+      fontFamilyPostScriptName: null == fontFamilyPostScriptName
+          ? _value.fontFamilyPostScriptName
+          : fontFamilyPostScriptName // ignore: cast_nullable_to_non_nullable
               as String,
       fontSize: null == fontSize
           ? _value.fontSize
@@ -115,6 +122,7 @@ abstract class _$$TextStyleImplCopyWith<$Res>
   @useResult
   $Res call(
       {String fontFamily,
+      String fontFamilyPostScriptName,
       double fontSize,
       int fontWeight,
       TextDecoration decoration,
@@ -136,6 +144,7 @@ class __$$TextStyleImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? fontFamily = null,
+    Object? fontFamilyPostScriptName = null,
     Object? fontSize = null,
     Object? fontWeight = null,
     Object? decoration = null,
@@ -148,6 +157,10 @@ class __$$TextStyleImplCopyWithImpl<$Res>
       fontFamily: null == fontFamily
           ? _value.fontFamily
           : fontFamily // ignore: cast_nullable_to_non_nullable
+              as String,
+      fontFamilyPostScriptName: null == fontFamilyPostScriptName
+          ? _value.fontFamilyPostScriptName
+          : fontFamilyPostScriptName // ignore: cast_nullable_to_non_nullable
               as String,
       fontSize: null == fontSize
           ? _value.fontSize
@@ -186,6 +199,7 @@ class __$$TextStyleImplCopyWithImpl<$Res>
 class _$TextStyleImpl extends _TextStyle {
   const _$TextStyleImpl(
       {required this.fontFamily,
+      required this.fontFamilyPostScriptName,
       required this.fontSize,
       this.fontWeight = 400,
       this.decoration = TextDecoration.none,
@@ -197,6 +211,8 @@ class _$TextStyleImpl extends _TextStyle {
 
   @override
   final String fontFamily;
+  @override
+  final String fontFamilyPostScriptName;
   @override
   final double fontSize;
   @override
@@ -220,7 +236,7 @@ class _$TextStyleImpl extends _TextStyle {
 
   @override
   String toString() {
-    return 'TextStyle(fontFamily: $fontFamily, fontSize: $fontSize, fontWeight: $fontWeight, decoration: $decoration, fontStyle: $fontStyle, letterSpacing: $letterSpacing, wordSpacing: $wordSpacing, height: $height)';
+    return 'TextStyle(fontFamily: $fontFamily, fontFamilyPostScriptName: $fontFamilyPostScriptName, fontSize: $fontSize, fontWeight: $fontWeight, decoration: $decoration, fontStyle: $fontStyle, letterSpacing: $letterSpacing, wordSpacing: $wordSpacing, height: $height)';
   }
 
   @override
@@ -230,6 +246,9 @@ class _$TextStyleImpl extends _TextStyle {
             other is _$TextStyleImpl &&
             (identical(other.fontFamily, fontFamily) ||
                 other.fontFamily == fontFamily) &&
+            (identical(
+                    other.fontFamilyPostScriptName, fontFamilyPostScriptName) ||
+                other.fontFamilyPostScriptName == fontFamilyPostScriptName) &&
             (identical(other.fontSize, fontSize) ||
                 other.fontSize == fontSize) &&
             (identical(other.fontWeight, fontWeight) ||
@@ -246,8 +265,17 @@ class _$TextStyleImpl extends _TextStyle {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, fontFamily, fontSize, fontWeight,
-      decoration, fontStyle, letterSpacing, wordSpacing, height);
+  int get hashCode => Object.hash(
+      runtimeType,
+      fontFamily,
+      fontFamilyPostScriptName,
+      fontSize,
+      fontWeight,
+      decoration,
+      fontStyle,
+      letterSpacing,
+      wordSpacing,
+      height);
 
   @JsonKey(ignore: true)
   @override
@@ -259,6 +287,7 @@ class _$TextStyleImpl extends _TextStyle {
 abstract class _TextStyle extends TextStyle {
   const factory _TextStyle(
       {required final String fontFamily,
+      required final String fontFamilyPostScriptName,
       required final double fontSize,
       final int fontWeight,
       final TextDecoration decoration,
@@ -270,6 +299,8 @@ abstract class _TextStyle extends TextStyle {
 
   @override
   String get fontFamily;
+  @override
+  String get fontFamilyPostScriptName;
   @override
   double get fontSize;
   @override

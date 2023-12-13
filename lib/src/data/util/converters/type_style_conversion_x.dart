@@ -8,6 +8,7 @@ extension TypeStyleConversionX on TypeStyle {
   /// Converts a [TypeStyle] to a [TextStyle].
   TextStyle toTextStyle() => TextStyle(
         fontFamily: fontFamily!,
+        fontFamilyPostScriptName: fontPostScriptName!,
         fontSize: fontSize!.toDouble(),
         fontWeight: convertFontWeight(fontWeight ?? 400),
         fontStyle: italic ?? false ? FontStyle.italic : FontStyle.normal,

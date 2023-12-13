@@ -10,7 +10,11 @@ const mockColorDesignStyle = ColorDesignStyle(
 const mockTextDesignStyle = TextDesignStyle(
   id: "text_id",
   name: "text_name",
-  value: TextStyle(fontFamily: "Inter", fontSize: 12),
+  value: TextStyle(
+    fontFamily: "Inter",
+    fontFamilyPostScriptName: "Inter",
+    fontSize: 12,
+  ),
 );
 
 const mockStyles = <DesignStyle<dynamic>>[

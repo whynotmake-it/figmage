@@ -34,6 +34,7 @@ sealed class TextStyle with _$TextStyle {
   /// {@macro text_style}
   const factory TextStyle({
     required String fontFamily,
+    required String fontFamilyPostScriptName,
     required double fontSize,
     @Default(400) int fontWeight,
     @Default(TextDecoration.none) TextDecoration decoration,

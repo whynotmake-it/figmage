@@ -31,7 +31,7 @@ class TextStyleThemeExtensionGenerator
   @override
   Expression getConstructorExpression(TextStyle value) {
     if (useGoogleFonts) {
-      return _googleFontsConstructorExpression();
+      return _googleFontsConstructorExpression(value);
     } else {
       return _textStyleReference.constInstance(
         [],
@@ -40,19 +40,45 @@ class TextStyleThemeExtensionGenerator
     }
   }
 
-  Expression _googleFontsConstructorExpression() {
-    // TODO(tim): implement _googleFontsConstructorExpression
-    throw UnimplementedError();
+  Expression _googleFontsConstructorExpression(TextStyle value) {
+    // TODO(tim): bring this back once dependcies are resolved
+    /** 
+    final allFonts = GoogleFonts.asMap();
+    final validFontName = switch ((
+      allFonts.containsKey(value.fontFamily),
+      allFonts.containsKey(value.fontFamilyPostScriptName),
+    )) {
+      (true, _) => value.fontFamily,
+      (_, true) => value.fontFamilyPostScriptName,
+      (false, false) => null,
+    };
+    if (validFontName == null) {
+      return _textStyleReference.constInstance([], getNamedArguments(value));
+    }
+    */
+    final googleFontsReference = refer(
+      'GoogleFonts',
+      'package:google_fonts/google_fonts.dart',
+    );
+
+    return googleFontsReference.property("getFont").call(
+      [literal(value.fontFamily)],
+      getNamedArguments(value, includeFamily: false),
+    );
   }
 
   /// Returns the constructor arguments for a [TextStyle] from an instance of
   /// a [TextStyle].
   ///
-  /// Only visible for testing.
+  /// Only visible for testing. If [includeFamily] is false, the `fontFamily`
+  /// argument will be omitted (used for Google Fonts call).
   @visibleForTesting
-  Map<String, Expression> getNamedArguments(TextStyle textStyle) {
+  Map<String, Expression> getNamedArguments(
+    TextStyle textStyle, {
+    bool includeFamily = true,
+  }) {
     return <String, Expression>{
-      'fontFamily': literal(textStyle.fontFamily),
+      if (includeFamily) 'fontFamily': literal(textStyle.fontFamily),
       'fontSize': literal(textStyle.fontSize),
       'fontWeight': refer('FontWeight').property('w${textStyle.fontWeight}'),
       'fontStyle': refer('FontStyle').property(

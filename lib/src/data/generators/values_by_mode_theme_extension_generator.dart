@@ -329,6 +329,7 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
           in valueMaps.entries)
         Constructor(
           (constructor) => constructor
+            // TODO(tim): this should be const depending on the initializers
             ..constant = true
             ..name = switch (modeName) {
               "" => "standard",

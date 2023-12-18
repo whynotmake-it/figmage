@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'config.g.dart';
@@ -97,24 +96,6 @@ class Config with EquatableMixin {
   /// Is used to warn the user that there might be a potential error.
   bool get suspiciousFromDefined => allGenerationSettings
       .any((element) => element.from.isNotEmpty && element.generate == false);
-
-  /// Gets the specific [GenerationSettings] for a [TokenFileType].
-  ///
-  /// Returns null if the type is not supported.
-  GenerationSettings? getForTokenType(TokenFileType? type) {
-    // TODO(tim): support all types
-    return switch (type) {
-      TokenFileType.color => colors,
-      TokenFileType.numbers => numbers,
-      TokenFileType.spacers => numbers,
-      TokenFileType.paddings => numbers,
-      TokenFileType.typography => null,
-      TokenFileType.radii => null,
-      TokenFileType.strings => null,
-      TokenFileType.bools => null,
-      null => null,
-    };
-  }
 
   /// Converts a [Config] to a map.
   Map<dynamic, dynamic> toJson() => _$ConfigToJson(this);

@@ -17,6 +17,7 @@ import 'package:figmage/src/data/generators/text_style_theme_extension_generator
 import 'package:figmage/src/data/generators/value_names_theme_class_generator.dart';
 import 'package:figmage/src/data/generators/values_by_mode_theme_extension_generator.dart';
 import 'package:figmage/src/data/repositories/dart_code_file_writer_repository.dart';
+import 'package:figmage/src/data/repositories/dart_post_generation_repository.dart';
 import 'package:figmage/src/data/repositories/figma_styles_repository.dart';
 import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
 import 'package:figmage/src/data/repositories/yaml_config_repository.dart';
@@ -39,9 +40,11 @@ import 'package:figmage/src/domain/providers/figmage_package_generator_providers
 import 'package:figmage/src/domain/providers/file_writer_providers.dart';
 import 'package:figmage/src/domain/providers/generator_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
+import 'package:figmage/src/domain/providers/post_generation_providers.dart';
 import 'package:figmage/src/domain/providers/pub_updater_providers.dart';
 import 'package:figmage/src/domain/repositories/config_repository.dart';
 import 'package:figmage/src/domain/repositories/file_writer_repository.dart';
+import 'package:figmage/src/domain/repositories/post_generation_repository.dart';
 import 'package:figmage/src/domain/repositories/styles_repository.dart';
 import 'package:figmage/src/domain/repositories/variables_repository.dart';
 import 'package:figmage/src/domain/util/token_filter_x.dart';

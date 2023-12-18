@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:cli_completion/cli_completion.dart';
 import 'package:figmage/src/command_runner.dart';
+import 'package:figmage/src/domain/providers/logger_providers.dart';
+import 'package:figmage/src/domain/providers/pub_updater_providers.dart';
 import 'package:figmage/src/version.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:pub_updater/pub_updater.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
 class _MockLogger extends Mock implements Logger {}
@@ -23,6 +25,7 @@ Run ${lightCyan.wrap('$executableName update')} to update''';
 
 void main() {
   group('FigmageCommandRunner', () {
+    late ProviderContainer container;
     late PubUpdater pubUpdater;
     late Logger logger;
     late FigmageCommandRunner commandRunner;
@@ -36,10 +39,18 @@ void main() {
 
       logger = _MockLogger();
 
-      commandRunner = FigmageCommandRunner(
-        logger: logger,
-        pubUpdater: pubUpdater,
+      container = ProviderContainer(
+        overrides: [
+          loggerProvider.overrideWith((ref) => logger),
+          pubUpdaterProvider.overrideWith((ref) => pubUpdater),
+        ],
       );
+
+      commandRunner = FigmageCommandRunner(container);
+    });
+
+    tearDown(() {
+      container.dispose();
     });
 
     test('shows update message when newer version exists', () async {
@@ -98,13 +109,6 @@ void main() {
       verifyNever(() => logger.info(updatePrompt));
     });
 
-    test('can be instantiated without an explicit analytics/logger instance',
-        () {
-      final commandRunner = FigmageCommandRunner();
-      expect(commandRunner, isNotNull);
-      expect(commandRunner, isA<CompletionCommandRunner<int>>());
-    });
-
     test('handles FormatException', () async {
       const exception = FormatException('oops!');
       var isFirstInvocation = true;
@@ -140,15 +144,6 @@ void main() {
         final result = await commandRunner.run(['--version']);
         expect(result, equals(ExitCode.success.code));
         verify(() => logger.info(packageVersion)).called(1);
-      });
-    });
-
-    group('forge command', () {
-      test('requires token argument', () async {
-        final result = await commandRunner.run(['forge']);
-        expect(result, equals(ExitCode.usage.code));
-        verify(() => logger.err('Both token and fileId are required.'))
-            .called(1);
       });
     });
 

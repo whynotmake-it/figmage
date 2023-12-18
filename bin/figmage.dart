@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:figmage/src/command_runner.dart';
+import 'package:riverpod/riverpod.dart';
 
 Future<void> main(List<String> args) async {
-  await _flushThenExit(await FigmageCommandRunner().run(args));
+  final container = ProviderContainer();
+  await _flushThenExit(await FigmageCommandRunner(container).run(args));
 }
 
 /// Flushes the stdout and stderr streams, then exits the program with the given

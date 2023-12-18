@@ -2,23 +2,25 @@ import 'dart:io';
 
 import 'package:args/command_runner.dart';
 import 'package:figmage/src/command_runner.dart';
+import 'package:figmage/src/domain/providers/logger_providers.dart';
+import 'package:figmage/src/domain/providers/pub_updater_providers.dart';
 import 'package:figmage/src/version.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:pub_updater/pub_updater.dart';
+import 'package:riverpod/riverpod.dart';
 
 /// {@template update_command}
 /// A command which updates the CLI.
 /// {@endtemplate}
 class UpdateCommand extends Command<int> {
   /// {@macro update_command}
-  UpdateCommand({
-    required Logger logger,
-    PubUpdater? pubUpdater,
-  })  : _logger = logger,
-        _pubUpdater = pubUpdater ?? PubUpdater();
+  UpdateCommand(this._container);
 
-  final Logger _logger;
-  final PubUpdater _pubUpdater;
+  final ProviderContainer _container;
+
+  Logger get _logger => _container.read(loggerProvider);
+
+  PubUpdater get _pubUpdater => _container.read(pubUpdaterProvider);
 
   @override
   String get description => 'Update the CLI.';

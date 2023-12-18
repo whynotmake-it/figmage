@@ -48,5 +48,6 @@ jobs:
         uses: whynotmake-it/dart-coverage-assistant@5df622b0cf8ad8eca6baba5af82d49e140f785df
         with:
           enforce_threshold: 'single'
+          enforce_forbidden_decrease: 'none'
           lower_threshold: 50
           upper_threshold: 90

@@ -41,7 +41,7 @@ void main() {
         () async {
       final client = MockFigmaClient();
       when(client.getLocalVariables('fileIdNotExisting')).thenThrow(
-        FigmaError(
+        FigmaException(
           code: 404,
           message: 'Not found',
         ),
@@ -50,7 +50,7 @@ void main() {
         () async {
           await fetchLocaleVariables(client, 'fileIdNotExisting');
         },
-        throwsA(isA<FigmaError>()),
+        throwsA(isA<FigmaException>()),
       );
     });
   });

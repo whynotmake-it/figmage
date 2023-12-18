@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:figmage/src/domain/models/config/config.dart';
+import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/repositories/config_repository.dart';
 import 'package:mason_logger/mason_logger.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:yaml/yaml.dart';
 
 /// {@template yaml_config_repository}
@@ -12,11 +14,11 @@ import 'package:yaml/yaml.dart';
 /// {@endtemplate}
 class YamlConfigRepository implements ConfigRepository {
   /// {@macro yaml_config_repository}
-  YamlConfigRepository({
-    Logger? logger,
-  }) : _logger = logger ?? Logger();
+  YamlConfigRepository(this._ref);
 
-  final Logger _logger;
+  final Ref _ref;
+
+  Logger get _logger => _ref.read(loggerProvider);
 
   @override
   FutureOr<Config> readConfigFromFile({
@@ -28,6 +30,11 @@ class YamlConfigRepository implements ConfigRepository {
     };
 
     _logger.info('Reading config from ${configFile.path}');
+
+    if (configFile.existsSync() == false) {
+      _logger.info('Config file not found, using default config.');
+      return const Config();
+    }
 
     final yamlMap = await _readYamlFile(configFile);
 

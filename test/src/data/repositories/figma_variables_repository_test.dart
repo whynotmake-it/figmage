@@ -104,7 +104,7 @@ void main() {
       final repository = FigmaVariablesRepository();
       final variables = repository.fromDtoToModel(variablesResponseDto);
 
-      expect(variables, isA<List<Variable>>());
+      expect(variables, isA<List<Variable<dynamic>>>());
 // Specific expected equal statements for each field
       expect(
         variables.first.key,
@@ -116,6 +116,7 @@ void main() {
         variables.first.variableCollectionId,
         equals('VariableCollectionId:0:3'),
       );
+      expect(variables.first.variableCollectionName, "collection");
       expect(variables.first.scopes, equals(const ['ALL_SCOPES']));
       expect(variables.first.codeSyntax, equals(const {}));
       expect(variables.first.resolvedType, equals('COLOR'));

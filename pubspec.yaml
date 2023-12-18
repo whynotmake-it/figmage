@@ -2,6 +2,8 @@ name: figmage
 description: A CLI tool for generating Figma styles for Flutter
 version: 0.1.0+1
 publish_to: none
+executables:
+  figmage:
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -13,9 +15,14 @@ dependencies:
   collection: ^1.18.0
   dart_style: ^2.3.3
   equatable: ^2.0.5
-  figma: ^7.0.0
+  figma:
+    git:
+      url: https://github.com/whynotmake-it/figma.git
+      ref: fix/add-id-to-styles
   figma_variables_api:
-    path: packages/figma_variables_api
+    git:
+      url: https://github.com/whynotmake-it/figmage.git
+      path: packages/figma_variables_api
   figmage_package_generator:
     git:
       url: https://github.com/whynotmake-it/figmage.git
@@ -23,8 +30,10 @@ dependencies:
   freezed_annotation: ^2.4.1
   json_annotation: ^4.8.1
   mason_logger: ^0.2.5
+  meta: ^1.11.0
   path: ^1.8.3
   pub_updater: ^0.3.0
+  riverpod: ^2.4.6
   source_gen: ^1.4.0
   yaml: ^3.1.2
 

@@ -26,3 +26,9 @@ build/
 pubspec.lock
 pubspec_overrides.yaml
 .idea
+
+# Don't skip build test in CI
+dart_test.yaml
+
+.vscode/settings.json
+.vscode/launch.json

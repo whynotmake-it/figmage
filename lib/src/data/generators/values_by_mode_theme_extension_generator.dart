@@ -92,28 +92,24 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
   String generate() {
     final validValueMaps = valuesByNameByMode.map(
       (key, value) => MapEntry(
-        convertToValidVariableName(key),
+        switch (key) {
+          "" => "",
+          _ => convertToValidVariableName(key),
+        },
         value.map(
           (key, value) => MapEntry(convertToValidVariableName(key), value),
         ),
       ),
     );
-    final namesList = validValueMaps.values.first.keys.toList();
     final validClassName = convertToValidClassName(className);
     final $class = _getClass(
-      namesList: namesList,
+      valueMaps: validValueMaps,
       className: validClassName,
       extensionSymbol: extensionSymbol,
       extensionSymbolUrl: extensionSymbolUrl,
       lerpReference: lerpReference,
     );
-    final modeConstants = _getExtensionModesFields(
-      className: validClassName,
-      extensionSymbol: extensionSymbol,
-      valueMaps: validValueMaps,
-      extensionSymbolUrl: extensionSymbolUrl,
-      valueToConstructorArguments: valueToConstructorArguments,
-    );
+
     final buildContextExtension = _getBuildContextExtension(
       className: validClassName,
       nullable: buildContextExtensionNullable,
@@ -125,7 +121,6 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
           [
             $class,
             buildContextExtension,
-            ...modeConstants,
           ],
         ),
     );
@@ -166,48 +161,9 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
     );
   }
 
-  List<Field> _getExtensionModesFields({
-    required String className,
-    required Map<String, Map<String, T>> valueMaps,
-    required String extensionSymbol,
-    required String? extensionSymbolUrl,
-    required ConstructorArguments Function(T value)?
-        valueToConstructorArguments,
-  }) {
-    final result = <Field>[];
-    valueMaps.forEach((modeName, values) {
-      final assignment = refer(className).newInstance(
-        [],
-        values.map(
-          (name, value) {
-            return MapEntry(
-              name,
-              _getValueExpression(
-                extensionSymbol,
-                extensionSymbolUrl,
-                value,
-                valueToConstructorArguments,
-              ),
-            );
-          },
-        ),
-      );
-      result.add(
-        Field(
-          (b) => b
-            ..modifier = FieldModifier.constant
-            ..type = refer(className)
-            ..name = '$modeName$className'
-            ..assignment = assignment.code,
-        ),
-      );
-    });
-    return result;
-  }
-
   Class _getClass({
     required String className,
-    required List<String> namesList,
+    required Map<String, Map<String, T>> valueMaps,
     required String extensionSymbol,
     required String? extensionSymbolUrl,
     required Reference? lerpReference,
@@ -220,6 +176,7 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
             '$extensionSymbol?',
             extensionSymbolUrl,
           );
+    final namesList = valueMaps.values.first.keys.toList();
     return Class(
       (c) => c
         ..name = className
@@ -232,6 +189,7 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
         ..extend =
             refer('ThemeExtension<$className>', 'package:flutter/material.dart')
         ..constructors.add(_getConstructor(nameList: namesList))
+        ..constructors.addAll(_getNamedConstructors(valueMaps: valueMaps))
         ..fields.addAll(
           _getClassFields(
             nameList: namesList,
@@ -389,6 +347,36 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
     );
   }
 
+  List<Constructor> _getNamedConstructors({
+    required Map<String, Map<String, T>> valueMaps,
+  }) {
+    return [
+      for (final MapEntry(key: modeName, value: valuesByName)
+          in valueMaps.entries)
+        Constructor(
+          (constructor) => constructor
+            ..constant = true
+            ..name = switch (modeName) {
+              "" => "standard",
+              _ => convertToValidVariableName(modeName),
+            }
+            ..initializers.addAll(
+              [
+                for (final MapEntry(key: name, :value) in valuesByName.entries)
+                  Code(
+                    '$name = ${_getValueExpression(
+                      extensionSymbol,
+                      extensionSymbolUrl,
+                      value,
+                      valueToConstructorArguments,
+                    ).accept(_emitter)}',
+                  ),
+              ],
+            ),
+        ),
+    ];
+  }
+
   Expression _getValueExpression(
     String extensionSymbol,
     String? extensionSymbolUrl,
@@ -412,7 +400,8 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
             );
       final (:positionalArguments, :namedArguments, :typeArguments) =
           valueToConstructorArguments!(value);
-      return symbolReference.newInstance(
+
+      return symbolReference.constInstance(
         positionalArguments,
         namedArguments,
         typeArguments,

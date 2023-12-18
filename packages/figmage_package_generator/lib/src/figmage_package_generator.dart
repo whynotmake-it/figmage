@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 
@@ -6,12 +7,29 @@ import 'package:mason/mason.dart';
 /// The name of this package
 const packageName = 'figmage_package_generator';
 
+/// A resolver for package uris
+typedef PackageUriResolver = FutureOr<Uri?> Function(Uri packageUri);
+
+/// A factory for [GeneratorTarget]s
+typedef GeneratorTargetFactory = GeneratorTarget Function(Directory dir);
+
 /// {@template figmage_package_generator}
 /// A generator for an empty figmage styles dart package
 /// {@endtemplate}
 class FigmagePackageGenerator {
   /// {@macro figmage_package_generator}
-  const FigmagePackageGenerator();
+  ///
+  /// Allows to override the [packageUriResolver] for testing purposes.
+  const FigmagePackageGenerator({
+    PackageUriResolver? packageUriResolver,
+    GeneratorTargetFactory? generatorTargetFactory,
+  })  : _packageUriResolver = packageUriResolver ?? Isolate.resolvePackageUri,
+        _generatorTargetFactory =
+            generatorTargetFactory ?? DirectoryGeneratorTarget.new;
+
+  final PackageUriResolver _packageUriResolver;
+
+  final GeneratorTargetFactory _generatorTargetFactory;
 
   /// Generates a figmage styles dart package.
   ///
@@ -24,6 +42,7 @@ class FigmagePackageGenerator {
     required Directory dir,
     bool generateColors = true,
     bool generateTypography = true,
+    bool generateNumbers = true,
     bool generateSpacers = true,
     bool generatePaddings = true,
     bool generateRadii = true,
@@ -38,13 +57,14 @@ class FigmagePackageGenerator {
       'description': description,
       'generate_colors': generateColors,
       'generate_typography': generateTypography,
+      'generate_numbers': generateNumbers,
       'generate_spacers': generateSpacers,
       'generate_paddings': generatePaddings,
       'generate_radii': generateRadii,
       'generate_strings': generateStrings,
       'generate_bools': generateBools,
     };
-    final target = DirectoryGeneratorTarget(dir);
+    final target = _generatorTargetFactory(dir);
     await generator.hooks.preGen(vars: vars);
     final files = await generator.generate(
       target,
@@ -56,10 +76,24 @@ class FigmagePackageGenerator {
 
   Future<Brick> _getBrick() async {
     final packageUri = Uri.parse("package:$packageName/src/brick/");
-    final fileSystemUri = await Isolate.resolvePackageUri(packageUri);
+    final fileSystemUri = await _packageUriResolver(packageUri);
     if (fileSystemUri == null) {
-      throw Exception("Could not resolve package uri for package $packageName");
+      throw const PackageUriException(packageName);
     }
     return Brick.path(fileSystemUri.toFilePath());
   }
+}
+
+/// {@template package_uri_exception}
+/// An exception thrown when the package uri could not be resolved
+/// {@endtemplate}
+class PackageUriException implements Exception {
+  /// {@macro package_uri_exception}
+  const PackageUriException(this.packageName);
+
+  /// The name of the package that could not be resolved
+  final String packageName;
+
+  @override
+  String toString() => "Could not resolve package uri for package $packageName";
 }

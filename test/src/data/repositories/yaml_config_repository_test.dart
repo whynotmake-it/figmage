@@ -2,33 +2,32 @@ import 'dart:io';
 
 import 'package:figmage/src/data/repositories/yaml_config_repository.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
+import 'package:figmage/src/domain/providers/logger_providers.dart';
+import 'package:figmage/src/domain/repositories/config_repository.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
-class MockFile extends Mock implements File {}
+class _MockFile extends Mock implements File {}
 
-class MockLogger extends Mock implements Logger {}
+class _MockLogger extends Mock implements Logger {}
 
 void main() {
   group('YamlConfigRepository', () {
-    group('constructor', () {
-      test('has default logger', () async {
-        final sut = YamlConfigRepository();
-
-        expect(sut, isA<YamlConfigRepository>());
-      });
-    });
-
     group('readConfigFromFile', () {
-      late YamlConfigRepository sut;
-      late MockFile file;
-      late MockLogger logger;
-      setUp(() {
-        file = MockFile();
-        logger = MockLogger();
-        sut = YamlConfigRepository(logger: logger);
+      late ProviderContainer container;
+      late _MockFile file;
+      late _MockLogger logger;
 
+      late YamlConfigRepository sut;
+      setUp(() {
+        logger = _MockLogger();
+        container = ProviderContainer(
+          overrides: [loggerProvider.overrideWith((ref) => logger)],
+        );
+        sut = container.read(configRepositoryProvider) as YamlConfigRepository;
+        file = _MockFile();
         when(
           () => file.path,
         ).thenReturn('./figmage.yaml');
@@ -42,18 +41,32 @@ void main() {
         when(() => logger.warn(any())).thenReturn(null);
       });
 
-      test('defaults to ./figmage.yaml and logs path', () {
-        sut.readConfigFromFile();
-        verify(() => logger.info("Reading config from ./figmage.yaml"));
+      tearDown(() {
+        container.dispose();
       });
 
-      test('checks if file exists', () async {
+      test('defaults to ./figmage.yaml and logs path', () async {
+        sut.readConfigFromFile();
+        verify(() => logger.info("Reading config from ./figmage.yaml"))
+            .called(1);
+      });
+
+      test('checks if file exists and returns default config if not', () async {
         when(() => file.existsSync()).thenReturn(false);
-        expect(
-          () async => await sut.readConfigFromFile(file: file),
-          throwsA(isA<FileSystemException>()),
-        );
+        final result = await sut.readConfigFromFile(file: file);
+        verify(
+          () => logger.info('Config file not found, using default config.'),
+        ).called(1);
+        expect(result, const Config());
         verify(() => file.existsSync()).called(1);
+      });
+
+      test('returns default if file does not exist', () async {
+        when(() => file.existsSync()).thenReturn(false);
+        await expectLater(
+          await sut.readConfigFromFile(file: file),
+          const Config(),
+        );
       });
 
       test('reads the file', () async {
@@ -112,16 +125,6 @@ void main() {
       test('throws FormatException on malformat', () async {
         when(() => file.readAsString()).thenAnswer(
           (_) => Future.value('malformat'),
-        );
-        expect(
-          () => sut.readConfigFromFile(file: file),
-          throwsA(isA<FormatException>()),
-        );
-      });
-
-      test('throws FormatException if values are missing', () async {
-        when(() => file.readAsString()).thenAnswer(
-          (_) => Future.value('fileId: fileId'),
         );
         expect(
           () => sut.readConfigFromFile(file: file),

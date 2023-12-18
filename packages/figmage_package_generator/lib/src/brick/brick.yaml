@@ -27,6 +27,11 @@ vars:
     description: Whether to generate a file for TextStyles and typography
     default: true
     prompt: Generate typography?
+  generate_numbers:
+    type: boolean
+    description: Whether to generate a file for numbers
+    default: true
+    prompt: Generate numbers?
   generate_spacers:
     type: boolean
     description: Whether to generate a file for spacers

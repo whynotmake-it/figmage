@@ -11,8 +11,9 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
       json,
       ($checkedConvert) {
         final val = Config(
-          fileId: $checkedConvert('fileId', (v) => v as String),
-          packageName: $checkedConvert('packageName', (v) => v as String),
+          packageName: $checkedConvert(
+              'packageName', (v) => v as String? ?? "figmage_package"),
+          fileId: $checkedConvert('fileId', (v) => v as String?),
           packageDescription:
               $checkedConvert('packageDescription', (v) => v as String? ?? ''),
           packageDir: $checkedConvert('outputPath', (v) => v as String? ?? '.'),
@@ -33,6 +34,11 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
                   : GenerationSettings.fromJson(v as Map)),
           bools: $checkedConvert(
               'bools',
+              (v) => v == null
+                  ? const GenerationSettings()
+                  : GenerationSettings.fromJson(v as Map)),
+          numbers: $checkedConvert(
+              'numbers',
               (v) => v == null
                   ? const GenerationSettings()
                   : GenerationSettings.fromJson(v as Map)),
@@ -58,14 +64,15 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
     );
 
 Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
-      'fileId': instance.fileId,
       'packageName': instance.packageName,
+      'fileId': instance.fileId,
       'packageDescription': instance.packageDescription,
       'outputPath': instance.packageDir,
       'colors': instance.colors.toJson(),
       'typography': instance.typography.toJson(),
       'strings': instance.strings.toJson(),
       'bools': instance.bools.toJson(),
+      'numbers': instance.numbers.toJson(),
       'spacers': instance.spacers.toJson(),
       'paddings': instance.paddings.toJson(),
       'radii': instance.radii.toJson(),

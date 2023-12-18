@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'config.g.dart';
@@ -26,14 +27,15 @@ part 'config.g.dart';
 class Config with EquatableMixin {
   /// {@macro config}
   const Config({
-    required this.fileId,
-    required this.packageName,
+    this.packageName = "figmage_package",
+    this.fileId,
     this.packageDescription = '',
     this.packageDir = '.',
     this.colors = const GenerationSettings(),
     this.typography = const GenerationSettings(),
     this.strings = const GenerationSettings(),
     this.bools = const GenerationSettings(),
+    this.numbers = const GenerationSettings(),
     this.spacers = const GenerationSettings(generate: false),
     this.paddings = const GenerationSettings(generate: false),
     this.radii = const GenerationSettings(generate: false),
@@ -42,11 +44,11 @@ class Config with EquatableMixin {
   /// Initializes a [Config] from a json map.
   factory Config.fromMap(Map<dynamic, dynamic> json) => _$ConfigFromJson(json);
 
-  /// figma file ID.
-  final String fileId;
-
   /// The name of the generated dart package, e.g. figmage_example.
   final String packageName;
+
+  /// figma file ID.
+  final String? fileId;
 
   /// The description of the generated dart package.
   final String packageDescription;
@@ -73,6 +75,10 @@ class Config with EquatableMixin {
   /// all paths.
   final GenerationSettings bools;
 
+  /// Number generation settings, defaults to not generating number tokens from
+  /// all paths.
+  final GenerationSettings numbers;
+
   /// Spacers generation settings, defaults to not generating spacers.
   final GenerationSettings spacers;
 
@@ -84,13 +90,31 @@ class Config with EquatableMixin {
 
   /// All generation settings.
   List<GenerationSettings> get allGenerationSettings =>
-      [colors, typography, strings, bools, spacers, paddings, radii];
+      [colors, typography, strings, bools, numbers, spacers, paddings, radii];
 
   /// Whether any setting defines at least one `from` but has `generate: false`.
   ///
   /// Is used to warn the user that there might be a potential error.
   bool get suspiciousFromDefined => allGenerationSettings
       .any((element) => element.from.isNotEmpty && element.generate == false);
+
+  /// Gets the specific [GenerationSettings] for a [TokenFileType].
+  ///
+  /// Returns null if the type is not supported.
+  GenerationSettings? getForTokenType(TokenFileType? type) {
+    // TODO(tim): support all types
+    return switch (type) {
+      TokenFileType.color => colors,
+      TokenFileType.numbers => numbers,
+      TokenFileType.spacers => numbers,
+      TokenFileType.paddings => numbers,
+      TokenFileType.typography => null,
+      TokenFileType.radii => null,
+      TokenFileType.strings => null,
+      TokenFileType.bools => null,
+      null => null,
+    };
+  }
 
   /// Converts a [Config] to a map.
   Map<dynamic, dynamic> toJson() => _$ConfigToJson(this);
@@ -105,6 +129,7 @@ class Config with EquatableMixin {
         typography,
         strings,
         bools,
+        numbers,
         spacers,
         paddings,
         radii,

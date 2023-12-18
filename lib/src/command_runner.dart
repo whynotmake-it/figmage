@@ -2,17 +2,11 @@ import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:cli_completion/cli_completion.dart';
 import 'package:figmage/src/commands/commands.dart';
-import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
+import 'package:figmage/src/domain/providers/logger_providers.dart';
+import 'package:figmage/src/domain/providers/pub_updater_providers.dart';
 import 'package:figmage/src/version.dart';
-import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:mason_logger/mason_logger.dart';
-import 'package:pub_updater/pub_updater.dart';
-
-///A typedef for a function that can be used to append strings to a file
-typedef AppendCodeEntriesToFile = void Function(
-  List<String> entries,
-  String filePath,
-);
+import 'package:riverpod/riverpod.dart';
 
 /// The name of the executable.
 const executableName = 'figmage';
@@ -32,21 +26,7 @@ const description = 'A CLI tool for generating Figma styles for Flutter';
 /// {@endtemplate}
 class FigmageCommandRunner extends CompletionCommandRunner<int> {
   /// {@macro figmage_command_runner}
-  FigmageCommandRunner({
-    Logger? logger,
-    PubUpdater? pubUpdater,
-    FigmagePackageGenerator? figmagePackageGenerator,
-    FigmaVariablesRepository? figmaVariablesRepository,
-    AppendCodeEntriesToFile? appendCodeEntriesToFile,
-  })  : _logger = logger ?? Logger(),
-        _pubUpdater = pubUpdater ?? PubUpdater(),
-        _figmagePackageGenerator =
-            figmagePackageGenerator ?? const FigmagePackageGenerator(),
-        _figmaVariablesRepository =
-            figmaVariablesRepository ?? FigmaVariablesRepository(),
-        _appendCodeEntriesToFile =
-            appendCodeEntriesToFile ?? appendToFileIfExisting,
-        super(executableName, description) {
+  FigmageCommandRunner(this._container) : super(executableName, description) {
     // Add root options and flags
     argParser
       ..addFlag(
@@ -61,27 +41,17 @@ class FigmageCommandRunner extends CompletionCommandRunner<int> {
       );
 
     // Add sub commands
-    addCommand(
-      ForgeCommand(
-        logger: _logger,
-        figmagePackageGenerator: _figmagePackageGenerator,
-        figmaVariablesRepository: _figmaVariablesRepository,
-        appendCodeEntriesToFile: _appendCodeEntriesToFile,
-      ),
-    );
-    addCommand(ReforgeCommand(logger: _logger));
-    addCommand(UpdateCommand(logger: _logger, pubUpdater: _pubUpdater));
+    addCommand(ForgeCommand(_container));
+    addCommand(ReforgeCommand(_container));
+    addCommand(UpdateCommand(_container));
   }
+
+  final ProviderContainer _container;
+
+  Logger get _logger => _container.read(loggerProvider);
 
   @override
   void printUsage() => _logger.info(usage);
-
-  final Logger _logger;
-  final PubUpdater _pubUpdater;
-  final FigmagePackageGenerator _figmagePackageGenerator;
-  final FigmaVariablesRepository _figmaVariablesRepository;
-
-  final AppendCodeEntriesToFile _appendCodeEntriesToFile;
 
   @override
   Future<int> run(Iterable<String> args) async {
@@ -123,11 +93,13 @@ class FigmageCommandRunner extends CompletionCommandRunner<int> {
     _logger
       ..detail('Argument information:')
       ..detail('  Top level options:');
+
     for (final option in topLevelResults.options) {
       if (topLevelResults.wasParsed(option)) {
         _logger.detail('  - $option: ${topLevelResults[option]}');
       }
     }
+
     if (topLevelResults.command != null) {
       final commandResult = topLevelResults.command!;
       _logger
@@ -146,6 +118,7 @@ class FigmageCommandRunner extends CompletionCommandRunner<int> {
       _logger.info(packageVersion);
       exitCode = ExitCode.success.code;
     } else {
+      // Run the actual command
       exitCode = await super.runCommand(topLevelResults);
     }
 
@@ -162,7 +135,9 @@ class FigmageCommandRunner extends CompletionCommandRunner<int> {
   /// user.
   Future<void> _checkForUpdates() async {
     try {
-      final latestVersion = await _pubUpdater.getLatestVersion(packageName);
+      final latestVersion = await _container
+          .read(pubUpdaterProvider)
+          .getLatestVersion(packageName);
       final isUpToDate = packageVersion == latestVersion;
       if (!isUpToDate) {
         _logger

@@ -1,14 +1,14 @@
 import 'package:args/command_runner.dart';
+import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:mason_logger/mason_logger.dart';
+import 'package:riverpod/riverpod.dart';
 
 /// {@template reforge_command}
 /// A [Command] that updates an existing package.
 /// {@endtemplate}
 class ReforgeCommand extends Command<int> {
   /// {@macro reforge_command}
-  ReforgeCommand({
-    required Logger logger,
-  }) : _logger = logger {
+  ReforgeCommand(this._container) {
     argParser.addOption(
       "token",
       abbr: "t",
@@ -17,6 +17,8 @@ class ReforgeCommand extends Command<int> {
     );
   }
 
+  final ProviderContainer _container;
+
   @override
   String get description =>
       'This command reforges an existing package from your figma file.';
@@ -24,7 +26,7 @@ class ReforgeCommand extends Command<int> {
   @override
   String get name => 'reforge';
 
-  final Logger _logger;
+  Logger get _logger => _container.read(loggerProvider);
 
   @override
   Future<int> run() async {

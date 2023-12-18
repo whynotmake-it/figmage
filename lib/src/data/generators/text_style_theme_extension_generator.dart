@@ -41,7 +41,7 @@ class TextStyleThemeExtensionGenerator
   }
 
   Expression _googleFontsConstructorExpression(TextStyle value) {
-    // TODO(tim): bring this back once dependcies are resolved
+    // TODO(tim): #29 bring this back once dependcies are resolved
     /** 
     final allFonts = GoogleFonts.asMap();
     final validFontName = switch ((

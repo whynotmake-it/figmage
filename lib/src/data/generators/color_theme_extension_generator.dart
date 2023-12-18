@@ -17,7 +17,7 @@ class ColorThemeExtensionGenerator
     required super.valuesByNameByMode,
     super.buildContextExtensionNullable = false,
   }) : super(
-          extensionSymbolReference: _colorReference,
+          symbolReference: _colorReference,
         );
 
   @override

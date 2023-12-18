@@ -12,7 +12,7 @@ class NumberThemeExtensionGenerator
     required super.valuesByNameByMode,
     super.buildContextExtensionNullable = false,
   }) : super(
-          extensionSymbolReference: const Reference('double'),
+          symbolReference: const Reference('double'),
           lerpReference: const Reference(
             'lerpDouble',
             'dart:ui',

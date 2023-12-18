@@ -14,7 +14,7 @@ abstract interface class ThemeExtensionGenerator<T>
 
   /// A [Reference] to the symbol (e.g., Color, TextStyle) used in the theme
   /// extension.
-  Reference get extensionSymbolReference;
+  Reference get symbolReference;
 
   /// Generates the `ThemeExtension` class and the constants for all values,
   /// as well as a `BuildContext` extension and returns the resulting

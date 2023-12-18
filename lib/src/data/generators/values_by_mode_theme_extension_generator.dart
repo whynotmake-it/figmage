@@ -36,7 +36,7 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
   ValuesByModeThemeExtensionGenerator({
     required this.className,
     required this.valuesByNameByMode,
-    required this.extensionSymbolReference,
+    required this.symbolReference,
     this.buildContextExtensionNullable = false,
     this.lerpReference,
   }) : assert(
@@ -50,7 +50,7 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
   final String className;
 
   @override
-  final Reference extensionSymbolReference;
+  final Reference symbolReference;
 
   @override
   final bool buildContextExtensionNullable;
@@ -58,9 +58,9 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
   /// A map with the following structure: <ModeName<ValueName, Value>>
   final Map<String, Map<String, T>> valuesByNameByMode;
 
-  /// A [Reference] to a lerp function that can lerp [extensionSymbolReference].
+  /// A [Reference] to a lerp function that can lerp [symbolReference].
   /// If this value is null the generator assumes that
-  /// [extensionSymbolReference] implements a lerp function
+  /// [symbolReference] implements a lerp function
   final Reference? lerpReference;
 
   final _dartfmt = DartFormatter();
@@ -76,11 +76,11 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
   /// Is implemented for built in literal types like double, int, num, String or
   /// bool but has to be implemented for custom types.
   Expression getConstructorExpression(T value) {
-    if (extensionSymbolReference.isDartLiteralType) {
+    if (symbolReference.isDartLiteralType) {
       return literal(value);
     } else {
       throw UnimplementedError(
-        "Not implemented for type ${extensionSymbolReference.symbol}",
+        "Not implemented for type ${symbolReference.symbol}",
       );
     }
   }
@@ -161,7 +161,7 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
     required Map<String, Map<String, T>> valueMaps,
     required Reference? lerpReference,
   }) {
-    final nullableSymbolReference = extensionSymbolReference.toNullable;
+    final nullableSymbolReference = symbolReference.toNullable;
 
     final parameterNames = valueMaps.values.first.keys.toList();
     return Class(
@@ -236,7 +236,7 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
     required List<String> parameterNames,
   }) {
     final lerpReference =
-        this.lerpReference ?? extensionSymbolReference.property("lerp");
+        this.lerpReference ?? symbolReference.property("lerp");
     return refer(className).newInstance(
       [],
       {

@@ -21,7 +21,7 @@ class TextStyleThemeExtensionGenerator
     required this.useGoogleFonts,
     super.buildContextExtensionNullable = false,
   }) : super(
-          extensionSymbolReference: _textStyleReference,
+          symbolReference: _textStyleReference,
         );
 
   /// Whether to use the google_fonts package for initializing TextStyles

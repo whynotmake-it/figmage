@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'tokens_by_file_type.dart';
+part of 'tokens_by_type.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$TokensByFileType {
+mixin _$TokensByType {
   Iterable<DesignToken<int>> get colorTokens =>
       throw _privateConstructorUsedError;
   Iterable<DesignToken<TextStyle>> get typographyTokens =>
@@ -28,15 +28,15 @@ mixin _$TokensByFileType {
       throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $TokensByFileTypeCopyWith<TokensByFileType> get copyWith =>
+  $TokensByTypeCopyWith<TokensByType> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $TokensByFileTypeCopyWith<$Res> {
-  factory $TokensByFileTypeCopyWith(
-          TokensByFileType value, $Res Function(TokensByFileType) then) =
-      _$TokensByFileTypeCopyWithImpl<$Res, TokensByFileType>;
+abstract class $TokensByTypeCopyWith<$Res> {
+  factory $TokensByTypeCopyWith(
+          TokensByType value, $Res Function(TokensByType) then) =
+      _$TokensByTypeCopyWithImpl<$Res, TokensByType>;
   @useResult
   $Res call(
       {Iterable<DesignToken<int>> colorTokens,
@@ -47,9 +47,9 @@ abstract class $TokensByFileTypeCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$TokensByFileTypeCopyWithImpl<$Res, $Val extends TokensByFileType>
-    implements $TokensByFileTypeCopyWith<$Res> {
-  _$TokensByFileTypeCopyWithImpl(this._value, this._then);
+class _$TokensByTypeCopyWithImpl<$Res, $Val extends TokensByType>
+    implements $TokensByTypeCopyWith<$Res> {
+  _$TokensByTypeCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -91,11 +91,11 @@ class _$TokensByFileTypeCopyWithImpl<$Res, $Val extends TokensByFileType>
 }
 
 /// @nodoc
-abstract class _$$TokensByFileTypeImplCopyWith<$Res>
-    implements $TokensByFileTypeCopyWith<$Res> {
-  factory _$$TokensByFileTypeImplCopyWith(_$TokensByFileTypeImpl value,
-          $Res Function(_$TokensByFileTypeImpl) then) =
-      __$$TokensByFileTypeImplCopyWithImpl<$Res>;
+abstract class _$$TokensByTypeImplCopyWith<$Res>
+    implements $TokensByTypeCopyWith<$Res> {
+  factory _$$TokensByTypeImplCopyWith(
+          _$TokensByTypeImpl value, $Res Function(_$TokensByTypeImpl) then) =
+      __$$TokensByTypeImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -107,11 +107,11 @@ abstract class _$$TokensByFileTypeImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$TokensByFileTypeImplCopyWithImpl<$Res>
-    extends _$TokensByFileTypeCopyWithImpl<$Res, _$TokensByFileTypeImpl>
-    implements _$$TokensByFileTypeImplCopyWith<$Res> {
-  __$$TokensByFileTypeImplCopyWithImpl(_$TokensByFileTypeImpl _value,
-      $Res Function(_$TokensByFileTypeImpl) _then)
+class __$$TokensByTypeImplCopyWithImpl<$Res>
+    extends _$TokensByTypeCopyWithImpl<$Res, _$TokensByTypeImpl>
+    implements _$$TokensByTypeImplCopyWith<$Res> {
+  __$$TokensByTypeImplCopyWithImpl(
+      _$TokensByTypeImpl _value, $Res Function(_$TokensByTypeImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -123,7 +123,7 @@ class __$$TokensByFileTypeImplCopyWithImpl<$Res>
     Object? stringTokens = null,
     Object? boolTokens = null,
   }) {
-    return _then(_$TokensByFileTypeImpl(
+    return _then(_$TokensByTypeImpl(
       colorTokens: null == colorTokens
           ? _value.colorTokens
           : colorTokens // ignore: cast_nullable_to_non_nullable
@@ -150,8 +150,8 @@ class __$$TokensByFileTypeImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TokensByFileTypeImpl extends _TokensByFileType {
-  const _$TokensByFileTypeImpl(
+class _$TokensByTypeImpl extends _TokensByType {
+  const _$TokensByTypeImpl(
       {this.colorTokens = const [],
       this.typographyTokens = const [],
       this.numberTokens = const [],
@@ -177,14 +177,14 @@ class _$TokensByFileTypeImpl extends _TokensByFileType {
 
   @override
   String toString() {
-    return 'TokensByFileType(colorTokens: $colorTokens, typographyTokens: $typographyTokens, numberTokens: $numberTokens, stringTokens: $stringTokens, boolTokens: $boolTokens)';
+    return 'TokensByType(colorTokens: $colorTokens, typographyTokens: $typographyTokens, numberTokens: $numberTokens, stringTokens: $stringTokens, boolTokens: $boolTokens)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TokensByFileTypeImpl &&
+            other is _$TokensByTypeImpl &&
             const DeepCollectionEquality()
                 .equals(other.colorTokens, colorTokens) &&
             const DeepCollectionEquality()
@@ -209,19 +209,18 @@ class _$TokensByFileTypeImpl extends _TokensByFileType {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$TokensByFileTypeImplCopyWith<_$TokensByFileTypeImpl> get copyWith =>
-      __$$TokensByFileTypeImplCopyWithImpl<_$TokensByFileTypeImpl>(
-          this, _$identity);
+  _$$TokensByTypeImplCopyWith<_$TokensByTypeImpl> get copyWith =>
+      __$$TokensByTypeImplCopyWithImpl<_$TokensByTypeImpl>(this, _$identity);
 }
 
-abstract class _TokensByFileType extends TokensByFileType {
-  const factory _TokensByFileType(
+abstract class _TokensByType extends TokensByType {
+  const factory _TokensByType(
       {final Iterable<DesignToken<int>> colorTokens,
       final Iterable<DesignToken<TextStyle>> typographyTokens,
       final Iterable<DesignToken<double>> numberTokens,
       final Iterable<DesignToken<String>> stringTokens,
-      final Iterable<DesignToken<bool>> boolTokens}) = _$TokensByFileTypeImpl;
-  const _TokensByFileType._() : super._();
+      final Iterable<DesignToken<bool>> boolTokens}) = _$TokensByTypeImpl;
+  const _TokensByType._() : super._();
 
   @override
   Iterable<DesignToken<int>> get colorTokens;
@@ -235,6 +234,6 @@ abstract class _TokensByFileType extends TokensByFileType {
   Iterable<DesignToken<bool>> get boolTokens;
   @override
   @JsonKey(ignore: true)
-  _$$TokensByFileTypeImplCopyWith<_$TokensByFileTypeImpl> get copyWith =>
+  _$$TokensByTypeImplCopyWith<_$TokensByTypeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

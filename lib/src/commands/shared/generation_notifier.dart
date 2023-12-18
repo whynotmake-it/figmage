@@ -50,13 +50,16 @@ class GenerationNotifier
       generatedPackageProvider(settings).future,
     );
 
-    final generators = await ref.watch(generatorsProvider(settings).future);
-
+    final generatorsByFiles =
+        await ref.watch(generatorsProvider(settings).future);
+    final codeByFiles = {
+      for (final MapEntry(key: file, value: generator)
+          in generatorsByFiles.entries)
+        file: generator.generate(),
+    };
     // write the files
     await ref.watch(
-      fileWriterProvider({
-        for (final (file, generator) in generators) file: generator.generate(),
-      }).future,
+      fileWriterProvider(codeByFiles).future,
     );
 
     try {

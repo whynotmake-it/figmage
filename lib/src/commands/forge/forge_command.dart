@@ -7,7 +7,7 @@ import 'package:riverpod/riverpod.dart';
 /// {@template forge_command}
 ///
 /// `figmage forge <path> --token <token> --fileId <fileId>`
-/// A [Command] to exemplify a sub command
+/// The command that forges a new package from the figma file.
 /// {@endtemplate}
 class ForgeCommand extends Command<int> {
   /// {@macro forge_command}

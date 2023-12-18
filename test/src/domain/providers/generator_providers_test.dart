@@ -7,7 +7,7 @@ import 'package:figmage/src/data/generators/spacer_generator.dart';
 import 'package:figmage/src/data/generators/text_style_theme_extension_generator.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
-import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_file_type.dart';
+import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_type.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/figmage_package_generator_providers.dart';
 import 'package:figmage/src/domain/providers/generator_providers.dart';
@@ -28,7 +28,7 @@ class _MockProgress extends Mock implements Progress {}
 void main() {
   group("generatorsProvider", () {
     late _MockLogger logger;
-    late TokensByFileType mockTokensByFileType;
+    late TokensByType mockTokensByFileType;
     late Iterable<File> mockGenerated;
 
     late ProviderContainer container;
@@ -39,7 +39,7 @@ void main() {
       logger = _MockLogger();
       when(() => logger.progress(any())).thenReturn(_MockProgress());
 
-      mockTokensByFileType = TokensByFileType(
+      mockTokensByFileType = TokensByType(
         colorTokens: [
           mockColorDesignStyle,
           // mockColorVariable,
@@ -80,31 +80,23 @@ void main() {
       final result = await container.read(generatorsProvider(settings).future);
       expect(result, hasLength(5));
       expect(
-        result,
-        contains(isA<(File, ColorThemeExtensionGenerator)>()),
-      );
-      expect(
-        result,
-        contains(isA<(File, TextStyleThemeExtensionGenerator)>()),
-      );
-      expect(
-        result,
-        contains(isA<(File, NumberThemeExtensionGenerator)>()),
-      );
-      expect(
-        result,
-        contains(isA<(File, SpacerGenerator)>()),
-      );
-      expect(
-        result,
-        contains(isA<(File, PaddingGenerator)>()),
+        result.values,
+        containsAll(
+          [
+            isA<ColorThemeExtensionGenerator>(),
+            isA<TextStyleThemeExtensionGenerator>(),
+            isA<NumberThemeExtensionGenerator>(),
+            isA<SpacerGenerator>(),
+            isA<PaddingGenerator>(),
+          ],
+        ),
       );
     });
 
     test('all file paths are included', () async {
       final result = await container.read(generatorsProvider(settings).future);
       expect(
-        result.map((e) => e.$1.path),
+        result.keys.map((e) => e.path),
         containsAll([
           "lib/src/colors.dart",
           "lib/src/typography.dart",

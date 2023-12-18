@@ -30,7 +30,7 @@ import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/models/style/design_style.dart';
 import 'package:figmage/src/domain/models/text_style/text_style.dart';
-import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_file_type.dart';
+import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_type.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
 import 'package:figmage/src/domain/providers/config_providers.dart';

@@ -2,7 +2,7 @@ import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/models/style/design_style.dart';
 import 'package:figmage/src/domain/models/text_style/text_style.dart';
-import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_file_type.dart';
+import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_type.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/repositories/styles_repository.dart';
@@ -12,8 +12,7 @@ import 'package:riverpod/riverpod.dart';
 
 /// Filters all tokens by file type.
 final filteredTokensProvider =
-    FutureProvider.family<TokensByFileType, FigmageSettings>(
-        (ref, settings) async {
+    FutureProvider.family<TokensByType, FigmageSettings>((ref, settings) async {
   try {
     await ref.watch(variablesProvider(settings).future);
   } catch (_) {}
@@ -33,7 +32,7 @@ final filteredTokensProvider =
           "${settings.fileId} ",
     );
   }
-  return TokensByFileType(
+  return TokensByType(
     colorTokens: allTokens
         .whereType<DesignToken<int>>()
         .filterByFrom(settings.config.colors),

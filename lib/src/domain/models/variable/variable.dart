@@ -17,13 +17,10 @@ const String kResolvedTypeBoolean = 'BOOLEAN';
 /// {@template variable}
 /// Represents a Figma variable with different data types.
 ///
-/// The [Variable] class is used to model Figma variables with various data
-/// types.
-/// It provides constructors for different types of variables: boolean, float,
+/// The [Variable] sealed class is used to model Figma variables with various
+/// data types.
+/// It provides classes for different types of variables: boolean, float,
 /// color, and string.
-///
-/// The [Variable] class is part of a sealed union type, and each constructor is
-/// associated with a specific data type.
 /// {@endtemplate}
 sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
   /// {@macro variable}

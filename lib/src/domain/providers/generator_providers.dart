@@ -8,7 +8,7 @@ import 'package:figmage/src/data/generators/spacer_generator.dart';
 import 'package:figmage/src/data/generators/text_style_theme_extension_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
-import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_file_type.dart';
+import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_type.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/figmage_package_generator_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
@@ -19,8 +19,8 @@ import 'package:riverpod/riverpod.dart';
 
 /// Provides a [ThemeClassGenerator] based on the file type, variables and
 /// settings, if there is a supported generator.
-final generatorsProvider = FutureProvider.family<
-    Iterable<(File file, ThemeClassGenerator generator)>, FigmageSettings>(
+final generatorsProvider =
+    FutureProvider.family<Map<File, ThemeClassGenerator>, FigmageSettings>(
   (ref, settings) async {
     final logger = ref.watch(loggerProvider);
     final tokensByType =
@@ -41,7 +41,7 @@ final generatorsProvider = FutureProvider.family<
         file: switch ((type, tokensByType)) {
           (
             TokenFileType.color,
-            TokensByFileType(colorTokens: Iterable(isEmpty: false)),
+            TokensByType(colorTokens: Iterable(isEmpty: false)),
           ) =>
             ColorThemeExtensionGenerator(
               className: type.className,
@@ -49,7 +49,7 @@ final generatorsProvider = FutureProvider.family<
             ),
           (
             TokenFileType.typography,
-            TokensByFileType(typographyTokens: Iterable(isEmpty: false)),
+            TokensByType(typographyTokens: Iterable(isEmpty: false)),
           ) =>
             TextStyleThemeExtensionGenerator(
               className: type.className,
@@ -58,7 +58,7 @@ final generatorsProvider = FutureProvider.family<
             ),
           (
             TokenFileType.numbers,
-            TokensByFileType(numberTokens: Iterable(isEmpty: false)),
+            TokensByType(numberTokens: Iterable(isEmpty: false)),
           ) =>
             NumberThemeExtensionGenerator(
               className: type.className,
@@ -66,7 +66,7 @@ final generatorsProvider = FutureProvider.family<
             ),
           (
             TokenFileType.spacers,
-            TokensByFileType(numberTokens: Iterable(isEmpty: false)),
+            TokensByType(numberTokens: Iterable(isEmpty: false)),
           ) =>
             SpacerGenerator(
               className: type.className,
@@ -78,7 +78,7 @@ final generatorsProvider = FutureProvider.family<
             ),
           (
             TokenFileType.paddings,
-            TokensByFileType(numberTokens: Iterable(isEmpty: false)),
+            TokensByType(numberTokens: Iterable(isEmpty: false)),
           ) =>
             PaddingGenerator(
               className: type.className,
@@ -95,11 +95,11 @@ final generatorsProvider = FutureProvider.family<
         },
     };
 
-    final validGenerators = [
+    final validGenerators = {
       for (final MapEntry(key: file, value: generator)
           in generatorsByFile.entries)
-        if (generator != null) (file, generator),
-    ];
+        if (generator != null) file: generator,
+    };
     progress.complete(
       "Generated ${validGenerators.length} theme classes from tokens.",
     );

@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'text_style.freezed.dart';
+part 'typography.freezed.dart';
 
 /// The applied text decoration
 enum TextDecoration {
@@ -27,12 +27,14 @@ enum FontStyle {
 }
 
 /// {@template text_style}
-/// Represents a Flutter `TextStyle`.
+/// Contains all values that can be applied to a text style.
+///
+/// Basically represents a Flutter `TextStyle`.
 /// {@endtemplate}
 @freezed
-sealed class TextStyle with _$TextStyle {
+sealed class Typography with _$Typography {
   /// {@macro text_style}
-  const factory TextStyle({
+  const factory Typography({
     required String fontFamily,
     required String fontFamilyPostScriptName,
     required double fontSize,
@@ -42,7 +44,7 @@ sealed class TextStyle with _$TextStyle {
     @Default(1.0) double letterSpacing,
     @Default(1.0) double wordSpacing,
     @Default(1.0) double height,
-  }) = _TextStyle;
+  }) = _Typography;
 
-  const TextStyle._();
+  const Typography._();
 }

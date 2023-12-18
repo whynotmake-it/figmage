@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$TokensByType {
   Iterable<DesignToken<int>> get colorTokens =>
       throw _privateConstructorUsedError;
-  Iterable<DesignToken<TextStyle>> get typographyTokens =>
+  Iterable<DesignToken<Typography>> get typographyTokens =>
       throw _privateConstructorUsedError;
   Iterable<DesignToken<double>> get numberTokens =>
       throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $TokensByTypeCopyWith<$Res> {
   @useResult
   $Res call(
       {Iterable<DesignToken<int>> colorTokens,
-      Iterable<DesignToken<TextStyle>> typographyTokens,
+      Iterable<DesignToken<Typography>> typographyTokens,
       Iterable<DesignToken<double>> numberTokens,
       Iterable<DesignToken<String>> stringTokens,
       Iterable<DesignToken<bool>> boolTokens});
@@ -73,7 +73,7 @@ class _$TokensByTypeCopyWithImpl<$Res, $Val extends TokensByType>
       typographyTokens: null == typographyTokens
           ? _value.typographyTokens
           : typographyTokens // ignore: cast_nullable_to_non_nullable
-              as Iterable<DesignToken<TextStyle>>,
+              as Iterable<DesignToken<Typography>>,
       numberTokens: null == numberTokens
           ? _value.numberTokens
           : numberTokens // ignore: cast_nullable_to_non_nullable
@@ -100,7 +100,7 @@ abstract class _$$TokensByTypeImplCopyWith<$Res>
   @useResult
   $Res call(
       {Iterable<DesignToken<int>> colorTokens,
-      Iterable<DesignToken<TextStyle>> typographyTokens,
+      Iterable<DesignToken<Typography>> typographyTokens,
       Iterable<DesignToken<double>> numberTokens,
       Iterable<DesignToken<String>> stringTokens,
       Iterable<DesignToken<bool>> boolTokens});
@@ -131,7 +131,7 @@ class __$$TokensByTypeImplCopyWithImpl<$Res>
       typographyTokens: null == typographyTokens
           ? _value.typographyTokens
           : typographyTokens // ignore: cast_nullable_to_non_nullable
-              as Iterable<DesignToken<TextStyle>>,
+              as Iterable<DesignToken<Typography>>,
       numberTokens: null == numberTokens
           ? _value.numberTokens
           : numberTokens // ignore: cast_nullable_to_non_nullable
@@ -164,7 +164,7 @@ class _$TokensByTypeImpl extends _TokensByType {
   final Iterable<DesignToken<int>> colorTokens;
   @override
   @JsonKey()
-  final Iterable<DesignToken<TextStyle>> typographyTokens;
+  final Iterable<DesignToken<Typography>> typographyTokens;
   @override
   @JsonKey()
   final Iterable<DesignToken<double>> numberTokens;
@@ -216,7 +216,7 @@ class _$TokensByTypeImpl extends _TokensByType {
 abstract class _TokensByType extends TokensByType {
   const factory _TokensByType(
       {final Iterable<DesignToken<int>> colorTokens,
-      final Iterable<DesignToken<TextStyle>> typographyTokens,
+      final Iterable<DesignToken<Typography>> typographyTokens,
       final Iterable<DesignToken<double>> numberTokens,
       final Iterable<DesignToken<String>> stringTokens,
       final Iterable<DesignToken<bool>> boolTokens}) = _$TokensByTypeImpl;
@@ -225,7 +225,7 @@ abstract class _TokensByType extends TokensByType {
   @override
   Iterable<DesignToken<int>> get colorTokens;
   @override
-  Iterable<DesignToken<TextStyle>> get typographyTokens;
+  Iterable<DesignToken<Typography>> get typographyTokens;
   @override
   Iterable<DesignToken<double>> get numberTokens;
   @override

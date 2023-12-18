@@ -55,7 +55,7 @@ class FigmaStylesRepository implements StylesRepository {
         :final name?,
         :final style?,
       ) =>
-        TextDesignStyle(id: id, name: name, value: style.toTextStyle()),
+        TextDesignStyle(id: id, name: name, value: style.toDomain()),
       Rectangle(
         :final id,
         :final name?,

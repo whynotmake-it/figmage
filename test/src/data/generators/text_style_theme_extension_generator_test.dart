@@ -1,18 +1,18 @@
 import 'package:figmage/src/data/generators/text_style_theme_extension_generator.dart';
-import 'package:figmage/src/domain/models/text_style/text_style.dart';
+import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('TextStyleThemeExtensionsGenerator', () {
     const valuesByNameByMode = {
       'mode1': {
-        'textStyle1': TextStyle(
+        'textStyle1': Typography(
           fontSize: 16,
           fontFamily: 'Roboto',
           fontFamilyPostScriptName: 'Roboto',
           decoration: TextDecoration.underline,
         ),
-        'textStyle2': TextStyle(
+        'textStyle2': Typography(
           fontSize: 24,
           fontFamily: 'Roboto',
           fontFamilyPostScriptName: 'Roboto',
@@ -20,14 +20,14 @@ void main() {
         ),
       },
       'mode2': {
-        'textStyle1': TextStyle(
+        'textStyle1': Typography(
           fontSize: 16,
           fontFamily: 'Roboto',
           fontFamilyPostScriptName: 'Roboto',
           fontWeight: 700,
           decoration: TextDecoration.underline,
         ),
-        'textStyle2': TextStyle(
+        'textStyle2': Typography(
           fontSize: 24,
           fontFamily: 'Roboto',
           fontFamilyPostScriptName: 'Roboto',

@@ -2,6 +2,8 @@ import 'package:args/args.dart';
 import 'package:figmage/src/commands/shared/forge_settings_providers.dart';
 import 'package:figmage/src/commands/shared/generation_notifier.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
+import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_type.dart';
+import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/figmage_package_generator_providers.dart';
 import 'package:figmage/src/domain/providers/file_writer_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
@@ -47,6 +49,7 @@ void main() {
         generatedPackageProvider.overrideWith((ref, arg) => Future.value({})),
         fileWriterProvider.overrideWith((ref, args) => Future.value(args.keys)),
         loggerProvider.overrideWith((ref) => logger),
+        filteredTokensProvider.overrideWith((ref, arg) => const TokensByType()),
         settingsProvider.overrideWith(
           (ref, arg) => Future.value(
             (

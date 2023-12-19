@@ -13,15 +13,19 @@ import 'package:riverpod/riverpod.dart';
 /// Filters all tokens by file type.
 final filteredTokensProvider =
     FutureProvider.family<TokensByType, FigmageSettings>((ref, settings) async {
+  late final Iterable<Variable> variables;
   try {
-    await ref.watch(variablesProvider(settings).future);
-  } catch (_) {}
-  final variables = ref.watch(variablesProvider(settings)).valueOrNull ?? [];
+    variables = await ref.watch(variablesProvider(settings).future);
+  } catch (_) {
+    variables = [];
+  }
 
+  late final Iterable<DesignStyle> styles;
   try {
-    await ref.watch(stylesProvider(settings).future);
-  } catch (_) {}
-  final styles = ref.watch(stylesProvider(settings)).valueOrNull ?? [];
+    styles = await ref.watch(stylesProvider(settings).future);
+  } catch (_) {
+    styles = [];
+  }
 
   final allTokens = <DesignToken>[...variables, ...styles];
   if (allTokens.isEmpty) {
@@ -118,7 +122,7 @@ final stylesProvider =
     stylesProgress.fail("Failed to fetch styles: ${e.message}");
     rethrow;
   } catch (e) {
-    stylesProgress.fail("Failed to fetch styles for unknown reason: $e");
+    stylesProgress.fail("Failed to fetch styles for unknown reason ($e)");
     rethrow;
   }
 });

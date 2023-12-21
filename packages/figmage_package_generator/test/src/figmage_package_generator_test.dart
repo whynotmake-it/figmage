@@ -142,7 +142,7 @@ void main() {
         ).called(1);
       });
 
-      group("generation with all files", () {
+      group("with all file types", () {
         late Iterable<File> files;
         setUp(() async {
           files = await sut.generate(
@@ -177,7 +177,7 @@ void main() {
 
           expect(
             decoded,
-            equals(_expectedLibraryFile),
+            equals(_expectedFullLibraryFile),
           );
         });
 
@@ -193,36 +193,59 @@ void main() {
         });
       });
 
-      test('generates no extra type files if unwanted', () async {
-        final files = await sut.generate(
-          projectName: "figmage_example",
-          dir: testDirectory,
-          description: "A test",
-          generateColors: false,
-          generateTypography: false,
-          generateNumbers: false,
-          generateSpacers: false,
-          generatePaddings: false,
-          generateRadii: false,
-          generateStrings: false,
-          generateBools: false,
-        );
-        for (final type in TokenFileType.values) {
-          expect(
-            files,
-            isNot(
-              contains(
-                isA<File>().having(
-                  (f) => f.path,
-                  "path",
-                  contains(type.filename),
+      group('with no file types', () {
+        late Iterable<File> files;
+        setUp(() async {
+          files = await sut.generate(
+            projectName: "figmage_example",
+            dir: testDirectory,
+            description: "A test",
+            generateColors: false,
+            generateTypography: false,
+            generateNumbers: false,
+            generateSpacers: false,
+            generatePaddings: false,
+            generateRadii: false,
+            generateStrings: false,
+            generateBools: false,
+          );
+        });
+
+        test('generates none of the files', () async {
+          for (final type in TokenFileType.values) {
+            expect(
+              files,
+              isNot(
+                contains(
+                  isA<File>().having(
+                    (f) => f.path,
+                    "path",
+                    contains(type.filename),
+                  ),
                 ),
               ),
+              reason:
+                  "Expected not to find ${type.filename} in generated files",
+            );
+          }
+        });
+
+        test('none of the generated files are in export', () {
+          final content = verify(
+            () => generatorTarget.createFile(
+              any(that: contains("figmage_example.dart")),
+              captureAny(),
             ),
-            reason: "Expected not to find ${type.filename} in generated files",
+          ).captured.first as List<int>;
+          final decoded = utf8.decode(content);
+
+          expect(
+            decoded,
+            equals(_expectedEmptyLibraryFile),
           );
-        }
+        });
       });
+
       test('throws if package URI could not be resolved', () async {
         sut = FigmagePackageGenerator(
           generatorTargetFactory: (_) => _MockGeneratorTarget(),
@@ -253,7 +276,7 @@ void main() {
   });
 }
 
-const _expectedLibraryFile = '''
+const _expectedFullLibraryFile = '''
 /// A test
 library figmage_example;
 
@@ -265,4 +288,18 @@ export 'src/radii.dart';
 export 'src/spacers.dart';
 export 'src/strings.dart';
 export 'src/typography.dart';
+''';
+
+const _expectedEmptyLibraryFile = '''
+/// A test
+library figmage_example;
+
+
+
+
+
+
+
+
+
 ''';

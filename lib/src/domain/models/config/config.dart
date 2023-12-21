@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'config.g.dart';
@@ -32,7 +31,7 @@ class Config with EquatableMixin {
     this.packageDescription = '',
     this.packageDir = '.',
     this.colors = const GenerationSettings(),
-    this.typography = const GenerationSettings(),
+    this.typography = const TypographyGenerationSettings(),
     this.strings = const GenerationSettings(),
     this.bools = const GenerationSettings(),
     this.numbers = const GenerationSettings(),
@@ -64,8 +63,8 @@ class Config with EquatableMixin {
   final GenerationSettings colors;
 
   /// Typography generation settings, defaults to generating typography tokens
-  /// from all paths.
-  final GenerationSettings typography;
+  /// from all paths and using google fonts.
+  final TypographyGenerationSettings typography;
 
   /// String generation settings, defaults to generating string tokens from
   /// all paths.
@@ -98,24 +97,6 @@ class Config with EquatableMixin {
   bool get suspiciousFromDefined => allGenerationSettings
       .any((element) => element.from.isNotEmpty && element.generate == false);
 
-  /// Gets the specific [GenerationSettings] for a [TokenFileType].
-  ///
-  /// Returns null if the type is not supported.
-  GenerationSettings? getForTokenType(TokenFileType? type) {
-    // TODO(tim): support all types
-    return switch (type) {
-      TokenFileType.color => colors,
-      TokenFileType.numbers => numbers,
-      TokenFileType.spacers => numbers,
-      TokenFileType.paddings => numbers,
-      TokenFileType.typography => null,
-      TokenFileType.radii => null,
-      TokenFileType.strings => null,
-      TokenFileType.bools => null,
-      null => null,
-    };
-  }
-
   /// Converts a [Config] to a map.
   Map<dynamic, dynamic> toJson() => _$ConfigToJson(this);
 
@@ -144,8 +125,8 @@ class Config with EquatableMixin {
 class GenerationSettings with EquatableMixin {
   /// {@macro generation_settings}
   const GenerationSettings({
-    @Default(true) this.generate = true,
-    @Default(<String>[]) this.from = const <String>[],
+    this.generate = true,
+    this.from = const <String>[],
   });
 
   /// Initializes a [GenerationSettings] from a json map.
@@ -163,4 +144,34 @@ class GenerationSettings with EquatableMixin {
 
   @override
   List<Object?> get props => [generate, ...from];
+}
+
+/// {@template typography_generation_settings}
+/// Settings for generating typography tokens. This includes whether or not to
+/// generate the token, which paths to generate from and whether or not to use
+/// google fonts.
+/// {@endtemplate}
+@JsonSerializable(anyMap: true, checked: true)
+class TypographyGenerationSettings extends GenerationSettings {
+  /// {@macro typography_generation_settings}
+  const TypographyGenerationSettings({
+    super.generate,
+    super.from,
+    this.useGoogleFonts = true,
+  });
+
+  /// Initializes a [TypographyGenerationSettings] from a json map.
+  factory TypographyGenerationSettings.fromJson(Map<dynamic, dynamic> json) =>
+      _$TypographyGenerationSettingsFromJson(json);
+
+  /// Whether to use google fonts for obtaining the font families, defaults to
+  /// true.
+  final bool useGoogleFonts;
+
+  /// Converts a [TypographyGenerationSettings] to a map.
+  @override
+  Map<dynamic, dynamic> toJson() => _$TypographyGenerationSettingsToJson(this);
+
+  @override
+  List<Object?> get props => [...super.props, useGoogleFonts];
 }

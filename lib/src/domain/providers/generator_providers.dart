@@ -55,6 +55,7 @@ final generatorsProvider =
               className: type.className,
               valuesByNameByMode:
                   tokensByType.typographyTokens.valuesByNameByMode,
+              useGoogleFonts: settings.config.typography.useGoogleFonts,
             ),
           (
             TokenFileType.numbers,

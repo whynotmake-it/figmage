@@ -1,5 +1,5 @@
 import 'package:figmage/src/domain/models/style/design_style.dart';
-import 'package:figmage/src/domain/models/text_style/text_style.dart';
+import 'package:figmage/src/domain/models/typography/typography.dart';
 
 const mockColorDesignStyle = ColorDesignStyle(
   id: "color_id",
@@ -10,7 +10,11 @@ const mockColorDesignStyle = ColorDesignStyle(
 const mockTextDesignStyle = TextDesignStyle(
   id: "text_id",
   name: "text_name",
-  value: TextStyle(fontFamily: "Inter", fontSize: 12),
+  value: Typography(
+    fontFamily: "Inter",
+    fontFamilyPostScriptName: "Inter",
+    fontSize: 12,
+  ),
 );
 
 const mockStyles = <DesignStyle<dynamic>>[

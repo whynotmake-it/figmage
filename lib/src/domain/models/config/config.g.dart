@@ -25,8 +25,8 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
           typography: $checkedConvert(
               'typography',
               (v) => v == null
-                  ? const GenerationSettings()
-                  : GenerationSettings.fromJson(v as Map)),
+                  ? const TypographyGenerationSettings()
+                  : TypographyGenerationSettings.fromJson(v as Map)),
           strings: $checkedConvert(
               'strings',
               (v) => v == null
@@ -98,4 +98,31 @@ Map<String, dynamic> _$GenerationSettingsToJson(GenerationSettings instance) =>
     <String, dynamic>{
       'generate': instance.generate,
       'from': instance.from.toList(),
+    };
+
+TypographyGenerationSettings _$TypographyGenerationSettingsFromJson(Map json) =>
+    $checkedCreate(
+      'TypographyGenerationSettings',
+      json,
+      ($checkedConvert) {
+        final val = TypographyGenerationSettings(
+          generate: $checkedConvert('generate', (v) => v as bool? ?? true),
+          from: $checkedConvert(
+              'from',
+              (v) =>
+                  (v as List<dynamic>?)?.map((e) => e as String) ??
+                  const <String>[]),
+          useGoogleFonts:
+              $checkedConvert('useGoogleFonts', (v) => v as bool? ?? true),
+        );
+        return val;
+      },
+    );
+
+Map<String, dynamic> _$TypographyGenerationSettingsToJson(
+        TypographyGenerationSettings instance) =>
+    <String, dynamic>{
+      'generate': instance.generate,
+      'from': instance.from.toList(),
+      'useGoogleFonts': instance.useGoogleFonts,
     };

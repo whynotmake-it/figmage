@@ -1,8 +1,8 @@
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/models/style/design_style.dart';
-import 'package:figmage/src/domain/models/text_style/text_style.dart';
 import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_type.dart';
+import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/repositories/styles_repository.dart';
@@ -13,15 +13,19 @@ import 'package:riverpod/riverpod.dart';
 /// Filters all tokens by file type.
 final filteredTokensProvider =
     FutureProvider.family<TokensByType, FigmageSettings>((ref, settings) async {
+  late final Iterable<Variable> variables;
   try {
-    await ref.watch(variablesProvider(settings).future);
-  } catch (_) {}
-  final variables = ref.watch(variablesProvider(settings)).valueOrNull ?? [];
+    variables = await ref.watch(variablesProvider(settings).future);
+  } catch (_) {
+    variables = [];
+  }
 
+  late final Iterable<DesignStyle> styles;
   try {
-    await ref.watch(stylesProvider(settings).future);
-  } catch (_) {}
-  final styles = ref.watch(stylesProvider(settings)).valueOrNull ?? [];
+    styles = await ref.watch(stylesProvider(settings).future);
+  } catch (_) {
+    styles = [];
+  }
 
   final allTokens = <DesignToken>[...variables, ...styles];
   if (allTokens.isEmpty) {
@@ -37,7 +41,7 @@ final filteredTokensProvider =
         .whereType<DesignToken<int>>()
         .filterByFrom(settings.config.colors),
     typographyTokens: allTokens
-        .whereType<DesignToken<TextStyle>>()
+        .whereType<DesignToken<Typography>>()
         .filterByFrom(settings.config.typography),
     numberTokens: allTokens
         .whereType<DesignToken<double>>()
@@ -118,7 +122,7 @@ final stylesProvider =
     stylesProgress.fail("Failed to fetch styles: ${e.message}");
     rethrow;
   } catch (e) {
-    stylesProgress.fail("Failed to fetch styles for unknown reason: $e");
+    stylesProgress.fail("Failed to fetch styles for unknown reason ($e)");
     rethrow;
   }
 });

@@ -2,7 +2,7 @@ import 'package:figmage/src/data/generators/number_theme_extension_generator.dar
 import 'package:test/test.dart';
 
 void main() {
-  test('Generates a ThemeExtension<MyColorTheme> output file', () async {
+  test('Generates a ThemeExtension<double> output file', () async {
     final generator = NumberThemeExtensionGenerator(
       className: 'MyNumbersTheme',
       valuesByNameByMode: {

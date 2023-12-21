@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
-import 'package:figmage/src/domain/models/text_style/text_style.dart';
+import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:meta/meta.dart';
 
@@ -55,7 +55,7 @@ class ColorDesignStyle extends DesignStyle<int> {
 /// {@template text_style}
 /// A style for typography.
 /// {@endtemplate}
-class TextDesignStyle extends DesignStyle<TextStyle> {
+class TextDesignStyle extends DesignStyle<Typography> {
   /// {@macro text_style}
   const TextDesignStyle({
     required super.id,

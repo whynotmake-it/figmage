@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'text_style.dart';
+part of 'typography.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -15,8 +15,9 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 /// @nodoc
-mixin _$TextStyle {
+mixin _$Typography {
   String get fontFamily => throw _privateConstructorUsedError;
+  String get fontFamilyPostScriptName => throw _privateConstructorUsedError;
   double get fontSize => throw _privateConstructorUsedError;
   int get fontWeight => throw _privateConstructorUsedError;
   TextDecoration get decoration => throw _privateConstructorUsedError;
@@ -26,17 +27,19 @@ mixin _$TextStyle {
   double get height => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
-  $TextStyleCopyWith<TextStyle> get copyWith =>
+  $TypographyCopyWith<Typography> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $TextStyleCopyWith<$Res> {
-  factory $TextStyleCopyWith(TextStyle value, $Res Function(TextStyle) then) =
-      _$TextStyleCopyWithImpl<$Res, TextStyle>;
+abstract class $TypographyCopyWith<$Res> {
+  factory $TypographyCopyWith(
+          Typography value, $Res Function(Typography) then) =
+      _$TypographyCopyWithImpl<$Res, Typography>;
   @useResult
   $Res call(
       {String fontFamily,
+      String fontFamilyPostScriptName,
       double fontSize,
       int fontWeight,
       TextDecoration decoration,
@@ -47,9 +50,9 @@ abstract class $TextStyleCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$TextStyleCopyWithImpl<$Res, $Val extends TextStyle>
-    implements $TextStyleCopyWith<$Res> {
-  _$TextStyleCopyWithImpl(this._value, this._then);
+class _$TypographyCopyWithImpl<$Res, $Val extends Typography>
+    implements $TypographyCopyWith<$Res> {
+  _$TypographyCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -60,6 +63,7 @@ class _$TextStyleCopyWithImpl<$Res, $Val extends TextStyle>
   @override
   $Res call({
     Object? fontFamily = null,
+    Object? fontFamilyPostScriptName = null,
     Object? fontSize = null,
     Object? fontWeight = null,
     Object? decoration = null,
@@ -72,6 +76,10 @@ class _$TextStyleCopyWithImpl<$Res, $Val extends TextStyle>
       fontFamily: null == fontFamily
           ? _value.fontFamily
           : fontFamily // ignore: cast_nullable_to_non_nullable
+              as String,
+      fontFamilyPostScriptName: null == fontFamilyPostScriptName
+          ? _value.fontFamilyPostScriptName
+          : fontFamilyPostScriptName // ignore: cast_nullable_to_non_nullable
               as String,
       fontSize: null == fontSize
           ? _value.fontSize
@@ -106,15 +114,16 @@ class _$TextStyleCopyWithImpl<$Res, $Val extends TextStyle>
 }
 
 /// @nodoc
-abstract class _$$TextStyleImplCopyWith<$Res>
-    implements $TextStyleCopyWith<$Res> {
-  factory _$$TextStyleImplCopyWith(
-          _$TextStyleImpl value, $Res Function(_$TextStyleImpl) then) =
-      __$$TextStyleImplCopyWithImpl<$Res>;
+abstract class _$$TypographyImplCopyWith<$Res>
+    implements $TypographyCopyWith<$Res> {
+  factory _$$TypographyImplCopyWith(
+          _$TypographyImpl value, $Res Function(_$TypographyImpl) then) =
+      __$$TypographyImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
       {String fontFamily,
+      String fontFamilyPostScriptName,
       double fontSize,
       int fontWeight,
       TextDecoration decoration,
@@ -125,17 +134,18 @@ abstract class _$$TextStyleImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$TextStyleImplCopyWithImpl<$Res>
-    extends _$TextStyleCopyWithImpl<$Res, _$TextStyleImpl>
-    implements _$$TextStyleImplCopyWith<$Res> {
-  __$$TextStyleImplCopyWithImpl(
-      _$TextStyleImpl _value, $Res Function(_$TextStyleImpl) _then)
+class __$$TypographyImplCopyWithImpl<$Res>
+    extends _$TypographyCopyWithImpl<$Res, _$TypographyImpl>
+    implements _$$TypographyImplCopyWith<$Res> {
+  __$$TypographyImplCopyWithImpl(
+      _$TypographyImpl _value, $Res Function(_$TypographyImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
     Object? fontFamily = null,
+    Object? fontFamilyPostScriptName = null,
     Object? fontSize = null,
     Object? fontWeight = null,
     Object? decoration = null,
@@ -144,10 +154,14 @@ class __$$TextStyleImplCopyWithImpl<$Res>
     Object? wordSpacing = null,
     Object? height = null,
   }) {
-    return _then(_$TextStyleImpl(
+    return _then(_$TypographyImpl(
       fontFamily: null == fontFamily
           ? _value.fontFamily
           : fontFamily // ignore: cast_nullable_to_non_nullable
+              as String,
+      fontFamilyPostScriptName: null == fontFamilyPostScriptName
+          ? _value.fontFamilyPostScriptName
+          : fontFamilyPostScriptName // ignore: cast_nullable_to_non_nullable
               as String,
       fontSize: null == fontSize
           ? _value.fontSize
@@ -183,9 +197,10 @@ class __$$TextStyleImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TextStyleImpl extends _TextStyle {
-  const _$TextStyleImpl(
+class _$TypographyImpl extends _Typography {
+  const _$TypographyImpl(
       {required this.fontFamily,
+      required this.fontFamilyPostScriptName,
       required this.fontSize,
       this.fontWeight = 400,
       this.decoration = TextDecoration.none,
@@ -197,6 +212,8 @@ class _$TextStyleImpl extends _TextStyle {
 
   @override
   final String fontFamily;
+  @override
+  final String fontFamilyPostScriptName;
   @override
   final double fontSize;
   @override
@@ -220,16 +237,19 @@ class _$TextStyleImpl extends _TextStyle {
 
   @override
   String toString() {
-    return 'TextStyle(fontFamily: $fontFamily, fontSize: $fontSize, fontWeight: $fontWeight, decoration: $decoration, fontStyle: $fontStyle, letterSpacing: $letterSpacing, wordSpacing: $wordSpacing, height: $height)';
+    return 'Typography(fontFamily: $fontFamily, fontFamilyPostScriptName: $fontFamilyPostScriptName, fontSize: $fontSize, fontWeight: $fontWeight, decoration: $decoration, fontStyle: $fontStyle, letterSpacing: $letterSpacing, wordSpacing: $wordSpacing, height: $height)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TextStyleImpl &&
+            other is _$TypographyImpl &&
             (identical(other.fontFamily, fontFamily) ||
                 other.fontFamily == fontFamily) &&
+            (identical(
+                    other.fontFamilyPostScriptName, fontFamilyPostScriptName) ||
+                other.fontFamilyPostScriptName == fontFamilyPostScriptName) &&
             (identical(other.fontSize, fontSize) ||
                 other.fontSize == fontSize) &&
             (identical(other.fontWeight, fontWeight) ||
@@ -246,30 +266,42 @@ class _$TextStyleImpl extends _TextStyle {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, fontFamily, fontSize, fontWeight,
-      decoration, fontStyle, letterSpacing, wordSpacing, height);
+  int get hashCode => Object.hash(
+      runtimeType,
+      fontFamily,
+      fontFamilyPostScriptName,
+      fontSize,
+      fontWeight,
+      decoration,
+      fontStyle,
+      letterSpacing,
+      wordSpacing,
+      height);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$TextStyleImplCopyWith<_$TextStyleImpl> get copyWith =>
-      __$$TextStyleImplCopyWithImpl<_$TextStyleImpl>(this, _$identity);
+  _$$TypographyImplCopyWith<_$TypographyImpl> get copyWith =>
+      __$$TypographyImplCopyWithImpl<_$TypographyImpl>(this, _$identity);
 }
 
-abstract class _TextStyle extends TextStyle {
-  const factory _TextStyle(
+abstract class _Typography extends Typography {
+  const factory _Typography(
       {required final String fontFamily,
+      required final String fontFamilyPostScriptName,
       required final double fontSize,
       final int fontWeight,
       final TextDecoration decoration,
       final FontStyle fontStyle,
       final double letterSpacing,
       final double wordSpacing,
-      final double height}) = _$TextStyleImpl;
-  const _TextStyle._() : super._();
+      final double height}) = _$TypographyImpl;
+  const _Typography._() : super._();
 
   @override
   String get fontFamily;
+  @override
+  String get fontFamilyPostScriptName;
   @override
   double get fontSize;
   @override
@@ -286,6 +318,6 @@ abstract class _TextStyle extends TextStyle {
   double get height;
   @override
   @JsonKey(ignore: true)
-  _$$TextStyleImplCopyWith<_$TextStyleImpl> get copyWith =>
+  _$$TypographyImplCopyWith<_$TypographyImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

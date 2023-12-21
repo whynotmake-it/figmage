@@ -25,6 +25,7 @@ void main() {
         "typography": {
           "generate": true,
           "from": ["path1", "path2"],
+          "useGoogleFonts": false,
         },
         "strings": {
           "generate": true,
@@ -60,8 +61,9 @@ void main() {
         colors: GenerationSettings(
           from: ["path1", "path2"],
         ),
-        typography: GenerationSettings(
+        typography: TypographyGenerationSettings(
           from: ["path1", "path2"],
+          useGoogleFonts: false,
         ),
         strings: GenerationSettings(
           from: ["path1", "path2"],
@@ -90,6 +92,7 @@ void main() {
         expect(sut.colors.from, isEmpty);
         expect(sut.typography.generate, isTrue);
         expect(sut.typography.from, isEmpty);
+        expect(sut.typography.useGoogleFonts, isTrue);
         expect(sut.strings.generate, isTrue);
         expect(sut.strings.from, isEmpty);
         expect(sut.bools.generate, isTrue);
@@ -115,6 +118,7 @@ void main() {
       test('supports generation from full map', () async {
         final result = Config.fromMap(full);
         expect(result, fullExample);
+        expect(result.typography.useGoogleFonts, isFalse);
       });
     });
 

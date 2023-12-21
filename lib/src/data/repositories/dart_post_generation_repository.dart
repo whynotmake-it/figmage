@@ -57,7 +57,7 @@ class DartPostGenerationRepository implements PostGenerationRepository {
       progress?.update("Running dart format in ${directory.path}");
       await _processRunner(
         'dart',
-        ['format'],
+        ['format', '.'],
         workingDirectory: directory.path,
       );
       progress?.update("Running dart fix in ${directory.path}");

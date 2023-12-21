@@ -142,41 +142,54 @@ void main() {
         ).called(1);
       });
 
-      test('generates all extra type files by default', () async {
-        final files = await sut.generate(
-          projectName: "figmage_example",
-          dir: testDirectory,
-          description: "A test ",
-        );
-        for (final type in TokenFileType.values) {
-          expect(
-            files,
-            contains(
-              isA<File>().having(
-                (f) => f.path,
-                "path",
-                contains("lib/src/${type.filename}"),
+      group("generation with all files", () {
+        late Iterable<File> files;
+        setUp(() async {
+          files = await sut.generate(
+            projectName: "figmage_example",
+            dir: testDirectory,
+            description: "A test ",
+          );
+        });
+        test('generates all extra type files by default', () async {
+          for (final type in TokenFileType.values) {
+            expect(
+              files,
+              contains(
+                isA<File>().having(
+                  (f) => f.path,
+                  "path",
+                  contains("lib/src/${type.filename}"),
+                ),
               ),
-            ),
-            reason: "Expected to find ${type.filename} in generated files",
-          );
-        }
-      });
-
-      test('generated type files are generated empty', () async {
-        await sut.generate(
-          projectName: "figmage_example",
-          dir: testDirectory,
-          description: "A test ",
-        );
-        for (final type in TokenFileType.values) {
-          verify(
+              reason: "Expected to find ${type.filename} in generated files",
+            );
+          }
+        });
+        test('all generated type files are in export', () {
+          final content = verify(
             () => generatorTarget.createFile(
-              any(that: contains(type.filename)),
-              any(that: isEmpty),
+              any(that: contains("figmage_example.dart")),
+              captureAny(),
             ),
-          );
-        }
+          ).captured.first as List<int>;
+          final decoded = utf8.decode(content);
+
+          for (final type in TokenFileType.values) {
+            expect(decoded, contains("export 'src/${type.filename}';"));
+          }
+        });
+
+        test('generated type files are generated empty', () async {
+          for (final type in TokenFileType.values) {
+            verify(
+              () => generatorTarget.createFile(
+                any(that: contains(type.filename)),
+                any(that: isEmpty),
+              ),
+            );
+          }
+        });
       });
 
       test('generates no extra type files if unwanted', () async {

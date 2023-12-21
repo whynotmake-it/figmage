@@ -44,7 +44,7 @@ void main() {
         final files = await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
-          description: "A test ",
+          description: "A test",
         );
         expect(
           files,
@@ -56,7 +56,7 @@ void main() {
         await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
-          description: "A test ",
+          description: "A test",
         );
 
         verify(
@@ -71,7 +71,7 @@ void main() {
         await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
-          description: "A test ",
+          description: "A test",
         );
 
         final content = verify(
@@ -91,7 +91,7 @@ void main() {
         await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
-          description: "A test ",
+          description: "A test",
         );
 
         final content = verify(
@@ -111,7 +111,7 @@ void main() {
         await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
-          description: "A test ",
+          description: "A test",
           useGoogleFonts: false,
         );
 
@@ -131,7 +131,7 @@ void main() {
         await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
-          description: "A test ",
+          description: "A test",
         );
 
         verify(
@@ -148,7 +148,7 @@ void main() {
           files = await sut.generate(
             projectName: "figmage_example",
             dir: testDirectory,
-            description: "A test ",
+            description: "A test",
           );
         });
         test('generates all extra type files by default', () async {
@@ -175,9 +175,10 @@ void main() {
           ).captured.first as List<int>;
           final decoded = utf8.decode(content);
 
-          for (final type in TokenFileType.values) {
-            expect(decoded, contains("export 'src/${type.filename}';"));
-          }
+          expect(
+            decoded,
+            equals(_expectedLibraryFile),
+          );
         });
 
         test('generated type files are generated empty', () async {
@@ -196,7 +197,7 @@ void main() {
         final files = await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
-          description: "A test ",
+          description: "A test",
           generateColors: false,
           generateTypography: false,
           generateNumbers: false,
@@ -231,7 +232,7 @@ void main() {
           () => sut.generate(
             projectName: "figmage_example",
             dir: testDirectory,
-            description: "A test ",
+            description: "A test",
           ),
           throwsA(
             isA<PackageUriException>()
@@ -251,3 +252,17 @@ void main() {
     });
   });
 }
+
+const _expectedLibraryFile = '''
+/// A test
+library figmage_example;
+
+export 'src/bools.dart';
+export 'src/colors.dart';
+export 'src/numbers.dart';
+export 'src/paddings.dart';
+export 'src/radii.dart';
+export 'src/spacers.dart';
+export 'src/strings.dart';
+export 'src/typography.dart';
+''';

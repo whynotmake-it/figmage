@@ -1,7 +1,10 @@
 import 'dart:async';
 
 import 'package:args/args.dart';
+import 'package:code_builder/code_builder.dart';
+import 'package:dart_style/dart_style.dart';
 import 'package:figmage/src/commands/shared/forge_settings_providers.dart';
+import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/figmage_package_generator_providers.dart';
@@ -52,14 +55,43 @@ class GenerationNotifier
 
     final generatorsByFiles =
         await ref.watch(generatorsProvider(settings).future);
-    final codeByFiles = {
-      for (final MapEntry(key: file, value: generator)
+    final resultsByFile = {
+      for (final MapEntry(key: file, value: generators)
           in generatorsByFiles.entries)
-        file: generator.generate(),
+        file: [
+          for (final generator in generators) generator.generate(),
+        ],
     };
+
+    final libraryByFile = resultsByFile.map((file, results) {
+      final libraryBuilder = LibraryBuilder();
+      for (final result in results) {
+        libraryBuilder.body.add(result.$class);
+        libraryBuilder.body.add(result.$extension);
+      }
+      return MapEntry(file, libraryBuilder.build());
+    });
+
+    final dartfmt = DartFormatter();
+    final emitter = DartEmitter(
+      allocator: Allocator(),
+      useNullSafetySyntax: true,
+      orderDirectives: true,
+    );
+
+    final codeByFile = libraryByFile.map((file, library) {
+      final codeString = '''
+      ${ThemeClassGenerator.generatedFilePrefix}
+
+
+      ${library.accept(emitter)}
+    ''';
+      return MapEntry(file, dartfmt.format(codeString));
+    });
+
     // write the files
     await ref.watch(
-      fileWriterProvider(codeByFiles).future,
+      fileWriterProvider(codeByFile).future,
     );
 
     try {

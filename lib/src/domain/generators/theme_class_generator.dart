@@ -1,3 +1,11 @@
+import 'package:code_builder/code_builder.dart';
+
+/// {@template generatorResult}
+/// The return type for all ThemeClassGenerator
+/// The Extension represents the BuildContext extension
+/// {@endtemplate}
+typedef ThemeClassGeneratorResult = ({Class $class, Extension $extension});
+
 /// {@template generator}
 /// The superclass for all generators that can generate a dart file as a String
 /// output.
@@ -24,5 +32,5 @@ abstract interface class ThemeClassGenerator {
   bool get buildContextExtensionNullable;
 
   /// Generates a String
-  String generate();
+  ThemeClassGeneratorResult generate();
 }

@@ -16,14 +16,14 @@ extension TokenFilterX<X> on Iterable<DesignToken<X>> {
   // TODO(tim): this is in the repo I know but I didn't get how it works
   Map<String, Map<String, X>> get valuesByNameByMode {
     final sorted = sortedBy((element) => element.name);
-    final allModes = expand((token) => token.valuesByMode.keys)
+    final allModes = expand((token) => token.valuesByModeName.keys)
         .toSet()
         .sortedBy((mode) => mode);
     return {
       for (final mode in allModes)
         mode: {
           for (final token in sorted)
-            if (token.valuesByMode[mode] case final alias?)
+            if (token.valuesByModeName[mode] case final alias?)
               token.name: alias.resolveValue,
         },
     };

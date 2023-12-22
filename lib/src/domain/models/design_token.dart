@@ -12,6 +12,9 @@ abstract interface class DesignToken<T> {
   ///if the token is based upon a Style the top level group name of that style.
   String get collectionName;
 
-  /// The values of the token by mode.
+  /// The values of the token by mode id.
   Map<String, AliasOr<T>> get valuesByMode;
+
+  /// The values of the token by mode name.
+  Map<String, AliasOr<T>> get valuesByModeName;
 }

@@ -41,7 +41,7 @@ class SpacerGenerator implements ValueNamesThemeClassGenerator {
   );
 
   @override
-  String generate() {
+  ThemeClassGeneratorResult generate() {
     final fieldName = convertToValidVariableName(numberReference.symbol!);
     final validValueNames = valueNames.map(convertToValidVariableName).toList();
     final validClassName = '${convertToValidClassName(className)}Spacer';
@@ -59,24 +59,7 @@ class SpacerGenerator implements ValueNamesThemeClassGenerator {
       nullable: buildContextExtensionNullable,
     );
 
-    final $library = Library(
-      (l) => l
-        ..body.addAll(
-          [
-            $class,
-            $extension,
-          ],
-        ),
-    );
-
-    final result = '''
-      ${ThemeClassGenerator.generatedFilePrefix}
-
-
-      ${$library.accept(_emitter)}
-    ''';
-
-    return _dartfmt.format(result);
+    return ($class: $class, $extension: $extension);
   }
 
   Extension _getBuildContextExtension({

@@ -20,5 +20,5 @@ abstract interface class ThemeExtensionGenerator<T>
   /// as well as a `BuildContext` extension and returns the resulting
   /// code as a string.
   @override
-  String generate();
+  ThemeClassGeneratorResult generate();
 }

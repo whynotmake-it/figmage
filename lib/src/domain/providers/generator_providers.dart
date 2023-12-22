@@ -49,8 +49,7 @@ final generatorsProvider = FutureProvider.family<
         ),
     };
 
-    progress.complete(
-    );
+    progress.complete();
     return generatorsByFile;
   },
 );
@@ -68,7 +67,7 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
       groupedTokens.entries.map(
         (tokensEntry) => ColorThemeExtensionGenerator(
           className: convertToValidClassName(
-            "${type.className}${tokensEntry.key.toTitleCase}",
+            "${type.className}${tokensEntry.key.toTitleCase()}",
           ),
           valuesByNameByMode: tokensEntry.value.valuesByNameByMode,
         ),
@@ -84,7 +83,7 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
       groupedTokens.entries.map(
         (tokensEntry) => TextStyleThemeExtensionGenerator(
           className: convertToValidClassName(
-            "${type.className}${tokensEntry.key.toTitleCase}",
+            "${type.className}${tokensEntry.key.toTitleCase()}",
           ),
           valuesByNameByMode: tokensEntry.value.valuesByNameByMode,
           useGoogleFonts: settings.config.typography.useGoogleFonts,
@@ -99,7 +98,7 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
       groupedTokens.entries.map(
         (tokensEntry) => NumberThemeExtensionGenerator(
           className: convertToValidClassName(
-            "${type.className}${tokensEntry.key.toTitleCase}",
+            "${type.className}${tokensEntry.key.toTitleCase()}",
           ),
           valuesByNameByMode: tokensEntry.value.valuesByNameByMode,
         ),
@@ -112,11 +111,11 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
       groupedTokens.entries.map(
         (tokensEntry) => SpacerGenerator(
           className: convertToValidClassName(
-            "${type.className}${tokensEntry.key.toTitleCase}",
+            "${type.className}${tokensEntry.key.toTitleCase()}",
           ),
           numberReference: refer(
             convertToValidClassName(
-              "${type.className}${tokensEntry.key.toTitleCase}",
+              "${type.className}${tokensEntry.key.toTitleCase()}",
             ),
           ),
           valueNames: tokensEntry.value.map((t) => t.name),
@@ -130,11 +129,11 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
       groupedTokens.entries.map(
         (tokensEntry) => PaddingGenerator(
           className: convertToValidClassName(
-            "${type.className}${tokensEntry.key.toTitleCase}",
+            "${type.className}${tokensEntry.key.toTitleCase()}",
           ),
           numberReference: refer(
             convertToValidClassName(
-              "${type.className}${tokensEntry.key.toTitleCase}",
+              "${type.className}${tokensEntry.key.toTitleCase()}",
             ),
           ),
           valueNames: tokensEntry.value.map((t) => t.name),

@@ -37,6 +37,11 @@ sealed class DesignStyle<T> with EquatableMixin implements DesignToken<T> {
       };
 
   @override
+  Map<String, AliasOr<T>> get valuesByModeName => {
+        "": AliasOr<T>.data(data: value),
+      };
+
+  @override
   List<Object?> get props => [id, name, value];
 
   @override

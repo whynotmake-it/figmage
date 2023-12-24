@@ -1,8 +1,14 @@
+import 'package:code_builder/code_builder.dart';
+import 'package:dart_style/dart_style.dart';
 import 'package:figmage/src/data/generators/color_theme_extension_generator.dart';
 import 'package:test/test.dart';
 
+import 'common.dart';
+
 void main() {
-  test('Output file with a non-nullable BuildContext extension', () async {
+  useDartfmt();
+
+  test('Should create a class and non-nullable BuildContext extension', () {
     final generator = ColorThemeExtensionGenerator(
       className: 'MyColorTheme',
       valuesByNameByMode: {
@@ -10,9 +16,23 @@ void main() {
         'mode2': {'color1': 0xFF111111, 'color2': 0xFF222222},
       },
     );
-    expect(generator.generate(), equals(_expectedColorThemeExtensionString));
+    expect(
+      generator.generate().$class,
+      equalsDart(
+        _expectedColorThemeExtensionClassString,
+        DartEmitter(
+          allocator: Allocator(),
+          useNullSafetySyntax: true,
+          orderDirectives: true,
+        ),
+      ),
+    );
+    expect(
+      generator.generate().$extension,
+      equalsDart(_expectedColorThemeExtensionBuildContextExtensionString),
+    );
   });
-  test('Output file with a nullable BuildContext extension', () async {
+  test('Should create a nullable BuildContext extension', () async {
     final generator = ColorThemeExtensionGenerator(
       className: 'MyColorTheme',
       valuesByNameByMode: {
@@ -22,8 +42,20 @@ void main() {
       buildContextExtensionNullable: true,
     );
     expect(
-      generator.generate(),
-      equals(_expectedNullableColorThemeExtensionString),
+      generator.generate().$class,
+      equalsDart(
+        _expectedNullableColorThemeExtensionClassString,
+        DartEmitter(
+          allocator: Allocator(),
+          useNullSafetySyntax: true,
+          orderDirectives: true,
+        ),
+      ),
+    );
+    expect(
+      generator.generate().$extension,
+      equalsDart(
+          _expectedNullableColorThemeExtensionBuildContextExtensionString),
     );
   });
 
@@ -36,8 +68,15 @@ void main() {
       buildContextExtensionNullable: true,
     );
     expect(
-      generator.generate(),
-      equals(_expectedSingleModeOutputString),
+      generator.generate().$class,
+      equalsDart(
+        _expectedSingleModeOutputString,
+        DartEmitter(
+          allocator: Allocator(),
+          useNullSafetySyntax: true,
+          orderDirectives: true,
+        ),
+      ),
     );
   });
 }
@@ -46,14 +85,7 @@ void main() {
 // TEST RESOURCES
 // **************************************************************************
 
-const _expectedColorThemeExtensionString = '''
-// coverage:ignore-file
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
+const _expectedColorThemeExtensionClassString = '''
 @immutable
 class MyColorTheme extends ThemeExtension<MyColorTheme> {
   const MyColorTheme({
@@ -103,20 +135,15 @@ class MyColorTheme extends ThemeExtension<MyColorTheme> {
     );
   }
 }
+''';
 
+const _expectedColorThemeExtensionBuildContextExtensionString = '''
 extension MyColorThemeBuildContextX on BuildContext {
   MyColorTheme get myColorTheme => Theme.of(this).extension<MyColorTheme>()!;
 }
 ''';
 
-const _expectedNullableColorThemeExtensionString = '''
-// coverage:ignore-file
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
+const _expectedNullableColorThemeExtensionClassString = '''
 @immutable
 class MyColorTheme extends ThemeExtension<MyColorTheme> {
   const MyColorTheme({
@@ -166,20 +193,15 @@ class MyColorTheme extends ThemeExtension<MyColorTheme> {
     );
   }
 }
+''';
 
+const _expectedNullableColorThemeExtensionBuildContextExtensionString = '''
 extension MyColorThemeBuildContextX on BuildContext {
   MyColorTheme? get myColorTheme => Theme.of(this).extension<MyColorTheme>();
 }
 ''';
 
 const _expectedSingleModeOutputString = '''
-// coverage:ignore-file
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
 @immutable
 class MyColorTheme extends ThemeExtension<MyColorTheme> {
   const MyColorTheme({
@@ -224,9 +246,5 @@ class MyColorTheme extends ThemeExtension<MyColorTheme> {
       ),
     );
   }
-}
-
-extension MyColorThemeBuildContextX on BuildContext {
-  MyColorTheme? get myColorTheme => Theme.of(this).extension<MyColorTheme>();
 }
 ''';

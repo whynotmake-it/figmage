@@ -7,7 +7,11 @@ import 'common.dart';
 
 void main() {
   useDartfmt();
-
+  final emitter = DartEmitter(
+    allocator: Allocator(),
+    useNullSafetySyntax: true,
+    orderDirectives: true,
+  );
   test('Should create a class and non-nullable BuildContext extension', () {
     final generator = ColorThemeExtensionGenerator(
       className: 'MyColorTheme',
@@ -20,11 +24,7 @@ void main() {
       generator.generate().$class,
       equalsDart(
         _expectedColorThemeExtensionClassString,
-        DartEmitter(
-          allocator: Allocator(),
-          useNullSafetySyntax: true,
-          orderDirectives: true,
-        ),
+        emitter,
       ),
     );
     expect(
@@ -45,11 +45,7 @@ void main() {
       generator.generate().$class,
       equalsDart(
         _expectedNullableColorThemeExtensionClassString,
-        DartEmitter(
-          allocator: Allocator(),
-          useNullSafetySyntax: true,
-          orderDirectives: true,
-        ),
+        emitter,
       ),
     );
     expect(
@@ -71,11 +67,7 @@ void main() {
       generator.generate().$class,
       equalsDart(
         _expectedSingleModeOutputString,
-        DartEmitter(
-          allocator: Allocator(),
-          useNullSafetySyntax: true,
-          orderDirectives: true,
-        ),
+        emitter,
       ),
     );
   });

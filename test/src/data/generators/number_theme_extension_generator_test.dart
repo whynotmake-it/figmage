@@ -1,8 +1,18 @@
+import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/number_theme_extension_generator.dart';
 import 'package:test/test.dart';
 
+import 'common.dart';
+
 void main() {
-  test('Generates a ThemeExtension<double> output file', () async {
+  useDartfmt();
+  final emitter = DartEmitter(
+    allocator: Allocator(),
+    useNullSafetySyntax: true,
+    orderDirectives: true,
+  );
+
+  test('Should create a numbers class and BuildContextExtension', () async {
     final generator = NumberThemeExtensionGenerator(
       className: 'MyNumbersTheme',
       valuesByNameByMode: {
@@ -10,9 +20,23 @@ void main() {
         'large': {'s': 2.0, 'm': 4.0},
       },
     );
-    expect(generator.generate(), equals(_expectedNumberExtensionString));
+    expect(
+      generator.generate().$class,
+      equalsDart(
+        _expectedNumberExtensionClassString,
+        emitter,
+      ),
+    );
+    expect(
+      generator.generate().$extension,
+      equalsDart(
+        _expectedNumberExtensionBuildContextExtensionString,
+        emitter,
+      ),
+    );
   });
-  test('Generates output file with nullable BuildContext extension', () async {
+  test('Should create a numbers class and nullable BuildContextExtension',
+      () async {
     final generator = NumberThemeExtensionGenerator(
       className: 'MyNumbersTheme',
       valuesByNameByMode: {
@@ -22,8 +46,18 @@ void main() {
       buildContextExtensionNullable: true,
     );
     expect(
-      generator.generate(),
-      equals(_expectedNullableNumberExtensionString),
+      generator.generate().$class,
+      equalsDart(
+        _expectedNullableNumberExtensionClassString,
+        emitter,
+      ),
+    );
+    expect(
+      generator.generate().$extension,
+      equalsDart(
+        _expectedNullableNumberExtensionBuildContextExtensionString,
+        emitter,
+      ),
     );
   });
 }
@@ -31,16 +65,7 @@ void main() {
 // TEST RESOURCES
 // **************************************************************************
 
-const _expectedNumberExtensionString = '''
-// coverage:ignore-file
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
-
-import 'dart:ui';
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
+const _expectedNumberExtensionClassString = '''
 @immutable
 class MyNumbersTheme extends ThemeExtension<MyNumbersTheme> {
   const MyNumbersTheme({
@@ -90,22 +115,15 @@ class MyNumbersTheme extends ThemeExtension<MyNumbersTheme> {
     );
   }
 }
-
+''';
+const _expectedNumberExtensionBuildContextExtensionString = '''
 extension MyNumbersThemeBuildContextX on BuildContext {
   MyNumbersTheme get myNumbersTheme =>
       Theme.of(this).extension<MyNumbersTheme>()!;
 }
 ''';
-const _expectedNullableNumberExtensionString = '''
-// coverage:ignore-file
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
 
-import 'dart:ui';
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
+const _expectedNullableNumberExtensionClassString = '''
 @immutable
 class MyNumbersTheme extends ThemeExtension<MyNumbersTheme> {
   const MyNumbersTheme({
@@ -155,7 +173,9 @@ class MyNumbersTheme extends ThemeExtension<MyNumbersTheme> {
     );
   }
 }
+''';
 
+const _expectedNullableNumberExtensionBuildContextExtensionString = '''
 extension MyNumbersThemeBuildContextX on BuildContext {
   MyNumbersTheme? get myNumbersTheme =>
       Theme.of(this).extension<MyNumbersTheme>();

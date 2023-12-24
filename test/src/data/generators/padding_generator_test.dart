@@ -2,16 +2,38 @@ import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/padding_generator.dart';
 import 'package:test/test.dart';
 
+import 'common.dart';
+
 void main() {
-  test('Generates a paddings output file', () async {
+  useDartfmt();
+  final emitter = DartEmitter(
+    allocator: Allocator(),
+    useNullSafetySyntax: true,
+    orderDirectives: true,
+  );
+  test('Should create a padding class and BuildContextExtension', () async {
     final generator = PaddingGenerator(
       className: 'Web',
       numberReference: const Reference('MyNumbers'),
       valueNames: ['s', 'm', 'l'],
     );
-    expect(generator.generate(), equals(_expectedPaddingClassString));
+    expect(
+      generator.generate().$class,
+      equalsDart(
+        _expectedPaddingClassString,
+        emitter,
+      ),
+    );
+    expect(
+      generator.generate().$extension,
+      equalsDart(
+        _expectedPaddingBuildContextExtensionString,
+        emitter,
+      ),
+    );
   });
-  test('Generates output file with nullable BuildContext extension', () async {
+  test('Should create a padding class and nullable BuildContextExtension',
+      () async {
     final generator = PaddingGenerator(
       className: 'Web',
       numberReference: const Reference('MyNumbers'),
@@ -19,8 +41,18 @@ void main() {
       buildContextExtensionNullable: true,
     );
     expect(
-      generator.generate(),
-      equals(_expectedNullablePaddingClassString),
+      generator.generate().$class,
+      equalsDart(
+        _expectedNullablePaddingClassString,
+        emitter,
+      ),
+    );
+    expect(
+      generator.generate().$extension,
+      equalsDart(
+        _expectedNullablePaddingBuildContextExtensionString,
+        emitter,
+      ),
     );
   });
 }
@@ -29,13 +61,6 @@ void main() {
 // **************************************************************************
 
 const _expectedPaddingClassString = '''
-// coverage:ignore-file
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/painting.dart';
-
 @immutable
 class WebPadding {
   const WebPadding(this.myNumbers);
@@ -117,19 +142,13 @@ class WebPadding {
         bottom: myNumbers.l,
       );
 }
-
+''';
+const _expectedPaddingBuildContextExtensionString = '''
 extension WebPaddingBuildContextX on BuildContext {
   WebPadding get webPadding => WebPadding(myNumbers);
 }
 ''';
 const _expectedNullablePaddingClassString = '''
-// coverage:ignore-file
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/painting.dart';
-
 @immutable
 class WebPadding {
   const WebPadding(this.myNumbers);
@@ -211,7 +230,9 @@ class WebPadding {
         bottom: myNumbers.l,
       );
 }
+''';
 
+const _expectedNullablePaddingBuildContextExtensionString = '''
 extension WebPaddingBuildContextX on BuildContext {
   WebPadding? get webPadding =>
       myNumbers == null ? null : WebPadding(myNumbers!);

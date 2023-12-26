@@ -43,13 +43,6 @@ final _variableList = [
   ),
 ];
 
-final _colorValueMap = {
-  'collection': {
-    'dark': {'green': 4290117398},
-    'light': {'green': 4286038042},
-  },
-};
-
 void main() {
   group('forge', () {
     late ProviderContainer container;
@@ -99,12 +92,6 @@ void main() {
           token: any(named: 'token'),
         ),
       ).thenAnswer((_) async => _variableList);
-
-      when(
-        () => figmaVariablesRepository.createValueModeMap<int, ColorVariable>(
-          variables: _variableList,
-        ),
-      ).thenAnswer((_) => _colorValueMap);
 
       when(() => progress.complete(any())).thenAnswer((_) {
         final message = _.positionalArguments.elementAt(0) as String?;

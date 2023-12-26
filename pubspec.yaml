@@ -11,9 +11,9 @@ environment:
 dependencies:
   args: ^2.4.1
   cli_completion: ^0.5.0
-  code_builder: ^4.7.0
+  code_builder: ^4.9.0
   collection: ">=1.17.2 <2.0.0"
-  dart_style: ^2.3.3
+  dart_style: ^2.3.4
   equatable: ^2.0.5
   figma:
     git:

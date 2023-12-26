@@ -23,49 +23,6 @@ class FigmaVariablesRepository implements VariablesRepository {
     );
   }
 
-  //TODO: (JsprBllnbm) This code is only used in tests ... remove it!
-  @override
-  VariableValuesByIdByModeByCollection<T>
-      createValueModeMap<T, V extends Variable<dynamic>>({
-    required List<Variable<dynamic>> variables,
-    bool useNames = true,
-  }) {
-    assert(
-      V != Variable,
-      'Type argument T must be a specific type of variable.',
-    );
-
-    final result = <String, Map<String, Map<String, T>>>{};
-
-    final variablesWithTypeV = variables.whereType<V>();
-
-    for (final variable in variablesWithTypeV) {
-      final collectionKey = useNames
-          ? variable.variableCollectionName
-          : variable.variableCollectionId;
-
-      final collectionMap = result.putIfAbsent(
-        collectionKey,
-        () => <String, Map<String, T>>{},
-      );
-
-      variable.valuesByMode.forEach((modeId, aliasOr) {
-        final modeKey =
-            useNames ? variable.collectionModeNames[modeId]! : modeId;
-
-        final modeMap = collectionMap.putIfAbsent(
-          modeKey,
-          () => <String, T>{},
-        );
-
-        final valueKey = useNames ? variable.name : variable.id;
-        modeMap[valueKey] = (aliasOr as AliasOr<T>).resolveValue;
-      });
-    }
-
-    return result;
-  }
-
   Future<VariablesResponseDto> _getLocaleVariables({
     required String fileId,
     required String token,

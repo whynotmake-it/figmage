@@ -106,7 +106,7 @@ void main() {
     expect(
       generator.generate().$extension,
       equalsDart(
-        _expectedTextStyleThemeExtensionBuildContextExtensionStringWithGoogleFonts,
+        _expectedThemeExtensionBuildContextExtensionStringWithGoogleFonts,
         emitter,
       ),
     );
@@ -377,8 +377,7 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
   }
 }
 ''';
-const _expectedTextStyleThemeExtensionBuildContextExtensionStringWithGoogleFonts =
-    '''
+const _expectedThemeExtensionBuildContextExtensionStringWithGoogleFonts = '''
 extension MyTextStylesBuildContextX on BuildContext {
   MyTextStyles get myTextStyles => Theme.of(this).extension<MyTextStyles>()!;
 }

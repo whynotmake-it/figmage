@@ -1,7 +1,6 @@
 import 'dart:core';
 
 import 'package:code_builder/code_builder.dart';
-import 'package:dart_style/dart_style.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 import 'package:figmage/src/domain/generators/theme_extension_generator.dart';

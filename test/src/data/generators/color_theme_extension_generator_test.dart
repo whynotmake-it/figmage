@@ -1,5 +1,4 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:dart_style/dart_style.dart';
 import 'package:figmage/src/data/generators/color_theme_extension_generator.dart';
 import 'package:test/test.dart';
 
@@ -51,7 +50,8 @@ void main() {
     expect(
       generator.generate().$extension,
       equalsDart(
-          _expectedNullableColorThemeExtensionBuildContextExtensionString),
+        _expectedNullableColorThemeExtensionBuildContextExtensionString,
+      ),
     );
   });
 

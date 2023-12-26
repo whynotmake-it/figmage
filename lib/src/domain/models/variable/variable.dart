@@ -81,6 +81,7 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
   final Map<String, String> collectionModeNames;
 
   /// Like valuesByMode but replaces the modeId with the actual mode name
+  @override
   Map<String, AliasOr<T>> get valuesByModeName => valuesByMode.map(
         (key, value) => MapEntry(collectionModeNames[key]!, value),
       );

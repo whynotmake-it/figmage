@@ -1,15 +1,13 @@
 import 'dart:async';
 
 import 'package:args/args.dart';
-import 'package:code_builder/code_builder.dart';
-import 'package:dart_style/dart_style.dart';
 import 'package:figmage/src/commands/shared/forge_settings_providers.dart';
-import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/figmage_package_generator_providers.dart';
 import 'package:figmage/src/domain/providers/file_writer_providers.dart';
 import 'package:figmage/src/domain/providers/generator_providers.dart';
+import 'package:figmage/src/domain/providers/library_provider.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/providers/post_generation_providers.dart';
 import 'package:mason_logger/mason_logger.dart';
@@ -55,6 +53,7 @@ class GenerationNotifier
 
     final generatorsByFiles =
         await ref.watch(generatorsProvider(settings).future);
+
     final resultsByFile = {
       for (final MapEntry(key: file, value: generators)
           in generatorsByFiles.entries)
@@ -63,31 +62,7 @@ class GenerationNotifier
         ],
     };
 
-    final libraryByFile = resultsByFile.map((file, results) {
-      final libraryBuilder = LibraryBuilder();
-      for (final result in results) {
-        libraryBuilder.body.add(result.$class);
-        libraryBuilder.body.add(result.$extension);
-      }
-      return MapEntry(file, libraryBuilder.build());
-    });
-
-    final dartfmt = DartFormatter();
-    final emitter = DartEmitter(
-      allocator: Allocator(),
-      useNullSafetySyntax: true,
-      orderDirectives: true,
-    );
-
-    final codeByFile = libraryByFile.map((file, library) {
-      final codeString = '''
-      ${ThemeClassGenerator.generatedFilePrefix}
-
-
-      ${library.accept(emitter)}
-    ''';
-      return MapEntry(file, dartfmt.format(codeString));
-    });
+    final codeByFile = ref.watch(librariesProvider(resultsByFile));
 
     // write the files
     await ref.watch(

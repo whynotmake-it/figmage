@@ -26,7 +26,7 @@ sealed class DesignStyle<T> with EquatableMixin implements DesignToken<T> {
   String get fullName => name;
 
   @override
-  String get collectionName => name.split('/').first;
+  String get collectionName => name.contains('/') ? name.split('/').first : '';
 
   /// The value of this DesignStyle.
   final T value;

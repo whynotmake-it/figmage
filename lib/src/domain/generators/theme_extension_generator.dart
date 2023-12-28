@@ -18,7 +18,7 @@ abstract interface class ThemeExtensionGenerator<T>
 
   /// Generates the `ThemeExtension` class and the constants for all values,
   /// as well as a `BuildContext` extension and returns the resulting
-  /// code as a string.
+  /// code as a ThemeClassGeneratorResult.
   @override
   ThemeClassGeneratorResult generate();
 }

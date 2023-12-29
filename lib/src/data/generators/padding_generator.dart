@@ -171,23 +171,31 @@ class PaddingGenerator implements ValueNamesThemeClassGenerator {
     required Reference edgeInsetsReference,
   }) {
     final namedArgument = switch (type) {
-      _EdgeInsetsType.left => {'left': refer('$fieldName.$valueName')},
-      _EdgeInsetsType.top => {'top': refer('$fieldName.$valueName')},
-      _EdgeInsetsType.right => {'right': refer('$fieldName.$valueName')},
-      _EdgeInsetsType.bottom => {'bottom': refer('$fieldName.$valueName')},
+      _EdgeInsetsType.left => {
+          'left': refer('$fieldName.$valueName').nullChecked,
+        },
+      _EdgeInsetsType.top => {
+          'top': refer('$fieldName.$valueName').nullChecked,
+        },
+      _EdgeInsetsType.right => {
+          'right': refer('$fieldName.$valueName').nullChecked,
+        },
+      _EdgeInsetsType.bottom => {
+          'bottom': refer('$fieldName.$valueName').nullChecked,
+        },
       _EdgeInsetsType.vertical => {
-          'top': refer('$fieldName.$valueName'),
-          'bottom': refer('$fieldName.$valueName'),
+          'top': refer('$fieldName.$valueName').nullChecked,
+          'bottom': refer('$fieldName.$valueName').nullChecked,
         },
       _EdgeInsetsType.horizontal => {
-          'left': refer('$fieldName.$valueName'),
-          'right': refer('$fieldName.$valueName'),
+          'left': refer('$fieldName.$valueName').nullChecked,
+          'right': refer('$fieldName.$valueName').nullChecked,
         },
       _EdgeInsetsType.all => {
-          'left': refer('$fieldName.$valueName'),
-          'top': refer('$fieldName.$valueName'),
-          'right': refer('$fieldName.$valueName'),
-          'bottom': refer('$fieldName.$valueName'),
+          'left': refer('$fieldName.$valueName').nullChecked,
+          'top': refer('$fieldName.$valueName').nullChecked,
+          'right': refer('$fieldName.$valueName').nullChecked,
+          'bottom': refer('$fieldName.$valueName').nullChecked,
         },
     };
     return edgeInsetsReference

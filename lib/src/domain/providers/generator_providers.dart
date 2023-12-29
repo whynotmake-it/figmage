@@ -115,8 +115,10 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
           ),
           numberReference: refer(
             convertToValidClassName(
-              "${type.className}${tokensEntry.key.toTitleCase()}",
+              "${TokenFileType.numbers.className}"
+              "${tokensEntry.key.toTitleCase()}",
             ),
+            TokenFileType.numbers.filename,
           ),
           valueNames: tokensEntry.value.map((t) => t.name),
         ),
@@ -133,8 +135,10 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
           ),
           numberReference: refer(
             convertToValidClassName(
-              "${type.className}${tokensEntry.key.toTitleCase()}",
+              "${TokenFileType.numbers.className}"
+              "${tokensEntry.key.toTitleCase()}",
             ),
+            TokenFileType.numbers.filename,
           ),
           valueNames: tokensEntry.value.map((t) => t.name),
         ),

@@ -3,11 +3,13 @@
 extension StringDartConversionX on String {
   /// Converts a string to title case.
   String toTitleCase() {
+    if (isEmpty) return this;
     return this[0].toUpperCase() + substring(1);
   }
 
   /// Converts a string to camel case.
   String toCamelCase() {
+    if (isEmpty) return this;
     return this[0].toLowerCase() + substring(1);
   }
 

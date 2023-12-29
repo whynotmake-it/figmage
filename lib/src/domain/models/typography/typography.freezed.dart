@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$Typography {
   String get fontFamily => throw _privateConstructorUsedError;
-  String get fontFamilyPostScriptName => throw _privateConstructorUsedError;
+  String? get fontFamilyPostScriptName => throw _privateConstructorUsedError;
   double get fontSize => throw _privateConstructorUsedError;
   int get fontWeight => throw _privateConstructorUsedError;
   TextDecoration get decoration => throw _privateConstructorUsedError;
@@ -39,7 +39,7 @@ abstract class $TypographyCopyWith<$Res> {
   @useResult
   $Res call(
       {String fontFamily,
-      String fontFamilyPostScriptName,
+      String? fontFamilyPostScriptName,
       double fontSize,
       int fontWeight,
       TextDecoration decoration,
@@ -63,7 +63,7 @@ class _$TypographyCopyWithImpl<$Res, $Val extends Typography>
   @override
   $Res call({
     Object? fontFamily = null,
-    Object? fontFamilyPostScriptName = null,
+    Object? fontFamilyPostScriptName = freezed,
     Object? fontSize = null,
     Object? fontWeight = null,
     Object? decoration = null,
@@ -77,10 +77,10 @@ class _$TypographyCopyWithImpl<$Res, $Val extends Typography>
           ? _value.fontFamily
           : fontFamily // ignore: cast_nullable_to_non_nullable
               as String,
-      fontFamilyPostScriptName: null == fontFamilyPostScriptName
+      fontFamilyPostScriptName: freezed == fontFamilyPostScriptName
           ? _value.fontFamilyPostScriptName
           : fontFamilyPostScriptName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       fontSize: null == fontSize
           ? _value.fontSize
           : fontSize // ignore: cast_nullable_to_non_nullable
@@ -123,7 +123,7 @@ abstract class _$$TypographyImplCopyWith<$Res>
   @useResult
   $Res call(
       {String fontFamily,
-      String fontFamilyPostScriptName,
+      String? fontFamilyPostScriptName,
       double fontSize,
       int fontWeight,
       TextDecoration decoration,
@@ -145,7 +145,7 @@ class __$$TypographyImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? fontFamily = null,
-    Object? fontFamilyPostScriptName = null,
+    Object? fontFamilyPostScriptName = freezed,
     Object? fontSize = null,
     Object? fontWeight = null,
     Object? decoration = null,
@@ -159,10 +159,10 @@ class __$$TypographyImplCopyWithImpl<$Res>
           ? _value.fontFamily
           : fontFamily // ignore: cast_nullable_to_non_nullable
               as String,
-      fontFamilyPostScriptName: null == fontFamilyPostScriptName
+      fontFamilyPostScriptName: freezed == fontFamilyPostScriptName
           ? _value.fontFamilyPostScriptName
           : fontFamilyPostScriptName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       fontSize: null == fontSize
           ? _value.fontSize
           : fontSize // ignore: cast_nullable_to_non_nullable
@@ -213,7 +213,7 @@ class _$TypographyImpl extends _Typography {
   @override
   final String fontFamily;
   @override
-  final String fontFamilyPostScriptName;
+  final String? fontFamilyPostScriptName;
   @override
   final double fontSize;
   @override
@@ -288,7 +288,7 @@ class _$TypographyImpl extends _Typography {
 abstract class _Typography extends Typography {
   const factory _Typography(
       {required final String fontFamily,
-      required final String fontFamilyPostScriptName,
+      required final String? fontFamilyPostScriptName,
       required final double fontSize,
       final int fontWeight,
       final TextDecoration decoration,
@@ -301,7 +301,7 @@ abstract class _Typography extends Typography {
   @override
   String get fontFamily;
   @override
-  String get fontFamilyPostScriptName;
+  String? get fontFamilyPostScriptName;
   @override
   double get fontSize;
   @override

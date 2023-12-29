@@ -1,5 +1,4 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:dart_style/dart_style.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/data/generators/value_names_theme_class_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
@@ -32,16 +31,8 @@ class PaddingGenerator implements ValueNamesThemeClassGenerator {
   @override
   final Iterable<String> valueNames;
 
-  final _dartfmt = DartFormatter();
-
-  final _emitter = DartEmitter(
-    allocator: Allocator(),
-    useNullSafetySyntax: true,
-    orderDirectives: true,
-  );
-
   @override
-  String generate() {
+  ThemeClassGeneratorResult generate() {
     final fieldName = convertToValidVariableName(numberReference.symbol!);
     final validValueNames = valueNames.map(convertToValidVariableName).toList();
     final validClassName = '${convertToValidClassName(className)}Padding';
@@ -59,24 +50,7 @@ class PaddingGenerator implements ValueNamesThemeClassGenerator {
       nullable: buildContextExtensionNullable,
     );
 
-    final $library = Library(
-      (l) => l
-        ..body.addAll(
-          [
-            $class,
-            $extension,
-          ],
-        ),
-    );
-
-    final result = '''
-      ${ThemeClassGenerator.generatedFilePrefix}
-
-
-      ${$library.accept(_emitter)}
-    ''';
-
-    return _dartfmt.format(result);
+    return ($class: $class, $extension: $extension);
   }
 
   Extension _getBuildContextExtension({
@@ -197,23 +171,31 @@ class PaddingGenerator implements ValueNamesThemeClassGenerator {
     required Reference edgeInsetsReference,
   }) {
     final namedArgument = switch (type) {
-      _EdgeInsetsType.left => {'left': refer('$fieldName.$valueName')},
-      _EdgeInsetsType.top => {'top': refer('$fieldName.$valueName')},
-      _EdgeInsetsType.right => {'right': refer('$fieldName.$valueName')},
-      _EdgeInsetsType.bottom => {'bottom': refer('$fieldName.$valueName')},
+      _EdgeInsetsType.left => {
+          'left': refer('$fieldName.$valueName').nullChecked,
+        },
+      _EdgeInsetsType.top => {
+          'top': refer('$fieldName.$valueName').nullChecked,
+        },
+      _EdgeInsetsType.right => {
+          'right': refer('$fieldName.$valueName').nullChecked,
+        },
+      _EdgeInsetsType.bottom => {
+          'bottom': refer('$fieldName.$valueName').nullChecked,
+        },
       _EdgeInsetsType.vertical => {
-          'top': refer('$fieldName.$valueName'),
-          'bottom': refer('$fieldName.$valueName'),
+          'top': refer('$fieldName.$valueName').nullChecked,
+          'bottom': refer('$fieldName.$valueName').nullChecked,
         },
       _EdgeInsetsType.horizontal => {
-          'left': refer('$fieldName.$valueName'),
-          'right': refer('$fieldName.$valueName'),
+          'left': refer('$fieldName.$valueName').nullChecked,
+          'right': refer('$fieldName.$valueName').nullChecked,
         },
       _EdgeInsetsType.all => {
-          'left': refer('$fieldName.$valueName'),
-          'top': refer('$fieldName.$valueName'),
-          'right': refer('$fieldName.$valueName'),
-          'bottom': refer('$fieldName.$valueName'),
+          'left': refer('$fieldName.$valueName').nullChecked,
+          'top': refer('$fieldName.$valueName').nullChecked,
+          'right': refer('$fieldName.$valueName').nullChecked,
+          'bottom': refer('$fieldName.$valueName').nullChecked,
         },
     };
     return edgeInsetsReference

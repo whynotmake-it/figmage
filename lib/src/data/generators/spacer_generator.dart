@@ -1,5 +1,4 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:dart_style/dart_style.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/data/generators/value_names_theme_class_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
@@ -32,16 +31,8 @@ class SpacerGenerator implements ValueNamesThemeClassGenerator {
   @override
   final Iterable<String> valueNames;
 
-  final _dartfmt = DartFormatter();
-
-  final _emitter = DartEmitter(
-    allocator: Allocator(),
-    useNullSafetySyntax: true,
-    orderDirectives: true,
-  );
-
   @override
-  String generate() {
+  ThemeClassGeneratorResult generate() {
     final fieldName = convertToValidVariableName(numberReference.symbol!);
     final validValueNames = valueNames.map(convertToValidVariableName).toList();
     final validClassName = '${convertToValidClassName(className)}Spacer';
@@ -59,24 +50,7 @@ class SpacerGenerator implements ValueNamesThemeClassGenerator {
       nullable: buildContextExtensionNullable,
     );
 
-    final $library = Library(
-      (l) => l
-        ..body.addAll(
-          [
-            $class,
-            $extension,
-          ],
-        ),
-    );
-
-    final result = '''
-      ${ThemeClassGenerator.generatedFilePrefix}
-
-
-      ${$library.accept(_emitter)}
-    ''';
-
-    return _dartfmt.format(result);
+    return ($class: $class, $extension: $extension);
   }
 
   Extension _getBuildContextExtension({

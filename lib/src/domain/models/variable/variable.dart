@@ -46,6 +46,10 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
   @override
   final String name;
 
+  /// The name of the collection, which is used to separate tokens into classes
+  @override
+  String get collectionName => variableCollectionName;
+
   /// Whether this variable is remote.
   final bool remote;
 
@@ -75,6 +79,12 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
 
   /// The collection mode names of this variable.
   final Map<String, String> collectionModeNames;
+
+  /// Like valuesByMode but replaces the modeId with the actual mode name
+  @override
+  Map<String, AliasOr<T>> get valuesByModeName => valuesByMode.map(
+        (key, value) => MapEntry(collectionModeNames[key]!, value),
+      );
 
   @override
   String get fullName => switch (variableCollectionName) {

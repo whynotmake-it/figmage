@@ -36,7 +36,7 @@ sealed class Typography with _$Typography {
   /// {@macro text_style}
   const factory Typography({
     required String fontFamily,
-    required String fontFamilyPostScriptName,
+    required String? fontFamilyPostScriptName,
     required double fontSize,
     @Default(400) int fontWeight,
     @Default(TextDecoration.none) TextDecoration decoration,

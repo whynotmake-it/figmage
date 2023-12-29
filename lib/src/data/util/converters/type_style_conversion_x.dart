@@ -8,7 +8,7 @@ extension TypeStyleConversionX on TypeStyle {
   /// Converts a [TypeStyle] to a [Typography].
   Typography toDomain() => Typography(
         fontFamily: fontFamily!,
-        fontFamilyPostScriptName: fontPostScriptName!,
+        fontFamilyPostScriptName: fontPostScriptName,
         fontSize: fontSize!.toDouble(),
         fontWeight: convertFontWeight(fontWeight ?? 400),
         fontStyle: italic ?? false ? FontStyle.italic : FontStyle.normal,

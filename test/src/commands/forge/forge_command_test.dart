@@ -35,7 +35,7 @@ final _variableList = [
     hiddenFromPublishing: false,
     scopes: ['ALL_SCOPES'],
     codeSyntax: {},
-    collectionModeNames: {'0:0': 'dark', '1:0': 'light'},
+    collectionModeNamesById: {'0:0': 'dark', '1:0': 'light'},
     valuesByModeId: {
       '0:0': AliasData<int>(data: 4290117398),
       '1:0': AliasData<int>(data: 4286038042),

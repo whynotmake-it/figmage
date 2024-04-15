@@ -32,12 +32,13 @@ abstract class ModeThemeExtensionGenerator<T>
     implements ThemeExtensionGenerator {
   /// {@macro theme_extension_generator}
   ModeThemeExtensionGenerator({
-    required this.className,
+    required String className,
     required this.valuesByNameByMode,
     required this.symbolReference,
     this.buildContextExtensionNullable = false,
     this.lerpReference,
-  }) : assert(
+  })  : className = convertToValidClassName(className),
+        assert(
           ensureSameKeys(valuesByNameByMode.values.toList()),
           'All value maps must have the same keys.',
         );

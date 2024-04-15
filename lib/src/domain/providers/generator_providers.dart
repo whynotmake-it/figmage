@@ -66,9 +66,7 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
     generators.addAll(
       groupedTokens.entries.map(
         (tokensEntry) => ColorThemeExtensionGenerator(
-          className: convertToValidClassName(
-            "${type.className}${tokensEntry.key.toTitleCase()}",
-          ),
+          className: "${type.className}${tokensEntry.key.toTitleCase()}",
           valuesByNameByMode: tokensEntry.value.valuesByNameByMode,
         ),
       ),
@@ -82,9 +80,7 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
     generators.addAll(
       groupedTokens.entries.map(
         (tokensEntry) => TextStyleThemeExtensionGenerator(
-          className: convertToValidClassName(
-            "${type.className}${tokensEntry.key.toTitleCase()}",
-          ),
+          className: "${type.className}${tokensEntry.key.toTitleCase()}",
           valuesByNameByMode: tokensEntry.value.valuesByNameByMode,
           useGoogleFonts: settings.config.typography.useGoogleFonts,
         ),
@@ -97,9 +93,7 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
     generators.addAll(
       groupedTokens.entries.map(
         (tokensEntry) => NumberThemeExtensionGenerator(
-          className: convertToValidClassName(
-            "${type.className}${tokensEntry.key.toTitleCase()}",
-          ),
+          className: "${type.className}${tokensEntry.key.toTitleCase()}",
           valuesByNameByMode: tokensEntry.value.valuesByNameByMode,
         ),
       ),

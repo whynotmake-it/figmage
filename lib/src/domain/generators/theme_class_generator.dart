@@ -1,7 +1,9 @@
 import 'package:code_builder/code_builder.dart';
 
-/// The return type for all ThemeClassGenerator
-/// The Extension represents the BuildContext extension
+/// The result of a theme class generation.
+///
+/// Contains a class, and an extension, that allows to obtain a reference to the
+/// class from a `BuildContext`.
 typedef ThemeClassGeneratorResult = ({Class $class, Extension $extension});
 
 /// {@template generator}
@@ -29,6 +31,26 @@ abstract interface class ThemeClassGenerator {
   /// `ThemeExtension` in the widget tree.
   bool get buildContextExtensionNullable;
 
-  /// Generates a String
+  /// Generates the class and the extension for the class.
+  ///
+  /// See [ThemeClassGeneratorResult] for more information.
+  ThemeClassGeneratorResult generate();
+}
+
+/// A [ThemeClassGenerator] for `ThemeExtension` from
+/// `package:flutter/material.dart`.
+///
+/// Generates the ThemeExtension class, constants for all values, as well as
+/// a `BuildContext` extension.
+abstract interface class ThemeExtensionGenerator<T>
+    implements ThemeClassGenerator {
+  /// A [Reference] to the symbol (e.g., Color, TextStyle) used in the theme
+  /// extension.
+  Reference get symbolReference;
+
+  /// Generates the `ThemeExtension` class and the constants for all values,
+  /// as well as a `BuildContext` extension and returns the resulting
+  /// code as a ThemeClassGeneratorResult.
+  @override
   ThemeClassGeneratorResult generate();
 }

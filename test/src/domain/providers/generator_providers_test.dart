@@ -42,7 +42,7 @@ void main() {
       mockTokensByFileType = TokensByType(
         colorTokens: [
           mockColorDesignStyle,
-          // mockColorVariable,
+          mockColorVariable,
         ],
         typographyTokens: [
           mockTextDesignStyle,
@@ -76,20 +76,25 @@ void main() {
       container.dispose();
     });
 
-    test('returns all existing in test case where everything exists', () async {
+    test('All types, 2 ColorThemeGenerators since 2 collections', () async {
       final result = await container.read(generatorsProvider(settings).future);
-      expect(result, hasLength(5));
+      expect(result, hasLength(8));
       expect(
-        result.values,
-        containsAll(
-          [
-            isA<ColorThemeExtensionGenerator>(),
-            isA<TextStyleThemeExtensionGenerator>(),
-            isA<NumberThemeExtensionGenerator>(),
-            isA<SpacerGenerator>(),
-            isA<PaddingGenerator>(),
-          ],
-        ),
+        result.values.expand((generators) => generators),
+        containsAll([
+          isA<NumberThemeExtensionGenerator>(),
+          isA<SpacerGenerator>(),
+          isA<ColorThemeExtensionGenerator>(),
+          isA<PaddingGenerator>(),
+          isA<TextStyleThemeExtensionGenerator>(),
+        ]),
+      );
+      expect(
+        result.values
+            .expand((generators) => generators)
+            .whereType<ColorThemeExtensionGenerator>()
+            .length,
+        2,
       );
     });
 

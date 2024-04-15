@@ -115,7 +115,7 @@ final stylesProvider =
           "No styles found in file ${settings.fileId}",
         );
       case [...]:
-        stylesProgress.complete("Found ${styles.length} variables");
+        stylesProgress.complete("Found ${styles.length} styles");
         return styles;
     }
   } on StylesException catch (e) {

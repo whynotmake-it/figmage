@@ -1,74 +1,115 @@
+import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/text_style_theme_extension_generator.dart';
 import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:test/test.dart';
 
-void main() {
-  group('TextStyleThemeExtensionsGenerator', () {
-    const valuesByNameByMode = {
-      'mode1': {
-        'textStyle1': Typography(
-          fontSize: 16,
-          fontFamily: 'Roboto',
-          fontFamilyPostScriptName: 'Roboto',
-          decoration: TextDecoration.underline,
-        ),
-        'textStyle2': Typography(
-          fontSize: 24,
-          fontFamily: 'Roboto',
-          fontFamilyPostScriptName: 'Roboto',
-          decoration: TextDecoration.lineThrough,
-        ),
-      },
-      'mode2': {
-        'textStyle1': Typography(
-          fontSize: 16,
-          fontFamily: 'Roboto',
-          fontFamilyPostScriptName: 'Roboto',
-          fontWeight: 700,
-          decoration: TextDecoration.underline,
-        ),
-        'textStyle2': Typography(
-          fontSize: 24,
-          fontFamily: 'Roboto',
-          fontFamilyPostScriptName: 'Roboto',
-          fontWeight: 700,
-          decoration: TextDecoration.lineThrough,
-        ),
-      },
-    };
-    test('generates correct output file without google fonts', () async {
-      final generator = TextStyleThemeExtensionGenerator(
-        className: 'MyTextStyles',
-        valuesByNameByMode: valuesByNameByMode,
-        useGoogleFonts: false,
-      );
-      expect(generator.generate(), _expectedTextStyleThemeExtensionString);
-    });
-    test('generates correct output file with nullable BuildContext extension',
-        () async {
-      final generator = TextStyleThemeExtensionGenerator(
-        className: 'MyTextStyles',
-        valuesByNameByMode: valuesByNameByMode,
-        buildContextExtensionNullable: true,
-        useGoogleFonts: false,
-      );
+import 'common.dart';
 
-      expect(
-        generator.generate(),
+void main() {
+  useDartfmt();
+  final emitter = DartEmitter(
+    allocator: Allocator(),
+    useNullSafetySyntax: true,
+    orderDirectives: true,
+  );
+  const valuesByNameByMode = {
+    'mode1': {
+      'textStyle1': Typography(
+        fontSize: 16,
+        fontFamily: 'Roboto',
+        fontFamilyPostScriptName: 'Roboto',
+        decoration: TextDecoration.underline,
+      ),
+      'textStyle2': Typography(
+        fontSize: 24,
+        fontFamily: 'Roboto',
+        fontFamilyPostScriptName: 'Roboto',
+        decoration: TextDecoration.lineThrough,
+      ),
+    },
+    'mode2': {
+      'textStyle1': Typography(
+        fontSize: 16,
+        fontFamily: 'Roboto',
+        fontFamilyPostScriptName: 'Roboto',
+        fontWeight: 700,
+        decoration: TextDecoration.underline,
+      ),
+      'textStyle2': Typography(
+        fontSize: 24,
+        fontFamily: 'Roboto',
+        fontFamilyPostScriptName: 'Roboto',
+        fontWeight: 700,
+        decoration: TextDecoration.lineThrough,
+      ),
+    },
+  };
+  test(
+      'Should create a TextStyleThemeExtension class and BuildContextExtension',
+      () async {
+    final generator = TextStyleThemeExtensionGenerator(
+      className: 'MyTextStyles',
+      valuesByNameByMode: valuesByNameByMode,
+      useGoogleFonts: false,
+    );
+    expect(
+      generator.generate().$class,
+      equalsDart(
+        _expectedTextStyleThemeExtensionString,
+        emitter,
+      ),
+    );
+    expect(
+      generator.generate().$extension,
+      equalsDart(
+        _expectedTextStyleThemeExtensionBuildContextExtensionString,
+        emitter,
+      ),
+    );
+  });
+  test('Should create a class and nullable BuildContextExtension', () async {
+    final generator = TextStyleThemeExtensionGenerator(
+      className: 'MyTextStyles',
+      valuesByNameByMode: valuesByNameByMode,
+      buildContextExtensionNullable: true,
+      useGoogleFonts: false,
+    );
+
+    expect(
+      generator.generate().$class,
+      equalsDart(
         _expectedNullableTextStyleThemeExtensionString,
-      );
-    });
-    test('works for google fonts', () async {
-      final generator = TextStyleThemeExtensionGenerator(
-        className: 'MyTextStyles',
-        valuesByNameByMode: valuesByNameByMode,
-        useGoogleFonts: true,
-      );
-      expect(
-        generator.generate(),
+        emitter,
+      ),
+    );
+    expect(
+      generator.generate().$extension,
+      equalsDart(
+        _expectedNullableTextStyleThemeExtensionBuildContextExtensionString,
+        emitter,
+      ),
+    );
+  });
+  test('works for google fonts', () async {
+    final generator = TextStyleThemeExtensionGenerator(
+      className: 'MyTextStyles',
+      valuesByNameByMode: valuesByNameByMode,
+      useGoogleFonts: true,
+    );
+    expect(
+      generator.generate().$class,
+      equalsDart(
         _expectedTextStyleThemeExtensionStringWithGoogleFonts,
-      );
-    });
+        emitter,
+      ),
+    );
+    expect(
+      generator.generate().$extension,
+      equalsDart(
+        _expectedThemeExtensionBuildContextExtensionStringWithGoogleFonts,
+        emitter,
+      ),
+    );
   });
 }
 
@@ -76,13 +117,6 @@ void main() {
 // TEST RESOURCES
 // **************************************************************************
 const _expectedTextStyleThemeExtensionString = '''
-// coverage:ignore-file
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
 @immutable
 class MyTextStyles extends ThemeExtension<MyTextStyles> {
   const MyTextStyles({
@@ -164,20 +198,14 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
     );
   }
 }
-
+''';
+const _expectedTextStyleThemeExtensionBuildContextExtensionString = '''
 extension MyTextStylesBuildContextX on BuildContext {
   MyTextStyles get myTextStyles => Theme.of(this).extension<MyTextStyles>()!;
 }
 ''';
 
 const _expectedNullableTextStyleThemeExtensionString = '''
-// coverage:ignore-file
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
 @immutable
 class MyTextStyles extends ThemeExtension<MyTextStyles> {
   const MyTextStyles({
@@ -259,21 +287,14 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
     );
   }
 }
-
+''';
+const _expectedNullableTextStyleThemeExtensionBuildContextExtensionString = '''
 extension MyTextStylesBuildContextX on BuildContext {
   MyTextStyles? get myTextStyles => Theme.of(this).extension<MyTextStyles>();
 }
 ''';
 
 const _expectedTextStyleThemeExtensionStringWithGoogleFonts = '''
-// coverage:ignore-file
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 @immutable
 class MyTextStyles extends ThemeExtension<MyTextStyles> {
   const MyTextStyles({
@@ -355,7 +376,8 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
     );
   }
 }
-
+''';
+const _expectedThemeExtensionBuildContextExtensionStringWithGoogleFonts = '''
 extension MyTextStylesBuildContextX on BuildContext {
   MyTextStyles get myTextStyles => Theme.of(this).extension<MyTextStyles>()!;
 }

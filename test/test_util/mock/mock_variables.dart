@@ -17,10 +17,13 @@ final mockColorVariable = ColorVariable(
   hiddenFromPublishing: false,
   scopes: [],
   codeSyntax: {},
-  collectionModeNames: {},
-  valuesByMode: {
-    "light": AliasOr.data(data: 0xFF000000),
-    "dark": AliasOr.data(data: 0xFFFFFFFF),
+  collectionModeNamesById: {
+    "33:0": 'light',
+    "34:0": 'dark',
+  },
+  valuesByModeId: {
+    "33:0": AliasOr.data(data: 0xFF000000),
+    "34:0": AliasOr.data(data: 0xFFFFFFFF),
   },
 );
 
@@ -36,10 +39,13 @@ final mockFloatVariable = FloatVariable(
   hiddenFromPublishing: false,
   scopes: [],
   codeSyntax: {},
-  collectionModeNames: {},
-  valuesByMode: {
-    "light": AliasOr.data(data: 1),
-    "dark": AliasOr.data(data: 0),
+  collectionModeNamesById: {
+    "33:0": 'light',
+    "34:0": 'dark',
+  },
+  valuesByModeId: {
+    "33:0": AliasOr.data(data: 1),
+    "34:0": AliasOr.data(data: 0),
   },
 );
 
@@ -55,10 +61,13 @@ final mockBoolVariable = BoolVariable(
   hiddenFromPublishing: false,
   scopes: [],
   codeSyntax: {},
-  collectionModeNames: {},
-  valuesByMode: {
-    "light": AliasOr<bool>.data(data: true),
-    "dark": AliasOr<bool>.data(data: false),
+  collectionModeNamesById: {
+    "33:0": 'light',
+    "34:0": 'dark',
+  },
+  valuesByModeId: {
+    "33:0": AliasOr<bool>.data(data: true),
+    "34:0": AliasOr<bool>.data(data: false),
   },
 );
 
@@ -74,10 +83,13 @@ final mockStringVariable = StringVariable(
   hiddenFromPublishing: false,
   scopes: [],
   codeSyntax: {},
-  collectionModeNames: {},
-  valuesByMode: {
-    "light": AliasOr.data(data: "light"),
-    "dark": AliasOr.data(data: "dark"),
+  collectionModeNamesById: {
+    "33:0": 'light',
+    "34:0": 'dark',
+  },
+  valuesByModeId: {
+    "33:0": AliasOr.data(data: "light"),
+    "34:0": AliasOr.data(data: "dark"),
   },
 );
 
@@ -100,9 +112,12 @@ final mockVariableEmptyCollection = BoolVariable(
   hiddenFromPublishing: false,
   scopes: [],
   codeSyntax: {},
-  collectionModeNames: {},
-  valuesByMode: {
-    "light": AliasOr<bool>.data(data: true),
-    "dark": AliasOr<bool>.data(data: false),
+  collectionModeNamesById: {
+    "33:0": 'light',
+    "34:0": 'dark',
+  },
+  valuesByModeId: {
+    "33:0": AliasOr<bool>.data(data: true),
+    "34:0": AliasOr<bool>.data(data: false),
   },
 );

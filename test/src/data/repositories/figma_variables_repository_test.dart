@@ -123,59 +123,13 @@ void main() {
       expect(variables.first.description, equals(''));
       expect(variables.first.hiddenFromPublishing, equals(false));
       expect(
-        variables.first.valuesByMode['0:0'],
+        variables.first.valuesByModeId['0:0'],
         equals(const AliasOr<int>.data(data: 4290117398)),
       );
       expect(
-        variables.first.valuesByMode['1:0'],
+        variables.first.valuesByModeId['1:0'],
         equals(const AliasOr<int>.data(data: 4286038042)),
       );
-    });
-  });
-
-  group('createValueModeMap', () {
-    final repository = FigmaVariablesRepository();
-    final variables = repository.fromDtoToModel(variablesResponseDto);
-
-    test('Converts a List<Variable> to a colorMap using names', () {
-      final colorMap = repository.createValueModeMap<int, ColorVariable>(
-        variables: variables,
-      );
-
-      final expectedColorMap = {
-        'collection': {
-          'dark': {'green': 4290117398},
-          'light': {'green': 4286038042},
-        },
-      };
-
-      expect(colorMap, equals(expectedColorMap));
-    });
-
-    test('Converts a List<Variable> to a numberMap using names', () {
-      final numberMap = repository.createValueModeMap<double, FloatVariable>(
-        variables: variables,
-      );
-      final expectedNumberMap = {
-        'collection': {
-          'dark': {'number': 1.0},
-          'light': {'number': 0.0},
-        },
-      };
-      expect(numberMap, equals(expectedNumberMap));
-    });
-
-    test('Converts a List<Variable> to a stringMap using names', () {
-      final stringMap = repository.createValueModeMap<String, StringVariable>(
-        variables: variables,
-      );
-      final expectedStringMap = {
-        'collection': {
-          'dark': {'string': 'dark'},
-          'light': {'string': 'light'},
-        },
-      };
-      expect(stringMap, equals(expectedStringMap));
     });
   });
 }

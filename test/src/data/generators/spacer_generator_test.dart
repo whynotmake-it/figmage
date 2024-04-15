@@ -2,16 +2,37 @@ import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/spacer_generator.dart';
 import 'package:test/test.dart';
 
+import 'common.dart';
+
 void main() {
-  test('Generates a spacer output file', () async {
+  useDartfmt();
+  final emitter = DartEmitter(
+    allocator: Allocator(),
+    useNullSafetySyntax: true,
+    orderDirectives: true,
+  );
+  test('Should create a Spacer class and BuildContextExtension', () async {
     final generator = SpacerGenerator(
       className: 'Web',
       numberReference: const Reference('MyNumbers'),
       valueNames: ['s', 'm', 'l'],
     );
-    expect(generator.generate(), equals(_expectedSpacerClassString));
+    expect(
+      generator.generate().$class,
+      equalsDart(
+        _expectedSpacerClassString,
+        emitter,
+      ),
+    );
+    expect(
+      generator.generate().$extension,
+      equalsDart(
+        _expectedSpacerBuildContextExtensionString,
+        emitter,
+      ),
+    );
   });
-  test('Generates output file with nullable BuildContext extension', () async {
+  test('Should create a class and nullable BuildContext extension', () async {
     final generator = SpacerGenerator(
       className: 'Web',
       numberReference: const Reference('MyNumbers'),
@@ -19,8 +40,18 @@ void main() {
       buildContextExtensionNullable: true,
     );
     expect(
-      generator.generate(),
-      equals(_expectedNullableSpacerClassString),
+      generator.generate().$class,
+      equalsDart(
+        _expectedNullableSpacerClassString,
+        emitter,
+      ),
+    );
+    expect(
+      generator.generate().$extension,
+      equalsDart(
+        _expectedNullableSpacerBuildContextExtensionString,
+        emitter,
+      ),
     );
   });
 }
@@ -29,14 +60,6 @@ void main() {
 // **************************************************************************
 
 const _expectedSpacerClassString = '''
-// coverage:ignore-file
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 @immutable
 class WebSpacer {
   const WebSpacer(this.myNumbers);
@@ -55,20 +78,13 @@ class WebSpacer {
 
   SizedBox get lVertical => SizedBox(height: myNumbers.l);
 }
-
+''';
+const _expectedSpacerBuildContextExtensionString = '''
 extension WebSpacerBuildContextX on BuildContext {
   WebSpacer get webSpacer => WebSpacer(myNumbers);
 }
 ''';
 const _expectedNullableSpacerClassString = '''
-// coverage:ignore-file
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
-
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 @immutable
 class WebSpacer {
   const WebSpacer(this.myNumbers);
@@ -87,7 +103,8 @@ class WebSpacer {
 
   SizedBox get lVertical => SizedBox(height: myNumbers.l);
 }
-
+''';
+const _expectedNullableSpacerBuildContextExtensionString = '''
 extension WebSpacerBuildContextX on BuildContext {
   WebSpacer? get webSpacer => myNumbers == null ? null : WebSpacer(myNumbers!);
 }

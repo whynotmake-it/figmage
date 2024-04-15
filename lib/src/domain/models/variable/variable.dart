@@ -36,7 +36,7 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
     required this.hiddenFromPublishing,
     required this.scopes,
     required this.codeSyntax,
-    required this.collectionModeNames,
+    required this.collectionModeNamesById,
   });
 
   /// The ID of this variable.
@@ -45,6 +45,10 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
   /// The name of this variable.
   @override
   final String name;
+
+  /// The name of the collection, which is used to separate tokens into classes
+  @override
+  String get collectionName => variableCollectionName;
 
   /// Whether this variable is remote.
   final bool remote;
@@ -73,8 +77,13 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
   /// The code syntax of this variable.
   final Map<String, String> codeSyntax;
 
-  /// The collection mode names of this variable.
-  final Map<String, String> collectionModeNames;
+  /// The collection mode names of this variable, by their mode's ID.
+  final Map<String, String> collectionModeNamesById;
+
+  @override
+  Map<String, AliasOr<T>> get valuesByModeName => valuesByModeId.map(
+        (key, value) => MapEntry(collectionModeNamesById[key]!, value),
+      );
 
   @override
   String get fullName => switch (variableCollectionName) {
@@ -95,7 +104,7 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
         hiddenFromPublishing,
         scopes,
         codeSyntax,
-        collectionModeNames,
+        collectionModeNamesById,
       ];
 
   @override
@@ -119,12 +128,12 @@ class ColorVariable extends Variable<int> {
     required super.hiddenFromPublishing,
     required super.scopes,
     required super.codeSyntax,
-    required super.collectionModeNames,
-    required this.valuesByMode,
+    required super.collectionModeNamesById,
+    required this.valuesByModeId,
   });
 
   @override
-  final Map<String, AliasOr<int>> valuesByMode;
+  final Map<String, AliasOr<int>> valuesByModeId;
 }
 
 /// {@template float_variable}
@@ -144,12 +153,12 @@ class FloatVariable extends Variable<double> {
     required super.hiddenFromPublishing,
     required super.scopes,
     required super.codeSyntax,
-    required super.collectionModeNames,
-    required this.valuesByMode,
+    required super.collectionModeNamesById,
+    required this.valuesByModeId,
   });
 
   @override
-  final Map<String, AliasOr<double>> valuesByMode;
+  final Map<String, AliasOr<double>> valuesByModeId;
 }
 
 /// {@template string_variable}
@@ -169,12 +178,12 @@ class StringVariable extends Variable<String> {
     required super.hiddenFromPublishing,
     required super.scopes,
     required super.codeSyntax,
-    required super.collectionModeNames,
-    required this.valuesByMode,
+    required super.collectionModeNamesById,
+    required this.valuesByModeId,
   });
 
   @override
-  final Map<String, AliasOr<String>> valuesByMode;
+  final Map<String, AliasOr<String>> valuesByModeId;
 }
 
 /// {@template bool_variable}
@@ -194,10 +203,10 @@ class BoolVariable extends Variable<bool> {
     required super.hiddenFromPublishing,
     required super.scopes,
     required super.codeSyntax,
-    required super.collectionModeNames,
-    required this.valuesByMode,
+    required super.collectionModeNamesById,
+    required this.valuesByModeId,
   });
 
   @override
-  final Map<String, AliasOr<bool>> valuesByMode;
+  final Map<String, AliasOr<bool>> valuesByModeId;
 }

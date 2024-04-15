@@ -1,7 +1,6 @@
 import 'dart:core';
 
 import 'package:code_builder/code_builder.dart';
-import 'package:dart_style/dart_style.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 import 'package:figmage/src/domain/generators/theme_extension_generator.dart';
@@ -63,14 +62,6 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
   /// [symbolReference] implements a lerp function
   final Reference? lerpReference;
 
-  final _dartfmt = DartFormatter();
-
-  final _emitter = DartEmitter(
-    allocator: Allocator(),
-    useNullSafetySyntax: true,
-    orderDirectives: true,
-  );
-
   /// Converts a value to the constructor expression
   /// that initializes the extension symbol.
   /// Is implemented for built in literal types like double, int, num, String or
@@ -86,7 +77,7 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
   }
 
   @override
-  String generate() {
+  ThemeClassGeneratorResult generate() {
     final validValueMaps = valuesByNameByMode.map(
       (key, value) => MapEntry(
         switch (key) {
@@ -105,28 +96,12 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
       lerpReference: lerpReference,
     );
 
-    final buildContextExtension = _getBuildContextExtension(
+    final $extension = _getBuildContextExtension(
       className: validClassName,
       nullable: buildContextExtensionNullable,
     );
 
-    final $library = Library(
-      (l) => l
-        ..body.addAll(
-          [
-            $class,
-            buildContextExtension,
-          ],
-        ),
-    );
-
-    final result = '''
-      ${ThemeClassGenerator.generatedFilePrefix}
-
-      ${$library.accept(_emitter)}
-    ''';
-
-    return _dartfmt.format(result);
+    return ($class: $class, $extension: $extension);
   }
 
   Extension _getBuildContextExtension({
@@ -336,7 +311,6 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
               _ => convertToValidVariableName(modeName),
             }
             ..setInitializersAndConst(
-              emitter: _emitter,
               constructorsByParamName: {
                 for (final MapEntry(key: name, :value) in valuesByName.entries)
                   name: getConstructorExpression(
@@ -377,8 +351,8 @@ extension _ReferenceX on Reference {
 extension _ConstructorBuilderX on ConstructorBuilder {
   ConstructorBuilder setInitializersAndConst({
     required Map<String, Expression> constructorsByParamName,
-    required DartEmitter emitter,
   }) {
+    final emitter = DartEmitter();
     initializers.addAll([
       for (final MapEntry(key: name, value: expression)
           in constructorsByParamName.entries)

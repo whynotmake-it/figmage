@@ -3,7 +3,6 @@ import 'dart:core';
 import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
-import 'package:figmage/src/domain/generators/theme_extension_generator.dart';
 
 /// {@template theme_extension_generator}
 /// A generator for theme extension classes.
@@ -39,9 +38,7 @@ abstract class ModeThemeExtensionGenerator<T>
     this.buildContextExtensionNullable = false,
     this.lerpReference,
   }) : assert(
-          ensureSameKeys(
-            valuesByNameByMode.values.toList(),
-          ),
+          ensureSameKeys(valuesByNameByMode.values.toList()),
           'All value maps must have the same keys.',
         );
 

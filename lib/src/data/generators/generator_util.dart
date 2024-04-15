@@ -1,7 +1,7 @@
 import 'package:figmage/src/data/util/converters/string_dart_conversion_x.dart';
 
 /// Makes sure that all maps in the list have the same keys.
-bool ensureSameKeys(List<Map<String, dynamic>> maps) {
+bool ensureSameKeys<T>(List<Map<String, T>> maps) {
   if (maps.isEmpty) return true;
   final firstKeys = maps[0].keys.toSet();
   for (final map in maps) {

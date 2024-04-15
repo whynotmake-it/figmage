@@ -18,4 +18,9 @@ class NumberThemeExtensionGenerator
             'dart:ui',
           ),
         );
+
+  @override
+  Expression getConstructorExpression(double value) {
+    return literal(value);
+  }
 }

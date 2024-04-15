@@ -61,17 +61,7 @@ abstract class ModeThemeExtensionGenerator<T>
 
   /// Converts a value to the constructor expression
   /// that initializes the extension symbol.
-  /// Is implemented for built in literal types like double, int, num, String or
-  /// bool but has to be implemented for custom types.
-  Expression getConstructorExpression(T value) {
-    if (symbolReference.isDartLiteralType) {
-      return literal(value);
-    } else {
-      throw UnimplementedError(
-        "Not implemented for type ${symbolReference.symbol}",
-      );
-    }
-  }
+  Expression getConstructorExpression(T value);
 
   @override
   ThemeClassGeneratorResult generate() {
@@ -133,8 +123,6 @@ abstract class ModeThemeExtensionGenerator<T>
     required Map<String, Map<String, T>> valueMaps,
     required Reference? lerpReference,
   }) {
-    final nullableSymbolReference = symbolReference.toNullable;
-
     final parameterNames = valueMaps.values.first.keys.toList();
     return Class(
       (c) => c
@@ -152,14 +140,14 @@ abstract class ModeThemeExtensionGenerator<T>
         ..fields.addAll(
           _getClassFields(
             nameList: parameterNames,
-            nullableSymbolReference: nullableSymbolReference,
+            nullableSymbolReference: symbolReference.toNullable,
           ),
         )
         ..methods.addAll([
           _getCopyWith(
             parameterNames: parameterNames,
             className: className,
-            nullableSymbolReference: nullableSymbolReference,
+            symbolReference: symbolReference,
           ),
           _getLerp(
             parameterNames: parameterNames,
@@ -227,7 +215,7 @@ abstract class ModeThemeExtensionGenerator<T>
   Method _getCopyWith({
     required List<String> parameterNames,
     required String className,
-    required Reference nullableSymbolReference,
+    required Reference symbolReference,
   }) {
     return Method(
       (method) => method
@@ -239,7 +227,7 @@ abstract class ModeThemeExtensionGenerator<T>
             (index) => Parameter(
               (p) => p
                 ..name = parameterNames[index]
-                ..type = nullableSymbolReference,
+                ..type = symbolReference.toNullable,
             ),
           ),
         )

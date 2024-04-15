@@ -319,18 +319,6 @@ extension _ReferenceX on Reference {
       url,
     );
   }
-
-  bool get isDartLiteralType {
-    final type = symbol;
-    const dartCoreLiteralTypes = <String>{
-      'int',
-      'double',
-      'num',
-      'bool',
-      'String',
-    };
-    return dartCoreLiteralTypes.contains(type);
-  }
 }
 
 extension _ConstructorBuilderX on ConstructorBuilder {

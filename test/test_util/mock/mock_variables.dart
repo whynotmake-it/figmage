@@ -17,11 +17,11 @@ final mockColorVariable = ColorVariable(
   hiddenFromPublishing: false,
   scopes: [],
   codeSyntax: {},
-  collectionModeNames: {
+  collectionModeNamesById: {
     "33:0": 'light',
     "34:0": 'dark',
   },
-  valuesByMode: {
+  valuesByModeId: {
     "33:0": AliasOr.data(data: 0xFF000000),
     "34:0": AliasOr.data(data: 0xFFFFFFFF),
   },
@@ -39,11 +39,11 @@ final mockFloatVariable = FloatVariable(
   hiddenFromPublishing: false,
   scopes: [],
   codeSyntax: {},
-  collectionModeNames: {
+  collectionModeNamesById: {
     "33:0": 'light',
     "34:0": 'dark',
   },
-  valuesByMode: {
+  valuesByModeId: {
     "33:0": AliasOr.data(data: 1),
     "34:0": AliasOr.data(data: 0),
   },
@@ -61,11 +61,11 @@ final mockBoolVariable = BoolVariable(
   hiddenFromPublishing: false,
   scopes: [],
   codeSyntax: {},
-  collectionModeNames: {
+  collectionModeNamesById: {
     "33:0": 'light',
     "34:0": 'dark',
   },
-  valuesByMode: {
+  valuesByModeId: {
     "33:0": AliasOr<bool>.data(data: true),
     "34:0": AliasOr<bool>.data(data: false),
   },
@@ -83,11 +83,11 @@ final mockStringVariable = StringVariable(
   hiddenFromPublishing: false,
   scopes: [],
   codeSyntax: {},
-  collectionModeNames: {
+  collectionModeNamesById: {
     "33:0": 'light',
     "34:0": 'dark',
   },
-  valuesByMode: {
+  valuesByModeId: {
     "33:0": AliasOr.data(data: "light"),
     "34:0": AliasOr.data(data: "dark"),
   },
@@ -112,11 +112,11 @@ final mockVariableEmptyCollection = BoolVariable(
   hiddenFromPublishing: false,
   scopes: [],
   codeSyntax: {},
-  collectionModeNames: {
+  collectionModeNamesById: {
     "33:0": 'light',
     "34:0": 'dark',
   },
-  valuesByMode: {
+  valuesByModeId: {
     "33:0": AliasOr<bool>.data(data: true),
     "34:0": AliasOr<bool>.data(data: false),
   },

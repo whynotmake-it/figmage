@@ -36,7 +36,7 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
     required this.hiddenFromPublishing,
     required this.scopes,
     required this.codeSyntax,
-    required this.collectionModeNames,
+    required this.collectionModeNamesById,
   });
 
   /// The ID of this variable.
@@ -77,13 +77,12 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
   /// The code syntax of this variable.
   final Map<String, String> codeSyntax;
 
-  /// The collection mode names of this variable.
-  final Map<String, String> collectionModeNames;
+  /// The collection mode names of this variable, by their mode's ID.
+  final Map<String, String> collectionModeNamesById;
 
-  /// Like valuesByMode but replaces the modeId with the actual mode name
   @override
-  Map<String, AliasOr<T>> get valuesByModeName => valuesByMode.map(
-        (key, value) => MapEntry(collectionModeNames[key]!, value),
+  Map<String, AliasOr<T>> get valuesByModeName => valuesByModeId.map(
+        (key, value) => MapEntry(collectionModeNamesById[key]!, value),
       );
 
   @override
@@ -105,7 +104,7 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
         hiddenFromPublishing,
         scopes,
         codeSyntax,
-        collectionModeNames,
+        collectionModeNamesById,
       ];
 
   @override
@@ -129,12 +128,12 @@ class ColorVariable extends Variable<int> {
     required super.hiddenFromPublishing,
     required super.scopes,
     required super.codeSyntax,
-    required super.collectionModeNames,
-    required this.valuesByMode,
+    required super.collectionModeNamesById,
+    required this.valuesByModeId,
   });
 
   @override
-  final Map<String, AliasOr<int>> valuesByMode;
+  final Map<String, AliasOr<int>> valuesByModeId;
 }
 
 /// {@template float_variable}
@@ -154,12 +153,12 @@ class FloatVariable extends Variable<double> {
     required super.hiddenFromPublishing,
     required super.scopes,
     required super.codeSyntax,
-    required super.collectionModeNames,
-    required this.valuesByMode,
+    required super.collectionModeNamesById,
+    required this.valuesByModeId,
   });
 
   @override
-  final Map<String, AliasOr<double>> valuesByMode;
+  final Map<String, AliasOr<double>> valuesByModeId;
 }
 
 /// {@template string_variable}
@@ -179,12 +178,12 @@ class StringVariable extends Variable<String> {
     required super.hiddenFromPublishing,
     required super.scopes,
     required super.codeSyntax,
-    required super.collectionModeNames,
-    required this.valuesByMode,
+    required super.collectionModeNamesById,
+    required this.valuesByModeId,
   });
 
   @override
-  final Map<String, AliasOr<String>> valuesByMode;
+  final Map<String, AliasOr<String>> valuesByModeId;
 }
 
 /// {@template bool_variable}
@@ -204,10 +203,10 @@ class BoolVariable extends Variable<bool> {
     required super.hiddenFromPublishing,
     required super.scopes,
     required super.codeSyntax,
-    required super.collectionModeNames,
-    required this.valuesByMode,
+    required super.collectionModeNamesById,
+    required this.valuesByModeId,
   });
 
   @override
-  final Map<String, AliasOr<bool>> valuesByMode;
+  final Map<String, AliasOr<bool>> valuesByModeId;
 }

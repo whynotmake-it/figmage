@@ -123,11 +123,11 @@ void main() {
       expect(variables.first.description, equals(''));
       expect(variables.first.hiddenFromPublishing, equals(false));
       expect(
-        variables.first.valuesByMode['0:0'],
+        variables.first.valuesByModeId['0:0'],
         equals(const AliasOr<int>.data(data: 4290117398)),
       );
       expect(
-        variables.first.valuesByMode['1:0'],
+        variables.first.valuesByModeId['1:0'],
         equals(const AliasOr<int>.data(data: 4286038042)),
       );
     });

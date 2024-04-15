@@ -57,7 +57,7 @@ class FigmaVariablesRepository implements VariablesRepository {
       final variableCollection =
           variableCollections[dtoVariable.variableCollectionId];
       assert(variableCollection != null, 'VariableCollection can not be null');
-      final collectionModeNames = {
+      final modeNamesById = {
         for (final item in variableCollection!.modes) item.modeId: item.name,
       };
       final collectionName = variableCollection.name;
@@ -75,13 +75,13 @@ class FigmaVariablesRepository implements VariablesRepository {
             hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
             scopes: dtoVariable.scopes,
             codeSyntax: dtoVariable.codeSyntax,
-            valuesByMode: dtoVariable.valuesByMode.map(
+            valuesByModeId: dtoVariable.valuesByMode.map(
               (key, value) => MapEntry(
                 key,
                 _resolveAlias(value: value, dtoVariables: dtoVariables),
               ),
             ),
-            collectionModeNames: collectionModeNames,
+            collectionModeNamesById: modeNamesById,
           ),
         kResolvedTypeBoolean => BoolVariable(
             id: dtoVariable.id,
@@ -95,13 +95,13 @@ class FigmaVariablesRepository implements VariablesRepository {
             hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
             scopes: dtoVariable.scopes,
             codeSyntax: dtoVariable.codeSyntax,
-            valuesByMode: dtoVariable.valuesByMode.map(
+            valuesByModeId: dtoVariable.valuesByMode.map(
               (key, value) => MapEntry(
                 key,
                 _resolveAlias(value: value, dtoVariables: dtoVariables),
               ),
             ),
-            collectionModeNames: collectionModeNames,
+            collectionModeNamesById: modeNamesById,
           ),
         kResolvedTypeColor => ColorVariable(
             id: dtoVariable.id,
@@ -115,13 +115,13 @@ class FigmaVariablesRepository implements VariablesRepository {
             hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
             scopes: dtoVariable.scopes,
             codeSyntax: dtoVariable.codeSyntax,
-            valuesByMode: dtoVariable.valuesByMode.map(
+            valuesByModeId: dtoVariable.valuesByMode.map(
               (key, value) => MapEntry(
                 key,
                 _resolveAlias(value: value, dtoVariables: dtoVariables),
               ),
             ),
-            collectionModeNames: collectionModeNames,
+            collectionModeNamesById: modeNamesById,
           ),
         kResolvedTypeNumber => FloatVariable(
             id: dtoVariable.id,
@@ -135,13 +135,13 @@ class FigmaVariablesRepository implements VariablesRepository {
             hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
             scopes: dtoVariable.scopes,
             codeSyntax: dtoVariable.codeSyntax,
-            valuesByMode: dtoVariable.valuesByMode.map(
+            valuesByModeId: dtoVariable.valuesByMode.map(
               (key, value) => MapEntry(
                 key,
                 _resolveAlias(value: value, dtoVariables: dtoVariables),
               ),
             ),
-            collectionModeNames: collectionModeNames,
+            collectionModeNamesById: modeNamesById,
           ),
         _ => throw UnsupportedError(
             "The variable type ${dtoVariable.resolvedType} is not supported",

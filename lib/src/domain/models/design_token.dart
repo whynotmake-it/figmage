@@ -13,7 +13,7 @@ abstract interface class DesignToken<T> {
   String get collectionName;
 
   /// The values of the token by mode id.
-  Map<String, AliasOr<T>> get valuesByMode;
+  Map<String, AliasOr<T>> get valuesByModeId;
 
   /// The values of the token by mode name.
   Map<String, AliasOr<T>> get valuesByModeName;

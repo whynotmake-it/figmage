@@ -32,7 +32,7 @@ sealed class DesignStyle<T> with EquatableMixin implements DesignToken<T> {
   final T value;
 
   @override
-  Map<String, AliasOr<T>> get valuesByMode => {
+  Map<String, AliasOr<T>> get valuesByModeId => {
         "": AliasOr<T>.data(data: value),
       };
 

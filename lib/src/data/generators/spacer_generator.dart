@@ -15,7 +15,7 @@ class SpacerGenerator implements ValueNamesThemeClassGenerator {
     this.buildContextExtensionNullable = false,
   }) : assert(
           numberReference.symbol != null,
-          'The symbol can"t be null when generating a spacer generator',
+          "The symbol can't be null when generating a spacer generator",
         );
 
   @override

@@ -15,6 +15,7 @@ enum TokenFileType {
   /// Paddings (EdgeInsets) tokens
   paddings("paddings.dart"),
 
+  /** TODO(tim): add back once supported
   /// Radii (BorderRadius) tokens
   radii("radii.dart"),
 
@@ -22,7 +23,9 @@ enum TokenFileType {
   strings("strings.dart"),
 
   /// Bools tokens
-  bools("bools.dart");
+  bools("bools.dart"),
+  */
+  ;
 
   const TokenFileType(this.filename);
 

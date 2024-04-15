@@ -39,26 +39,26 @@ void main() {
         );
       });
 
-      test('works for radii', () async {
-        expect(
-          TokenFileType.fromFilename('radii.dart'),
-          equals(TokenFileType.radii),
-        );
-      });
+      // test('works for radii', () async {
+      //   expect(
+      //     TokenFileType.fromFilename('radii.dart'),
+      //     equals(TokenFileType.radii),
+      //   );
+      // });
 
-      test('works for strings', () async {
-        expect(
-          TokenFileType.fromFilename('strings.dart'),
-          equals(TokenFileType.strings),
-        );
-      });
+      // test('works for strings', () async {
+      //   expect(
+      //     TokenFileType.fromFilename('strings.dart'),
+      //     equals(TokenFileType.strings),
+      //   );
+      // });
 
-      test('works for bools', () async {
-        expect(
-          TokenFileType.fromFilename('bools.dart'),
-          equals(TokenFileType.bools),
-        );
-      });
+      // test('works for bools', () async {
+      //   expect(
+      //     TokenFileType.fromFilename('bools.dart'),
+      //     equals(TokenFileType.bools),
+      //   );
+      // });
 
       test('throws for unknown file', () async {
         expect(
@@ -102,17 +102,17 @@ void main() {
         expect(TokenFileType.paddings.className, equals("Paddings"));
       });
 
-      test('works for radii', () async {
-        expect(TokenFileType.radii.className, equals("Radii"));
-      });
+      // test('works for radii', () async {
+      //   expect(TokenFileType.radii.className, equals("Radii"));
+      // });
 
-      test('works for strings', () async {
-        expect(TokenFileType.strings.className, equals("Strings"));
-      });
+      // test('works for strings', () async {
+      //   expect(TokenFileType.strings.className, equals("Strings"));
+      // });
 
-      test('works for bools', () async {
-        expect(TokenFileType.bools.className, equals("Bools"));
-      });
+      // test('works for bools', () async {
+      //   expect(TokenFileType.bools.className, equals("Bools"));
+      // });
     });
   });
 }

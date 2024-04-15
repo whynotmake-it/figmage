@@ -144,12 +144,6 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
         ),
       ),
     );
-  } else if (type == TokenFileType.radii) {
-    // TODO(JsprBllnbm): implement
-  } else if (type == TokenFileType.strings) {
-    // TODO(JsprBllnbm): implement
-  } else if (type == TokenFileType.bools) {
-    // TODO(JsprBllnbm): implement
   }
 
   return generators;

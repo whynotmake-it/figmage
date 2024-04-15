@@ -1,8 +1,8 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:figmage/src/data/generators/color_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/color_theme_extension_generator.dart';
 import 'package:test/test.dart';
 
-import 'common.dart';
+import '../common.dart';
 
 void main() {
   useDartfmt();

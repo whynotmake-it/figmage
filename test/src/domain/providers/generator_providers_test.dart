@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:figmage/src/data/generators/color_theme_extension_generator.dart';
-import 'package:figmage/src/data/generators/number_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/color_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/number_theme_extension_generator.dart';
 import 'package:figmage/src/data/generators/padding_generator.dart';
 import 'package:figmage/src/data/generators/spacer_generator.dart';
-import 'package:figmage/src/data/generators/text_style_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/text_style_theme_extension_generator.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_type.dart';

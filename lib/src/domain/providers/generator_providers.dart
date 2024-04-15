@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:code_builder/code_builder.dart';
 import 'package:collection/collection.dart';
-import 'package:figmage/src/data/generators/color_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/color_theme_extension_generator.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
-import 'package:figmage/src/data/generators/number_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/number_theme_extension_generator.dart';
 import 'package:figmage/src/data/generators/padding_generator.dart';
 import 'package:figmage/src/data/generators/spacer_generator.dart';
-import 'package:figmage/src/data/generators/text_style_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/text_style_theme_extension_generator.dart';
 import 'package:figmage/src/data/util/converters/string_dart_conversion_x.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 import 'package:figmage/src/domain/models/design_token.dart';

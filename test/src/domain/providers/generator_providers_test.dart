@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:figmage/src/data/generators/reference_generators/padding_generator.dart';
-import 'package:figmage/src/data/generators/reference_generators/spacer_generator.dart';
 import 'package:figmage/src/data/generators/theme_extension_generators/color_theme_extension_generator.dart';
 import 'package:figmage/src/data/generators/theme_extension_generators/number_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/reference_generators/padding_generator.dart';
+import 'package:figmage/src/data/generators/reference_generators/spacer_generator.dart';
 import 'package:figmage/src/data/generators/theme_extension_generators/text_style_theme_extension_generator.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';

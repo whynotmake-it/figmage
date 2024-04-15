@@ -32,7 +32,7 @@ dependencies:
   mason_logger: ^0.2.5
   meta: ">=1.9.1 <2.0.0"
   path: ^1.8.3
-  pub_updater: ^0.3.0
+  pub_updater: ^0.4.0
   riverpod: ^2.4.6
   source_gen: ^1.4.0
   yaml: ^3.1.2
@@ -44,6 +44,6 @@ dev_dependencies:
   freezed: ^2.4.3
   json_serializable: ^6.7.1
   lintervention: ^0.1.1
-  melos: ^3.1.1
+  melos: ^5.3.0
   mocktail: ^1.0.0
   test: ^1.24.2

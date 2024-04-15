@@ -246,6 +246,72 @@ void main() {
         });
       });
 
+      group('with mixed (#38)', () {
+        // ignore: unused_local_variable
+        late Iterable<File> files;
+        setUp(() async {
+          files = await sut.generate(
+            projectName: "figmage_example",
+            dir: testDirectory,
+            description: "A test",
+            generateNumbers: false,
+            generateSpacers: false,
+            generatePaddings: false,
+            generateRadii: false,
+            generateStrings: false,
+            generateBools: false,
+          );
+        });
+
+        test('generates only the files that are not disabled', () async {
+          verify(
+            () => generatorTarget.createFile(
+              any(that: contains("lib/src/colors.dart")),
+              any(that: isEmpty),
+            ),
+          ).called(1);
+          verify(
+            () => generatorTarget.createFile(
+              any(that: contains("lib/src/typography.dart")),
+              any(that: isEmpty),
+            ),
+          ).called(1);
+          verifyNever(
+            () => generatorTarget.createFile(
+              any(that: contains("lib/src/numbers.dart")),
+              any(),
+            ),
+          );
+          verifyNever(
+            () => generatorTarget.createFile(
+              any(that: contains("lib/src/bools.dart")),
+              any(),
+            ),
+          );
+          verifyNever(
+            () => generatorTarget.createFile(
+              any(that: contains("lib/src/numbers.dart")),
+              any(),
+            ),
+          );
+        });
+
+        test('only the generated files are in export', () {
+          final content = verify(
+            () => generatorTarget.createFile(
+              any(that: contains("figmage_example.dart")),
+              captureAny(),
+            ),
+          ).captured.first as List<int>;
+          final decoded = utf8.decode(content);
+
+          expect(
+            decoded,
+            equals(_expectedMixedLibraryFile),
+          );
+        });
+      });
+
       test('throws if package URI could not be resolved', () async {
         sut = FigmagePackageGenerator(
           generatorTargetFactory: (_) => _MockGeneratorTarget(),
@@ -302,4 +368,18 @@ library figmage_example;
 
 
 
+''';
+
+const _expectedMixedLibraryFile = '''
+/// A test
+library figmage_example;
+
+
+export 'src/colors.dart';
+
+
+
+
+
+export 'src/typography.dart';
 ''';

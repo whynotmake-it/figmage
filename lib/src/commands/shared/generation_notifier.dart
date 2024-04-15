@@ -54,15 +54,7 @@ class GenerationNotifier
     final generatorsByFiles =
         await ref.watch(generatorsProvider(settings).future);
 
-    final resultsByFile = {
-      for (final MapEntry(key: file, value: generators)
-          in generatorsByFiles.entries)
-        file: [
-          for (final generator in generators) generator.generate(),
-        ],
-    };
-
-    final codeByFile = ref.watch(librariesProvider(resultsByFile));
+    final codeByFile = ref.watch(librariesProvider(generatorsByFiles));
 
     // write the files
     await ref.watch(

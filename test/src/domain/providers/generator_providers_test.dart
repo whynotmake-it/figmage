@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:figmage/src/data/generators/theme_extension_generators/color_theme_extension_generator.dart';
-import 'package:figmage/src/data/generators/theme_extension_generators/number_theme_extension_generator.dart';
-import 'package:figmage/src/data/generators/reference_generators/padding_generator.dart';
-import 'package:figmage/src/data/generators/reference_generators/spacer_generator.dart';
-import 'package:figmage/src/data/generators/theme_extension_generators/text_style_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/file_generators/color_file_generator.dart';
+import 'package:figmage/src/data/generators/file_generators/number_file_generator.dart';
+import 'package:figmage/src/data/generators/file_generators/padding_file_generator.dart';
+import 'package:figmage/src/data/generators/file_generators/spacer_file_generator.dart';
+import 'package:figmage/src/data/generators/file_generators/typography_file_generator.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_type.dart';
@@ -80,21 +80,14 @@ void main() {
       final result = await container.read(generatorsProvider(settings).future);
       expect(result, hasLength(5));
       expect(
-        result.values.expand((generators) => generators),
+        result.values,
         containsAll([
-          isA<NumberThemeExtensionGenerator>(),
-          isA<SpacerGenerator>(),
-          isA<ColorThemeExtensionGenerator>(),
-          isA<PaddingGenerator>(),
-          isA<TextStyleThemeExtensionGenerator>(),
+          isA<ColorFileGenerator>(),
+          isA<TypographyFileGenerator>(),
+          isA<NumberFileGenerator>(),
+          isA<SpacerFileGenerator>(),
+          isA<PaddingFileGenerator>(),
         ]),
-      );
-      expect(
-        result.values
-            .expand((generators) => generators)
-            .whereType<ColorThemeExtensionGenerator>()
-            .length,
-        2,
       );
     });
 

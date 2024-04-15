@@ -18,14 +18,14 @@ void main() {
       valueFields: ['s', 'm', 'l'],
     );
     expect(
-      generator.generate().$class,
+      generator.generateClass(),
       equalsDart(
         _expectedSpacerClassString,
         emitter,
       ),
     );
     expect(
-      generator.generate().$extension,
+      generator.generateExtension(),
       equalsDart(
         _expectedSpacerBuildContextExtensionString,
         emitter,
@@ -40,14 +40,14 @@ void main() {
       buildContextExtensionNullable: true,
     );
     expect(
-      generator.generate().$class,
+      generator.generateClass(),
       equalsDart(
         _expectedNullableSpacerClassString,
         emitter,
       ),
     );
     expect(
-      generator.generate().$extension,
+      generator.generateExtension(),
       equalsDart(
         _expectedNullableSpacerBuildContextExtensionString,
         emitter,

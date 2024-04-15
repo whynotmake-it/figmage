@@ -1,30 +1,22 @@
 import 'dart:io';
 
-import 'package:code_builder/code_builder.dart';
-import 'package:collection/collection.dart';
-import 'package:figmage/src/data/generators/generator_util.dart';
-import 'package:figmage/src/data/generators/reference_generators/padding_generator.dart';
-import 'package:figmage/src/data/generators/reference_generators/spacer_generator.dart';
-import 'package:figmage/src/data/generators/theme_extension_generators/color_theme_extension_generator.dart';
-import 'package:figmage/src/data/generators/theme_extension_generators/number_theme_extension_generator.dart';
-import 'package:figmage/src/data/generators/theme_extension_generators/text_style_theme_extension_generator.dart';
-import 'package:figmage/src/data/util/converters/string_dart_conversion_x.dart';
-import 'package:figmage/src/domain/generators/theme_class_generator.dart';
-import 'package:figmage/src/domain/models/design_token.dart';
+import 'package:figmage/src/data/generators/file_generators/color_file_generator.dart';
+import 'package:figmage/src/data/generators/file_generators/number_file_generator.dart';
+import 'package:figmage/src/data/generators/file_generators/padding_file_generator.dart';
+import 'package:figmage/src/data/generators/file_generators/spacer_file_generator.dart';
+import 'package:figmage/src/data/generators/file_generators/typography_file_generator.dart';
+import 'package:figmage/src/domain/generators/file_generator.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
-import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_type.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/figmage_package_generator_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
-import 'package:figmage/src/domain/util/token_filter_x.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:path/path.dart';
 import 'package:riverpod/riverpod.dart';
 
-/// Provides a [ThemeClassGenerator] based on the file type, variables and
-/// settings, if there is a supported generator.
-final generatorsProvider = FutureProvider.family<
-    Map<File, Iterable<ThemeClassGenerator>>, FigmageSettings>(
+/// Provides a one [FileGenerator] for each file that needs to be generated.
+final generatorsProvider =
+    FutureProvider.family<Map<File, FileGenerator>, FigmageSettings>(
   (ref, settings) async {
     final logger = ref.watch(loggerProvider);
     final tokensByType =
@@ -40,106 +32,32 @@ final generatorsProvider = FutureProvider.family<
       "Generating theme classes for ${typesByFile.length} files...",
     );
 
-    final generatorsByFile = <File, Iterable<ThemeClassGenerator>>{
+    final generatorsByFile = {
       for (final MapEntry(key: file, value: type) in typesByFile.entries)
-        file: _createGeneratorsByFile(
-          type: type,
-          tokens: tokensByType,
-          settings: settings,
-        ),
+        file: switch (type) {
+          TokenFileType.color => ColorFileGenerator(
+              tokens: tokensByType.colorTokens,
+            ),
+          TokenFileType.typography => TypographyFileGenerator(
+              tokens: tokensByType.typographyTokens,
+              useGoogleFonts: settings.config.typography.useGoogleFonts,
+            ),
+          TokenFileType.numbers => NumberFileGenerator(
+              tokens: tokensByType.numberTokens,
+            ),
+          TokenFileType.spacers => SpacerFileGenerator(
+              tokens: tokensByType.numberTokens,
+            ),
+          TokenFileType.paddings => PaddingFileGenerator(
+              tokens: tokensByType.numberTokens,
+            ),
+        },
     };
 
     progress.complete();
     return generatorsByFile;
   },
 );
-
-Iterable<ThemeClassGenerator> _createGeneratorsByFile({
-  required TokenFileType type,
-  required TokensByType tokens,
-  required FigmageSettings settings,
-}) {
-  final generators = <ThemeClassGenerator>[];
-  if (type == TokenFileType.color && tokens.colorTokens.isNotEmpty) {
-    final groupedTokens =
-        groupBy(tokens.colorTokens, (DesignToken dt) => dt.collectionName);
-    generators.addAll(
-      groupedTokens.entries.map(
-        (tokensEntry) => ColorThemeExtensionGenerator(
-          className: "${type.className}${tokensEntry.key.toTitleCase()}",
-          valuesByNameByMode: tokensEntry.value.valuesByNameByMode,
-        ),
-      ),
-    );
-  } else if (type == TokenFileType.typography &&
-      tokens.typographyTokens.isNotEmpty) {
-    final groupedTokens = groupBy(
-      tokens.typographyTokens,
-      (DesignToken dt) => dt.collectionName,
-    );
-    generators.addAll(
-      groupedTokens.entries.map(
-        (tokensEntry) => TextStyleThemeExtensionGenerator(
-          className: "${type.className}${tokensEntry.key.toTitleCase()}",
-          valuesByNameByMode: tokensEntry.value.valuesByNameByMode,
-          useGoogleFonts: settings.config.typography.useGoogleFonts,
-        ),
-      ),
-    );
-  } else if (type == TokenFileType.numbers && tokens.numberTokens.isNotEmpty) {
-    final groupedTokens =
-        groupBy(tokens.numberTokens, (DesignToken dt) => dt.collectionName);
-
-    generators.addAll(
-      groupedTokens.entries.map(
-        (tokensEntry) => NumberThemeExtensionGenerator(
-          className: "${type.className}${tokensEntry.key.toTitleCase()}",
-          valuesByNameByMode: tokensEntry.value.valuesByNameByMode,
-        ),
-      ),
-    );
-  } else if (type == TokenFileType.spacers && tokens.numberTokens.isNotEmpty) {
-    final groupedTokens =
-        groupBy(tokens.numberTokens, (DesignToken dt) => dt.collectionName);
-    generators.addAll(
-      groupedTokens.entries.map(
-        (tokensEntry) => SpacerGenerator(
-          className: "${type.className}${tokensEntry.key.toTitleCase()}Spacers",
-          fromClass: refer(
-            convertToValidClassName(
-              "${TokenFileType.numbers.className}"
-              "${tokensEntry.key.toTitleCase()}",
-            ),
-            TokenFileType.numbers.filename,
-          ),
-          valueFields: tokensEntry.value.map((t) => t.name).toList(),
-        ),
-      ),
-    );
-  } else if (type == TokenFileType.paddings && tokens.numberTokens.isNotEmpty) {
-    final groupedTokens =
-        groupBy(tokens.numberTokens, (DesignToken dt) => dt.collectionName);
-    generators.addAll(
-      groupedTokens.entries.map(
-        (tokensEntry) => PaddingGenerator(
-          className: convertToValidClassName(
-            "${type.className}${tokensEntry.key.toTitleCase()}Paddings",
-          ),
-          fromClass: refer(
-            convertToValidClassName(
-              "${TokenFileType.numbers.className}"
-              "${tokensEntry.key.toTitleCase()}",
-            ),
-            TokenFileType.numbers.filename,
-          ),
-          valueFields: tokensEntry.value.map((t) => t.name).toList(),
-        ),
-      ),
-    );
-  }
-
-  return generators;
-}
 
 extension on File {
   TokenFileType? get tokenFileType => TokenFileType.tryFromFilename(

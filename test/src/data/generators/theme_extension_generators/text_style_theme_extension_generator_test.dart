@@ -53,14 +53,14 @@ void main() {
       useGoogleFonts: false,
     );
     expect(
-      generator.generate().$class,
+      generator.generateClass(),
       equalsDart(
         _expectedTextStyleThemeExtensionString,
         emitter,
       ),
     );
     expect(
-      generator.generate().$extension,
+      generator.generateExtension(),
       equalsDart(
         _expectedTextStyleThemeExtensionBuildContextExtensionString,
         emitter,
@@ -76,14 +76,14 @@ void main() {
     );
 
     expect(
-      generator.generate().$class,
+      generator.generateClass(),
       equalsDart(
         _expectedNullableTextStyleThemeExtensionString,
         emitter,
       ),
     );
     expect(
-      generator.generate().$extension,
+      generator.generateExtension(),
       equalsDart(
         _expectedNullableTextStyleThemeExtensionBuildContextExtensionString,
         emitter,
@@ -97,14 +97,14 @@ void main() {
       useGoogleFonts: true,
     );
     expect(
-      generator.generate().$class,
+      generator.generateClass(),
       equalsDart(
         _expectedTextStyleThemeExtensionStringWithGoogleFonts,
         emitter,
       ),
     );
     expect(
-      generator.generate().$extension,
+      generator.generateExtension(),
       equalsDart(
         _expectedThemeExtensionBuildContextExtensionStringWithGoogleFonts,
         emitter,

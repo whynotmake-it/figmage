@@ -65,7 +65,7 @@ abstract class ModeThemeExtensionGenerator<T>
   Expression getConstructorExpression(T value);
 
   @override
-  ThemeClassGeneratorResult generate() {
+  Class generateClass() {
     final validValueMaps = valuesByNameByMode.map(
       (key, value) => MapEntry(
         switch (key) {
@@ -77,28 +77,15 @@ abstract class ModeThemeExtensionGenerator<T>
         ),
       ),
     );
-    final validClassName = convertToValidClassName(className);
-    final $class = _getClass(
-      valueMaps: validValueMaps,
-      className: validClassName,
-      lerpReference: lerpReference,
-    );
 
-    final $extension = _getBuildContextExtension(
-      className: validClassName,
-      nullable: buildContextExtensionNullable,
-    );
-
-    return ($class: $class, $extension: $extension);
+    return _getClass(valueMaps: validValueMaps);
   }
 
-  Extension _getBuildContextExtension({
-    required String className,
-    required bool nullable,
-  }) {
+  @override
+  Extension generateExtension() {
     final extensionName = '${className}BuildContextX';
-    final bodySuffix = nullable ? '' : '!';
-    final returnTypeSuffix = nullable ? '?' : '';
+    final bodySuffix = buildContextExtensionNullable ? '' : '!';
+    final returnTypeSuffix = buildContextExtensionNullable ? '?' : '';
     final methodName = convertToValidVariableName(className);
 
     return Extension(
@@ -120,9 +107,7 @@ abstract class ModeThemeExtensionGenerator<T>
   }
 
   Class _getClass({
-    required String className,
     required Map<String, Map<String, T>> valueMaps,
-    required Reference? lerpReference,
   }) {
     final parameterNames = valueMaps.values.first.keys.toList();
     return Class(

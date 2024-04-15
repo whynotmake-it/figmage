@@ -21,14 +21,14 @@ void main() {
       },
     );
     expect(
-      generator.generate().$class,
+      generator.generateClass(),
       equalsDart(
         _expectedNumberExtensionClassString,
         emitter,
       ),
     );
     expect(
-      generator.generate().$extension,
+      generator.generateExtension(),
       equalsDart(
         _expectedNumberExtensionBuildContextExtensionString,
         emitter,
@@ -46,14 +46,14 @@ void main() {
       buildContextExtensionNullable: true,
     );
     expect(
-      generator.generate().$class,
+      generator.generateClass(),
       equalsDart(
         _expectedNullableNumberExtensionClassString,
         emitter,
       ),
     );
     expect(
-      generator.generate().$extension,
+      generator.generateExtension(),
       equalsDart(
         _expectedNullableNumberExtensionBuildContextExtensionString,
         emitter,

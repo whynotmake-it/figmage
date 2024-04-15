@@ -53,8 +53,8 @@ abstract class ReferenceThemeClassGenerator implements ThemeClassGenerator {
   });
 
   @override
-  ThemeClassGeneratorResult generate() {
-    final $class = Class(
+  Class generateClass() {
+    return Class(
       (c) => c
         ..name = className
         ..annotations.add(
@@ -75,8 +75,33 @@ abstract class ReferenceThemeClassGenerator implements ThemeClassGenerator {
           ],
         ),
     );
+  }
 
-    return ($class: $class, $extension: getBuildContextExtension());
+  @override
+  Extension generateExtension() {
+    final methodName = convertToValidVariableName(className);
+
+    final extensionName = '${className}BuildContextX';
+
+    final returnTypeSuffix = buildContextExtensionNullable ? '?' : '';
+    final bodyString = buildContextExtensionNullable
+        ? '$_fieldName == null ? null : $className($_fieldName!)'
+        : '$className($_fieldName)';
+    return Extension(
+      (e) => e
+        ..name = extensionName
+        ..on = refer('BuildContext')
+        ..methods.add(
+          Method(
+            (m) => m
+              ..name = methodName
+              ..returns = refer('$className$returnTypeSuffix')
+              ..type = MethodType.getter
+              ..lambda = true
+              ..body = Code(bodyString),
+          ),
+        ),
+    );
   }
 
   /// Builds the constructor for the generated class.
@@ -103,35 +128,6 @@ abstract class ReferenceThemeClassGenerator implements ThemeClassGenerator {
         ..modifier = FieldModifier.final$
         ..name = _fieldName
         ..type = fromClass,
-    );
-  }
-
-  /// Generates a build context extension for this class by getting the
-  /// [fromClass] using its `BuildContext` extension.
-  @visibleForTesting
-  Extension getBuildContextExtension() {
-    final methodName = convertToValidVariableName(className);
-
-    final extensionName = '${className}BuildContextX';
-
-    final returnTypeSuffix = buildContextExtensionNullable ? '?' : '';
-    final bodyString = buildContextExtensionNullable
-        ? '$_fieldName == null ? null : $className($_fieldName!)'
-        : '$className($_fieldName)';
-    return Extension(
-      (e) => e
-        ..name = extensionName
-        ..on = refer('BuildContext')
-        ..methods.add(
-          Method(
-            (m) => m
-              ..name = methodName
-              ..returns = refer('$className$returnTypeSuffix')
-              ..type = MethodType.getter
-              ..lambda = true
-              ..body = Code(bodyString),
-          ),
-        ),
     );
   }
 }

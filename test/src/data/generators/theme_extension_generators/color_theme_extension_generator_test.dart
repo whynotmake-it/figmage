@@ -20,14 +20,14 @@ void main() {
       },
     );
     expect(
-      generator.generate().$class,
+      generator.generateClass(),
       equalsDart(
         _expectedColorThemeExtensionClassString,
         emitter,
       ),
     );
     expect(
-      generator.generate().$extension,
+      generator.generateExtension(),
       equalsDart(_expectedColorThemeExtensionBuildContextExtensionString),
     );
   });
@@ -41,14 +41,14 @@ void main() {
       buildContextExtensionNullable: true,
     );
     expect(
-      generator.generate().$class,
+      generator.generateClass(),
       equalsDart(
         _expectedNullableColorThemeExtensionClassString,
         emitter,
       ),
     );
     expect(
-      generator.generate().$extension,
+      generator.generateExtension(),
       equalsDart(
         _expectedNullableColorThemeExtensionBuildContextExtensionString,
       ),
@@ -64,7 +64,7 @@ void main() {
       buildContextExtensionNullable: true,
     );
     expect(
-      generator.generate().$class,
+      generator.generateClass(),
       equalsDart(
         _expectedSingleModeOutputString,
         emitter,

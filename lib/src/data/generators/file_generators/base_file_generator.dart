@@ -14,7 +14,7 @@ import 'package:meta/meta.dart';
 /// {@endtemplate}
 abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
   /// {@macro base_file_generator}
-  const BaseFileGenerator({
+  BaseFileGenerator({
     required this.type,
     required this.tokens,
   });
@@ -26,16 +26,7 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
   final Iterable<DesignToken<T>> tokens;
 
   @override
-  Iterable<ThemeClassGenerator> get generators sync* {
-    final groupedTokens =
-        groupBy(tokens, (DesignToken dt) => dt.collectionName);
-    for (final MapEntry(key: collectionName, :value) in groupedTokens.entries) {
-      yield buildGeneratorForCollection(
-        collectionName: collectionName,
-        collectionTokens: value,
-      );
-    }
-  }
+  late Iterable<ThemeClassGenerator> generators = _generators;
 
   /// Get the class name for a collection name of design tokens for the [type]
   /// of this generator.
@@ -71,4 +62,15 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
     required String collectionName,
     required Iterable<DesignToken<T>> collectionTokens,
   });
+
+  Iterable<ThemeClassGenerator> get _generators sync* {
+    final groupedTokens =
+        groupBy(tokens, (DesignToken dt) => dt.collectionName);
+    for (final MapEntry(key: collectionName, :value) in groupedTokens.entries) {
+      yield buildGeneratorForCollection(
+        collectionName: collectionName,
+        collectionTokens: value,
+      );
+    }
+  }
 }

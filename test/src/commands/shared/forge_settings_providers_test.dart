@@ -6,6 +6,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
+import '../../../test_util/create_container.dart';
+
 class _MockArgResults extends Mock implements ArgResults {}
 
 void main() {
@@ -15,7 +17,7 @@ void main() {
 
     late _MockArgResults argResults;
     setUp(() {
-      container = ProviderContainer(
+      container = createContainer(
         overrides: [
           configProvider.overrideWith((ref, _) => config),
         ],
@@ -25,10 +27,6 @@ void main() {
       when(() => argResults['token']).thenReturn("arg_token");
       when(() => argResults['fileId']).thenReturn("arg_fileId");
       when(() => argResults['path']).thenReturn("arg_path");
-    });
-
-    tearDown(() {
-      container.dispose();
     });
 
     group('settingsProvider', () {

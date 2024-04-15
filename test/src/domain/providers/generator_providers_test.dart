@@ -18,6 +18,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
+import '../../../test_util/create_container.dart';
 import '../../../test_util/mock/mock_styles.dart';
 import '../../../test_util/mock/mock_variables.dart';
 
@@ -56,7 +57,7 @@ void main() {
           File("lib/src/${type.filename}"),
       ];
 
-      container = ProviderContainer(
+      container = createContainer(
         overrides: [
           loggerProvider.overrideWith((ref) => logger),
           filteredTokensProvider
@@ -71,9 +72,6 @@ void main() {
         token: "token",
         config: const Config(),
       );
-    });
-    tearDown(() {
-      container.dispose();
     });
 
     test('All types, 2 ColorThemeGenerators since 2 collections', () async {

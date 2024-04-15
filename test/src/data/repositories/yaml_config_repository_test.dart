@@ -9,6 +9,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
+import '../../../test_util/create_container.dart';
+
 class _MockFile extends Mock implements File {}
 
 class _MockLogger extends Mock implements Logger {}
@@ -23,7 +25,7 @@ void main() {
       late YamlConfigRepository sut;
       setUp(() {
         logger = _MockLogger();
-        container = ProviderContainer(
+        container = createContainer(
           overrides: [loggerProvider.overrideWith((ref) => logger)],
         );
         sut = container.read(configRepositoryProvider) as YamlConfigRepository;
@@ -39,10 +41,6 @@ void main() {
         when(() => logger.info(any())).thenReturn(null);
         when(() => logger.detail(any())).thenReturn(null);
         when(() => logger.warn(any())).thenReturn(null);
-      });
-
-      tearDown(() {
-        container.dispose();
       });
 
       test('defaults to ./figmage.yaml and logs path', () async {

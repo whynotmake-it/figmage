@@ -42,7 +42,7 @@ abstract interface class ThemeClassGenerator {
 ///
 /// Generates the ThemeExtension class, constants for all values, as well as
 /// a `BuildContext` extension.
-abstract interface class ThemeExtensionGenerator<T>
+abstract interface class ThemeExtensionGenerator
     implements ThemeClassGenerator {
   /// A [Reference] to the symbol (e.g., Color, TextStyle) used in the theme
   /// extension.

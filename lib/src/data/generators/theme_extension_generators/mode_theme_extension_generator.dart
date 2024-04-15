@@ -29,7 +29,7 @@ import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 /// ```
 /// {@endtemplate}
 abstract class ModeThemeExtensionGenerator<T>
-    implements ThemeExtensionGenerator<T> {
+    implements ThemeExtensionGenerator {
   /// {@macro theme_extension_generator}
   ModeThemeExtensionGenerator({
     required this.className,

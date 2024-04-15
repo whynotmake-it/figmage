@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:figmage/src/data/generators/theme_extension_generators/color_theme_extension_generator.dart';
 import 'package:figmage/src/data/generators/theme_extension_generators/number_theme_extension_generator.dart';
-import 'package:figmage/src/data/generators/padding_generator.dart';
-import 'package:figmage/src/data/generators/spacer_generator.dart';
+import 'package:figmage/src/data/generators/reference_generators/padding_generator.dart';
+import 'package:figmage/src/data/generators/reference_generators/spacer_generator.dart';
 import 'package:figmage/src/data/generators/theme_extension_generators/text_style_theme_extension_generator.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
@@ -78,7 +78,7 @@ void main() {
 
     test('All types, 2 ColorThemeGenerators since 2 collections', () async {
       final result = await container.read(generatorsProvider(settings).future);
-      expect(result, hasLength(8));
+      expect(result, hasLength(5));
       expect(
         result.values.expand((generators) => generators),
         containsAll([

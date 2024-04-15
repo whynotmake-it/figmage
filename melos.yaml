@@ -56,3 +56,17 @@ scripts:
   coverage:
     run: melos run coverage:select --no-select
     description: Generate coverage for all packages.
+
+  generate:select:
+    description: Generate code for selected packages.
+    run: dart run build_runner build --delete-conflicting-outputs
+    exec:
+      concurrency: 1
+      failFast: true
+    packageFilters:
+      dependsOn:
+        - build_runner
+  
+  generate:
+    description: Generate code for all packages.
+    run: melos run generate:select --no-select

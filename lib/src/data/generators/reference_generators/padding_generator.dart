@@ -18,7 +18,7 @@ class PaddingGenerator extends ReferenceThemeClassGenerator {
       refer('EdgeInsets', 'package:flutter/painting.dart');
 
   @override
-  List<Method> buildGettersForFromClassField({
+  List<Method> buildGetters({
     required String fromClassField,
     required String valueFieldName,
   }) {

@@ -42,12 +42,12 @@ abstract class ReferenceThemeClassGenerator implements ThemeClassGenerator {
   /// from each of the fields in [fromClass].
   ///
   /// The [fromClassField] will be the reference to the field in the generated
-  /// class that references [fromClass], and [valueFieldName] will be the name of the
-  /// field in [fromClass] that the getter will return.
+  /// class that references [fromClass], and [valueFieldName] will be the name
+  /// of the field in [fromClass] that the getter will return.
   ///
   /// Thus, to access the value of interest, the returned getters should call
   /// `fromClassField.fieldName`.
-  List<Method> buildGettersForFromClassField({
+  List<Method> buildGetters({
     required String fromClassField,
     required String valueFieldName,
   });
@@ -68,7 +68,7 @@ abstract class ReferenceThemeClassGenerator implements ThemeClassGenerator {
         ..methods.addAll(
           [
             for (final name in _valueNames)
-              ...buildGettersForFromClassField(
+              ...buildGetters(
                 fromClassField: _fieldName,
                 valueFieldName: name,
               ),

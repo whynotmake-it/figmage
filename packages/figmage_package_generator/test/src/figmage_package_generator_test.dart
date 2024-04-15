@@ -44,7 +44,7 @@ void main() {
         final files = await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
-          description: "A test ",
+          description: "A test",
         );
         expect(
           files,
@@ -56,7 +56,7 @@ void main() {
         await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
-          description: "A test ",
+          description: "A test",
         );
 
         verify(
@@ -71,7 +71,7 @@ void main() {
         await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
-          description: "A test ",
+          description: "A test",
         );
 
         final content = verify(
@@ -91,7 +91,7 @@ void main() {
         await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
-          description: "A test ",
+          description: "A test",
         );
 
         final content = verify(
@@ -111,7 +111,7 @@ void main() {
         await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
-          description: "A test ",
+          description: "A test",
           useGoogleFonts: false,
         );
 
@@ -131,7 +131,7 @@ void main() {
         await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
-          description: "A test ",
+          description: "A test",
         );
 
         verify(
@@ -142,73 +142,176 @@ void main() {
         ).called(1);
       });
 
-      test('generates all extra type files by default', () async {
-        final files = await sut.generate(
-          projectName: "figmage_example",
-          dir: testDirectory,
-          description: "A test ",
-        );
-        for (final type in TokenFileType.values) {
-          expect(
-            files,
-            contains(
-              isA<File>().having(
-                (f) => f.path,
-                "path",
-                contains("lib/src/${type.filename}"),
-              ),
-            ),
-            reason: "Expected to find ${type.filename} in generated files",
+      group("with all file types", () {
+        late Iterable<File> files;
+        setUp(() async {
+          files = await sut.generate(
+            projectName: "figmage_example",
+            dir: testDirectory,
+            description: "A test",
           );
-        }
-      });
-
-      test('generated type files are generated empty', () async {
-        await sut.generate(
-          projectName: "figmage_example",
-          dir: testDirectory,
-          description: "A test ",
-        );
-        for (final type in TokenFileType.values) {
-          verify(
-            () => generatorTarget.createFile(
-              any(that: contains(type.filename)),
-              any(that: isEmpty),
-            ),
-          );
-        }
-      });
-
-      test('generates no extra type files if unwanted', () async {
-        final files = await sut.generate(
-          projectName: "figmage_example",
-          dir: testDirectory,
-          description: "A test ",
-          generateColors: false,
-          generateTypography: false,
-          generateNumbers: false,
-          generateSpacers: false,
-          generatePaddings: false,
-          generateRadii: false,
-          generateStrings: false,
-          generateBools: false,
-        );
-        for (final type in TokenFileType.values) {
-          expect(
-            files,
-            isNot(
+        });
+        test('generates all extra type files by default', () async {
+          for (final type in TokenFileType.values) {
+            expect(
+              files,
               contains(
                 isA<File>().having(
                   (f) => f.path,
                   "path",
-                  contains(type.filename),
+                  contains("lib/src/${type.filename}"),
                 ),
               ),
+              reason: "Expected to find ${type.filename} in generated files",
+            );
+          }
+        });
+        test('all generated type files are in export', () {
+          final content = verify(
+            () => generatorTarget.createFile(
+              any(that: contains("figmage_example.dart")),
+              captureAny(),
             ),
-            reason: "Expected not to find ${type.filename} in generated files",
+          ).captured.first as List<int>;
+          final decoded = utf8.decode(content);
+
+          expect(
+            decoded,
+            equals(_expectedFullLibraryFile),
           );
-        }
+        });
+
+        test('generated type files are generated empty', () async {
+          for (final type in TokenFileType.values) {
+            verify(
+              () => generatorTarget.createFile(
+                any(that: contains(type.filename)),
+                any(that: isEmpty),
+              ),
+            );
+          }
+        });
       });
+
+      group('with no file types', () {
+        late Iterable<File> files;
+        setUp(() async {
+          files = await sut.generate(
+            projectName: "figmage_example",
+            dir: testDirectory,
+            description: "A test",
+            generateColors: false,
+            generateTypography: false,
+            generateNumbers: false,
+            generateSpacers: false,
+            generatePaddings: false,
+            generateRadii: false,
+            generateStrings: false,
+            generateBools: false,
+          );
+        });
+
+        test('generates none of the files', () async {
+          for (final type in TokenFileType.values) {
+            expect(
+              files,
+              isNot(
+                contains(
+                  isA<File>().having(
+                    (f) => f.path,
+                    "path",
+                    contains(type.filename),
+                  ),
+                ),
+              ),
+              reason:
+                  "Expected not to find ${type.filename} in generated files",
+            );
+          }
+        });
+
+        test('none of the generated files are in export', () {
+          final content = verify(
+            () => generatorTarget.createFile(
+              any(that: contains("figmage_example.dart")),
+              captureAny(),
+            ),
+          ).captured.first as List<int>;
+          final decoded = utf8.decode(content);
+
+          expect(
+            decoded,
+            equals(_expectedEmptyLibraryFile),
+          );
+        });
+      });
+
+      group('with mixed (#38)', () {
+        // ignore: unused_local_variable
+        late Iterable<File> files;
+        setUp(() async {
+          files = await sut.generate(
+            projectName: "figmage_example",
+            dir: testDirectory,
+            description: "A test",
+            generateNumbers: false,
+            generateSpacers: false,
+            generatePaddings: false,
+            generateRadii: false,
+            generateStrings: false,
+            generateBools: false,
+          );
+        });
+
+        test('generates only the files that are not disabled', () async {
+          verify(
+            () => generatorTarget.createFile(
+              any(that: contains("lib/src/colors.dart")),
+              any(that: isEmpty),
+            ),
+          ).called(1);
+          verify(
+            () => generatorTarget.createFile(
+              any(that: contains("lib/src/typography.dart")),
+              any(that: isEmpty),
+            ),
+          ).called(1);
+          verifyNever(
+            () => generatorTarget.createFile(
+              any(that: contains("lib/src/numbers.dart")),
+              any(),
+            ),
+          );
+          verifyNever(
+            () => generatorTarget.createFile(
+              any(that: contains("lib/src/bools.dart")),
+              any(),
+            ),
+          );
+          verifyNever(
+            () => generatorTarget.createFile(
+              any(that: contains("lib/src/numbers.dart")),
+              any(),
+            ),
+          );
+        });
+
+        test('only the generated files are in export', () {
+          final content = verify(
+            () => generatorTarget.createFile(
+              any(that: contains("figmage_example.dart")),
+              captureAny(),
+            ),
+          ).captured.first as List<int>;
+          final decoded = utf8.decode(content);
+
+          expect(
+            decoded,
+            equals(_expectedMixedLibraryFile),
+          );
+        });
+      });
+
       test('throws if package URI could not be resolved', () async {
         sut = FigmagePackageGenerator(
           generatorTargetFactory: (_) => _MockGeneratorTarget(),
@@ -218,7 +321,7 @@ void main() {
           () => sut.generate(
             projectName: "figmage_example",
             dir: testDirectory,
-            description: "A test ",
+            description: "A test",
           ),
           throwsA(
             isA<PackageUriException>()
@@ -238,3 +341,45 @@ void main() {
     });
   });
 }
+
+const _expectedFullLibraryFile = '''
+/// A test
+library figmage_example;
+
+export 'src/bools.dart';
+export 'src/colors.dart';
+export 'src/numbers.dart';
+export 'src/paddings.dart';
+export 'src/radii.dart';
+export 'src/spacers.dart';
+export 'src/strings.dart';
+export 'src/typography.dart';
+''';
+
+const _expectedEmptyLibraryFile = '''
+/// A test
+library figmage_example;
+
+
+
+
+
+
+
+
+
+''';
+
+const _expectedMixedLibraryFile = '''
+/// A test
+library figmage_example;
+
+
+export 'src/colors.dart';
+
+
+
+
+
+export 'src/typography.dart';
+''';

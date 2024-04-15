@@ -39,6 +39,7 @@ import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/figmage_package_generator_providers.dart';
 import 'package:figmage/src/domain/providers/file_writer_providers.dart';
 import 'package:figmage/src/domain/providers/generator_providers.dart';
+import 'package:figmage/src/domain/providers/library_provider.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/providers/post_generation_providers.dart';
 import 'package:figmage/src/domain/providers/pub_updater_providers.dart';

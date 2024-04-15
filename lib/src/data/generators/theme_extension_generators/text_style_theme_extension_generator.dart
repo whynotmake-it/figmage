@@ -1,5 +1,5 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:figmage/src/data/generators/theme_extension_generators/values_by_mode_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/mode_theme_extension_generator.dart';
 import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:meta/meta.dart' show visibleForTesting;
 
@@ -9,11 +9,11 @@ const _textStyleReference = Reference(
 );
 
 /// {@template text_style_theme_extension_generator}
-/// A [ValuesByModeThemeExtensionGenerator] for text style themes from
+/// A [ModeThemeExtensionGenerator] for text style themes from
 /// [Typography] data.
 /// {@endtemplate}
 class TextStyleThemeExtensionGenerator
-    extends ValuesByModeThemeExtensionGenerator<Typography> {
+    extends ModeThemeExtensionGenerator<Typography> {
   /// {@macro text_style_theme_extension_generator}
   TextStyleThemeExtensionGenerator({
     required super.className,

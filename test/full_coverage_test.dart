@@ -15,7 +15,7 @@ import 'package:figmage/src/data/generators/padding_generator.dart';
 import 'package:figmage/src/data/generators/spacer_generator.dart';
 import 'package:figmage/src/data/generators/theme_extension_generators/text_style_theme_extension_generator.dart';
 import 'package:figmage/src/data/generators/value_names_theme_class_generator.dart';
-import 'package:figmage/src/data/generators/theme_extension_generators/values_by_mode_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/mode_theme_extension_generator.dart';
 import 'package:figmage/src/data/repositories/dart_code_file_writer_repository.dart';
 import 'package:figmage/src/data/repositories/dart_post_generation_repository.dart';
 import 'package:figmage/src/data/repositories/figma_styles_repository.dart';

@@ -1,5 +1,5 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:figmage/src/data/generators/theme_extension_generators/values_by_mode_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/mode_theme_extension_generator.dart';
 
 const _colorReference = Reference(
   'Color',
@@ -7,10 +7,9 @@ const _colorReference = Reference(
 );
 
 /// {@template color_theme_extension_generator}
-/// A [ValuesByModeThemeExtensionGenerator] for color themes from integers.
+/// A [ModeThemeExtensionGenerator] for color themes from integers.
 /// {@endtemplate}
-class ColorThemeExtensionGenerator
-    extends ValuesByModeThemeExtensionGenerator<int> {
+class ColorThemeExtensionGenerator extends ModeThemeExtensionGenerator<int> {
   /// {@macro color_theme_extension_generator}
   ColorThemeExtensionGenerator({
     required super.className,

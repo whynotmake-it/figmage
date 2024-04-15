@@ -1,11 +1,11 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:figmage/src/data/generators/theme_extension_generators/values_by_mode_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/mode_theme_extension_generator.dart';
 
 /// {@template number_theme_extension_generator}
-/// A [ValuesByModeThemeExtensionGenerator] for numbers from doubles.
+/// A [ModeThemeExtensionGenerator] for numbers from doubles.
 /// {@endtemplate}
 class NumberThemeExtensionGenerator
-    extends ValuesByModeThemeExtensionGenerator<double> {
+    extends ModeThemeExtensionGenerator<double> {
   /// {@macro number_theme_extension_generator}
   NumberThemeExtensionGenerator({
     required super.className,

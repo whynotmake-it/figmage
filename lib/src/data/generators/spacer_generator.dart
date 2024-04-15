@@ -3,11 +3,11 @@ import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/data/generators/value_names_theme_class_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 
-///{@template space_generator}
+///{@template spacer_generator}
 ///A generator for a spacer class.
 ///{@endtemplate}
 class SpacerGenerator implements ValueNamesThemeClassGenerator {
-  ///{@macro space_generator_template}
+  ///{@macro spacer_generator}
   SpacerGenerator({
     required this.className,
     required this.numberReference,
@@ -24,10 +24,10 @@ class SpacerGenerator implements ValueNamesThemeClassGenerator {
   @override
   bool buildContextExtensionNullable;
 
-  ///The [Reference] for the class which is providing values for the spacers
+  /// The [Reference] for the class which is providing values for the spacers
   final Reference numberReference;
 
-  ///The names of the values
+  /// The names of the values
   @override
   final Iterable<String> valueNames;
 

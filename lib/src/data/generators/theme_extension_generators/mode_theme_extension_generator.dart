@@ -8,7 +8,7 @@ import 'package:figmage/src/domain/generators/theme_extension_generator.dart';
 /// {@template theme_extension_generator}
 /// A generator for theme extension classes.
 ///
-/// The [ValuesByModeThemeExtensionGenerator] class is designed to create theme
+/// The [ModeThemeExtensionGenerator] class is designed to create theme
 /// extension classes based on provided parameters. It assumes that you might
 /// need your themes in different modes (e.g. light and dark mode for color
 /// theme).
@@ -29,10 +29,10 @@ import 'package:figmage/src/domain/generators/theme_extension_generator.dart';
 /// );
 /// ```
 /// {@endtemplate}
-abstract class ValuesByModeThemeExtensionGenerator<T>
+abstract class ModeThemeExtensionGenerator<T>
     implements ThemeExtensionGenerator<T> {
   /// {@macro theme_extension_generator}
-  ValuesByModeThemeExtensionGenerator({
+  ModeThemeExtensionGenerator({
     required this.className,
     required this.valuesByNameByMode,
     required this.symbolReference,

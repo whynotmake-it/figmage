@@ -16,7 +16,7 @@ class SpacerGenerator extends ReferenceThemeClassGenerator {
   final _sizedBoxReference = refer('SizedBox', 'package:flutter/widgets.dart');
 
   @override
-  List<Method> buildGettersForFromClassField({
+  List<Method> buildGetters({
     required String fromClassField,
     required String valueFieldName,
   }) {

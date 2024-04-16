@@ -32,7 +32,7 @@ abstract class ReferenceThemeClassGenerator implements ThemeClassGenerator {
   final List<String> valueFields;
 
   /// The name of the field in the generated class that holds the reference to
-  /// the fr.
+  /// the class that this generator class will be referencing.
   String get _fieldName => convertToValidVariableName(fromClass.symbol!);
 
   List<String> get _valueNames =>

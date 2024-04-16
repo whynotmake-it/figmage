@@ -1,8 +1,8 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:figmage/src/data/generators/spacer_generator.dart';
+import 'package:figmage/src/data/generators/reference_generators/spacer_generator.dart';
 import 'package:test/test.dart';
 
-import 'common.dart';
+import '../common.dart';
 
 void main() {
   useDartfmt();
@@ -13,9 +13,9 @@ void main() {
   );
   test('Should create a Spacer class and BuildContextExtension', () async {
     final generator = SpacerGenerator(
-      className: 'Web',
-      numberReference: const Reference('MyNumbers'),
-      valueNames: ['s', 'm', 'l'],
+      className: 'WebSpacer',
+      fromClass: const Reference('MyNumbers'),
+      valueFields: ['s', 'm', 'l'],
     );
     expect(
       generator.generate().$class,
@@ -34,9 +34,9 @@ void main() {
   });
   test('Should create a class and nullable BuildContext extension', () async {
     final generator = SpacerGenerator(
-      className: 'Web',
-      numberReference: const Reference('MyNumbers'),
-      valueNames: ['s', 'm', 'l'],
+      className: 'WebSpacer',
+      fromClass: const Reference('MyNumbers'),
+      valueFields: ['s', 'm', 'l'],
       buildContextExtensionNullable: true,
     );
     expect(
@@ -68,13 +68,13 @@ class WebSpacer {
 
   SizedBox get sHorizontal => SizedBox(width: myNumbers.s);
 
-  SizedBox get mHorizontal => SizedBox(width: myNumbers.m);
-
-  SizedBox get lHorizontal => SizedBox(width: myNumbers.l);
-
   SizedBox get sVertical => SizedBox(height: myNumbers.s);
 
+  SizedBox get mHorizontal => SizedBox(width: myNumbers.m);
+
   SizedBox get mVertical => SizedBox(height: myNumbers.m);
+
+  SizedBox get lHorizontal => SizedBox(width: myNumbers.l);
 
   SizedBox get lVertical => SizedBox(height: myNumbers.l);
 }
@@ -93,13 +93,13 @@ class WebSpacer {
 
   SizedBox get sHorizontal => SizedBox(width: myNumbers.s);
 
-  SizedBox get mHorizontal => SizedBox(width: myNumbers.m);
-
-  SizedBox get lHorizontal => SizedBox(width: myNumbers.l);
-
   SizedBox get sVertical => SizedBox(height: myNumbers.s);
 
+  SizedBox get mHorizontal => SizedBox(width: myNumbers.m);
+
   SizedBox get mVertical => SizedBox(height: myNumbers.m);
+
+  SizedBox get lHorizontal => SizedBox(width: myNumbers.l);
 
   SizedBox get lVertical => SizedBox(height: myNumbers.l);
 }

@@ -1,9 +1,9 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:figmage/src/data/generators/text_style_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/text_style_theme_extension_generator.dart';
 import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:test/test.dart';
 
-import 'common.dart';
+import '../common.dart';
 
 void main() {
   useDartfmt();

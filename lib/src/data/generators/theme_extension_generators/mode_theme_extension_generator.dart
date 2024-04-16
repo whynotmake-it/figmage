@@ -3,12 +3,11 @@ import 'dart:core';
 import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
-import 'package:figmage/src/domain/generators/theme_extension_generator.dart';
 
 /// {@template theme_extension_generator}
 /// A generator for theme extension classes.
 ///
-/// The [ValuesByModeThemeExtensionGenerator] class is designed to create theme
+/// The [ModeThemeExtensionGenerator] class is designed to create theme
 /// extension classes based on provided parameters. It assumes that you might
 /// need your themes in different modes (e.g. light and dark mode for color
 /// theme).
@@ -29,19 +28,18 @@ import 'package:figmage/src/domain/generators/theme_extension_generator.dart';
 /// );
 /// ```
 /// {@endtemplate}
-abstract class ValuesByModeThemeExtensionGenerator<T>
-    implements ThemeExtensionGenerator<T> {
+abstract class ModeThemeExtensionGenerator<T>
+    implements ThemeExtensionGenerator {
   /// {@macro theme_extension_generator}
-  ValuesByModeThemeExtensionGenerator({
-    required this.className,
+  ModeThemeExtensionGenerator({
+    required String className,
     required this.valuesByNameByMode,
     required this.symbolReference,
     this.buildContextExtensionNullable = false,
     this.lerpReference,
-  }) : assert(
-          ensureSameKeys(
-            valuesByNameByMode.values.toList(),
-          ),
+  })  : className = convertToValidClassName(className),
+        assert(
+          ensureSameKeys(valuesByNameByMode.values.toList()),
           'All value maps must have the same keys.',
         );
 
@@ -64,17 +62,7 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
 
   /// Converts a value to the constructor expression
   /// that initializes the extension symbol.
-  /// Is implemented for built in literal types like double, int, num, String or
-  /// bool but has to be implemented for custom types.
-  Expression getConstructorExpression(T value) {
-    if (symbolReference.isDartLiteralType) {
-      return literal(value);
-    } else {
-      throw UnimplementedError(
-        "Not implemented for type ${symbolReference.symbol}",
-      );
-    }
-  }
+  Expression getConstructorExpression(T value);
 
   @override
   ThemeClassGeneratorResult generate() {
@@ -136,8 +124,6 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
     required Map<String, Map<String, T>> valueMaps,
     required Reference? lerpReference,
   }) {
-    final nullableSymbolReference = symbolReference.toNullable;
-
     final parameterNames = valueMaps.values.first.keys.toList();
     return Class(
       (c) => c
@@ -155,14 +141,14 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
         ..fields.addAll(
           _getClassFields(
             nameList: parameterNames,
-            nullableSymbolReference: nullableSymbolReference,
+            nullableSymbolReference: symbolReference.toNullable,
           ),
         )
         ..methods.addAll([
           _getCopyWith(
             parameterNames: parameterNames,
             className: className,
-            nullableSymbolReference: nullableSymbolReference,
+            symbolReference: symbolReference,
           ),
           _getLerp(
             parameterNames: parameterNames,
@@ -230,7 +216,7 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
   Method _getCopyWith({
     required List<String> parameterNames,
     required String className,
-    required Reference nullableSymbolReference,
+    required Reference symbolReference,
   }) {
     return Method(
       (method) => method
@@ -242,7 +228,7 @@ abstract class ValuesByModeThemeExtensionGenerator<T>
             (index) => Parameter(
               (p) => p
                 ..name = parameterNames[index]
-                ..type = nullableSymbolReference,
+                ..type = symbolReference.toNullable,
             ),
           ),
         )
@@ -333,18 +319,6 @@ extension _ReferenceX on Reference {
       },
       url,
     );
-  }
-
-  bool get isDartLiteralType {
-    final type = symbol;
-    const dartCoreLiteralTypes = <String>{
-      'int',
-      'double',
-      'num',
-      'bool',
-      'String',
-    };
-    return dartCoreLiteralTypes.contains(type);
   }
 }
 

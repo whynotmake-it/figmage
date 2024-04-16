@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:code_builder/code_builder.dart';
 import 'package:collection/collection.dart';
-import 'package:figmage/src/data/generators/color_theme_extension_generator.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
-import 'package:figmage/src/data/generators/number_theme_extension_generator.dart';
-import 'package:figmage/src/data/generators/padding_generator.dart';
-import 'package:figmage/src/data/generators/spacer_generator.dart';
-import 'package:figmage/src/data/generators/text_style_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/reference_generators/padding_generator.dart';
+import 'package:figmage/src/data/generators/reference_generators/spacer_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/color_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/number_theme_extension_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/text_style_theme_extension_generator.dart';
 import 'package:figmage/src/data/util/converters/string_dart_conversion_x.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
@@ -66,9 +66,7 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
     generators.addAll(
       groupedTokens.entries.map(
         (tokensEntry) => ColorThemeExtensionGenerator(
-          className: convertToValidClassName(
-            "${type.className}${tokensEntry.key.toTitleCase()}",
-          ),
+          className: "${type.className}${tokensEntry.key.toTitleCase()}",
           valuesByNameByMode: tokensEntry.value.valuesByNameByMode,
         ),
       ),
@@ -82,9 +80,7 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
     generators.addAll(
       groupedTokens.entries.map(
         (tokensEntry) => TextStyleThemeExtensionGenerator(
-          className: convertToValidClassName(
-            "${type.className}${tokensEntry.key.toTitleCase()}",
-          ),
+          className: "${type.className}${tokensEntry.key.toTitleCase()}",
           valuesByNameByMode: tokensEntry.value.valuesByNameByMode,
           useGoogleFonts: settings.config.typography.useGoogleFonts,
         ),
@@ -97,9 +93,7 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
     generators.addAll(
       groupedTokens.entries.map(
         (tokensEntry) => NumberThemeExtensionGenerator(
-          className: convertToValidClassName(
-            "${type.className}${tokensEntry.key.toTitleCase()}",
-          ),
+          className: "${type.className}${tokensEntry.key.toTitleCase()}",
           valuesByNameByMode: tokensEntry.value.valuesByNameByMode,
         ),
       ),
@@ -110,17 +104,15 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
     generators.addAll(
       groupedTokens.entries.map(
         (tokensEntry) => SpacerGenerator(
-          className: convertToValidClassName(
-            "${type.className}${tokensEntry.key.toTitleCase()}",
-          ),
-          numberReference: refer(
+          className: "${type.className}${tokensEntry.key.toTitleCase()}Spacers",
+          fromClass: refer(
             convertToValidClassName(
               "${TokenFileType.numbers.className}"
               "${tokensEntry.key.toTitleCase()}",
             ),
             TokenFileType.numbers.filename,
           ),
-          valueNames: tokensEntry.value.map((t) => t.name),
+          valueFields: tokensEntry.value.map((t) => t.name).toList(),
         ),
       ),
     );
@@ -131,25 +123,19 @@ Iterable<ThemeClassGenerator> _createGeneratorsByFile({
       groupedTokens.entries.map(
         (tokensEntry) => PaddingGenerator(
           className: convertToValidClassName(
-            "${type.className}${tokensEntry.key.toTitleCase()}",
+            "${type.className}${tokensEntry.key.toTitleCase()}Paddings",
           ),
-          numberReference: refer(
+          fromClass: refer(
             convertToValidClassName(
               "${TokenFileType.numbers.className}"
               "${tokensEntry.key.toTitleCase()}",
             ),
             TokenFileType.numbers.filename,
           ),
-          valueNames: tokensEntry.value.map((t) => t.name),
+          valueFields: tokensEntry.value.map((t) => t.name).toList(),
         ),
       ),
     );
-  } else if (type == TokenFileType.radii) {
-    // TODO(JsprBllnbm): implement
-  } else if (type == TokenFileType.strings) {
-    // TODO(JsprBllnbm): implement
-  } else if (type == TokenFileType.bools) {
-    // TODO(JsprBllnbm): implement
   }
 
   return generators;

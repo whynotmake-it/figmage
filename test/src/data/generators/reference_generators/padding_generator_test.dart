@@ -1,8 +1,8 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:figmage/src/data/generators/padding_generator.dart';
+import 'package:figmage/src/data/generators/reference_generators/padding_generator.dart';
 import 'package:test/test.dart';
 
-import 'common.dart';
+import '../common.dart';
 
 void main() {
   useDartfmt();
@@ -13,9 +13,9 @@ void main() {
   );
   test('Should create a padding class and BuildContextExtension', () async {
     final generator = PaddingGenerator(
-      className: 'Web',
-      numberReference: const Reference('MyNumbers'),
-      valueNames: ['s', 'm', 'l'],
+      className: 'WebPadding',
+      fromClass: const Reference('MyNumbers'),
+      valueFields: ['s', 'm', 'l'],
     );
     expect(
       generator.generate().$class,
@@ -35,9 +35,9 @@ void main() {
   test('Should create a padding class and nullable BuildContextExtension',
       () async {
     final generator = PaddingGenerator(
-      className: 'Web',
-      numberReference: const Reference('MyNumbers'),
-      valueNames: ['s', 'm', 'l'],
+      className: 'WebPadding',
+      fromClass: const Reference('MyNumbers'),
+      valueFields: ['s', 'm', 'l'],
       buildContextExtensionNullable: true,
     );
     expect(

@@ -12,6 +12,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
+import '../../../test_util/create_container.dart';
+
 class _MockLogger extends Mock implements Logger {}
 
 class _MockProgress extends Mock implements Progress {}
@@ -61,7 +63,7 @@ void main() {
       figmaVariablesRepository = _MockFigmaVariablesRepository();
       figmagePackageGenerator = _MockFigmagePackageGenerator();
 
-      container = ProviderContainer(
+      container = createContainer(
         overrides: [
           loggerProvider.overrideWith((ref) => logger),
           variablesRepositoryProvider

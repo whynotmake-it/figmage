@@ -13,6 +13,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
+import '../../../test_util/create_container.dart';
 import '../../../test_util/mock/mock_variables.dart';
 
 class _MockLogger extends Mock implements Logger {}
@@ -64,12 +65,9 @@ void main() {
           ),
         ),
       ];
-      container = ProviderContainer(
+      container = createContainer(
         overrides: overrides,
       );
-    });
-    tearDown(() {
-      container.dispose();
     });
 
     test('returns success Exit Code', () async {

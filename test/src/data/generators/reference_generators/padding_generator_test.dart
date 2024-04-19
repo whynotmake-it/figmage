@@ -18,14 +18,14 @@ void main() {
       valueFields: ['s', 'm', 'l'],
     );
     expect(
-      generator.generate().$class,
+      generator.generateClass(),
       equalsDart(
         _expectedPaddingClassString,
         emitter,
       ),
     );
     expect(
-      generator.generate().$extension,
+      generator.generateExtension(),
       equalsDart(
         _expectedPaddingBuildContextExtensionString,
         emitter,
@@ -41,14 +41,14 @@ void main() {
       buildContextExtensionNullable: true,
     );
     expect(
-      generator.generate().$class,
+      generator.generateClass(),
       equalsDart(
         _expectedNullablePaddingClassString,
         emitter,
       ),
     );
     expect(
-      generator.generate().$extension,
+      generator.generateExtension(),
       equalsDart(
         _expectedNullablePaddingBuildContextExtensionString,
         emitter,

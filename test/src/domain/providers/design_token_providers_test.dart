@@ -8,6 +8,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
+import '../../../test_util/create_container.dart';
 import '../../../test_util/mock/mock_styles.dart';
 import '../../../test_util/mock/mock_variables.dart';
 
@@ -39,7 +40,7 @@ void main() {
   group("filteredTokensProvider", () {
     late ProviderContainer container;
     setUp(() {
-      container = ProviderContainer(
+      container = createContainer(
         overrides: [
           loggerProvider.overrideWith((ref) => logger),
           variablesProvider.overrideWith(
@@ -85,7 +86,7 @@ void main() {
     });
     test('throws ArgumentError if neither variables nor tokens exist',
         () async {
-      container = ProviderContainer(
+      container = createContainer(
         overrides: [
           loggerProvider.overrideWith((ref) => logger),
           variablesProvider.overrideWith(
@@ -114,7 +115,7 @@ void main() {
           token: any(named: "token"),
         ),
       ).thenAnswer((_) async => mockVariables);
-      container = ProviderContainer(
+      container = createContainer(
         overrides: [
           variablesRepositoryProvider
               .overrideWith((ref) => variablesRepository),
@@ -219,7 +220,7 @@ void main() {
           token: any(named: "token"),
         ),
       ).thenAnswer((_) async => mockStyles);
-      container = ProviderContainer(
+      container = createContainer(
         overrides: [
           stylesRepositoryProvider.overrideWith((ref) => stylesRepository),
           loggerProvider.overrideWith((ref) => logger),

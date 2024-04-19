@@ -7,6 +7,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
+import '../../../test_util/create_container.dart';
 import '../../../test_util/test_provider_listener.dart';
 
 class _MockConfigRepository extends Mock implements ConfigRepository {}
@@ -22,14 +23,11 @@ void main() {
       when(() => configRepository.readConfigFromFile(file: any(named: 'file')))
           .thenAnswer((_) async => config);
 
-      container = ProviderContainer(
+      container = createContainer(
         overrides: [
           configRepositoryProvider.overrideWith((ref) => configRepository),
         ],
       );
-    });
-    tearDown(() {
-      container.dispose();
     });
 
     test('pipes through mockRepository', () async {

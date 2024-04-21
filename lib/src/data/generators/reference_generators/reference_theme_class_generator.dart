@@ -69,7 +69,7 @@ abstract class ReferenceThemeClassGenerator<T> implements ThemeClassGenerator {
             for (final (:name, :resolvedInAllModes) in valueNames)
               ...buildGetters(
                 fromClassField: _fieldName,
-                valueFieldName: name,
+                valueFieldName: convertToValidVariableName(name),
                 isNullable: resolvedInAllModes == false,
               ),
           ],

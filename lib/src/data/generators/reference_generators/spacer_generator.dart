@@ -19,6 +19,7 @@ class SpacerGenerator extends ReferenceThemeClassGenerator {
   List<Method> buildGetters({
     required String fromClassField,
     required String valueFieldName,
+    required bool isNullable,
   }) {
     return [
       Method(

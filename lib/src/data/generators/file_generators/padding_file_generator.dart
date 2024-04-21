@@ -4,6 +4,7 @@ import 'package:figmage/src/data/generators/reference_generators/padding_generat
 import 'package:figmage/src/domain/generators/file_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
+import 'package:figmage/src/domain/util/token_filter_x.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 
 /// {@template padding_file_generator}
@@ -31,7 +32,7 @@ class PaddingFileGenerator extends BaseFileGenerator<double> {
         ),
         TokenFileType.numbers.filename,
       ),
-      valueFields: collectionTokens.map((e) => e.name).toList(),
+      valueFields: collectionTokens.valueNames,
     );
   }
 }

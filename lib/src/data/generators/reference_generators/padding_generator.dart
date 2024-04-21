@@ -21,6 +21,7 @@ class PaddingGenerator extends ReferenceThemeClassGenerator {
   List<Method> buildGetters({
     required String fromClassField,
     required String valueFieldName,
+    required bool isNullable,
   }) {
     return [
       for (final type in _EdgeInsetsType.values)

@@ -8,7 +8,7 @@ import 'package:meta/meta.dart';
 /// but rather contains a bunch of getters that build values based on the fields
 /// of another class.
 /// {@endtemplate}
-abstract class ReferenceThemeClassGenerator implements ThemeClassGenerator {
+abstract class ReferenceThemeClassGenerator<T> implements ThemeClassGenerator {
   /// {@macro reference_theme_class_generator}
   ReferenceThemeClassGenerator({
     required String className,
@@ -28,15 +28,15 @@ abstract class ReferenceThemeClassGenerator implements ThemeClassGenerator {
 
   /// The fields in [fromClass] that will be used to generate the getters.
   ///
-  /// In a numbers class for example, these could be `["s", "m", "l"]`.
-  final List<String> valueFields;
+  /// In a numbers class for example, these could be
+  /// `[(name: 's', isNullable: true), (name: 's', isNullable: false)]` which
+  final Iterable<({String name, bool resolvedInAllModes})> valueFields;
 
   /// The name of the field in the generated class that holds the reference to
   /// the class that this generator class will be referencing.
   String get _fieldName => convertToValidVariableName(fromClass.symbol!);
 
-  List<String> get _valueNames =>
-      valueFields.map(convertToValidVariableName).toList();
+  List<String> get _valueNames => valueFields.map((e) => e.name).toList();
 
   /// This method will be used to build the actual getters that are generated
   /// from each of the fields in [fromClass].
@@ -50,6 +50,7 @@ abstract class ReferenceThemeClassGenerator implements ThemeClassGenerator {
   List<Method> buildGetters({
     required String fromClassField,
     required String valueFieldName,
+    required bool isNullable,
   });
 
   @override
@@ -67,10 +68,11 @@ abstract class ReferenceThemeClassGenerator implements ThemeClassGenerator {
         ..fields.add(getField())
         ..methods.addAll(
           [
-            for (final name in _valueNames)
+            for (final (:name, :resolvedInAllModes) in valueFields)
               ...buildGetters(
                 fromClassField: _fieldName,
                 valueFieldName: name,
+                isNullable: resolvedInAllModes == false,
               ),
           ],
         ),

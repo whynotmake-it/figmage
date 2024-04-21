@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
+import 'package:figmage/src/domain/util/values_by_name_by_mode_x.dart';
 
 /// An extension fo filter variables
 extension TokenFilterX<X> on Iterable<DesignToken<X>> {
@@ -58,5 +59,18 @@ extension TokenFilterX<X> on Iterable<DesignToken<X>> {
               token.name: alias.resolveValue,
         },
     };
+  }
+
+  /// Returns all value names and whether they are resolved in all modes.
+  Iterable<({String name, bool resolvedInAllModes})> get valueNames sync* {
+    final valuesByModeByName = valuesByNameByMode;
+    final valueNames = valuesByModeByName.values.first.keys;
+    for (final name in valueNames) {
+      yield (
+        name: name,
+        resolvedInAllModes:
+            valuesByModeByName.allModesResolved(valueName: name),
+      );
+    }
   }
 }

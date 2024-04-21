@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
+import 'package:figmage/src/domain/util/values_by_name_by_mode_x.dart';
 
 /// {@template theme_extension_generator}
 /// A generator for theme extension classes.
@@ -241,9 +242,7 @@ abstract class ModeThemeExtensionGenerator<T>
   }) sync* {
     final parameterNames = valueMaps.values.first.keys.toSet();
     for (final name in parameterNames) {
-      final isNullable = valueMaps.values.any(
-        (valueMap) => valueMap[name] == null,
-      );
+      final isNullable = valueMaps.allModesResolved(valueName: name) == false;
       yield Field(
         (field) => field
           ..name = name

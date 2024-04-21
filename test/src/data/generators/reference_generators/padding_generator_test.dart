@@ -67,7 +67,7 @@ class WebPadding {
 
   final MyNumbers myNumbers;
 
-  EdgeInsets get sLeft => EdgeInsets.only(left: myNumbers.s!);
+  EdgeInsets? get sLeft => EdgeInsets.only(left: myNumbers.s!);
 
   EdgeInsets get sTop => EdgeInsets.only(top: myNumbers.s!);
 

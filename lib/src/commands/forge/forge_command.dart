@@ -16,9 +16,8 @@ class ForgeCommand extends Command<int> {
       ..addOption(
         "path",
         defaultsTo: ".",
-        help: '''
-          The ouptut path for the generated package. Defaults to the current directory.
-        ''',
+        help: "The ouptut path for the generated package, if not provided, "
+            "the current directory will be used.",
       )
       ..addOption(
         "token",
@@ -29,7 +28,8 @@ class ForgeCommand extends Command<int> {
       ..addOption(
         "fileId",
         abbr: "f",
-        help: "Your figma file ID",
+        help: "Your figma file ID, needs to be either given here, "
+            "or in the figmage.yaml",
       );
   }
 

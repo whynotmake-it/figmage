@@ -18,7 +18,7 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
               $checkedConvert('packageDescription', (v) => v as String? ?? ''),
           packageDir: $checkedConvert('outputPath', (v) => v as String? ?? '.'),
           dropUnresolved:
-              $checkedConvert('dropUnresolved', (v) => v as bool? ?? true),
+              $checkedConvert('dropUnresolved', (v) => v as bool? ?? false),
           colors: $checkedConvert(
               'colors',
               (v) => v == null

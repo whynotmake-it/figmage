@@ -42,7 +42,6 @@ class FigmageCommandRunner extends CompletionCommandRunner<int> {
 
     // Add sub commands
     addCommand(ForgeCommand(_container));
-    addCommand(ReforgeCommand(_container));
     addCommand(UpdateCommand(_container));
   }
 

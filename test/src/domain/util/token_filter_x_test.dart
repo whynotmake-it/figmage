@@ -32,23 +32,22 @@ void main() {
     });
     group("valuesByNameByMode", () {
       test("should return an empty map if there are no variables", () {
-        final valuesByNameByMode =
-            <Variable<dynamic>>[].valuesOrNullByNameByMode;
+        final valuesByNameByMode = <Variable<dynamic>>[].valuesByNameByMode;
         expect(valuesByNameByMode, isEmpty);
       });
       test("should return a map of values by name by mode", () {
-        final valuesByNameByMode = mockVariables.valuesOrNullByNameByMode;
+        final valuesByNameByMode = mockVariables.valuesByNameByMode;
         expect(valuesByNameByMode, {
           'light': {
             'boolName': true,
-            'colorName': 4278190080,
+            'color/colorName': 4278190080,
             'colorNameUnresolvable': 11184810,
             'floatName': 1.0,
             'stringName': 'light',
           },
           'dark': {
             'boolName': false,
-            'colorName': 4294967295,
+            'color/colorName': 4294967295,
             'colorNameUnresolvable': null,
             'floatName': 0.0,
             'stringName': 'dark',
@@ -57,12 +56,12 @@ void main() {
       });
 
       test("should order modes alphabetically", () {
-        final valuesByNameByMode = mockVariables.valuesOrNullByNameByMode;
+        final valuesByNameByMode = mockVariables.valuesByNameByMode;
         expect(valuesByNameByMode.keys, containsAllInOrder(["dark", "light"]));
       });
 
       test("should order names alphabetically", () {
-        final valuesByNameByMode = mockVariables.valuesOrNullByNameByMode;
+        final valuesByNameByMode = mockVariables.valuesByNameByMode;
         expect(
           valuesByNameByMode.values,
           everyElement(
@@ -71,7 +70,7 @@ void main() {
               "keys",
               containsAllInOrder([
                 "boolName",
-                "colorName",
+                "color/colorName",
                 "floatName",
                 "stringName",
               ]),

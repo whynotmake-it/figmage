@@ -32,7 +32,7 @@ final mockColorVariableUnresolvable = ColorVariable(
 
 final mockColorVariable = ColorVariable(
   id: "color_id",
-  name: "colorName",
+  name: "color/colorName",
   remote: false,
   key: "key",
   variableCollectionId: "variableCollectionId",

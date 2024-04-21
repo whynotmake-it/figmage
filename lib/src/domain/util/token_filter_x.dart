@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
+import 'package:figmage/src/domain/util/values_by_name_by_mode_x.dart';
 
 /// An extension fo filter variables
 extension TokenFilterX<X> on Iterable<DesignToken<X>> {
@@ -43,8 +44,11 @@ extension TokenFilterX<X> on Iterable<DesignToken<X>> {
     ];
   }
 
-  /// Turns the variables into a map of values (or null) by name by mode
-  Map<String, Map<String, X?>> get valuesOrNullByNameByMode {
+  /// Turns the variables into a map of values by name by mode, with
+  /// unresolvable values being null.
+  ///
+  /// All inner maps will have the same keys.
+  Map<String, Map<String, X?>> get valuesByNameByMode {
     final sorted = sortTokensByName();
     final allModes = getAllUniqueSortedModes();
     return {
@@ -57,20 +61,16 @@ extension TokenFilterX<X> on Iterable<DesignToken<X>> {
     };
   }
 
-  /// Turns the variables into a map of values by name by mode omitting any
-  /// value which is unresolvable. This does not ensure same keys in each map.
-  /// Consider filtering tokens for null values before using this getter.
-  Map<String, Map<String, X>> get valuesByNameByMode {
-    final sorted = sortTokensByName();
-    final allModes = getAllUniqueSortedModes();
-    return {
-      for (final mode in allModes)
-        mode: {
-          for (final token in sorted)
-            if (token.valuesByModeName[mode] case final alias?)
-              if (alias.resolveValue != null)
-                token.name: alias.resolveValue as X,
-        },
-    };
+  /// Returns all value names and whether they are resolved in all modes.
+  Iterable<({String name, bool resolvedInAllModes})> get valueNames sync* {
+    final valuesByModeByName = valuesByNameByMode;
+    final valueNames = valuesByModeByName.values.first.keys;
+    for (final name in valueNames) {
+      yield (
+        name: name,
+        resolvedInAllModes:
+            valuesByModeByName.allModesResolved(valueName: name),
+      );
+    }
   }
 }

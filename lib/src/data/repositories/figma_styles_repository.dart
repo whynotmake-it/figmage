@@ -55,13 +55,13 @@ class FigmaStylesRepository implements StylesRepository {
         :final name?,
         :final style?,
       ) =>
-        TextDesignStyle(id: id, name: name, value: style.toDomain()),
+        TextDesignStyle(id: id, fullName: name, value: style.toDomain()),
       Rectangle(
         :final id,
         :final name?,
         fills: [Paint(:final color?), ...],
       ) =>
-        ColorDesignStyle(id: id, name: name, value: color.toValue()),
+        ColorDesignStyle(id: id, fullName: name, value: color.toValue()),
       _ => null,
     } as DesignStyle<dynamic>?;
   }

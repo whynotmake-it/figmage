@@ -24,8 +24,10 @@ extension StringDartConversionX on String {
   /// Converts a string that is a path into a camelCase path containing it's
   /// segments.
   List<String> get asCamelCasePath {
-    final pathSegments =
-        split("/").map((s) => s.removeInvalidCharacters()).toList();
+    final pathSegments = split("/")
+        .where((t) => t.isNotEmpty)
+        .map((s) => s.removeInvalidCharacters())
+        .toList();
     if (pathSegments.every((s) => s.isEmpty) || pathSegments.isEmpty) {
       throw ArgumentError.value(
         this,

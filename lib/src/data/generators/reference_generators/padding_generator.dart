@@ -10,7 +10,7 @@ class PaddingGenerator extends ReferenceThemeClassGenerator {
   PaddingGenerator({
     required super.className,
     required super.fromClass,
-    required super.valueFields,
+    required super.valueNames,
     super.buildContextExtensionNullable = false,
   });
 
@@ -21,6 +21,7 @@ class PaddingGenerator extends ReferenceThemeClassGenerator {
   List<Method> buildGetters({
     required String fromClassField,
     required String valueFieldName,
+    required bool isNullable,
   }) {
     return [
       for (final type in _EdgeInsetsType.values)
@@ -35,6 +36,7 @@ class PaddingGenerator extends ReferenceThemeClassGenerator {
                 fromClassField: fromClassField,
                 fieldName: valueFieldName,
                 type: type,
+                isNullable: isNullable,
               ).code;
           },
         ),
@@ -45,40 +47,57 @@ class PaddingGenerator extends ReferenceThemeClassGenerator {
     required String fromClassField,
     required String fieldName,
     required _EdgeInsetsType type,
+    required bool isNullable,
   }) {
+    final fieldReference = isNullable
+        ? refer('$fromClassField.$fieldName').nullChecked
+        : refer('$fromClassField.$fieldName');
     final namedArgument = switch (type) {
       _EdgeInsetsType.left => {
-          'left': refer('$fromClassField.$fieldName').nullChecked,
+          'left': fieldReference,
         },
       _EdgeInsetsType.top => {
-          'top': refer('$fromClassField.$fieldName').nullChecked,
+          'top': fieldReference,
         },
       _EdgeInsetsType.right => {
-          'right': refer('$fromClassField.$fieldName').nullChecked,
+          'right': fieldReference,
         },
       _EdgeInsetsType.bottom => {
-          'bottom': refer('$fromClassField.$fieldName').nullChecked,
+          'bottom': fieldReference,
         },
       _EdgeInsetsType.vertical => {
-          'top': refer('$fromClassField.$fieldName').nullChecked,
-          'bottom': refer('$fromClassField.$fieldName').nullChecked,
+          'top': fieldReference,
+          'bottom': fieldReference,
         },
       _EdgeInsetsType.horizontal => {
-          'left': refer('$fromClassField.$fieldName').nullChecked,
-          'right': refer('$fromClassField.$fieldName').nullChecked,
+          'left': fieldReference,
+          'right': fieldReference,
         },
       _EdgeInsetsType.all => {
-          'left': refer('$fromClassField.$fieldName').nullChecked,
-          'top': refer('$fromClassField.$fieldName').nullChecked,
-          'right': refer('$fromClassField.$fieldName').nullChecked,
-          'bottom': refer('$fromClassField.$fieldName').nullChecked,
+          'left': fieldReference,
+          'top': fieldReference,
+          'right': fieldReference,
+          'bottom': fieldReference,
         },
     };
-    return _edgeInsetsReference.newInstanceNamed(
-      'only',
-      [],
-      namedArgument,
-    );
+    if (isNullable == false) {
+      return _edgeInsetsReference.newInstanceNamed(
+        'only',
+        [],
+        namedArgument,
+      );
+    } else {
+      return refer('$fromClassField.$fieldName')
+          .equalTo(literalNull)
+          .conditional(
+            literalNull,
+            _edgeInsetsReference.newInstanceNamed(
+              'only',
+              [],
+              namedArgument,
+            ),
+          );
+    }
   }
 }
 

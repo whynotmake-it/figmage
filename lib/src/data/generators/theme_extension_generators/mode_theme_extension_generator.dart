@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
+import 'package:figmage/src/domain/util/values_by_name_by_mode_x.dart';
 
 /// {@template theme_extension_generator}
 /// A generator for theme extension classes.
@@ -53,7 +54,9 @@ abstract class ModeThemeExtensionGenerator<T>
   final bool buildContextExtensionNullable;
 
   /// A map with the following structure: <ModeName<ValueName, Value>>
-  final Map<String, Map<String, T>> valuesByNameByMode;
+  ///
+  /// The value can be optional, in case some aliases were unresolved.
+  final Map<String, Map<String, T?>> valuesByNameByMode;
 
   /// A [Reference] to a lerp function that can lerp [symbolReference].
   /// If this value is null the generator assumes that
@@ -107,7 +110,7 @@ abstract class ModeThemeExtensionGenerator<T>
   }
 
   Class _getClass({
-    required Map<String, Map<String, T>> valueMaps,
+    required Map<String, Map<String, T?>> valueMaps,
   }) {
     final parameterNames = valueMaps.values.first.keys.toList();
     return Class(
@@ -125,8 +128,8 @@ abstract class ModeThemeExtensionGenerator<T>
         ..constructors.addAll(_getNamedConstructors(valueMaps: valueMaps))
         ..fields.addAll(
           _getClassFields(
-            nameList: parameterNames,
-            nullableSymbolReference: symbolReference.toNullable,
+            symbolReference: symbolReference,
+            valueMaps: valueMaps,
           ),
         )
         ..methods.addAll([
@@ -136,7 +139,7 @@ abstract class ModeThemeExtensionGenerator<T>
             symbolReference: symbolReference,
           ),
           _getLerp(
-            parameterNames: parameterNames,
+            valueMaps: valueMaps,
             className: className,
           ),
           // TODO(JsprBllnbm): getToString()
@@ -145,7 +148,7 @@ abstract class ModeThemeExtensionGenerator<T>
   }
 
   Method _getLerp({
-    required List<String> parameterNames,
+    required Map<String, Map<String, T?>> valueMaps,
     required String className,
   }) {
     return Method(
@@ -171,29 +174,37 @@ abstract class ModeThemeExtensionGenerator<T>
         ])
         ..body = Block.of([
           Code('if(other is! $className) return this;'),
-          _getLerpedConstructor(parameterNames: parameterNames)
-              .returned
-              .statement,
+          _getLerpedConstructor(valueMaps: valueMaps).returned.statement,
         ]),
     );
   }
 
   Expression _getLerpedConstructor({
-    required List<String> parameterNames,
+    required Map<String, Map<String, T?>> valueMaps,
   }) {
     final lerpReference =
         this.lerpReference ?? symbolReference.property("lerp");
+    final names = valueMaps.values.first.keys.toList();
     return refer(className).newInstance(
       [],
       {
-        for (final name in parameterNames)
-          name: lerpReference.call(
-            [
-              refer(name),
-              refer('other.$name'),
-              refer('t'),
-            ],
-          ),
+        for (final name in names)
+          name: switch (valueMaps.allModesResolved(valueName: name)) {
+            true => lerpReference.call(
+                [
+                  refer(name),
+                  refer('other.$name'),
+                  refer('t'),
+                ],
+              ).nullChecked,
+            false => lerpReference.call(
+                [
+                  refer(name),
+                  refer('other.$name'),
+                  refer('t'),
+                ],
+              ),
+          },
       },
     );
   }
@@ -233,19 +244,20 @@ abstract class ModeThemeExtensionGenerator<T>
     });
   }
 
-  List<Field> _getClassFields({
-    required List<String> nameList,
-    required Reference nullableSymbolReference,
-  }) {
-    return [
-      for (final name in nameList)
-        Field(
-          (field) => field
-            ..name = name
-            ..modifier = FieldModifier.final$
-            ..type = nullableSymbolReference,
-        ),
-    ];
+  Iterable<Field> _getClassFields({
+    required Map<String, Map<String, T?>> valueMaps,
+    required Reference symbolReference,
+  }) sync* {
+    final parameterNames = valueMaps.values.first.keys.toSet();
+    for (final name in parameterNames) {
+      final isNullable = valueMaps.allModesResolved(valueName: name) == false;
+      yield Field(
+        (field) => field
+          ..name = name
+          ..modifier = FieldModifier.final$
+          ..type = isNullable ? symbolReference.toNullable : symbolReference,
+      );
+    }
   }
 
   Constructor _getConstructor({required List<String> nameList}) {
@@ -268,7 +280,7 @@ abstract class ModeThemeExtensionGenerator<T>
   }
 
   List<Constructor> _getNamedConstructors({
-    required Map<String, Map<String, T>> valueMaps,
+    required Map<String, Map<String, T?>> valueMaps,
   }) {
     return [
       for (final MapEntry(key: modeName, value: valuesByName)
@@ -284,9 +296,10 @@ abstract class ModeThemeExtensionGenerator<T>
             ..setInitializersAndConst(
               constructorsByParamName: {
                 for (final MapEntry(key: name, :value) in valuesByName.entries)
-                  name: getConstructorExpression(
-                    value,
-                  ),
+                  name: switch (value) {
+                    null => literalNull,
+                    _ => getConstructorExpression(value),
+                  },
               },
             ),
         ),

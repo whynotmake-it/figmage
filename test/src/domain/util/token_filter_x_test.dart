@@ -40,14 +40,14 @@ void main() {
         expect(valuesByNameByMode, {
           'light': {
             'boolName': true,
-            'colorName': 4278190080,
+            'color/colorName': 4278190080,
             'colorNameUnresolvable': 11184810,
             'floatName': 1.0,
             'stringName': 'light',
           },
           'dark': {
             'boolName': false,
-            'colorName': 4294967295,
+            'color/colorName': 4294967295,
             'colorNameUnresolvable': null,
             'floatName': 0.0,
             'stringName': 'dark',
@@ -70,7 +70,7 @@ void main() {
               "keys",
               containsAllInOrder([
                 "boolName",
-                "colorName",
+                "color/colorName",
                 "floatName",
                 "stringName",
               ]),

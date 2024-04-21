@@ -70,6 +70,13 @@ void main() {
         );
       });
 
+      test('can deal with leading slash', () {
+        expect(
+          convertToValidVariableName('/testString'),
+          equals('testString'),
+        );
+      });
+
       test('throws for empty string', () async {
         expect(() => convertToValidVariableName(''), throwsArgumentError);
       });

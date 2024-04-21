@@ -12,7 +12,7 @@ sealed class DesignStyle<T> with EquatableMixin implements DesignToken<T> {
   /// {@macro design_style}
   const DesignStyle({
     required this.id,
-    required this.name,
+    required this.fullName,
     required this.value,
   });
 
@@ -20,13 +20,14 @@ sealed class DesignStyle<T> with EquatableMixin implements DesignToken<T> {
   final String id;
 
   @override
-  final String name;
+  String get name => fullName.contains('/') ? fullName.split('/')[1] : '';
 
   @override
-  String get fullName => name;
+  final String fullName;
 
   @override
-  String get collectionName => name.contains('/') ? name.split('/').first : '';
+  String get collectionName =>
+      fullName.contains('/') ? fullName.split('/').first : '';
 
   /// For styles (unlike Variables) [collectionName] and [collectionId] are the
   /// same.
@@ -60,7 +61,7 @@ class ColorDesignStyle extends DesignStyle<int> {
   /// {@macro color_style}
   const ColorDesignStyle({
     required super.id,
-    required super.name,
+    required super.fullName,
     required super.value,
   });
 }
@@ -72,7 +73,7 @@ class TextDesignStyle extends DesignStyle<Typography> {
   /// {@macro text_style}
   const TextDesignStyle({
     required super.id,
-    required super.name,
+    required super.fullName,
     required super.value,
   });
 }

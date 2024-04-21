@@ -3,13 +3,13 @@ import 'package:figmage/src/domain/models/typography/typography.dart';
 
 const mockColorDesignStyle = ColorDesignStyle(
   id: "color_id",
-  name: "color_name",
+  fullName: "colors/color_name",
   value: 0xFFFFFFFF,
 );
 
 const mockTextDesignStyle = TextDesignStyle(
   id: "text_id",
-  name: "text_name",
+  fullName: "text_name",
   value: Typography(
     fontFamily: "Inter",
     fontFamilyPostScriptName: "Inter",

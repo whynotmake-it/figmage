@@ -12,13 +12,15 @@ void main() {
     orderDirectives: true,
   );
 
+  const valuesByNameByMode = {
+    'small': {'s': 1.0, 'm': 2.0},
+    'large': {'s': 2.0, 'm': null},
+  };
+
   test('Should create a numbers class and BuildContextExtension', () async {
     final generator = NumberThemeExtensionGenerator(
       className: 'MyNumbersTheme',
-      valuesByNameByMode: {
-        'small': {'s': 1.0, 'm': 2.0},
-        'large': {'s': 2.0, 'm': 4.0},
-      },
+      valuesByNameByMode: valuesByNameByMode,
     );
     expect(
       generator.generateClass(),
@@ -39,10 +41,7 @@ void main() {
       () async {
     final generator = NumberThemeExtensionGenerator(
       className: 'MyNumbersTheme',
-      valuesByNameByMode: {
-        'small': {'s': 1.0, 'm': 2.0},
-        'large': {'s': 2.0, 'm': 4.0},
-      },
+      valuesByNameByMode: valuesByNameByMode,
       buildContextExtensionNullable: true,
     );
     expect(
@@ -79,9 +78,9 @@ class MyNumbersTheme extends ThemeExtension<MyNumbersTheme> {
 
   const MyNumbersTheme.large()
       : s = 2.0,
-        m = 4.0;
+        m = null;
 
-  final double? s;
+  final double s;
 
   final double? m;
 
@@ -137,9 +136,9 @@ class MyNumbersTheme extends ThemeExtension<MyNumbersTheme> {
 
   const MyNumbersTheme.large()
       : s = 2.0,
-        m = 4.0;
+        m = null;
 
-  final double? s;
+  final double s;
 
   final double? m;
 

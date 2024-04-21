@@ -43,8 +43,11 @@ extension TokenFilterX<X> on Iterable<DesignToken<X>> {
     ];
   }
 
-  /// Turns the variables into a map of values (or null) by name by mode
-  Map<String, Map<String, X?>> get valuesOrNullByNameByMode {
+  /// Turns the variables into a map of values by name by mode, with
+  /// unresolvable values being null.
+  ///
+  /// All inner maps will have the same keys.
+  Map<String, Map<String, X?>> get valuesByNameByMode {
     final sorted = sortTokensByName();
     final allModes = getAllUniqueSortedModes();
     return {
@@ -53,23 +56,6 @@ extension TokenFilterX<X> on Iterable<DesignToken<X>> {
           for (final token in sorted)
             if (token.valuesByModeName[mode] case final alias?)
               token.name: alias.resolveValue,
-        },
-    };
-  }
-
-  /// Turns the variables into a map of values by name by mode omitting any
-  /// value which is unresolvable. This does not ensure same keys in each map.
-  /// Consider filtering tokens for null values before using this getter.
-  Map<String, Map<String, X>> get valuesByNameByMode {
-    final sorted = sortTokensByName();
-    final allModes = getAllUniqueSortedModes();
-    return {
-      for (final mode in allModes)
-        mode: {
-          for (final token in sorted)
-            if (token.valuesByModeName[mode] case final alias?)
-              if (alias.resolveValue != null)
-                token.name: alias.resolveValue as X,
         },
     };
   }

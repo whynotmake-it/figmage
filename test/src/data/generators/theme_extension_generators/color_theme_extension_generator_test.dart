@@ -6,18 +6,22 @@ import '../common.dart';
 
 void main() {
   useDartfmt();
+
   final emitter = DartEmitter(
     allocator: Allocator(),
     useNullSafetySyntax: true,
     orderDirectives: true,
   );
+
+  const valuesByNameByMode = {
+    'mode 1': {'color1': 0xFF000000, 'color2': 0xFFFFFFFF},
+    'mode2': {'color1': 0xFF111111, 'color2': null},
+  };
+
   test('Should create a class and non-nullable BuildContext extension', () {
     final generator = ColorThemeExtensionGenerator(
       className: 'MyColorTheme',
-      valuesByNameByMode: {
-        'mode 1': {'color1': 0xFF000000, 'color2': 0xFFFFFFFF},
-        'mode2': {'color1': 0xFF111111, 'color2': 0xFF222222},
-      },
+      valuesByNameByMode: valuesByNameByMode,
     );
     expect(
       generator.generateClass(),
@@ -34,10 +38,7 @@ void main() {
   test('Should create a nullable BuildContext extension', () async {
     final generator = ColorThemeExtensionGenerator(
       className: 'MyColorTheme',
-      valuesByNameByMode: {
-        'mode 1': {'color1': 0xFF000000, 'color2': 0xFFFFFFFF},
-        'mode2': {'color1': 0xFF111111, 'color2': 0xFF222222},
-      },
+      valuesByNameByMode: valuesByNameByMode,
       buildContextExtensionNullable: true,
     );
     expect(
@@ -91,9 +92,9 @@ class MyColorTheme extends ThemeExtension<MyColorTheme> {
 
   const MyColorTheme.mode2()
       : color1 = const Color(0xff111111),
-        color2 = const Color(0xff222222);
+        color2 = null;
 
-  final Color? color1;
+  final Color color1;
 
   final Color? color2;
 
@@ -149,9 +150,9 @@ class MyColorTheme extends ThemeExtension<MyColorTheme> {
 
   const MyColorTheme.mode2()
       : color1 = const Color(0xff111111),
-        color2 = const Color(0xff222222);
+        color2 = null;
 
-  final Color? color1;
+  final Color color1;
 
   final Color? color2;
 
@@ -205,9 +206,9 @@ class MyColorTheme extends ThemeExtension<MyColorTheme> {
       : color1 = const Color(0xff000000),
         color2 = const Color(0xffffffff);
 
-  final Color? color1;
+  final Color color1;
 
-  final Color? color2;
+  final Color color2;
 
   @override
   MyColorTheme copyWith([

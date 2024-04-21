@@ -35,13 +35,7 @@ void main() {
         fontWeight: 700,
         decoration: TextDecoration.underline,
       ),
-      'textStyle2': Typography(
-        fontSize: 24,
-        fontFamily: 'Roboto',
-        fontFamilyPostScriptName: 'Roboto',
-        fontWeight: 700,
-        decoration: TextDecoration.lineThrough,
-      ),
+      'textStyle2': null,
     },
   };
   test(
@@ -154,17 +148,9 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
           height: 1.0,
           decoration: TextDecoration.underline,
         ),
-        textStyle2 = const TextStyle(
-          fontFamily: 'Roboto',
-          fontSize: 24.0,
-          fontWeight: FontWeight.w700,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 1.0,
-          height: 1.0,
-          decoration: TextDecoration.lineThrough,
-        );
+        textStyle2 = null;
 
-  final TextStyle? textStyle1;
+  final TextStyle textStyle1;
 
   final TextStyle? textStyle2;
 
@@ -243,17 +229,9 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
           height: 1.0,
           decoration: TextDecoration.underline,
         ),
-        textStyle2 = const TextStyle(
-          fontFamily: 'Roboto',
-          fontSize: 24.0,
-          fontWeight: FontWeight.w700,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 1.0,
-          height: 1.0,
-          decoration: TextDecoration.lineThrough,
-        );
+        textStyle2 = null;
 
-  final TextStyle? textStyle1;
+  final TextStyle textStyle1;
 
   final TextStyle? textStyle2;
 
@@ -332,17 +310,9 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
           height: 1.0,
           decoration: TextDecoration.underline,
         ),
-        textStyle2 = GoogleFonts.getFont(
-          'Roboto',
-          fontSize: 24.0,
-          fontWeight: FontWeight.w700,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 1.0,
-          height: 1.0,
-          decoration: TextDecoration.lineThrough,
-        );
+        textStyle2 = null;
 
-  final TextStyle? textStyle1;
+  final TextStyle textStyle1;
 
   final TextStyle? textStyle2;
 

@@ -46,7 +46,7 @@ jobs:
         uses: whynotmake-it/dart-coverage-assistant@v1
         with:
           lower_threshold: 50
-          upper_threshold: 90
+          upper_threshold: 75
           generate_badges: pr
   
   check_generation:

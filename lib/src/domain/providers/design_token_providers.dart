@@ -1,3 +1,4 @@
+import 'package:figmage/src/data/util/converters/string_dart_conversion_x.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/models/style/design_style.dart';
@@ -8,7 +9,51 @@ import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/repositories/styles_repository.dart';
 import 'package:figmage/src/domain/repositories/variables_repository.dart';
 import 'package:figmage/src/domain/util/token_filter_x.dart';
+import 'package:mason_logger/mason_logger.dart';
 import 'package:riverpod/riverpod.dart';
+
+/// Provides [TokensByType] based on [FigmageSettings].
+/// If true, omits tokens missing in any mode, ensuring null safety.
+/// If false, includes all tokens, with unresolved ones returning null.
+final filterUnresolvedTokensProvider =
+    FutureProvider.family<TokensByType, FigmageSettings>((ref, settings) async {
+  final logger = ref.watch(loggerProvider)
+    ..info(
+      "'Checking if all design tokens have valid values...",
+    );
+  final tokensByType = await ref.watch(filteredTokensProvider(settings).future);
+  tokensByType.asMap().forEach((name, tokens) {
+    if (tokens.isNotEmpty) {
+      logger.info("${name.toTitleCase()}:");
+      final unresolvedTokens = tokens.getUnresolvedTokens();
+      if (unresolvedTokens.isEmpty) {
+        logger.info(' All values are resolved.');
+      } else {
+        logger.info(
+            ' Found ${unresolvedTokens.length} token(s) where the value is, at'
+            ' least for one mode, unresolvable.');
+        if (logger.level == Level.verbose) {
+          for (final token in unresolvedTokens) {
+            logger.info(' ${token.fullName}:');
+            token.valuesByModeName.forEach((modeName, value) {
+              logger.info('   $modeName : $value');
+            });
+          }
+        } else {
+          logger.info(
+              ' For more information on the missing values rerun the command'
+              ' with --verbose.');
+        }
+      }
+    }
+  });
+  logger.info(
+      '${settings.config.dropUnresolved ? 'Dropping' : 'Keeping'} token(s) with'
+      ' missing values based on your configuration.');
+  return settings.config.dropUnresolved
+      ? tokensByType.resolvable
+      : tokensByType;
+});
 
 /// Filters all tokens by file type.
 final filteredTokensProvider =

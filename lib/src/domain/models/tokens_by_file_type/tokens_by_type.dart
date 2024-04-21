@@ -1,5 +1,6 @@
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/typography/typography.dart';
+import 'package:figmage/src/domain/util/token_filter_x.dart';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -22,4 +23,31 @@ sealed class TokensByType with _$TokensByType {
   }) = _TokensByType;
 
   const TokensByType._();
+
+  /// A map of name and [DesignToken] iterable containing all tokens.
+  Map<String, Iterable<DesignToken>> asMap() => {
+        'colorTokens': colorTokens,
+        'typographyTokens': typographyTokens,
+        'numberTokens': numberTokens,
+        'stringTokens': stringTokens,
+        'boolTokens': boolTokens,
+      };
+
+  /// Returns all token that are resolvable for all modes.
+  TokensByType get resolvable => copyWith(
+        colorTokens: colorTokens.getResolvableTokens(),
+        typographyTokens: typographyTokens.getResolvableTokens(),
+        numberTokens: numberTokens.getResolvableTokens(),
+        stringTokens: stringTokens.getResolvableTokens(),
+        boolTokens: boolTokens.getResolvableTokens(),
+      );
+
+  /// Returns all token that are unresolvable for at least 1 mode.
+  TokensByType get unresolvable => copyWith(
+        colorTokens: colorTokens.getUnresolvedTokens(),
+        typographyTokens: typographyTokens.getUnresolvedTokens(),
+        numberTokens: numberTokens.getUnresolvedTokens(),
+        stringTokens: stringTokens.getUnresolvedTokens(),
+        boolTokens: boolTokens.getUnresolvedTokens(),
+      );
 }

@@ -294,7 +294,9 @@ abstract class ModeThemeExtensionGenerator<T>
   }
 }
 
-extension _ReferenceX on Reference {
+/// Extension on Reference
+extension ReferenceX on Reference {
+  /// Returns the a nullable reference
   Reference get toNullable {
     return Reference(
       switch (symbol) {

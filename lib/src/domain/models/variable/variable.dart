@@ -46,9 +46,13 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
   @override
   final String name;
 
-  /// The name of the collection, which is used to separate tokens into classes
+  /// The name of the collection.
   @override
   String get collectionName => variableCollectionName;
+
+  /// The id of the collection, which is used to separate tokens into classes.
+  @override
+  String get collectionId => variableCollectionId;
 
   /// Whether this variable is remote.
   final bool remote;

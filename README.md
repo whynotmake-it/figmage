@@ -26,11 +26,12 @@ This command will generate a new package at the specified output path using the 
 figmage forge <path> --token <token> --fileId <fileId>
 ```
 
-> [!info] > **🤔 Wait, what's a token? And what's this fileId? Where do I get them?**
+> [!INFO] > **🤔 Wait, what's a token? And what's this fileId? Where do I get them?**
 >
 > To interact with the Figma API, you'll need an **access token**. Check out the [Figma Docs](https://www.figma.com/developers/api#access-tokens) to learn how to create yours.
 >
-> The **fileId** is part of the URL when you open a Figma file. Just look in your browser's address bar when you have your design system file open:<br>
+> The **fileId** is part of the URL when you open a Figma file. Just look in your browser's address bar when you have your design system file open:
+
 > ➡ figma.com/file/**your-file-id-is-here**/more-not-so-interesting-stuff
 
 #### 🎨 Details
@@ -137,7 +138,7 @@ Leverage the tokens within your widgets like so:
 
 #### 🎨 Details
 
-The design tokens are wrapped into classes. The grouping depends on the collection for variable based tokens and on the style group name for style based tokens. Each class implements `BuildContext`extension which can be used to propergate the design tokens through your app.
+Design tokens are encapsulated within classes based on their type and collection for variable-based tokens or style group name for style-based tokens. Each class implements `BuildContext` extension which can be used to propagate the design tokens through your app.
 
 ## Continuous Integration 🤖
 

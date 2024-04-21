@@ -1,5 +1,6 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/reference_generators/reference_theme_class_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/mode_theme_extension_generator.dart';
 
 ///{@template spacer_generator}
 ///A generator for a spacer class.
@@ -9,7 +10,7 @@ class SpacerGenerator extends ReferenceThemeClassGenerator {
   SpacerGenerator({
     required super.className,
     required super.fromClass,
-    required super.valueFields,
+    required super.valueNames,
     super.buildContextExtensionNullable = false,
   });
 
@@ -21,46 +22,67 @@ class SpacerGenerator extends ReferenceThemeClassGenerator {
     required String valueFieldName,
     required bool isNullable,
   }) {
+    final reference =
+        isNullable ? _sizedBoxReference.toNullable : _sizedBoxReference;
     return [
       Method(
         (m) => m
           ..name = '${valueFieldName}Horizontal'
-          ..returns = _sizedBoxReference
+          ..returns = reference
           ..type = MethodType.getter
           ..lambda = true
           ..body = _getSizedBoxExpression(
             fromClassField: fromClassField,
             fieldName: valueFieldName,
             isHorizontal: true,
-          ),
+            isNullable: isNullable,
+          ).code,
       ),
       Method(
         (m) => m
           ..name = '${valueFieldName}Vertical'
-          ..returns = _sizedBoxReference
+          ..returns = reference
           ..type = MethodType.getter
           ..lambda = true
           ..body = _getSizedBoxExpression(
             fromClassField: fromClassField,
             fieldName: valueFieldName,
             isHorizontal: false,
-          ),
+            isNullable: isNullable,
+          ).code,
       ),
     ];
   }
 
-  Code _getSizedBoxExpression({
+  Expression _getSizedBoxExpression({
     required String fromClassField,
     required String fieldName,
     required bool isHorizontal,
+    required bool isNullable,
   }) {
-    final namedArgument = switch (isHorizontal) {
-      true => {'width': refer('$fromClassField.$fieldName')},
-      false => {'height': refer('$fromClassField.$fieldName')},
+    final fieldReference = isNullable
+        ? refer('$fromClassField.$fieldName').nullChecked
+        : refer('$fromClassField.$fieldName');
+
+    final namedArguments = switch (isHorizontal) {
+      true => {'width': fieldReference},
+      false => {'height': fieldReference},
     };
-    return refer('SizedBox', 'package:flutter/material.dart').newInstance(
-      [],
-      namedArgument,
-    ).code;
+    if (isNullable == false) {
+      return _sizedBoxReference.newInstance(
+        [],
+        namedArguments,
+      );
+    } else {
+      return refer('$fromClassField.$fieldName')
+          .equalTo(literalNull)
+          .conditional(
+            literalNull,
+            _sizedBoxReference.newInstance(
+              [],
+              namedArguments,
+            ),
+          );
+    }
   }
 }

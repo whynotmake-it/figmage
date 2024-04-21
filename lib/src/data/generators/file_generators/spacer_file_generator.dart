@@ -32,7 +32,7 @@ class SpacerFileGenerator extends BaseFileGenerator<double> {
         ),
         TokenFileType.numbers.filename,
       ),
-      valueFields: collectionTokens.valueNames,
+      valueNames: collectionTokens.valueNames,
     );
   }
 }

@@ -12,7 +12,7 @@ abstract class ReferenceThemeClassGenerator<T> implements ThemeClassGenerator {
   /// {@macro reference_theme_class_generator}
   ReferenceThemeClassGenerator({
     required String className,
-    required this.valueFields,
+    required this.valueNames,
     required this.fromClass,
     required this.buildContextExtensionNullable,
   }) : className = convertToValidClassName(className);
@@ -30,13 +30,11 @@ abstract class ReferenceThemeClassGenerator<T> implements ThemeClassGenerator {
   ///
   /// In a numbers class for example, these could be
   /// `[(name: 's', isNullable: true), (name: 's', isNullable: false)]` which
-  final Iterable<({String name, bool resolvedInAllModes})> valueFields;
+  final Iterable<({String name, bool resolvedInAllModes})> valueNames;
 
   /// The name of the field in the generated class that holds the reference to
   /// the class that this generator class will be referencing.
   String get _fieldName => convertToValidVariableName(fromClass.symbol!);
-
-  List<String> get _valueNames => valueFields.map((e) => e.name).toList();
 
   /// This method will be used to build the actual getters that are generated
   /// from each of the fields in [fromClass].
@@ -68,7 +66,7 @@ abstract class ReferenceThemeClassGenerator<T> implements ThemeClassGenerator {
         ..fields.add(getField())
         ..methods.addAll(
           [
-            for (final (:name, :resolvedInAllModes) in valueFields)
+            for (final (:name, :resolvedInAllModes) in valueNames)
               ...buildGetters(
                 fromClassField: _fieldName,
                 valueFieldName: name,

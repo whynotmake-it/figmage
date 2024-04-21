@@ -11,11 +11,16 @@ void main() {
     useNullSafetySyntax: true,
     orderDirectives: true,
   );
+  const valueNames = [
+    (name: 's', resolvedInAllModes: true),
+    (name: 'm', resolvedInAllModes: true),
+    (name: 'l', resolvedInAllModes: false),
+  ];
   test('Should create a Spacer class and BuildContextExtension', () async {
     final generator = SpacerGenerator(
       className: 'WebSpacer',
       fromClass: const Reference('MyNumbers'),
-      valueFields: ['s', 'm', 'l'],
+      valueNames: valueNames,
     );
     expect(
       generator.generateClass(),
@@ -36,15 +41,12 @@ void main() {
     final generator = SpacerGenerator(
       className: 'WebSpacer',
       fromClass: const Reference('MyNumbers'),
-      valueFields: ['s', 'm', 'l'],
+      valueNames: valueNames,
       buildContextExtensionNullable: true,
     );
     expect(
       generator.generateClass(),
-      equalsDart(
-        _expectedNullableSpacerClassString,
-        emitter,
-      ),
+      equalsDart(_expectedSpacerClassString, emitter),
     );
     expect(
       generator.generateExtension(),
@@ -74,9 +76,13 @@ class WebSpacer {
 
   SizedBox get mVertical => SizedBox(height: myNumbers.m);
 
-  SizedBox get lHorizontal => SizedBox(width: myNumbers.l);
+  SizedBox? get lHorizontal => myNumbers.l == null
+    ? null
+    : SizedBox(width: myNumbers.l!);
 
-  SizedBox get lVertical => SizedBox(height: myNumbers.l);
+  SizedBox? get lVertical =>  myNumbers.l == null
+    ? null
+    : SizedBox(height: myNumbers.l!);
 }
 ''';
 const _expectedSpacerBuildContextExtensionString = '''
@@ -84,26 +90,7 @@ extension WebSpacerBuildContextX on BuildContext {
   WebSpacer get webSpacer => WebSpacer(myNumbers);
 }
 ''';
-const _expectedNullableSpacerClassString = '''
-@immutable
-class WebSpacer {
-  const WebSpacer(this.myNumbers);
 
-  final MyNumbers myNumbers;
-
-  SizedBox get sHorizontal => SizedBox(width: myNumbers.s);
-
-  SizedBox get sVertical => SizedBox(height: myNumbers.s);
-
-  SizedBox get mHorizontal => SizedBox(width: myNumbers.m);
-
-  SizedBox get mVertical => SizedBox(height: myNumbers.m);
-
-  SizedBox get lHorizontal => SizedBox(width: myNumbers.l);
-
-  SizedBox get lVertical => SizedBox(height: myNumbers.l);
-}
-''';
 const _expectedNullableSpacerBuildContextExtensionString = '''
 extension WebSpacerBuildContextX on BuildContext {
   WebSpacer? get webSpacer => myNumbers == null ? null : WebSpacer(myNumbers!);

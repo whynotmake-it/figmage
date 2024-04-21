@@ -94,12 +94,12 @@ figmage forge <path> --token <token> --fileId <fileId>
 ```
 
 > [!NOTE] 
-> 🤔 Wait, what's a token? And what's this fileId? Where do I get them?
+> **🤔 Wait, what's a token? And what's this file ID? Where do I get them?**
 >
 > To interact with the Figma API, you'll need an **access token**. Check out the [Figma Docs](https://www.figma.com/developers/api#access-tokens) to learn how to create yours.
 >
 > The **fileId** is part of the URL when you open a Figma file. Just look in your browser's address bar when you have your design system file open:
-
+>
 > ➡ figma.com/file/**your-file-id-is-here**/more-not-so-interesting-stuff
 
 ### 🎨 Details

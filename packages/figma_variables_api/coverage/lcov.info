@@ -1,4 +1,4 @@
-SF:/Users/tim/Developer/whynotmake.it/figmage/packages/figma_variables_api/lib/src/client.dart
+SF:/home/runner/work/figmage/figmage/packages/figma_variables_api/lib/src/client.dart
 DA:31,0
 DA:57,0
 DA:58,0
@@ -60,7 +60,7 @@ DA:176,0
 LF:58
 LH:0
 end_of_record
-SF:/Users/tim/Developer/whynotmake.it/figmage/packages/figma_variables_api/lib/src/models/dto/variable/variable_dto.g.dart
+SF:/home/runner/work/figmage/figmage/packages/figma_variables_api/lib/src/models/dto/variable/variable_dto.g.dart
 DA:55,2
 DA:59,0
 DA:60,0
@@ -138,7 +138,7 @@ DA:215,2
 LF:74
 LH:51
 end_of_record
-SF:/Users/tim/Developer/whynotmake.it/figmage/packages/figma_variables_api/lib/src/models/dto/variable/variable_dto.dart
+SF:/home/runner/work/figmage/figmage/packages/figma_variables_api/lib/src/models/dto/variable/variable_dto.dart
 DA:11,3
 DA:25,3
 DA:26,3
@@ -159,7 +159,7 @@ DA:55,4
 LF:17
 LH:17
 end_of_record
-SF:/Users/tim/Developer/whynotmake.it/figmage/packages/figma_variables_api/lib/src/models/dto/variable_collection/variable_collection_dto.g.dart
+SF:/home/runner/work/figmage/figmage/packages/figma_variables_api/lib/src/models/dto/variable_collection/variable_collection_dto.g.dart
 DA:47,1
 DA:51,0
 DA:53,0
@@ -224,7 +224,7 @@ DA:176,2
 LF:61
 LH:44
 end_of_record
-SF:/Users/tim/Developer/whynotmake.it/figmage/packages/figma_variables_api/lib/src/models/dto/variable_collection/variable_collection_dto.dart
+SF:/home/runner/work/figmage/figmage/packages/figma_variables_api/lib/src/models/dto/variable_collection/variable_collection_dto.dart
 DA:11,3
 DA:22,3
 DA:23,3
@@ -242,7 +242,7 @@ DA:45,4
 LF:14
 LH:14
 end_of_record
-SF:/Users/tim/Developer/whynotmake.it/figmage/packages/figma_variables_api/lib/src/models/dto/variable_mode/variable_mode_dto.g.dart
+SF:/home/runner/work/figmage/figmage/packages/figma_variables_api/lib/src/models/dto/variable_mode/variable_mode_dto.g.dart
 DA:28,0
 DA:32,0
 DA:33,0
@@ -266,7 +266,7 @@ DA:82,2
 LF:20
 LH:8
 end_of_record
-SF:/Users/tim/Developer/whynotmake.it/figmage/packages/figma_variables_api/lib/src/models/dto/variable_mode/variable_mode_dto.dart
+SF:/home/runner/work/figmage/figmage/packages/figma_variables_api/lib/src/models/dto/variable_mode/variable_mode_dto.dart
 DA:10,3
 DA:15,3
 DA:16,3
@@ -276,7 +276,7 @@ DA:24,4
 LF:6
 LH:6
 end_of_record
-SF:/Users/tim/Developer/whynotmake.it/figmage/packages/figma_variables_api/lib/src/models/dto/variable_mode_value/variable_mode_value_dto.dart
+SF:/home/runner/work/figmage/figmage/packages/figma_variables_api/lib/src/models/dto/variable_mode_value/variable_mode_value_dto.dart
 DA:7,4
 DA:9,4
 DA:10,4
@@ -332,7 +332,7 @@ DA:121,3
 LF:52
 LH:52
 end_of_record
-SF:/Users/tim/Developer/whynotmake.it/figmage/packages/figma_variables_api/lib/src/models/dto/variable_mode_value/variable_mode_value_dto.g.dart
+SF:/home/runner/work/figmage/figmage/packages/figma_variables_api/lib/src/models/dto/variable_mode_value/variable_mode_value_dto.g.dart
 DA:9,0
 DA:11,0
 DA:12,0
@@ -374,7 +374,7 @@ DA:74,3
 LF:38
 LH:20
 end_of_record
-SF:/Users/tim/Developer/whynotmake.it/figmage/packages/figma_variables_api/lib/src/models/dto/variable_response/variables_response_dto.dart
+SF:/home/runner/work/figmage/figmage/packages/figma_variables_api/lib/src/models/dto/variable_response/variables_response_dto.dart
 DA:12,2
 DA:18,2
 DA:19,2
@@ -384,7 +384,7 @@ DA:33,2
 LF:6
 LH:6
 end_of_record
-SF:/Users/tim/Developer/whynotmake.it/figmage/packages/figma_variables_api/lib/src/models/dto/variable_response/variables_response_dto.g.dart
+SF:/home/runner/work/figmage/figmage/packages/figma_variables_api/lib/src/models/dto/variable_response/variables_response_dto.g.dart
 DA:32,0
 DA:36,0
 DA:37,0
@@ -415,7 +415,7 @@ DA:99,2
 LF:27
 LH:10
 end_of_record
-SF:/Users/tim/Developer/whynotmake.it/figmage/packages/figma_variables_api/lib/src/models/dto/variables_meta/variables_meta_dto.dart
+SF:/home/runner/work/figmage/figmage/packages/figma_variables_api/lib/src/models/dto/variables_meta/variables_meta_dto.dart
 DA:12,2
 DA:17,2
 DA:18,2
@@ -425,7 +425,7 @@ DA:25,2
 LF:6
 LH:4
 end_of_record
-SF:/Users/tim/Developer/whynotmake.it/figmage/packages/figma_variables_api/lib/src/models/dto/variables_meta/variables_meta_dto.g.dart
+SF:/home/runner/work/figmage/figmage/packages/figma_variables_api/lib/src/models/dto/variables_meta/variables_meta_dto.g.dart
 DA:29,0
 DA:33,0
 DA:35,0
@@ -452,7 +452,7 @@ DA:95,5
 LF:23
 LH:11
 end_of_record
-SF:/Users/tim/Developer/whynotmake.it/figmage/packages/figma_variables_api/lib/src/query.dart
+SF:/home/runner/work/figmage/figmage/packages/figma_variables_api/lib/src/query.dart
 DA:6,0
 DA:71,0
 DA:72,0

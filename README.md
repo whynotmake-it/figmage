@@ -7,7 +7,7 @@ A CLI tool for generating Figma styles for Flutter
 [![melos](https://img.shields.io/badge/maintained%20with-melos-f700ff.svg)](https://github.com/invertase/melos)
 
 
-## What's in the box
+## What's in the box 🎁
 Figmage is a magical CLI tool that helps you generate a flutter package from your Figma Design System. It uses the Figma APIs to fetch your design tokens from published **styles**, as well as **variables**, with full **modes** support.
 
 So a variables section like this:
@@ -77,15 +77,15 @@ extension ColorsMyCollectionBuildContextX on BuildContext {
 
 **❗ In order to start using Figmage you must have the [Dart SDK][dart_install_link] installed on your machine.**
 
-Install via `dart pub add`:
+For the easiest usage, install figmage via `dart pub global activate`:
 
 ```sh
-dart pub add figmage
+dart pub global activate figmage
 ```
 
 ## How to generate 🏭
 
-#### 🚀 Quick start
+### 🚀 Quick start
 
 This command will generate a new package at the specified output path using the provided Figma API token and file ID:
 
@@ -101,7 +101,7 @@ figmage forge <path> --token <token> --fileId <fileId>
 
 > ➡ figma.com/file/**your-file-id-is-here**/more-not-so-interesting-stuff
 
-#### 🎨 Details
+### 🎨 Details
 
 If you require more control over the generated code, create a `figmage.yaml` file in the directory from which you're running the command. Below is an example, along with descriptions of what each flag accomplishes:
 
@@ -152,7 +152,7 @@ paddings:
 
 ## How to use 📲
 
-#### 🚀 Quick start
+### 🚀 Quick start
 
 To integrate your newly minted token package into your app, simply add it to your `pubspec.yaml` file:
 
@@ -203,15 +203,9 @@ Leverage the tokens within your widgets like so:
     ...
 ```
 
-#### 🎨 Details
+### 🎨 Details
 
 Design tokens are encapsulated within classes based on their type and collection for variable-based tokens or style group name for style-based tokens. Each class implements `BuildContext` extension which can be used to propagate the design tokens through your app.
-
-## Continuous Integration 🤖
-
-Figmage comes with a built-in [GitHub Actions workflow][github_actions_link] but you can also add your preferred CI/CD solution.
-
-## This project includes [Melos](https://github.com/invertase/melos).
 
 [dart_install_link]: https://dart.dev/get-dart
 [github_actions_link]: https://docs.github.com/en/actions/learn-github-actions

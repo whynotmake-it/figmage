@@ -30,7 +30,7 @@ class Config with EquatableMixin {
     this.fileId,
     this.packageDescription = '',
     this.packageDir = '.',
-    this.dropUnresolved = true,
+    this.dropUnresolved = false,
     this.colors = const GenerationSettings(),
     this.typography = const TypographyGenerationSettings(),
     this.strings = const GenerationSettings(),
@@ -57,7 +57,7 @@ class Config with EquatableMixin {
   /// cannot be resolved (e.g., an alias pointing to a missing variable) are
   /// omitted, ensuring all tokens are resolvable in all modes (e.g., light and
   /// dark mode). When false, unresolved variables are included but will return
-  /// null. Defaults to true.
+  /// null. Defaults to false.
   final bool dropUnresolved;
 
   /// The directory to generate the package in, relative to the config file.

@@ -44,7 +44,7 @@ void main() {
     expect(
       generator.generateClass(),
       equalsDart(
-        _expectedNullableColorThemeExtensionClassString,
+        _expectedColorThemeExtensionClassString,
         emitter,
       ),
     );
@@ -119,7 +119,7 @@ class MyColorTheme extends ThemeExtension<MyColorTheme> {
         color1,
         other.color1,
         t,
-      ),
+      )!,
       color2: Color.lerp(
         color2,
         other.color2,
@@ -133,58 +133,6 @@ class MyColorTheme extends ThemeExtension<MyColorTheme> {
 const _expectedColorThemeExtensionBuildContextExtensionString = '''
 extension MyColorThemeBuildContextX on BuildContext {
   MyColorTheme get myColorTheme => Theme.of(this).extension<MyColorTheme>()!;
-}
-''';
-
-const _expectedNullableColorThemeExtensionClassString = '''
-@immutable
-class MyColorTheme extends ThemeExtension<MyColorTheme> {
-  const MyColorTheme({
-    required this.color1,
-    required this.color2,
-  });
-
-  const MyColorTheme.mode1()
-      : color1 = const Color(0xff000000),
-        color2 = const Color(0xffffffff);
-
-  const MyColorTheme.mode2()
-      : color1 = const Color(0xff111111),
-        color2 = null;
-
-  final Color color1;
-
-  final Color? color2;
-
-  @override
-  MyColorTheme copyWith([
-    Color? color1,
-    Color? color2,
-  ]) =>
-      MyColorTheme(
-        color1: color1 ?? this.color1,
-        color2: color2 ?? this.color2,
-      );
-
-  @override
-  MyColorTheme lerp(
-    MyColorTheme? other,
-    double t,
-  ) {
-    if (other is! MyColorTheme) return this;
-    return MyColorTheme(
-      color1: Color.lerp(
-        color1,
-        other.color1,
-        t,
-      ),
-      color2: Color.lerp(
-        color2,
-        other.color2,
-        t,
-      ),
-    );
-  }
 }
 ''';
 
@@ -231,12 +179,12 @@ class MyColorTheme extends ThemeExtension<MyColorTheme> {
         color1,
         other.color1,
         t,
-      ),
+      )!,
       color2: Color.lerp(
         color2,
         other.color2,
         t,
-      ),
+      )!,
     );
   }
 }

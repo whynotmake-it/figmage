@@ -72,7 +72,7 @@ void main() {
     expect(
       generator.generateClass(),
       equalsDart(
-        _expectedNullableTextStyleThemeExtensionString,
+        _expectedTextStyleThemeExtensionString,
         emitter,
       ),
     );
@@ -175,7 +175,7 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
         textStyle1,
         other.textStyle1,
         t,
-      ),
+      )!,
       textStyle2: TextStyle.lerp(
         textStyle2,
         other.textStyle2,
@@ -191,81 +191,6 @@ extension MyTextStylesBuildContextX on BuildContext {
 }
 ''';
 
-const _expectedNullableTextStyleThemeExtensionString = '''
-@immutable
-class MyTextStyles extends ThemeExtension<MyTextStyles> {
-  const MyTextStyles({
-    required this.textStyle1,
-    required this.textStyle2,
-  });
-
-  const MyTextStyles.mode1()
-      : textStyle1 = const TextStyle(
-          fontFamily: 'Roboto',
-          fontSize: 16.0,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 1.0,
-          height: 1.0,
-          decoration: TextDecoration.underline,
-        ),
-        textStyle2 = const TextStyle(
-          fontFamily: 'Roboto',
-          fontSize: 24.0,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 1.0,
-          height: 1.0,
-          decoration: TextDecoration.lineThrough,
-        );
-
-  const MyTextStyles.mode2()
-      : textStyle1 = const TextStyle(
-          fontFamily: 'Roboto',
-          fontSize: 16.0,
-          fontWeight: FontWeight.w700,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 1.0,
-          height: 1.0,
-          decoration: TextDecoration.underline,
-        ),
-        textStyle2 = null;
-
-  final TextStyle textStyle1;
-
-  final TextStyle? textStyle2;
-
-  @override
-  MyTextStyles copyWith([
-    TextStyle? textStyle1,
-    TextStyle? textStyle2,
-  ]) =>
-      MyTextStyles(
-        textStyle1: textStyle1 ?? this.textStyle1,
-        textStyle2: textStyle2 ?? this.textStyle2,
-      );
-
-  @override
-  MyTextStyles lerp(
-    MyTextStyles? other,
-    double t,
-  ) {
-    if (other is! MyTextStyles) return this;
-    return MyTextStyles(
-      textStyle1: TextStyle.lerp(
-        textStyle1,
-        other.textStyle1,
-        t,
-      ),
-      textStyle2: TextStyle.lerp(
-        textStyle2,
-        other.textStyle2,
-        t,
-      ),
-    );
-  }
-}
-''';
 const _expectedNullableTextStyleThemeExtensionBuildContextExtensionString = '''
 extension MyTextStylesBuildContextX on BuildContext {
   MyTextStyles? get myTextStyles => Theme.of(this).extension<MyTextStyles>();
@@ -337,7 +262,7 @@ class MyTextStyles extends ThemeExtension<MyTextStyles> {
         textStyle1,
         other.textStyle1,
         t,
-      ),
+      )!,
       textStyle2: TextStyle.lerp(
         textStyle2,
         other.textStyle2,

@@ -139,7 +139,7 @@ abstract class ModeThemeExtensionGenerator<T>
             symbolReference: symbolReference,
           ),
           _getLerp(
-            parameterNames: parameterNames,
+            valueMaps: valueMaps,
             className: className,
           ),
           // TODO(JsprBllnbm): getToString()
@@ -148,7 +148,7 @@ abstract class ModeThemeExtensionGenerator<T>
   }
 
   Method _getLerp({
-    required List<String> parameterNames,
+    required Map<String, Map<String, T?>> valueMaps,
     required String className,
   }) {
     return Method(
@@ -174,29 +174,37 @@ abstract class ModeThemeExtensionGenerator<T>
         ])
         ..body = Block.of([
           Code('if(other is! $className) return this;'),
-          _getLerpedConstructor(parameterNames: parameterNames)
-              .returned
-              .statement,
+          _getLerpedConstructor(valueMaps: valueMaps).returned.statement,
         ]),
     );
   }
 
   Expression _getLerpedConstructor({
-    required List<String> parameterNames,
+    required Map<String, Map<String, T?>> valueMaps,
   }) {
     final lerpReference =
         this.lerpReference ?? symbolReference.property("lerp");
+    final names = valueMaps.values.first.keys.toList();
     return refer(className).newInstance(
       [],
       {
-        for (final name in parameterNames)
-          name: lerpReference.call(
-            [
-              refer(name),
-              refer('other.$name'),
-              refer('t'),
-            ],
-          ),
+        for (final name in names)
+          name: switch (valueMaps.allModesResolved(valueName: name)) {
+            true => lerpReference.call(
+                [
+                  refer(name),
+                  refer('other.$name'),
+                  refer('t'),
+                ],
+              ).nullChecked,
+            false => lerpReference.call(
+                [
+                  refer(name),
+                  refer('other.$name'),
+                  refer('t'),
+                ],
+              ),
+          },
       },
     );
   }

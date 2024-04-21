@@ -94,12 +94,12 @@ figmage forge <path> --token <token> --fileId <fileId>
 ```
 
 > [!NOTE] 
-> 🤔 Wait, what's a token? And what's this fileId? Where do I get them?
+> **🤔 Wait, what's a token? And what's this file ID? Where do I get them?**
 >
 > To interact with the Figma API, you'll need an **access token**. Check out the [Figma Docs](https://www.figma.com/developers/api#access-tokens) to learn how to create yours.
 >
 > The **fileId** is part of the URL when you open a Figma file. Just look in your browser's address bar when you have your design system file open:
-
+>
 > ➡ figma.com/file/**your-file-id-is-here**/more-not-so-interesting-stuff
 
 ### 🎨 Details
@@ -138,18 +138,15 @@ numbers:
   from:
     - "numbers/path"
 spacers:
-  # Default: false. Whether to generate spacer tokens.
+  # Default: false. Whether to generate spacer tokens from all generated number tokens (see above).
   generate: false
-  # Default: []. Specific paths to generate spacer tokens from.
-  from:
-    - "spacers/path"
 paddings:
-  # Default: false. Whether to generate padding tokens.
+  # Default: false. Whether to generate padding tokens from all generated number tokens (see above).
   generate: false
-  # Default: []. Specific paths to generate padding tokens from.
-  from:
-    - "paddings/path"
 ```
+> [!WARNING]
+> Spacers and Paddings will always be generated for **all** included number tokens for now. Any `from` paths specified for `spacers` and `paddings` will be ignored. See [this issue](https://github.com/whynotmake-it/figmage/issues/76) for more information.
+
 
 ## How to use 📲
 

@@ -31,8 +31,8 @@ void main() {
     token: "token",
   );
 
-  const mockSettingsWithoutDroppingUnresolved = (
-    config: Config(dropUnresolved: false),
+  const mockSettingsWithDroppingUnresolved = (
+    config: Config(dropUnresolved: true),
     fileId: "fileId",
     path: ".",
     token: "token",
@@ -62,7 +62,7 @@ void main() {
     test('includes all tokens when dropUnresolved is false', () async {
       final result = await container.read(
         filterUnresolvedTokensProvider(
-          mockSettingsWithoutDroppingUnresolved,
+          mockSettings,
         ).future,
       );
       expect(result.unresolvable.colorTokens.length, 1);
@@ -72,7 +72,7 @@ void main() {
     test('omits unresolved tokens when dropUnresolved is true', () async {
       final result = await container.read(
         filterUnresolvedTokensProvider(
-          mockSettings,
+          mockSettingsWithDroppingUnresolved,
         ).future,
       );
       expect(result.unresolvable.colorTokens.length, 0);

@@ -138,18 +138,15 @@ numbers:
   from:
     - "numbers/path"
 spacers:
-  # Default: false. Whether to generate spacer tokens.
+  # Default: false. Whether to generate spacer tokens from all generated number tokens (see above).
   generate: false
-  # Default: []. Specific paths to generate spacer tokens from.
-  from:
-    - "spacers/path"
 paddings:
-  # Default: false. Whether to generate padding tokens.
+  # Default: false. Whether to generate padding tokens from all generated number tokens (see above).
   generate: false
-  # Default: []. Specific paths to generate padding tokens from.
-  from:
-    - "paddings/path"
 ```
+> [!WARNING]
+> Spacers and Paddings will always be generated for **all** included number tokens for now. Any `from` paths specified for `spacers` and `paddings` will be ignored. See [this issue](https://github.com/whynotmake-it/figmage/issues/76) for more information.
+
 
 ## How to use 📲
 

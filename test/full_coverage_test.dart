@@ -8,6 +8,12 @@ import 'package:figmage/src/commands/shared/arg_names.dart';
 import 'package:figmage/src/commands/shared/forge_settings_providers.dart';
 import 'package:figmage/src/commands/shared/generation_notifier.dart';
 import 'package:figmage/src/commands/update/update_command.dart';
+import 'package:figmage/src/data/generators/file_generators/base_file_generator.dart';
+import 'package:figmage/src/data/generators/file_generators/color_file_generator.dart';
+import 'package:figmage/src/data/generators/file_generators/number_file_generator.dart';
+import 'package:figmage/src/data/generators/file_generators/padding_file_generator.dart';
+import 'package:figmage/src/data/generators/file_generators/spacer_file_generator.dart';
+import 'package:figmage/src/data/generators/file_generators/typography_file_generator.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/data/generators/reference_generators/padding_generator.dart';
 import 'package:figmage/src/data/generators/reference_generators/reference_theme_class_generator.dart';
@@ -24,6 +30,7 @@ import 'package:figmage/src/data/repositories/yaml_config_repository.dart';
 import 'package:figmage/src/data/util/converters/color_conversion_x.dart';
 import 'package:figmage/src/data/util/converters/string_dart_conversion_x.dart';
 import 'package:figmage/src/data/util/converters/type_style_conversion_x.dart';
+import 'package:figmage/src/domain/generators/file_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
@@ -48,6 +55,7 @@ import 'package:figmage/src/domain/repositories/post_generation_repository.dart'
 import 'package:figmage/src/domain/repositories/styles_repository.dart';
 import 'package:figmage/src/domain/repositories/variables_repository.dart';
 import 'package:figmage/src/domain/util/token_filter_x.dart';
+import 'package:figmage/src/domain/util/values_by_name_by_mode_x.dart';
 import 'package:figmage/src/version.dart';
 
 void main() {}

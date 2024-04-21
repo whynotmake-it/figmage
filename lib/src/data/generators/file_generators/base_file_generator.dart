@@ -64,13 +64,28 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
   });
 
   Iterable<ThemeClassGenerator> get _generators sync* {
-    final groupedTokens =
-        groupBy(tokens, (DesignToken dt) => dt.collectionName);
-    for (final MapEntry(key: collectionName, :value) in groupedTokens.entries) {
+    final groupedTokens = groupBy(
+      tokens,
+      (DesignToken dt) => dt.collectionId,
+    );
+
+    /// Ensure unique names when multiple collections have the same name.
+    final usedNames = <String>[];
+    for (final MapEntry(key: _, :value) in groupedTokens.entries) {
+      final collectionName = value.first.collectionName;
+      final name = _getUniqueName(collectionName, usedNames);
+      usedNames.add(collectionName);
       yield buildGeneratorForCollection(
-        collectionName: collectionName,
+        collectionName: name,
         collectionTokens: value,
       );
     }
+  }
+
+  /// Generates a unique name for a collection.
+  String _getUniqueName(String name, List<String> usedNames) {
+    return usedNames.contains(name)
+        ? '$name${usedNames.where((item) => item == name).length}'
+        : name;
   }
 }

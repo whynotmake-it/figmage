@@ -17,7 +17,7 @@ void main() {
         final variables = mockVariables.filterByFrom(
           const GenerationSettings(from: ['collection1/']),
         );
-        expect(variables, hasLength(2));
+        expect(variables, hasLength(3));
         expect(
           variables,
           everyElement(
@@ -32,34 +32,37 @@ void main() {
     });
     group("valuesByNameByMode", () {
       test("should return an empty map if there are no variables", () {
-        final valuesByNameByMode = <Variable<dynamic>>[].valuesByNameByMode;
+        final valuesByNameByMode =
+            <Variable<dynamic>>[].valuesOrNullByNameByMode;
         expect(valuesByNameByMode, isEmpty);
       });
       test("should return a map of values by name by mode", () {
-        final valuesByNameByMode = mockVariables.valuesByNameByMode;
+        final valuesByNameByMode = mockVariables.valuesOrNullByNameByMode;
         expect(valuesByNameByMode, {
-          "light": {
-            "boolName": true,
-            "colorName": 0xFF000000,
-            "floatName": 1,
-            "stringName": "light",
+          'light': {
+            'boolName': true,
+            'colorName': 4278190080,
+            'colorNameUnresolvable': 11184810,
+            'floatName': 1.0,
+            'stringName': 'light',
           },
-          "dark": {
-            "boolName": false,
-            "colorName": 0xFFFFFFFF,
-            "floatName": 0,
-            "stringName": "dark",
+          'dark': {
+            'boolName': false,
+            'colorName': 4294967295,
+            'colorNameUnresolvable': null,
+            'floatName': 0.0,
+            'stringName': 'dark',
           },
         });
       });
 
       test("should order modes alphabetically", () {
-        final valuesByNameByMode = mockVariables.valuesByNameByMode;
+        final valuesByNameByMode = mockVariables.valuesOrNullByNameByMode;
         expect(valuesByNameByMode.keys, containsAllInOrder(["dark", "light"]));
       });
 
       test("should order names alphabetically", () {
-        final valuesByNameByMode = mockVariables.valuesByNameByMode;
+        final valuesByNameByMode = mockVariables.valuesOrNullByNameByMode;
         expect(
           valuesByNameByMode.values,
           everyElement(

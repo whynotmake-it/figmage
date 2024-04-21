@@ -31,10 +31,53 @@ void main() {
     token: "token",
   );
 
+  const mockSettingsWithoutDroppingUnresolved = (
+    config: Config(dropUnresolved: false),
+    fileId: "fileId",
+    path: ".",
+    token: "token",
+  );
+
   setUp(() {
     logger = _MockLogger();
     progress = _MockProgress();
     when(() => logger.progress(any())).thenReturn(progress);
+    when(() => logger.level).thenReturn(Level.verbose);
+  });
+
+  group('filterUnresolvedTokensProvider', () {
+    late ProviderContainer container;
+
+    setUp(() {
+      container = createContainer(
+        overrides: [
+          loggerProvider.overrideWith((ref) => logger),
+          filteredTokensProvider.overrideWith(
+            (ref, _) async => mockTokensForType,
+          ),
+        ],
+      );
+    });
+
+    test('includes all tokens when dropUnresolved is false', () async {
+      final result = await container.read(
+        filterUnresolvedTokensProvider(
+          mockSettingsWithoutDroppingUnresolved,
+        ).future,
+      );
+      expect(result.unresolvable.colorTokens.length, 1);
+      expect(result.resolvable.colorTokens.length, 1);
+    });
+
+    test('omits unresolved tokens when dropUnresolved is true', () async {
+      final result = await container.read(
+        filterUnresolvedTokensProvider(
+          mockSettings,
+        ).future,
+      );
+      expect(result.unresolvable.colorTokens.length, 0);
+      expect(result.resolvable.colorTokens.length, 1);
+    });
   });
 
   group("filteredTokensProvider", () {
@@ -59,10 +102,11 @@ void main() {
         tokensByType.colorTokens,
         containsAll([
           mockColorDesignStyle,
+          mockColorVariableUnresolvable,
           mockColorVariable,
         ]),
       );
-      expect(tokensByType.colorTokens, hasLength(2));
+      expect(tokensByType.colorTokens, hasLength(3));
       expect(
         tokensByType.typographyTokens,
         contains(mockTextDesignStyle),

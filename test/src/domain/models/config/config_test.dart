@@ -18,6 +18,7 @@ void main() {
         ...minimal,
         "packageDescription": "packageDescription",
         "outputPath": "outputPath",
+        "dropUnresolved": true,
         "colors": {
           "generate": true,
           "from": ["path1", "path2"],
@@ -89,6 +90,7 @@ void main() {
       test('are correct', () {
         const sut = Config(fileId: "fileId", packageName: "packageName");
         expect(sut.colors.generate, isTrue);
+        expect(sut.dropUnresolved, isTrue);
         expect(sut.colors.from, isEmpty);
         expect(sut.typography.generate, isTrue);
         expect(sut.typography.from, isEmpty);

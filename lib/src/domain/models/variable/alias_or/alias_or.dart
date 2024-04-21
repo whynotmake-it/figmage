@@ -31,9 +31,15 @@ sealed class AliasOr<T> with _$AliasOr<T> {
     required AliasOr<T> aliasOrValue,
   }) = Alias;
 
+  ///[Alias]: Contains an alias that is not part of the response.
+  const factory AliasOr.unresolved({
+    required String id,
+  }) = AliasUnresolved;
+
   /// Returns the resolved value of the [AliasOr] instance.
-  T get resolveValue => map(
+  T? get resolveValue => map(
         alias: (alias) => alias.aliasOrValue.resolveValue,
         data: (aliasData) => aliasData.data,
+        unresolved: (aliasUnresolved) => null,
       );
 }

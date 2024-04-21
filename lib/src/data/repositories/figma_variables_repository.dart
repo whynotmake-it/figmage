@@ -162,6 +162,11 @@ class FigmaVariablesRepository implements VariablesRepository {
     required VariableModeValueDto value,
     required Map<String, VariableDto> dtoVariables,
   }) {
+    if (value case final VariableModeAliasDto aliasDto) {
+      if (dtoVariables.containsKey(aliasDto.id) == false) {
+        return AliasUnresolved(id: aliasDto.id);
+      }
+    }
     return switch (value) {
       VariableModeAliasDto() => Alias(
           id: value.id,

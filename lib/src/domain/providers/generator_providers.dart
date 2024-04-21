@@ -19,8 +19,11 @@ final generatorsProvider =
     FutureProvider.family<Map<File, FileGenerator>, FigmageSettings>(
   (ref, settings) async {
     final logger = ref.watch(loggerProvider);
-    final tokensByType =
-        await ref.watch(filteredTokensProvider(settings).future);
+
+    final tokensByType = await ref.watch(
+      filterUnresolvedTokensProvider(settings).future,
+    );
+
     final files = await ref.watch(generatedPackageProvider(settings).future);
 
     final typesByFile = <File, TokenFileType>{

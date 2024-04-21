@@ -20,18 +20,21 @@ mixin _$AliasOr<T> {
   TResult when<TResult extends Object?>({
     required TResult Function(T data) data,
     required TResult Function(String id, AliasOr<T> aliasOrValue) alias,
+    required TResult Function(String id) unresolved,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(T data)? data,
     TResult? Function(String id, AliasOr<T> aliasOrValue)? alias,
+    TResult? Function(String id)? unresolved,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(T data)? data,
     TResult Function(String id, AliasOr<T> aliasOrValue)? alias,
+    TResult Function(String id)? unresolved,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -39,18 +42,21 @@ mixin _$AliasOr<T> {
   TResult map<TResult extends Object?>({
     required TResult Function(AliasData<T> value) data,
     required TResult Function(Alias<T> value) alias,
+    required TResult Function(AliasUnresolved<T> value) unresolved,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(AliasData<T> value)? data,
     TResult? Function(Alias<T> value)? alias,
+    TResult? Function(AliasUnresolved<T> value)? unresolved,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AliasData<T> value)? data,
     TResult Function(Alias<T> value)? alias,
+    TResult Function(AliasUnresolved<T> value)? unresolved,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -140,6 +146,7 @@ class _$AliasDataImpl<T> extends AliasData<T> {
   TResult when<TResult extends Object?>({
     required TResult Function(T data) data,
     required TResult Function(String id, AliasOr<T> aliasOrValue) alias,
+    required TResult Function(String id) unresolved,
   }) {
     return data(this.data);
   }
@@ -149,6 +156,7 @@ class _$AliasDataImpl<T> extends AliasData<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(T data)? data,
     TResult? Function(String id, AliasOr<T> aliasOrValue)? alias,
+    TResult? Function(String id)? unresolved,
   }) {
     return data?.call(this.data);
   }
@@ -158,6 +166,7 @@ class _$AliasDataImpl<T> extends AliasData<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(T data)? data,
     TResult Function(String id, AliasOr<T> aliasOrValue)? alias,
+    TResult Function(String id)? unresolved,
     required TResult orElse(),
   }) {
     if (data != null) {
@@ -171,6 +180,7 @@ class _$AliasDataImpl<T> extends AliasData<T> {
   TResult map<TResult extends Object?>({
     required TResult Function(AliasData<T> value) data,
     required TResult Function(Alias<T> value) alias,
+    required TResult Function(AliasUnresolved<T> value) unresolved,
   }) {
     return data(this);
   }
@@ -180,6 +190,7 @@ class _$AliasDataImpl<T> extends AliasData<T> {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(AliasData<T> value)? data,
     TResult? Function(Alias<T> value)? alias,
+    TResult? Function(AliasUnresolved<T> value)? unresolved,
   }) {
     return data?.call(this);
   }
@@ -189,6 +200,7 @@ class _$AliasDataImpl<T> extends AliasData<T> {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AliasData<T> value)? data,
     TResult Function(Alias<T> value)? alias,
+    TResult Function(AliasUnresolved<T> value)? unresolved,
     required TResult orElse(),
   }) {
     if (data != null) {
@@ -293,6 +305,7 @@ class _$AliasImpl<T> extends Alias<T> {
   TResult when<TResult extends Object?>({
     required TResult Function(T data) data,
     required TResult Function(String id, AliasOr<T> aliasOrValue) alias,
+    required TResult Function(String id) unresolved,
   }) {
     return alias(id, aliasOrValue);
   }
@@ -302,6 +315,7 @@ class _$AliasImpl<T> extends Alias<T> {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function(T data)? data,
     TResult? Function(String id, AliasOr<T> aliasOrValue)? alias,
+    TResult? Function(String id)? unresolved,
   }) {
     return alias?.call(id, aliasOrValue);
   }
@@ -311,6 +325,7 @@ class _$AliasImpl<T> extends Alias<T> {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function(T data)? data,
     TResult Function(String id, AliasOr<T> aliasOrValue)? alias,
+    TResult Function(String id)? unresolved,
     required TResult orElse(),
   }) {
     if (alias != null) {
@@ -324,6 +339,7 @@ class _$AliasImpl<T> extends Alias<T> {
   TResult map<TResult extends Object?>({
     required TResult Function(AliasData<T> value) data,
     required TResult Function(Alias<T> value) alias,
+    required TResult Function(AliasUnresolved<T> value) unresolved,
   }) {
     return alias(this);
   }
@@ -333,6 +349,7 @@ class _$AliasImpl<T> extends Alias<T> {
   TResult? mapOrNull<TResult extends Object?>({
     TResult? Function(AliasData<T> value)? data,
     TResult? Function(Alias<T> value)? alias,
+    TResult? Function(AliasUnresolved<T> value)? unresolved,
   }) {
     return alias?.call(this);
   }
@@ -342,6 +359,7 @@ class _$AliasImpl<T> extends Alias<T> {
   TResult maybeMap<TResult extends Object?>({
     TResult Function(AliasData<T> value)? data,
     TResult Function(Alias<T> value)? alias,
+    TResult Function(AliasUnresolved<T> value)? unresolved,
     required TResult orElse(),
   }) {
     if (alias != null) {
@@ -361,5 +379,147 @@ abstract class Alias<T> extends AliasOr<T> {
   AliasOr<T> get aliasOrValue;
   @JsonKey(ignore: true)
   _$$AliasImplCopyWith<T, _$AliasImpl<T>> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$AliasUnresolvedImplCopyWith<T, $Res> {
+  factory _$$AliasUnresolvedImplCopyWith(_$AliasUnresolvedImpl<T> value,
+          $Res Function(_$AliasUnresolvedImpl<T>) then) =
+      __$$AliasUnresolvedImplCopyWithImpl<T, $Res>;
+  @useResult
+  $Res call({String id});
+}
+
+/// @nodoc
+class __$$AliasUnresolvedImplCopyWithImpl<T, $Res>
+    extends _$AliasOrCopyWithImpl<T, $Res, _$AliasUnresolvedImpl<T>>
+    implements _$$AliasUnresolvedImplCopyWith<T, $Res> {
+  __$$AliasUnresolvedImplCopyWithImpl(_$AliasUnresolvedImpl<T> _value,
+      $Res Function(_$AliasUnresolvedImpl<T>) _then)
+      : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+  }) {
+    return _then(_$AliasUnresolvedImpl<T>(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+class _$AliasUnresolvedImpl<T> extends AliasUnresolved<T> {
+  const _$AliasUnresolvedImpl({required this.id}) : super._();
+
+  @override
+  final String id;
+
+  @override
+  String toString() {
+    return 'AliasOr<$T>.unresolved(id: $id)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$AliasUnresolvedImpl<T> &&
+            (identical(other.id, id) || other.id == id));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, id);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AliasUnresolvedImplCopyWith<T, _$AliasUnresolvedImpl<T>> get copyWith =>
+      __$$AliasUnresolvedImplCopyWithImpl<T, _$AliasUnresolvedImpl<T>>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(T data) data,
+    required TResult Function(String id, AliasOr<T> aliasOrValue) alias,
+    required TResult Function(String id) unresolved,
+  }) {
+    return unresolved(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(T data)? data,
+    TResult? Function(String id, AliasOr<T> aliasOrValue)? alias,
+    TResult? Function(String id)? unresolved,
+  }) {
+    return unresolved?.call(id);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(T data)? data,
+    TResult Function(String id, AliasOr<T> aliasOrValue)? alias,
+    TResult Function(String id)? unresolved,
+    required TResult orElse(),
+  }) {
+    if (unresolved != null) {
+      return unresolved(id);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(AliasData<T> value) data,
+    required TResult Function(Alias<T> value) alias,
+    required TResult Function(AliasUnresolved<T> value) unresolved,
+  }) {
+    return unresolved(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(AliasData<T> value)? data,
+    TResult? Function(Alias<T> value)? alias,
+    TResult? Function(AliasUnresolved<T> value)? unresolved,
+  }) {
+    return unresolved?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(AliasData<T> value)? data,
+    TResult Function(Alias<T> value)? alias,
+    TResult Function(AliasUnresolved<T> value)? unresolved,
+    required TResult orElse(),
+  }) {
+    if (unresolved != null) {
+      return unresolved(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class AliasUnresolved<T> extends AliasOr<T> {
+  const factory AliasUnresolved({required final String id}) =
+      _$AliasUnresolvedImpl<T>;
+  const AliasUnresolved._() : super._();
+
+  String get id;
+  @JsonKey(ignore: true)
+  _$$AliasUnresolvedImplCopyWith<T, _$AliasUnresolvedImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

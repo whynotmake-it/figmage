@@ -17,6 +17,8 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
           packageDescription:
               $checkedConvert('packageDescription', (v) => v as String? ?? ''),
           packageDir: $checkedConvert('outputPath', (v) => v as String? ?? '.'),
+          dropUnresolved:
+              $checkedConvert('dropUnresolved', (v) => v as bool? ?? true),
           colors: $checkedConvert(
               'colors',
               (v) => v == null
@@ -67,6 +69,7 @@ Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
       'packageName': instance.packageName,
       'fileId': instance.fileId,
       'packageDescription': instance.packageDescription,
+      'dropUnresolved': instance.dropUnresolved,
       'outputPath': instance.packageDir,
       'colors': instance.colors.toJson(),
       'typography': instance.typography.toJson(),

@@ -1,13 +1,13 @@
 name: figmage_package_generator
 description: A generator for an empty figmage styles dart package
 version: 0.1.0+1
-publish_to: none
+repository: https://github.com/whynotmake-it/figmage/tree/main/packages/figmage_package_generator
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  mason: ^0.1.0-dev.51
+  mason: ^0.1.0-dev.53
   package_config: ^2.1.0
 
 dev_dependencies:

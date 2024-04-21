@@ -1,5 +1,4 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:dart_style/dart_style.dart';
 import 'package:figmage/src/data/generators/file_generators/color_file_generator.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:test/test.dart';

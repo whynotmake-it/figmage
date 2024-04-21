@@ -3,7 +3,6 @@ import 'package:figmage/figmage.dart';
 import 'package:figmage/src/command_runner.dart';
 import 'package:figmage/src/commands/commands.dart';
 import 'package:figmage/src/commands/forge/forge_command.dart';
-import 'package:figmage/src/commands/reforge/reforge_command.dart';
 import 'package:figmage/src/commands/shared/arg_names.dart';
 import 'package:figmage/src/commands/shared/forge_settings_providers.dart';
 import 'package:figmage/src/commands/shared/generation_notifier.dart';

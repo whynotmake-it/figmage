@@ -155,22 +155,6 @@ void main() {
         verify(() => logger.detail('  - verbose: true')).called(1);
         verifyNever(() => logger.detail('    Command options:'));
       });
-
-      test('enables verbose logging for sub commands', () async {
-        final result = await commandRunner.run([
-          '--verbose',
-          'reforge',
-          '--token=asdasd',
-        ]);
-        expect(result, equals(ExitCode.success.code));
-
-        verify(() => logger.detail('Argument information:')).called(1);
-        verify(() => logger.detail('  Top level options:')).called(1);
-        verify(() => logger.detail('  - verbose: true')).called(1);
-        verify(() => logger.detail('  Command: reforge')).called(1);
-        verify(() => logger.detail('    Command options:')).called(1);
-        verify(() => logger.detail('    - token: asdasd')).called(1);
-      });
     });
   });
 }

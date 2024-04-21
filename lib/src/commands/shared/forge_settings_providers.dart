@@ -11,8 +11,7 @@ typedef SettingsProviderArgs = ({
   ArgResults argResults,
 });
 
-/// Tries to parse the shared settings that are needed for the `forge` and
-/// `reforge` commands.
+/// Tries to parse the shared settings that are needed for the `forge` command.
 ///
 /// Throws an error if any aren't present.
 final settingsProvider = FutureProvider.autoDispose

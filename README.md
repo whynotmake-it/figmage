@@ -93,7 +93,8 @@ This command will generate a new package at the specified output path using the 
 figmage forge <path> --token <token> --fileId <fileId>
 ```
 
-> [!INFO] > **🤔 Wait, what's a token? And what's this fileId? Where do I get them?**
+> [!NOTE] 
+> 🤔 Wait, what's a token? And what's this fileId? Where do I get them?
 >
 > To interact with the Figma API, you'll need an **access token**. Check out the [Figma Docs](https://www.figma.com/developers/api#access-tokens) to learn how to create yours.
 >

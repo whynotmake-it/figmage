@@ -1,15 +1,12 @@
 name: Prepare Release
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
     verify_release:
         name: Version
         runs-on: ubuntu-latest
-        if: contains(github.event.head_commit.message, 'chore(release)') == false
         permissions:
             contents: write
             pull-requests: write
@@ -27,5 +24,13 @@ jobs:
             with:
                 run-versioning: true
                 publish-dry-run: true
-                create-pr: true
+
+          - name: 🎋 Create Pull Request
+            uses: peter-evans/create-pull-request@v3
+            with:
+                title: 'chore(release): Publish packages'
+                body: 'Prepared all packages to be released to pub.dev'
+                branch: chore/release
+                delete-branch: true
+          
  

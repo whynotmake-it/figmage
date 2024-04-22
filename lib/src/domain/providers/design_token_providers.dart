@@ -17,39 +17,25 @@ import 'package:riverpod/riverpod.dart';
 /// If false, includes all tokens, with unresolved ones returning null.
 final filterUnresolvedTokensProvider =
     FutureProvider.family<TokensByType, FigmageSettings>((ref, settings) async {
-  final logger = ref.watch(loggerProvider)
-    ..info(
-      "'Checking if all design tokens have valid values...",
-    );
+  final logger = ref.watch(loggerProvider);
+
   final tokensByType = await ref.watch(filteredTokensProvider(settings).future);
   tokensByType.asMap().forEach((name, tokens) {
-    if (tokens.isNotEmpty) {
-      logger.info("${name.toTitleCase()}:");
-      final unresolvedTokens = tokens.getUnresolvedTokens();
-      if (unresolvedTokens.isEmpty) {
-        logger.info(' All values are resolved.');
-      } else {
-        logger.info(
-            ' Found ${unresolvedTokens.length} token(s) where the value is, at'
-            ' least for one mode, unresolvable.');
-        if (logger.level == Level.verbose) {
-          for (final token in unresolvedTokens) {
-            logger.info(' ${token.fullName}:');
-            token.valuesByModeName.forEach((modeName, value) {
-              logger.info('   $modeName : $value');
-            });
-          }
-        } else {
-          logger.info(
-              ' For more information on the missing values rerun the command'
-              ' with --verbose.');
+    final unresolvedTokens = tokens.getUnresolvedTokens();
+    if (unresolvedTokens.isNotEmpty) {
+      logger.warn(
+          ' Found ${unresolvedTokens.length} ${name.toTitleCase()} where the'
+          '  value is, at least for one mode, unresolvable.');
+      if (logger.level == Level.verbose) {
+        for (final token in unresolvedTokens) {
+          logger.info(' ${token.fullName}:');
+          token.valuesByModeName.forEach((modeName, value) {
+            logger.info('   $modeName : $value');
+          });
         }
       }
     }
   });
-  logger.info(
-      '${settings.config.dropUnresolved ? 'Dropping' : 'Keeping'} token(s) with'
-      ' missing values based on your configuration.');
   return settings.config.dropUnresolved
       ? tokensByType.resolvable
       : tokensByType;

@@ -1,0 +1,31 @@
+name: Prepare Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+    verify_release:
+        name: Version
+        runs-on: ubuntu-latest
+        if: contains(github.event.head_commit.message, 'chore(release)') == false
+        permissions:
+            contents: write
+            pull-requests: write
+        steps:
+          - name: 📚 Checkout
+            uses: actions/checkout@v4
+    
+          - name: 🎯 Setup Dart
+            uses: dart-lang/setup-dart@v1.6.4
+            with:
+              sdk: 'stable'
+    
+          - name: Ⓜ️ Set up Melos
+            uses: bluefireteam/melos-action@v3
+            with:
+                run-versioning: true
+                publish-dry-run: true
+                create-pr: true
+ 

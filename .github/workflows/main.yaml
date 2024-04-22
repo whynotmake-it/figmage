@@ -70,3 +70,22 @@ jobs:
 
       - name: 🔎 Check there are no uncommitted changes
         run: git diff --exit-code
+  verify_release:
+    name: Verify Release
+    needs: [flutter-check, check_generation]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && contains(github.event.pull_request.title, 'chore(release):')
+    steps:
+      - name: 📚 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🎯 Setup Dart
+        uses: dart-lang/setup-dart@v1.6.4
+        with:
+          sdk: 'stable'
+
+      - name: Ⓜ️ Set up Melos
+        uses: bluefireteam/melos-action@v3
+        with:
+          publish-dry-run: true
+          

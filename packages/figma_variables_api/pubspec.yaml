@@ -1,6 +1,6 @@
 name: figma_variables_api
 description: Figma REST API for variables.
-version: 0.1.0-dev.2
+version: 0.1.0-dev.3
 repository: https://github.com/whynotmake-it/figmage/tree/main/packages/figma_variables_api
 
 environment:

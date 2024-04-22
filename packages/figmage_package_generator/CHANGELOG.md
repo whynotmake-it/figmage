@@ -10,6 +10,6 @@
  - **BREAKING** **FEAT**: connect everything together (#25).
  - **BREAKING** **FEAT**(figmage_package_generator): added files per type (#8).
 
-# 0.1.0+1
+## 0.1.0+1
 
 - feat: initial commit 🎉

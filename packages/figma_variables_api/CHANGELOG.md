@@ -11,6 +11,6 @@
  - **BREAKING** **REFACTOR**: unify `SpacersGenerator` and `PaddingsGenerator` in `ReferenceThemeClassGenerator` (#59).
  - **BREAKING** **FEAT**: connect everything together (#25).
 
-# 0.1.0+1
+## 0.1.0+1
 
 - feat: initial commit 🎉

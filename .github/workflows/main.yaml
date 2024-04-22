@@ -33,7 +33,7 @@ jobs:
           sdk: "stable"
 
       - name: Ⓜ️ Set up Melos
-        uses: bluefireteam/melos-action@v3
+        uses: bluefireteam/melos-action@5a8367ec4b9942d712528c398ff3f996e03bc230
 
       - name: 🧪 Run Analyze
         run: melos run analyze
@@ -63,28 +63,11 @@ jobs:
           sdk: "stable"
 
       - name: Ⓜ️ Set up Melos
-        uses: bluefireteam/melos-action@v3
+        uses: bluefireteam/melos-action@5a8367ec4b9942d712528c398ff3f996e03bc230
 
       - name: 🔨 Generate
         run: melos run generate
 
       - name: 🔎 Check there are no uncommitted changes
         run: git diff --exit-code
-  verify_release:
-    name: Verify Release
-    needs: [flutter-check, check_generation]
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && contains(github.event.pull_request.title, 'chore(release):')
-    steps:
-      - name: 📚 Checkout
-        uses: actions/checkout@v4
 
-      - name: 🎯 Setup Dart
-        uses: dart-lang/setup-dart@v1.6.4
-        with:
-          sdk: "stable"
-
-      - name: Ⓜ️ Set up Melos
-        uses: bluefireteam/melos-action@v3
-        with:
-          publish-dry-run: true

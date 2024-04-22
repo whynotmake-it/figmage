@@ -20,7 +20,7 @@ jobs:
           sdk: "stable"
 
       - name: Ⓜ️ Set up Melos
-        uses: bluefireteam/melos-action@v3
+        uses: bluefireteam/melos-action@5a8367ec4b9942d712528c398ff3f996e03bc230
         with:
           run-versioning: true
           publish-dry-run: true

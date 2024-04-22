@@ -12,6 +12,11 @@ command:
         dart pub global activate full_coverage
   version:
     updateGitTagRefs: true
+    workspaceChangelog: false
+    hooks:
+      preCommit: |
+        melos run generate
+        git add .
 
 scripts:
   analyze:

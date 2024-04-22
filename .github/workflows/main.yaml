@@ -30,7 +30,7 @@ jobs:
       - name: 🎯 Setup Dart
         uses: dart-lang/setup-dart@v1.6.4
         with:
-          sdk: 'stable'
+          sdk: "stable"
 
       - name: Ⓜ️ Set up Melos
         uses: bluefireteam/melos-action@v3
@@ -48,7 +48,7 @@ jobs:
           lower_threshold: 50
           upper_threshold: 75
           generate_badges: pr
-  
+
   check_generation:
     name: Check Code Generation
     timeout-minutes: 10
@@ -60,8 +60,8 @@ jobs:
       - name: 🎯 Setup Dart
         uses: dart-lang/setup-dart@v1.6.4
         with:
-          sdk: 'stable' 
-      
+          sdk: "stable"
+
       - name: Ⓜ️ Set up Melos
         uses: bluefireteam/melos-action@v3
 
@@ -82,10 +82,9 @@ jobs:
       - name: 🎯 Setup Dart
         uses: dart-lang/setup-dart@v1.6.4
         with:
-          sdk: 'stable'
+          sdk: "stable"
 
       - name: Ⓜ️ Set up Melos
         uses: bluefireteam/melos-action@v3
         with:
           publish-dry-run: true
-          

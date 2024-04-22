@@ -1,6 +1,6 @@
 name: figmage_package_generator
 description: A generator for an empty figmage styles dart package
-version: 0.1.0+1
+version: 0.1.0-dev.1
 repository: https://github.com/whynotmake-it/figmage/tree/main/packages/figmage_package_generator
 
 environment:

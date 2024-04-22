@@ -1,31 +1,34 @@
 name: Prepare Release
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
-    verify_release:
-        name: Version
-        runs-on: ubuntu-latest
-        if: contains(github.event.head_commit.message, 'chore(release)') == false
-        permissions:
-            contents: write
-            pull-requests: write
-        steps:
-          - name: 📚 Checkout
-            uses: actions/checkout@v4
-    
-          - name: 🎯 Setup Dart
-            uses: dart-lang/setup-dart@v1.6.4
-            with:
-              sdk: 'stable'
-    
-          - name: Ⓜ️ Set up Melos
-            uses: bluefireteam/melos-action@v3
-            with:
-                run-versioning: true
-                publish-dry-run: true
-                create-pr: true
- 
+  verify_release:
+    name: Version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: 📚 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🎯 Setup Dart
+        uses: dart-lang/setup-dart@v1.6.4
+        with:
+          sdk: "stable"
+
+      - name: Ⓜ️ Set up Melos
+        uses: bluefireteam/melos-action@5a8367ec4b9942d712528c398ff3f996e03bc230
+        with:
+          run-versioning: true
+          publish-dry-run: true
+
+      - name: 🎋 Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          title: "chore(release): Publish packages"
+          body: "Prepared all packages to be released to pub.dev"
+          branch: chore/release
+          delete-branch: true

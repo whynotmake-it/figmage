@@ -119,33 +119,33 @@ class WebPadding {
         bottom: myNumbers.m,
       );
 
-  EdgeInsets get lLeft =>
+  EdgeInsets? get lLeft =>
       myNumbers.l == null ? null : EdgeInsets.only(left: myNumbers.l!);
 
-  EdgeInsets get lTop =>
+  EdgeInsets? get lTop =>
       myNumbers.l == null ? null : EdgeInsets.only(top: myNumbers.l!);
 
-  EdgeInsets get lRight =>
+  EdgeInsets? get lRight =>
       myNumbers.l == null ? null : EdgeInsets.only(right: myNumbers.l!);
 
-  EdgeInsets get lBottom =>
+  EdgeInsets? get lBottom =>
       myNumbers.l == null ? null : EdgeInsets.only(bottom: myNumbers.l!);
 
-  EdgeInsets get lVertical => myNumbers.l == null
+  EdgeInsets? get lVertical => myNumbers.l == null
       ? null
       : EdgeInsets.only(
           top: myNumbers.l!,
           bottom: myNumbers.l!,
         );
 
-  EdgeInsets get lHorizontal => myNumbers.l == null
+  EdgeInsets? get lHorizontal => myNumbers.l == null
       ? null
       : EdgeInsets.only(
           left: myNumbers.l!,
           right: myNumbers.l!,
         );
 
-  EdgeInsets get lAll => myNumbers.l == null
+  EdgeInsets? get lAll => myNumbers.l == null
       ? null
       : EdgeInsets.only(
           left: myNumbers.l!,

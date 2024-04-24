@@ -1,5 +1,6 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/reference_generators/reference_theme_class_generator.dart';
+import 'package:figmage/src/data/generators/theme_extension_generators/mode_theme_extension_generator.dart';
 import 'package:figmage/src/data/util/converters/string_dart_conversion_x.dart';
 
 /// {@template padding_generator}
@@ -29,7 +30,9 @@ class PaddingGenerator extends ReferenceThemeClassGenerator {
           (m) {
             m
               ..name = '$valueFieldName${type.name.toTitleCase()}'
-              ..returns = _edgeInsetsReference
+              ..returns = isNullable
+                  ? _edgeInsetsReference.toNullable
+                  : _edgeInsetsReference
               ..type = MethodType.getter
               ..lambda = true
               ..body = _getEdgeInsetsExpression(

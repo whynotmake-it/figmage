@@ -11,7 +11,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:figma_variables_api/figma_variables_api.dart';
-import 'package:figma_variables_api/src/dto/styles/styles_response.dart';
 import 'package:http/http.dart';
 import 'package:http2/http2.dart';
 
@@ -65,7 +64,8 @@ class FigmaClient {
     });
   }
 
-  /// Retrieves the local variables from the Figma file specified by [fileId].
+  /// Retrieves the published local variables from the Figma file specified by
+  /// [fileId].
   Future<VariablesResponseDto> getLocalVariables(String fileId) async {
     final json = await _getFigma('/files/$fileId/variables/local');
     return VariablesResponseDto.fromJson(json);
@@ -75,6 +75,11 @@ class FigmaClient {
   Future<StylesResponse> getFileStyles(String key, [FigmaQuery? query]) async =>
       _getFigma('/files/$key/styles', query)
           .then((data) => StylesResponse.fromJson(data));
+
+  /// Retrieves the file nodes specified.
+  Future<NodesResponse> getFileNodes(String key, FigmaQuery query) async =>
+      await _getFigma('/files/$key/nodes', query)
+          .then((data) => NodesResponse.fromJson(data));
 
   /// Does a GET request towards the Figma API.
   Future<Map<String, dynamic>> _getFigma(

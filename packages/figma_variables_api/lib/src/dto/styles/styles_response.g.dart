@@ -133,7 +133,7 @@ extension $StylesResponseMetaCopyWith on StylesResponseMeta {
 
 StylesResponse _$StylesResponseFromJson(Map<String, dynamic> json) =>
     StylesResponse(
-      status: json['status'] as int?,
+      status: (json['status'] as num?)?.toInt(),
       error: json['error'] as bool?,
       meta: json['meta'] == null
           ? null

@@ -11,6 +11,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:figma_variables_api/figma_variables_api.dart';
+import 'package:figma_variables_api/src/dto/styles/styles_response.dart';
 import 'package:http/http.dart';
 import 'package:http2/http2.dart';
 
@@ -18,11 +19,11 @@ import 'package:http2/http2.dart';
 const base = 'api.figma.com';
 
 /// A constant that is true if the application was compiled to run on the web.
-
-// This implementation takes advantage of the fact that JavaScript does not support integers.
-// In this environment, Dart's doubles and ints are backed by the same kind of object. Thus a
-// double 0.0 is identical to an integer 0. This is not true for Dart code running in
-// AOT or on the VM.
+///
+/// This implementation takes advantage of the fact that JavaScript does not support integers.
+/// In this environment, Dart's doubles and ints are backed by the same kind of object. Thus a
+/// double 0.0 is identical to an integer 0. This is not true for Dart code running in
+/// AOT or on the VM.
 const bool kIsWeb = identical(0, 0.0);
 
 /// A client for interacting with the Figma API.
@@ -64,11 +65,16 @@ class FigmaClient {
     });
   }
 
-  /// Retrieves the local variables from the Figma file specified by [key].
-  Future<VariablesResponseDto> getLocalVariables(String key) async {
-    final json = await _getFigma('/files/$key/variables/local');
+  /// Retrieves the local variables from the Figma file specified by [fileId].
+  Future<VariablesResponseDto> getLocalVariables(String fileId) async {
+    final json = await _getFigma('/files/$fileId/variables/local');
     return VariablesResponseDto.fromJson(json);
   }
+
+  /// Retrieves all published styles from the Figma file specified by [key].
+  Future<StylesResponse> getFileStyles(String key, [FigmaQuery? query]) async =>
+      _getFigma('/files/$key/styles', query)
+          .then((data) => StylesResponse.fromJson(data));
 
   /// Does a GET request towards the Figma API.
   Future<Map<String, dynamic>> _getFigma(

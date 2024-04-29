@@ -8,7 +8,7 @@ import 'package:figma_variables_api/src/dto/variable_response/variables_response
 import 'package:figma_variables_api/src/dto/variables_meta/variables_meta_dto.dart';
 import 'package:test/test.dart';
 
-import '../../../../util/parse_json_from_file.dart';
+import '../../../util/parse_json_from_file.dart';
 
 void main() {
   group('copyWith', () {

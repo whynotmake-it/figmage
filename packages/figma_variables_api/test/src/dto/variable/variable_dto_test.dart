@@ -4,7 +4,7 @@ import 'package:figma_variables_api/src/dto/variable/variable_dto.dart';
 import 'package:figma_variables_api/src/dto/variable_mode_value/variable_mode_value_dto.dart';
 import 'package:test/test.dart';
 
-import '../../../../util/parse_json_from_file.dart';
+import '../../../util/parse_json_from_file.dart';
 
 void main() {
   group('copyWith', () {

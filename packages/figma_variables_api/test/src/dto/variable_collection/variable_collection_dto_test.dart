@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:test/test.dart';
 
-import '../../../../util/parse_json_from_file.dart';
+import '../../../util/parse_json_from_file.dart';
 
 void main() {
   final sut = VariableCollectionDto(

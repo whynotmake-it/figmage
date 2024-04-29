@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:figma_variables_api/src/models/dto/variable/variable_dto.dart';
-import 'package:figma_variables_api/src/models/dto/variable_mode_value/variable_mode_value_dto.dart';
+import 'package:figma_variables_api/src/dto/variable/variable_dto.dart';
+import 'package:figma_variables_api/src/dto/variable_mode_value/variable_mode_value_dto.dart';
 import 'package:test/test.dart';
 
 import '../../../../util/parse_json_from_file.dart';
@@ -15,7 +15,7 @@ void main() {
         remote: false,
         key: "db60e2b2141198dff74e59f329863257348ec9d6",
         variableCollectionId: "VariableCollectionId:33:7",
-        resolvedType: "COLOR",
+        resolvedType: VariableType.color,
         description: "",
         hiddenFromPublishing: false,
         scopes: [],
@@ -54,7 +54,7 @@ void main() {
         variable.variableCollectionId,
         "VariableCollectionId:33:7",
       );
-      expect(variable.resolvedType, "COLOR");
+      expect(variable.resolvedType, VariableType.color);
       expect(variable.description, "");
       expect(variable.hiddenFromPublishing, false);
 
@@ -85,7 +85,7 @@ void main() {
         remote: false,
         key: "db60e2b2141198dff74e59f329863257348ec9d6",
         variableCollectionId: "VariableCollectionId:33:7",
-        resolvedType: "COLOR",
+        resolvedType: VariableType.color,
         description: "",
         hiddenFromPublishing: false,
         scopes: ["ALL_SCOPES"],

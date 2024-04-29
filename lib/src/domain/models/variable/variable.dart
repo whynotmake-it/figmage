@@ -1,18 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
-
-/// Figmas identifier for string variables.
-const String kResolvedTypeString = 'STRING';
-
-/// Figmas identifier for float variables.
-const String kResolvedTypeNumber = 'FLOAT';
-
-/// Figmas identifier for color variables.
-const String kResolvedTypeColor = 'COLOR';
-
-/// Figmas identifier for boolean variables.
-const String kResolvedTypeBoolean = 'BOOLEAN';
 
 /// {@template variable}
 /// Represents a Figma variable with different data types.
@@ -67,7 +56,7 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
   final String variableCollectionName;
 
   /// The resolved type of this variable (see constants above)
-  final String resolvedType;
+  final VariableType resolvedType;
 
   /// The description of this variable.
   final String description;

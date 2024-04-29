@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:figma_variables_api/src/models/dto/variable/variable_dto.dart';
-import 'package:figma_variables_api/src/models/dto/variable_collection/variable_collection_dto.dart';
-import 'package:figma_variables_api/src/models/dto/variable_mode/variable_mode_dto.dart';
-import 'package:figma_variables_api/src/models/dto/variable_mode_value/variable_mode_value_dto.dart';
-import 'package:figma_variables_api/src/models/dto/variable_response/variables_response_dto.dart';
-import 'package:figma_variables_api/src/models/dto/variables_meta/variables_meta_dto.dart';
+import 'package:figma_variables_api/src/dto/variable/variable_dto.dart';
+import 'package:figma_variables_api/src/dto/variable_collection/variable_collection_dto.dart';
+import 'package:figma_variables_api/src/dto/variable_mode/variable_mode_dto.dart';
+import 'package:figma_variables_api/src/dto/variable_mode_value/variable_mode_value_dto.dart';
+import 'package:figma_variables_api/src/dto/variable_response/variables_response_dto.dart';
+import 'package:figma_variables_api/src/dto/variables_meta/variables_meta_dto.dart';
 import 'package:test/test.dart';
 
 import '../../../../util/parse_json_from_file.dart';
@@ -19,7 +19,7 @@ void main() {
         remote: false,
         key: "db60e2b2141198dff74e59f329863257348ec9d6",
         variableCollectionId: "VariableCollectionId:33:7",
-        resolvedType: "COLOR",
+        resolvedType: VariableType.color,
         description: "",
         hiddenFromPublishing: false,
         scopes: [],
@@ -86,7 +86,7 @@ void main() {
       expect(variable1.remote, false);
       expect(variable1.key, '2e91fbae8fc380794adf6ac35c03f9fb8d9033c4');
       expect(variable1.variableCollectionId, 'VariableCollectionId:1:11');
-      expect(variable1.resolvedType, 'FLOAT');
+      expect(variable1.resolvedType, VariableType.float);
       expect(variable1.description, '');
       expect(variable1.hiddenFromPublishing, false);
 
@@ -147,7 +147,7 @@ void main() {
             remote: false,
             key: '2e91fbae8fc380794adf6ac35c03f9fb8d9033c4',
             variableCollectionId: 'VariableCollectionId:1:11',
-            resolvedType: 'FLOAT',
+            resolvedType: VariableType.float,
             description: '',
             hiddenFromPublishing: false,
             scopes: ['ALL_SCOPES'],

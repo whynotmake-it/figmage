@@ -1,5 +1,6 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:dart_style/dart_style.dart';
+import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/data/generators/file_generators/color_file_generator.dart';
 import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_type.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
@@ -19,7 +20,7 @@ const variableTokens = TokensByType(
       key: "_",
       variableCollectionId: "c1",
       variableCollectionName: "MyCollection",
-      resolvedType: kResolvedTypeColor,
+      resolvedType: VariableType.color,
       description: "",
       hiddenFromPublishing: false,
       scopes: [],
@@ -37,7 +38,7 @@ const variableTokens = TokensByType(
       key: "_",
       variableCollectionId: "c1",
       variableCollectionName: "MyCollection",
-      resolvedType: kResolvedTypeColor,
+      resolvedType: VariableType.color,
       description: "",
       hiddenFromPublishing: false,
       scopes: [],
@@ -57,7 +58,7 @@ const variableTokens = TokensByType(
       key: "_",
       variableCollectionId: "c1",
       variableCollectionName: "MyCollection",
-      resolvedType: kResolvedTypeColor,
+      resolvedType: VariableType.color,
       description: "",
       hiddenFromPublishing: false,
       scopes: [],

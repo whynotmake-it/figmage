@@ -10,8 +10,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:figma_variables_api/src/models/dto/variable_response/variables_response_dto.dart';
-import 'package:figma_variables_api/src/query.dart';
+import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:http/http.dart';
 import 'package:http2/http2.dart';
 

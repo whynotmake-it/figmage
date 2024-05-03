@@ -1,4 +1,4 @@
-name: Prepare Release
+name: Version
 
 on:
   workflow_dispatch:
@@ -20,16 +20,18 @@ jobs:
           sdk: "stable"
 
       - name: Ⓜ️ Set up Melos
-        uses: bluefireteam/melos-action@5a8367ec4b9942d712528c398ff3f996e03bc230
-        with:
-          run-versioning: true
-          publish-dry-run: true
-          tag: true
+        run: dart pub global activate melos
+
+      - name: 📦 Version
+        run: melos run version --yes
+      
+      - name: 📢 Publish Dry Run
+        run: melos run publish -y --dry-run
 
       - name: 🎋 Create Pull Request
         uses: peter-evans/create-pull-request@6d6857d36972b65feb161a90e484f2984215f83e
         with:
-          title: "chore(release): Publish packages"
+          title: "chore(release): Version packages"
           body: "Prepared all packages to be released to pub.dev"
           branch: chore/release
           delete-branch: true

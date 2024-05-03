@@ -42,7 +42,7 @@ jobs:
         run: melos run coverage
 
       - name: 📢 Ensure Publishable
-        run: melos run publish --yes --dry-run
+        run: melos publish --yes --dry-run
 
       - name: 📊 Generate Coverage
         id: coverage-report

@@ -178,7 +178,7 @@ NodeContent _$NodeContentFromJson(Map<String, dynamic> json) => NodeContent(
       componentSets: (json['componentSets'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, ComponentSet.fromJson(e as Map<String, dynamic>)),
       ),
-      schemaVersion: json['schemaVersion'] as int?,
+      schemaVersion: (json['schemaVersion'] as num?)?.toInt(),
       styles: (json['styles'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, Style.fromJson(e as Map<String, dynamic>)),
       ),

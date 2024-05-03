@@ -1,4 +1,4 @@
-import 'package:figma/figma.dart';
+import 'package:figma_variables_api/figma_variables_api.dart';
 
 /// Extension methods for converting [Color]s.
 extension ColorConversionX on Color {

@@ -18,7 +18,6 @@ dependencies:
   collection: ">=1.17.2 <2.0.0"
   dart_style: ^2.3.4
   equatable: ^2.0.5
-  figma: ^7.1.1
   figma_variables_api: ^0.1.0-dev.3
   figmage_package_generator: ^0.1.0-dev.3
   freezed_annotation: ^2.4.1

@@ -1,4 +1,4 @@
-import 'package:figma/figma.dart';
+import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:meta/meta.dart';
 

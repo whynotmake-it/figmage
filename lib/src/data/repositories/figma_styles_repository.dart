@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:figma/figma.dart';
+import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/data/util/converters/color_conversion_x.dart';
 import 'package:figmage/src/data/util/converters/type_style_conversion_x.dart';
 import 'package:figmage/src/domain/models/style/design_style.dart';
@@ -40,7 +40,6 @@ class FigmaStylesRepository implements StylesRepository {
       _throwError(e);
     }
     final styleNodes = nodesResponse.nodes?.values.map((e) => e.document) ?? [];
-
     return [
       for (final node in styleNodes)
         if (node != null)

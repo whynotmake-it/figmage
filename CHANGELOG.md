@@ -1,3 +1,8 @@
+## 0.1.0-dev.4
+
+ - **FIX**: styles import is not handled by `package:figma` anymore (#96).
+ - **FIX**: null return type in padding generator (#89).
+
 ## 0.1.0-dev.3
 
 > Note: This release has breaking changes.

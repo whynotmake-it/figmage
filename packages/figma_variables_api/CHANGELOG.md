@@ -1,3 +1,7 @@
+## 0.1.0-dev.4
+
+ - **FIX**: styles import is not handled by `package:figma` anymore (#96).
+
 ## 0.1.0-dev.3
 
 > Note: This release has breaking changes.

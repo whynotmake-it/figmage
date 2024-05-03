@@ -77,9 +77,10 @@ class FigmaClient {
           .then((data) => StylesResponse.fromJson(data));
 
   /// Retrieves the file nodes specified.
-  Future<NodesResponse> getFileNodes(String key, FigmaQuery query) async =>
-      await _getFigma('/files/$key/nodes', query)
-          .then((data) => NodesResponse.fromJson(data));
+  Future<NodesResponse> getFileNodes(String key, FigmaQuery query) async {
+    final json = await _getFigma('/files/$key/nodes', query);
+    return NodesResponse.fromJson(json);
+  }
 
   /// Does a GET request towards the Figma API.
   Future<Map<String, dynamic>> _getFigma(

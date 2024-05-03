@@ -1,4 +1,3 @@
-export 'dto/styles/style_dto.dart';
 export 'dto/styles/style_type.dart';
 export 'dto/styles/styles_response.dart';
 export 'dto/nodes/node_content.dart';

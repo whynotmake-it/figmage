@@ -1,6 +1,6 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
-import 'package:figma_variables_api/src/dto/styles/style_dto.dart';
+import 'package:figma/figma.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'styles_response.g.dart';
@@ -37,7 +37,7 @@ class StylesResponseMeta extends Equatable {
   factory StylesResponseMeta.fromJson(Map<String, dynamic> json) =>
       _$StylesResponseMetaFromJson(json);
 
-  final List<StyleDto> styles;
+  final List<Style> styles;
 
   @override
   List<Object?> get props => [styles];

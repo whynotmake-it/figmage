@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:figma/figma.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
+// ignore: implementation_imports
+import 'package:figma/src/converters/converters.dart';
 
 part 'node_content.g.dart';
 
@@ -41,6 +43,7 @@ class NodeContent extends Equatable {
   final String? version;
 
   /// File document (top-level node).
+  @NodeJsonConverter()
   final Node? document;
 
   /// File components, if any.

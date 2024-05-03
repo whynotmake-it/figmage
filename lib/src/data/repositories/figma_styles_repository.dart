@@ -40,7 +40,6 @@ class FigmaStylesRepository implements StylesRepository {
       _throwError(e);
     }
     final styleNodes = nodesResponse.nodes?.values.map((e) => e.document) ?? [];
-
     return [
       for (final node in styleNodes)
         if (node != null)

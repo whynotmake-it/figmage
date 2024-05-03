@@ -78,7 +78,7 @@ extension $StylesResponseCopyWith on StylesResponse {
 }
 
 abstract class _$StylesResponseMetaCWProxy {
-  StylesResponseMeta styles(List<StyleDto> styles);
+  StylesResponseMeta styles(List<Style> styles);
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `StylesResponseMeta(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -87,7 +87,7 @@ abstract class _$StylesResponseMetaCWProxy {
   /// StylesResponseMeta(...).copyWith(id: 12, name: "My name")
   /// ````
   StylesResponseMeta call({
-    List<StyleDto>? styles,
+    List<Style>? styles,
   });
 }
 
@@ -98,7 +98,7 @@ class _$StylesResponseMetaCWProxyImpl implements _$StylesResponseMetaCWProxy {
   final StylesResponseMeta _value;
 
   @override
-  StylesResponseMeta styles(List<StyleDto> styles) => this(styles: styles);
+  StylesResponseMeta styles(List<Style> styles) => this(styles: styles);
 
   @override
 
@@ -115,7 +115,7 @@ class _$StylesResponseMetaCWProxyImpl implements _$StylesResponseMetaCWProxy {
       styles: styles == const $CopyWithPlaceholder() || styles == null
           ? _value.styles
           // ignore: cast_nullable_to_non_nullable
-          : styles as List<StyleDto>,
+          : styles as List<Style>,
     );
   }
 }
@@ -133,7 +133,7 @@ extension $StylesResponseMetaCopyWith on StylesResponseMeta {
 
 StylesResponse _$StylesResponseFromJson(Map<String, dynamic> json) =>
     StylesResponse(
-      status: (json['status'] as num?)?.toInt(),
+      status: json['status'] as int?,
       error: json['error'] as bool?,
       meta: json['meta'] == null
           ? null
@@ -150,7 +150,7 @@ Map<String, dynamic> _$StylesResponseToJson(StylesResponse instance) =>
 StylesResponseMeta _$StylesResponseMetaFromJson(Map<String, dynamic> json) =>
     StylesResponseMeta(
       styles: (json['styles'] as List<dynamic>)
-          .map((e) => StyleDto.fromJson(e as Map<String, dynamic>))
+          .map((e) => Style.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

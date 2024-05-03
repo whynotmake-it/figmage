@@ -7,4 +7,5 @@ export 'package:figma/src/models/text.dart';
 export 'package:figma/src/models/rectangle.dart';
 export 'package:figma/src/models/paint.dart';
 export 'package:figma/src/models/color.dart';
+export 'package:figma/src/models/style.dart';
 export 'package:figma/src/models/type_style.dart';

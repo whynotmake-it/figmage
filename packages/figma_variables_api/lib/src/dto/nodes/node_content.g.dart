@@ -171,16 +171,14 @@ NodeContent _$NodeContentFromJson(Map<String, dynamic> json) => NodeContent(
           : DateTime.parse(json['lastModified'] as String),
       thumbnailUrl: json['thumbnailUrl'] as String?,
       version: json['version'] as String?,
-      document: json['document'] == null
-          ? null
-          : Node.fromJson(json['document'] as Map<String, dynamic>),
+      document: const NodeJsonConverter().fromJson(json['document']),
       components: (json['components'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, Component.fromJson(e as Map<String, dynamic>)),
       ),
       componentSets: (json['componentSets'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, ComponentSet.fromJson(e as Map<String, dynamic>)),
       ),
-      schemaVersion: (json['schemaVersion'] as num?)?.toInt(),
+      schemaVersion: json['schemaVersion'] as int?,
       styles: (json['styles'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, Style.fromJson(e as Map<String, dynamic>)),
       ),
@@ -193,7 +191,7 @@ Map<String, dynamic> _$NodeContentToJson(NodeContent instance) =>
       'lastModified': instance.lastModified?.toIso8601String(),
       'thumbnailUrl': instance.thumbnailUrl,
       'version': instance.version,
-      'document': instance.document,
+      'document': const NodeJsonConverter().toJson(instance.document),
       'components': instance.components,
       'componentSets': instance.componentSets,
       'schemaVersion': instance.schemaVersion,

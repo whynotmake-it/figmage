@@ -63,7 +63,7 @@ class FigmaVariablesRepository implements VariablesRepository {
       final collectionName = variableCollection.name;
 
       return switch (dtoVariable.resolvedType) {
-        kResolvedTypeString => StringVariable(
+        VariableType.string => StringVariable(
             id: dtoVariable.id,
             name: dtoVariable.name,
             remote: dtoVariable.remote,
@@ -83,7 +83,7 @@ class FigmaVariablesRepository implements VariablesRepository {
             ),
             collectionModeNamesById: modeNamesById,
           ),
-        kResolvedTypeBoolean => BoolVariable(
+        VariableType.boolean => BoolVariable(
             id: dtoVariable.id,
             name: dtoVariable.name,
             remote: dtoVariable.remote,
@@ -103,7 +103,7 @@ class FigmaVariablesRepository implements VariablesRepository {
             ),
             collectionModeNamesById: modeNamesById,
           ),
-        kResolvedTypeColor => ColorVariable(
+        VariableType.color => ColorVariable(
             id: dtoVariable.id,
             name: dtoVariable.name,
             remote: dtoVariable.remote,
@@ -123,7 +123,7 @@ class FigmaVariablesRepository implements VariablesRepository {
             ),
             collectionModeNamesById: modeNamesById,
           ),
-        kResolvedTypeNumber => FloatVariable(
+        VariableType.float => FloatVariable(
             id: dtoVariable.id,
             name: dtoVariable.name,
             remote: dtoVariable.remote,
@@ -142,9 +142,6 @@ class FigmaVariablesRepository implements VariablesRepository {
               ),
             ),
             collectionModeNamesById: modeNamesById,
-          ),
-        _ => throw UnsupportedError(
-            "The variable type ${dtoVariable.resolvedType} is not supported",
           ),
       };
     });

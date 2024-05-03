@@ -17,7 +17,7 @@ abstract class _$VariableDtoCWProxy {
 
   VariableDto variableCollectionId(String variableCollectionId);
 
-  VariableDto resolvedType(String resolvedType);
+  VariableDto resolvedType(VariableType resolvedType);
 
   VariableDto description(String description);
 
@@ -41,7 +41,7 @@ abstract class _$VariableDtoCWProxy {
     bool? remote,
     String? key,
     String? variableCollectionId,
-    String? resolvedType,
+    VariableType? resolvedType,
     String? description,
     bool? hiddenFromPublishing,
     Map<String, VariableModeValueDto>? valuesByMode,
@@ -73,7 +73,7 @@ class _$VariableDtoCWProxyImpl implements _$VariableDtoCWProxy {
       this(variableCollectionId: variableCollectionId);
 
   @override
-  VariableDto resolvedType(String resolvedType) =>
+  VariableDto resolvedType(VariableType resolvedType) =>
       this(resolvedType: resolvedType);
 
   @override
@@ -142,7 +142,7 @@ class _$VariableDtoCWProxyImpl implements _$VariableDtoCWProxy {
           resolvedType == const $CopyWithPlaceholder() || resolvedType == null
               ? _value.resolvedType
               // ignore: cast_nullable_to_non_nullable
-              : resolvedType as String,
+              : resolvedType as VariableType,
       description:
           description == const $CopyWithPlaceholder() || description == null
               ? _value.description
@@ -188,7 +188,7 @@ VariableDto _$VariableDtoFromJson(Map<String, dynamic> json) => VariableDto(
       remote: json['remote'] as bool,
       key: json['key'] as String,
       variableCollectionId: json['variableCollectionId'] as String,
-      resolvedType: json['resolvedType'] as String,
+      resolvedType: $enumDecode(_$VariableTypeEnumMap, json['resolvedType']),
       description: json['description'] as String,
       hiddenFromPublishing: json['hiddenFromPublishing'] as bool,
       valuesByMode: (json['valuesByMode'] as Map<String, dynamic>).map(
@@ -206,7 +206,7 @@ Map<String, dynamic> _$VariableDtoToJson(VariableDto instance) =>
       'remote': instance.remote,
       'key': instance.key,
       'variableCollectionId': instance.variableCollectionId,
-      'resolvedType': instance.resolvedType,
+      'resolvedType': _$VariableTypeEnumMap[instance.resolvedType]!,
       'description': instance.description,
       'hiddenFromPublishing': instance.hiddenFromPublishing,
       'valuesByMode':
@@ -214,3 +214,10 @@ Map<String, dynamic> _$VariableDtoToJson(VariableDto instance) =>
       'scopes': instance.scopes,
       'codeSyntax': instance.codeSyntax,
     };
+
+const _$VariableTypeEnumMap = {
+  VariableType.string: 'STRING',
+  VariableType.float: 'FLOAT',
+  VariableType.color: 'COLOR',
+  VariableType.boolean: 'BOOLEAN',
+};

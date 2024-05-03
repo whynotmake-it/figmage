@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/command_runner.dart';
 import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
@@ -32,7 +33,7 @@ final _variableList = [
     key: '26a211e627a2da8a80c0f06e0b776ba97a8780e3',
     variableCollectionId: 'VariableCollectionId:0:3',
     variableCollectionName: 'collection',
-    resolvedType: 'COLOR',
+    resolvedType: VariableType.color,
     description: '',
     hiddenFromPublishing: false,
     scopes: ['ALL_SCOPES'],

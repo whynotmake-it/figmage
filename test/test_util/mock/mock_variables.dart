@@ -2,6 +2,7 @@
 // we have to ignore the prefer_const_constructors rule.
 // ignore_for_file: prefer_const_constructors
 
+import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_type.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
@@ -13,7 +14,7 @@ final mockColorVariableUnresolvable = ColorVariable(
   key: "key",
   variableCollectionId: "variableCollectionId",
   variableCollectionName: "collection1",
-  resolvedType: "COLOR",
+  resolvedType: VariableType.color,
   description: "description",
   hiddenFromPublishing: false,
   scopes: [],
@@ -37,7 +38,7 @@ final mockColorVariable = ColorVariable(
   key: "key",
   variableCollectionId: "variableCollectionId",
   variableCollectionName: "collection1",
-  resolvedType: "COLOR",
+  resolvedType: VariableType.color,
   description: "description",
   hiddenFromPublishing: false,
   scopes: [],
@@ -59,7 +60,7 @@ final mockFloatVariable = FloatVariable(
   key: "key",
   variableCollectionId: "variableCollectionId",
   variableCollectionName: "collection2",
-  resolvedType: "FLOAT",
+  resolvedType: VariableType.float,
   description: "description",
   hiddenFromPublishing: false,
   scopes: [],
@@ -81,7 +82,7 @@ final mockBoolVariable = BoolVariable(
   key: "key",
   variableCollectionId: "variableCollectionId",
   variableCollectionName: "collection1",
-  resolvedType: "BOOLEAN",
+  resolvedType: VariableType.boolean,
   description: "description",
   hiddenFromPublishing: false,
   scopes: [],
@@ -103,7 +104,7 @@ final mockStringVariable = StringVariable(
   key: "key",
   variableCollectionId: "variableCollectionId",
   variableCollectionName: "collection2",
-  resolvedType: "STRING",
+  resolvedType: VariableType.string,
   description: "description",
   hiddenFromPublishing: false,
   scopes: [],
@@ -141,7 +142,7 @@ final mockVariableEmptyCollection = BoolVariable(
   key: "key",
   variableCollectionId: "variableCollectionId",
   variableCollectionName: "",
-  resolvedType: "BOOLEAN",
+  resolvedType: VariableType.boolean,
   description: "description",
   hiddenFromPublishing: false,
   scopes: [],

@@ -1,6 +1,6 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
-import 'package:figma_variables_api/src/models/dto/variable_mode/variable_mode_dto.dart';
+import 'package:figma_variables_api/src/dto/variable_mode/variable_mode_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'variable_collection_dto.g.dart';

@@ -37,7 +37,7 @@ void main() {
           remote: false,
           key: '26a211e627a2da8a80c0f06e0b776ba97a8780e3',
           variableCollectionId: 'VariableCollectionId:0:3',
-          resolvedType: 'COLOR',
+          resolvedType: VariableType.color,
           description: '',
           hiddenFromPublishing: false,
           valuesByMode: {
@@ -53,7 +53,7 @@ void main() {
           remote: false,
           key: '08c82898f886945e11a01e68840677696fa360b6',
           variableCollectionId: 'VariableCollectionId:0:3',
-          resolvedType: 'FLOAT',
+          resolvedType: VariableType.float,
           description: '',
           hiddenFromPublishing: false,
           valuesByMode: {
@@ -69,7 +69,7 @@ void main() {
           remote: false,
           key: '347bb41e0005e314c7ed7474d85bb804686bed58',
           variableCollectionId: 'VariableCollectionId:0:3',
-          resolvedType: 'STRING',
+          resolvedType: VariableType.string,
           description: '',
           hiddenFromPublishing: false,
           valuesByMode: {
@@ -85,7 +85,7 @@ void main() {
           remote: false,
           key: '66393690efc9df6a02ed1e813f32e31091597487',
           variableCollectionId: 'VariableCollectionId:0:3',
-          resolvedType: 'BOOLEAN',
+          resolvedType: VariableType.boolean,
           description: '',
           hiddenFromPublishing: false,
           valuesByMode: {
@@ -119,7 +119,7 @@ void main() {
       expect(variables.first.variableCollectionName, "collection");
       expect(variables.first.scopes, equals(const ['ALL_SCOPES']));
       expect(variables.first.codeSyntax, equals(const {}));
-      expect(variables.first.resolvedType, equals('COLOR'));
+      expect(variables.first.resolvedType, equals(VariableType.color));
       expect(variables.first.description, equals(''));
       expect(variables.first.hiddenFromPublishing, equals(false));
       expect(

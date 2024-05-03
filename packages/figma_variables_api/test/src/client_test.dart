@@ -154,7 +154,7 @@ void main() {
       );
       expect(
         result.meta.variables['VariableID:1:3']!.resolvedType,
-        equals('COLOR'),
+        equals(VariableType.color),
       );
     });
 

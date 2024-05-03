@@ -86,7 +86,7 @@ extension $VariablesResponseDtoCopyWith on VariablesResponseDto {
 VariablesResponseDto _$VariablesResponseDtoFromJson(
         Map<String, dynamic> json) =>
     VariablesResponseDto(
-      status: json['status'] as int,
+      status: (json['status'] as num).toInt(),
       error: json['error'] as bool,
       meta: VariablesMetaDto.fromJson(json['meta'] as Map<String, dynamic>),
     );

@@ -19,7 +19,7 @@ extension TypeStyleConversionX on TypeStyle {
   /// Makes sure that the font weight is between 100 and 900 in increments of
   /// 100.
   @visibleForTesting
-  int convertFontWeight(num weight) {
+  static int convertFontWeight(num weight) {
     final incremented = (weight / 100).round() * 100;
     return switch (incremented) {
       > 900 => 900,
@@ -31,7 +31,7 @@ extension TypeStyleConversionX on TypeStyle {
   /// Converts the line height to the way Flutter expects it, relative to the
   /// font size.
   @visibleForTesting
-  double convertLineHeight(num? lineHeight, num? fontSize) {
+  static double convertLineHeight(num? lineHeight, num? fontSize) {
     if (lineHeight == null || fontSize == null) {
       return 1;
     }

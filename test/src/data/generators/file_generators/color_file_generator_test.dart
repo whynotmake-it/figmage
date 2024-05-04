@@ -99,15 +99,15 @@ extension ColorsCollection1BuildContextX on BuildContext {
 
 @immutable
 class ColorsColors extends ThemeExtension<ColorsColors> {
-  const ColorsColors({required this.colorname});
+  const ColorsColors({required this.colorName});
 
-  const ColorsColors.standard() : colorname = const Color(0xffffffff);
+  const ColorsColors.standard() : colorName = const Color(0xffffffff);
 
-  final Color colorname;
+  final Color colorName;
 
   @override
-  ColorsColors copyWith([Color? colorname]) =>
-      ColorsColors(colorname: colorname ?? this.colorname);
+  ColorsColors copyWith([Color? colorName]) =>
+      ColorsColors(colorName: colorName ?? this.colorName);
 
   @override
   ColorsColors lerp(
@@ -116,9 +116,9 @@ class ColorsColors extends ThemeExtension<ColorsColors> {
   ) {
     if (other is! ColorsColors) return this;
     return ColorsColors(
-        colorname: Color.lerp(
-      colorname,
-      other.colorname,
+        colorName: Color.lerp(
+      colorName,
+      other.colorName,
       t,
     )!);
   }

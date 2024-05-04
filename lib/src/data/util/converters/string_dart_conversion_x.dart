@@ -15,7 +15,8 @@ extension StringDartConversionX on String {
 
   /// Removes all invalid characters from a string, which includes all
   /// non-alphanumeric characters and underscores.
-  String removeInvalidCharacters() => replaceAll(RegExp('[^a-zA-Z0-9]'), '');
+  String _replaceInvalidCharactersWithPathSegments() =>
+      replaceAll(RegExp('[^a-zA-Z0-9]'), '/');
 
   /// Removes all leading numbers from a string.
   String removeLeadingNumbers() =>
@@ -24,9 +25,9 @@ extension StringDartConversionX on String {
   /// Converts a string that is a path into a camelCase path containing it's
   /// segments.
   List<String> get asCamelCasePath {
-    final pathSegments = split("/")
+    final pathSegments = _replaceInvalidCharactersWithPathSegments()
+        .split("/")
         .where((t) => t.isNotEmpty)
-        .map((s) => s.removeInvalidCharacters())
         .toList();
     if (pathSegments.every((s) => s.isEmpty) || pathSegments.isEmpty) {
       throw ArgumentError.value(

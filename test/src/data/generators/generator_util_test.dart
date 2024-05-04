@@ -29,7 +29,7 @@ void main() {
     });
     group('convertToValidVariableName', () {
       test('leaves valid variable names unchanged', () {
-        expect(convertToValidVariableName('hello_world'), equals('helloworld'));
+        expect(convertToValidVariableName('hello_world'), equals('helloWorld'));
         expect(convertToValidVariableName('hello123'), equals('hello123'));
       });
 
@@ -74,6 +74,15 @@ void main() {
         expect(
           convertToValidVariableName('/testString'),
           equals('testString'),
+        );
+      });
+
+      test('handles other invalid characters well', () async {
+        expect(
+          convertToValidVariableName(
+            "colors & shades/Primary/Primary - shade500",
+          ),
+          equals('colorsShadesPrimaryPrimaryShade500'),
         );
       });
 

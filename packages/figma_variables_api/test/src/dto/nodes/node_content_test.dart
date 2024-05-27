@@ -3,8 +3,6 @@ import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:test/test.dart';
 
 void main() {
-  setUp(() {});
-
   group('NodeContent', () {
     group('fromJson', () {
       test('should return a valid model', () {
@@ -115,7 +113,7 @@ void main() {
 
       test('should not be equal if any property is different', () {
         final nodeContent1 = NodeContent(
-          name: 'name',
+          name: 'otherName',
           role: 'role',
           lastModified: DateTime.parse('2021-08-06T00:00:00Z'),
           thumbnailUrl: 'thumbnailUrl',
@@ -140,7 +138,7 @@ void main() {
           styles: <String, Style>{},
         );
 
-        expect(nodeContent1, nodeContent2);
+        expect(nodeContent1, isNot(nodeContent2));
       });
     });
   });

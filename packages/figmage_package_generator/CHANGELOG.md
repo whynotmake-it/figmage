@@ -1,3 +1,9 @@
+## 0.1.0-dev.4
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **FEAT**: other characters in Figma token names are converted into proper camel case paths. (#105).
+
 ## 0.1.0-dev.3
 
 > Note: This release has breaking changes.

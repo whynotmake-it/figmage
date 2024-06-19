@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/data/util/converters/color_conversion_x.dart';
 import 'package:figmage/src/data/util/converters/type_style_conversion_x.dart';
@@ -33,7 +32,7 @@ class FigmaStylesRepository implements StylesRepository {
       nodesResponse = await client.getFileNodes(
         fileId,
         FigmaQuery(
-          ids: styles.map((e) => e.nodeId).whereNotNull().toList(),
+          ids: styles.map((e) => e.nodeId).nonNulls.toList(),
         ),
       );
     } on FigmaException catch (e) {

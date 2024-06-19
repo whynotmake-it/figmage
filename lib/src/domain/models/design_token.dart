@@ -2,7 +2,7 @@ import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 
 /// A superclass for all design tokens (styles and variables).
 abstract interface class DesignToken<T> {
-  /// The name of this token, usually the last segment in the full name.
+  /// The name of this token, usually the [fullName] minus the [collectionName].
   String get name;
 
   /// The full name of the token, including all collections.

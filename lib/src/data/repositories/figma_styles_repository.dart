@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/data/util/converters/color_conversion_x.dart';
 import 'package:figmage/src/data/util/converters/type_style_conversion_x.dart';

@@ -1,3 +1,7 @@
+## 0.1.0-dev.6
+
+ - **FIX**: naming for style tokens (#113).
+
 ## 0.1.0-dev.5
 
 > Note: This release has breaking changes.

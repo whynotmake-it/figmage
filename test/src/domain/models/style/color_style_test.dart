@@ -6,7 +6,7 @@ void main() {
   group("ColorStyle", () {
     const style = ColorDesignStyle(
       id: "id",
-      fullName: "colors/color_name",
+      fullName: "colors/dark/color_name",
       value: 0xFFFFFFFF,
     );
     test("is a DesignToken<int>", () {
@@ -16,7 +16,7 @@ void main() {
     });
 
     test("has correct name", () {
-      expect(style.name, "color_name");
+      expect(style.name, "dark/color_name");
     });
 
     test("has correct collectionName", () {

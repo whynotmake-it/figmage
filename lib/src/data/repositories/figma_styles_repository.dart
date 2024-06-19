@@ -33,7 +33,7 @@ class FigmaStylesRepository implements StylesRepository {
       nodesResponse = await client.getFileNodes(
         fileId,
         FigmaQuery(
-          ids: styles.map((e) => e.nodeId).whereNotNull().toList(),
+          ids: styles.map((e) => e.nodeId).nonNulls.toList(),
         ),
       );
     } on FigmaException catch (e) {

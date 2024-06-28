@@ -15,7 +15,7 @@ void main() {
     late ProviderContainer container;
     const config = Config(fileId: "fileId", packageName: "packageName");
 
-    late _MockArgResults argResults;
+    late ArgResults argResults;
     setUp(() {
       container = createContainer(
         overrides: [
@@ -53,8 +53,17 @@ void main() {
       test('returns path from argResults if parsed', () async {
         final result =
             await container.read(settingsProvider(argResults).future);
-
         expect(result.path, "arg_path");
+      });
+
+      test('throws an ArgumentError if path is not in the args', () async {
+        when(() => argResults['path']).thenReturn(null);
+        await expectLater(
+          () => container.read(settingsProvider(argResults).future),
+          throwsA(
+            isA<ArgumentError>().having((p0) => p0.name, 'name', 'path'),
+          ),
+        );
       });
 
       test('throws ArgumentError if token is missing', () async {

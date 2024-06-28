@@ -13,7 +13,7 @@ final settingsProvider = FutureProvider.autoDispose
     .family<FigmageSettings, ArgResults>((ref, args) async {
   final dir = switch (args['path']) {
     final String dir => Directory(dir),
-    _ => Directory.current,
+    _ => throw ArgumentError.notNull('path'),
   };
 
   final configPath = join(dir.path, 'figmage.yaml');

@@ -6,17 +6,12 @@ import 'package:figmage/src/domain/providers/config_providers.dart';
 import 'package:path/path.dart';
 import 'package:riverpod/riverpod.dart';
 
-/// The arguments for the [settingsProvider] famil.
-typedef SettingsProviderArgs = ({
-  ArgResults argResults,
-});
-
 /// Tries to parse the shared settings that are needed for the `forge` command.
 ///
 /// Throws an error if any aren't present.
 final settingsProvider = FutureProvider.autoDispose
-    .family<FigmageSettings, SettingsProviderArgs>((ref, args) async {
-  final dir = switch (args.argResults['path']) {
+    .family<FigmageSettings, ArgResults>((ref, args) async {
+  final dir = switch (args['path']) {
     final String dir => Directory(dir),
     _ => Directory.current,
   };
@@ -24,21 +19,17 @@ final settingsProvider = FutureProvider.autoDispose
   final configPath = join(dir.path, 'figmage.yaml');
 
   final config = await ref.watch(configProvider(configPath).future);
-  final argResults = args.argResults;
 
   return (
-    token: switch (argResults['token']) {
+    token: switch (args['token']) {
       final String token => token,
       _ => throw ArgumentError.notNull('token'),
     },
-    fileId: switch (argResults['fileId'] ?? config.fileId) {
+    fileId: switch (args['fileId'] ?? config.fileId) {
       final String fileId => fileId,
       _ => throw ArgumentError.notNull('fileId'),
     },
-    path: switch (argResults['path']) {
-      final String path => path,
-      _ => throw ArgumentError.notNull('path'),
-    },
+    path: dir.path,
     config: config,
   );
 });

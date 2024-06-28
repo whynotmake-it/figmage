@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/command_runner.dart';
+import 'package:figmage/src/commands/forge/forge_command.dart';
 import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
@@ -109,7 +110,28 @@ void main() {
       verify(
         () => logger.err('Could not find an option or flag "-p".'),
       ).called(1);
+      verify(() => logger.info('')).called(1);
+      final infoLog = verify(() => logger.info(captureAny())).captured.first;
+      expect(infoLog, usage);
       expect(exitCode, equals(ExitCode.usage.code));
+    });
+
+    test('parses args correctly', () async {
+      final command = ForgeCommand(container);
+      final args = command.argParser.parse(['-t', 'token', '-f', 'fileId']);
+      expect(args['token'], 'token');
+      expect(args['fileId'], 'fileId');
+      expect(args['path'], '.', reason: 'defaults to "."');
     });
   });
 }
+
+const usage = '''
+Usage: figmage forge [arguments]
+-h, --help                 Print this usage information.
+    --path                 The ouptut path for the generated package, if not provided, the current directory will be used.
+                           (defaults to ".")
+-t, --token (mandatory)    Your figma API token
+-f, --fileId               Your figma file ID, needs to be either given here, or in the figmage.yaml
+
+Run "figmage help" to see global options.''';

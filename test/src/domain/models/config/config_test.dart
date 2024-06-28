@@ -17,7 +17,6 @@ void main() {
       full = {
         ...minimal,
         "packageDescription": "packageDescription",
-        "outputPath": "outputPath",
         "dropUnresolved": false,
         "colors": {
           "generate": true,
@@ -58,7 +57,6 @@ void main() {
         fileId: "fileId",
         packageName: "packageName",
         packageDescription: "packageDescription",
-        packageDir: "outputPath",
         colors: GenerationSettings(
           from: ["path1", "path2"],
         ),

@@ -16,7 +16,6 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
           fileId: $checkedConvert('fileId', (v) => v as String?),
           packageDescription:
               $checkedConvert('packageDescription', (v) => v as String? ?? ''),
-          packageDir: $checkedConvert('outputPath', (v) => v as String? ?? '.'),
           dropUnresolved:
               $checkedConvert('dropUnresolved', (v) => v as bool? ?? false),
           colors: $checkedConvert(
@@ -62,7 +61,6 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
         );
         return val;
       },
-      fieldKeyMap: const {'packageDir': 'outputPath'},
     );
 
 Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
@@ -70,7 +68,6 @@ Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
       'fileId': instance.fileId,
       'packageDescription': instance.packageDescription,
       'dropUnresolved': instance.dropUnresolved,
-      'outputPath': instance.packageDir,
       'colors': instance.colors.toJson(),
       'typography': instance.typography.toJson(),
       'strings': instance.strings.toJson(),

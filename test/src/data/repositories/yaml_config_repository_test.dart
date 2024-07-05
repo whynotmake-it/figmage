@@ -81,7 +81,6 @@ void main() {
           config.packageDescription,
           'Design Tokens generated from our Figma',
         );
-        expect(config.packageDir, './path');
 
         expect(config.colors.generate, true);
         expect(config.colors.from, ['color', 'color2']);

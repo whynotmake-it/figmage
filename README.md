@@ -87,6 +87,13 @@ dart pub global activate figmage
 
 ### 🚀 Quick start
 
+Create a folder in which you want your generated package to live. For example:
+  
+```sh
+mkdir packages/my_design_system
+cd packages/my_design_system
+```
+
 This command will generate a new package at the specified output path using the provided Figma API token and file ID:
 
 ```sh
@@ -101,20 +108,25 @@ figmage forge <path> --token <token> --fileId <fileId>
 > The **fileId** is part of the URL when you open a Figma file. Just look in your browser's address bar when you have your design system file open:
 >
 > ➡ figma.com/file/**your-file-id-is-here**/more-not-so-interesting-stuff
+>
+> or
+> 
+> ➡ figma.com/design/**your-file-id-is-here**/more-not-so-interesting-stuff
+
 
 ### 🎨 Details
 
-If you require more control over the generated code, create a `figmage.yaml` file in the directory from which you're running the command. Below is an example, along with descriptions of what each flag accomplishes:
+If you require more control over the generated code, create a `figmage.yaml` file in the directory in which you want the package to be generated. This file will then always live **next to the `pubspec.yaml`** of the generated package.
+
+Below is an example, along with descriptions of what each flag accomplishes:
 
 ```yaml
 # Default: "figmage_package". The name of the generated Dart package.
-packageName: "figmage_package"
+packageName: "my_design_system"
 # Required. The Figma file ID from which to generate tokens.
 fileId: "YOUR_FIGMA_FILE_ID"
 # Default: ''. Description of the generated package.
 packageDescription: "A package generated from Figma designs."
-# Default: '.'. Directory to generate the package in, relative to this config file.
-packageDir: "./generated"
 # Default: true. Determines whether to drop unresolvable values. When true, values that cannot be resolved (e.g., an alias pointing to a missing variable) are omitted, ensuring all tokens are resolvable in all modes (e.g., light and dark mode). When false, unresolved variables are included but will return null. Defaults to false.
 dropUnresolved: true
 colors:

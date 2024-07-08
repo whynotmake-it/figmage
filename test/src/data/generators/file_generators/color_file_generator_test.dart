@@ -38,9 +38,6 @@ void main() {
 }
 
 const expected = """
-// coverage:ignore-file
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
 @immutable
 class ColorsCollection1 extends ThemeExtension<ColorsCollection1> {
   const ColorsCollection1({

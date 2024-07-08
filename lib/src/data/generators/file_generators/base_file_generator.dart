@@ -47,9 +47,6 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
   @override
   List<Spec> generate() {
     return [
-      const Code(
-        FileGenerator.generatedFilePrefix,
-      ),
       for (final g in generators) ...[
         g.generateClass(),
         g.generateExtension(),

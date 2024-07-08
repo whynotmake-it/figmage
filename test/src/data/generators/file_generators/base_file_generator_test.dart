@@ -1,6 +1,5 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/file_generators/base_file_generator.dart';
-import 'package:figmage/src/domain/generators/file_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:mocktail/mocktail.dart';
@@ -101,15 +100,6 @@ void main() {
           isA<Class>().having((p0) => p0.name, "name", "Test1"),
           isA<Extension>().having((p0) => p0.name, "name", "TestX1"),
         ]),
-      );
-    });
-
-    test('contains generated file prefix', () {
-      final result = sut.generate();
-
-      expect(
-        result.first,
-        equalsDart(FileGenerator.generatedFilePrefix),
       );
     });
   });

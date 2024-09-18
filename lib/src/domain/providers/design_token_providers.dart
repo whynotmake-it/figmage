@@ -133,29 +133,31 @@ final stylesProvider =
   final repo = ref.watch(stylesRepositoryProvider);
   final stylesProgress = logger.progress("Fetching all styles...");
 
+  final List<DesignStyle<dynamic>> styles;
   try {
-    final styles = await repo.getStyles(
+    styles = await repo.getStyles(
       fileId: settings.fileId,
       token: settings.token,
       fromLibrary: settings.config.stylesFromLibrary,
     );
-    switch (styles) {
-      case []:
-        stylesProgress.fail("No styles found");
-        throw ArgumentError.value(
-          styles,
-          "styles",
-          "No styles found in file ${settings.fileId}",
-        );
-      case [...]:
-        stylesProgress.complete("Found ${styles.length} styles");
-        return styles;
-    }
   } on StylesException catch (e) {
     stylesProgress.fail("Failed to fetch styles: ${e.message}");
     rethrow;
   } catch (e) {
     stylesProgress.fail("Failed to fetch styles for unknown reason ($e)");
     rethrow;
+  }
+
+  switch (styles) {
+    case []:
+      stylesProgress.fail("No styles found");
+      throw ArgumentError.value(
+        styles,
+        "styles",
+        "No styles found in file ${settings.fileId}",
+      );
+    case [...]:
+      stylesProgress.complete("Found ${styles.length} styles");
+      return styles;
   }
 });

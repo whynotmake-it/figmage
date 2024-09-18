@@ -35,9 +35,11 @@ void main() {
       };
 
       for (final gen in mockGeneratedResults.values) {
-        when(gen.generate).thenReturn([
-          const Code("class TestClass {}"),
-        ]);
+        when(gen.generate).thenReturn(
+          Library(
+            (l) => l.body.add(const Code("class TestClass {}")),
+          ),
+        );
       }
 
       container = createContainer(

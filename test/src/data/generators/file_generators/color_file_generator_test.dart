@@ -30,14 +30,20 @@ void main() {
 
     test('should build a library', () async {
       final result = sut.generate();
-      final lib = LibraryBuilder();
-      lib.body.addAll(result);
-      expect(lib.build(), equalsDart(expected));
+      final emitter = DartEmitter(allocator: Allocator());
+      expect(result, equalsDart(expected, emitter));
     });
   });
 }
 
 const expected = """
+// coverage:ignore-file
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
 @immutable
 class ColorsCollection1 extends ThemeExtension<ColorsCollection1> {
   const ColorsCollection1({

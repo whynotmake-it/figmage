@@ -85,8 +85,6 @@ void main() {
         verify(gen.generateExtension);
         verifyNoMoreInteractions(gen);
       }
-
-      expect(result, isNotEmpty);
     });
 
     test('contains all generator results', () {
@@ -94,12 +92,17 @@ void main() {
 
       expect(
         result,
-        containsAllInOrder([
-          isA<Class>().having((p0) => p0.name, "name", "Test0"),
-          isA<Extension>().having((p0) => p0.name, "name", "TestX0"),
-          isA<Class>().having((p0) => p0.name, "name", "Test1"),
-          isA<Extension>().having((p0) => p0.name, "name", "TestX1"),
-        ]),
+        isA<Library>().having(
+          (p0) => p0.body,
+          'body',
+          containsAllInOrder([
+            isA<Class>().having((p0) => p0.name, "name", "Test0"),
+            isA<Extension>().having((p0) => p0.name, "name", "TestX0"),
+            isA<Class>().having((p0) => p0.name, "name", "Test1"),
+            isA<Extension>().having((p0) => p0.name, "name", "TestX1"),
+          ]),
+        ),
+        reason: 'generated library body contains 2 classes and 2 extensions',
       );
     });
   });

@@ -1,12 +1,15 @@
 import 'package:code_builder/code_builder.dart';
-import 'package:dart_style/dart_style.dart';
 import 'package:figmage/src/data/generators/file_generators/typography_file_generator.dart';
 import 'package:figmage/src/domain/models/style/design_style.dart';
 import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:test/test.dart';
 
+import '../common.dart';
+
 void main() {
+  useDartfmt();
+
   group('TypographyFileGenerator', () {
     late TypographyFileGenerator sut;
 
@@ -34,17 +37,17 @@ void main() {
 
     test('generate', () async {
       final result = sut.generate();
-      final library = LibraryBuilder();
-      library.body.addAll(result);
       final emitter = DartEmitter(allocator: Allocator());
-      final text = library.build().accept(emitter).toString();
-      final r = DartFormatter().format(text);
-      expect(r, _expectedFile);
+      expect(result, equalsDart(_expectedFile, emitter));
     });
   });
 }
 
 const _expectedFile = '''
+// coverage:ignore-file
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';

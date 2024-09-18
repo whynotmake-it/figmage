@@ -25,10 +25,7 @@ final librariesProvider =
     );
 
     final codeByFile = generatorsByFile.map((file, generator) {
-      final lib = LibraryBuilder();
-      lib.comments.add(FileGenerator.generatedFilePrefix);
-      lib.body.addAll(generator.generate());
-      final code = lib.build().accept(emitter);
+      final code = generator.generate().accept(emitter);
       final formattedCode = dartfmt.format(code.toString());
       return MapEntry(file, formattedCode);
     });

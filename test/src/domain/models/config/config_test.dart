@@ -18,6 +18,7 @@ void main() {
         ...minimal,
         "packageDescription": "packageDescription",
         "dropUnresolved": false,
+        "stylesFromLibrary": false,
         "colors": {
           "generate": true,
           "from": ["path1", "path2"],

@@ -40,10 +40,15 @@ class GenerationNotifier
         filteredTokensProvider(settings).future,
       );
     } catch (e) {
-      logger
-        ..err("Neither styles nor variables could be obtained from file "
-            "${settings.fileId}")
-        ..info("Make sure the file's library is published.");
+      logger.err("Neither styles nor variables could be obtained from file "
+          "${settings.fileId}");
+      if (settings.config.stylesFromLibrary) {
+        logger.warn(
+          "Make sure you have published the file's library, "
+          "or set stylesFromLibrary to false.",
+        );
+      }
+
       rethrow;
     }
 

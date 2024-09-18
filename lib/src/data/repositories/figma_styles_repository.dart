@@ -12,16 +12,13 @@ class FigmaStylesRepository implements StylesRepository {
   Future<List<DesignStyle<dynamic>>> getStyles({
     required String fileId,
     required String token,
+    required bool fromLibrary,
   }) async {
     final client = FigmaClient(token);
-    final StylesResponse stylesResponse;
-    try {
-      stylesResponse = await client.getFileStyles(fileId);
-    } on FigmaException catch (e) {
-      _throwError(e);
-    }
-
-    final styles = stylesResponse.meta?.styles ?? [];
+    final styles = switch (fromLibrary) {
+      true => await _getPublishedStyles(client, fileId),
+      false => await _getUnpublishedStyles(client, fileId),
+    };
 
     if (styles.isEmpty) {
       return [];
@@ -44,6 +41,45 @@ class FigmaStylesRepository implements StylesRepository {
         if (node != null)
           if (_transformNode(node) case final style?) style,
     ];
+  }
+
+  Future<List<Style>> _getPublishedStyles(
+    FigmaClient client,
+    String fileId,
+  ) async {
+    final StylesResponse stylesResponse;
+    try {
+      stylesResponse = await client.getFileStyles(fileId);
+    } on FigmaException catch (e) {
+      _throwError(e);
+    }
+
+    return stylesResponse.meta?.styles ?? [];
+  }
+
+  Future<List<Style>> _getUnpublishedStyles(
+    FigmaClient client,
+    String fileId,
+  ) async {
+    final FileStylesResponse response;
+    try {
+      response = await client.getLocalFileStyles(fileId);
+    } on FigmaException catch (e) {
+      _throwError(e);
+    }
+    final styles = [
+      if (response.styles case final styles?)
+        for (final MapEntry(:key, :value) in styles.entries)
+          Style(
+            nodeId: key,
+            key: value.key,
+            name: value.name,
+            type: value.type,
+            description: value.description,
+          ),
+    ];
+
+    return styles;
   }
 
   DesignStyle<dynamic>? _transformNode(Node node) {

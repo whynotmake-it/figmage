@@ -30,6 +30,7 @@ class Config with EquatableMixin {
     this.fileId,
     this.packageDescription = '',
     this.dropUnresolved = false,
+    this.stylesFromLibrary = false,
     this.colors = const GenerationSettings(),
     this.typography = const TypographyGenerationSettings(),
     this.strings = const GenerationSettings(),
@@ -52,12 +53,21 @@ class Config with EquatableMixin {
   /// The description of the generated dart package.
   final String packageDescription;
 
-  /// Determines whether to drop unresolvable values. When true, values that
+  /// Determines whether to drop unresolvable values.
+  ///
+  /// When true, values that
   /// cannot be resolved (e.g., an alias pointing to a missing variable) are
   /// omitted, ensuring all tokens are resolvable in all modes (e.g., light and
   /// dark mode). When false, unresolved variables are included but will return
   /// null. Defaults to false.
   final bool dropUnresolved;
+
+  /// Whether to fetch the styles that were published to the library.
+  ///
+  /// If false, all styles will simply be fetched from the current state of the
+  /// file.
+  /// Defaults to false.
+  final bool stylesFromLibrary;
 
   /// Color generation settings, defaults to generating color tokens from
   /// all paths.
@@ -89,8 +99,16 @@ class Config with EquatableMixin {
   final GenerationSettings radii;
 
   /// All generation settings.
-  List<GenerationSettings> get allGenerationSettings =>
-      [colors, typography, strings, bools, numbers, spacers, paddings, radii];
+  List<GenerationSettings> get allGenerationSettings => [
+        colors,
+        typography,
+        strings,
+        bools,
+        numbers,
+        spacers,
+        paddings,
+        radii,
+      ];
 
   /// Whether any setting defines at least one `from` but has `generate: false`.
   ///
@@ -106,6 +124,8 @@ class Config with EquatableMixin {
         fileId,
         packageName,
         packageDescription,
+        dropUnresolved,
+        stylesFromLibrary,
         colors,
         typography,
         strings,

@@ -12,9 +12,13 @@ final stylesRepositoryProvider =
 abstract interface class StylesRepository {
   /// Get all styles from the figma file with [fileId] using the personal
   /// access [token].
+  ///
+  /// If [fromLibrary] is true, styles are retreived from the published
+  /// Library of the file.
   Future<List<DesignStyle<dynamic>>> getStyles({
     required String fileId,
     required String token,
+    required bool fromLibrary,
   });
 }
 

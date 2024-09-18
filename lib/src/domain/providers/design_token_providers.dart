@@ -132,10 +132,12 @@ final stylesProvider =
   final logger = ref.watch(loggerProvider);
   final repo = ref.watch(stylesRepositoryProvider);
   final stylesProgress = logger.progress("Fetching all styles...");
+
   try {
     final styles = await repo.getStyles(
       fileId: settings.fileId,
       token: settings.token,
+      fromLibrary: settings.config.stylesFromLibrary,
     );
     switch (styles) {
       case []:

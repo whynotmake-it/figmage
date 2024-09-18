@@ -29,7 +29,6 @@ class Config with EquatableMixin {
     this.packageName = "figmage_package",
     this.fileId,
     this.packageDescription = '',
-    this.packageDir = '.',
     this.dropUnresolved = false,
     this.colors = const GenerationSettings(),
     this.typography = const TypographyGenerationSettings(),
@@ -59,12 +58,6 @@ class Config with EquatableMixin {
   /// dark mode). When false, unresolved variables are included but will return
   /// null. Defaults to false.
   final bool dropUnresolved;
-
-  /// The directory to generate the package in, relative to the config file.
-  ///
-  /// Defaults to the current directory.
-  @JsonKey(name: 'outputPath')
-  final String packageDir;
 
   /// Color generation settings, defaults to generating color tokens from
   /// all paths.
@@ -113,7 +106,6 @@ class Config with EquatableMixin {
         fileId,
         packageName,
         packageDescription,
-        packageDir,
         colors,
         typography,
         strings,

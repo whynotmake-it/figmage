@@ -1,3 +1,7 @@
+## 0.1.0-dev.7
+
+ - **FIX**: remove `packageDir` from figmage.yaml, the package will always be generated in the directory where you put the figmage.yaml.
+
 ## 0.1.0-dev.6
 
  - **FIX**: naming for style tokens (#113).

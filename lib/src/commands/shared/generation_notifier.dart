@@ -29,7 +29,7 @@ class GenerationNotifier
     final FigmageSettings settings;
 
     try {
-      settings = await ref.watch(settingsProvider((argResults: arg)).future);
+      settings = await ref.watch(settingsProvider(arg).future);
     } catch (e) {
       logger.err("Not all settings are present ($e)");
       rethrow;

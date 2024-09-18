@@ -39,7 +39,53 @@ void main() {
       final emitter = DartEmitter(allocator: Allocator());
       final text = library.build().accept(emitter).toString();
       final r = DartFormatter().format(text);
-      print(r);
+      expect(r, _expectedFile);
     });
   });
 }
+
+const _expectedFile = '''
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+@immutable
+class Typography extends ThemeExtension<Typography> {
+  const Typography({required this.fullName});
+
+  Typography.standard()
+      : fullName = GoogleFonts.getFont(
+          'Roboto',
+          fontSize: 16.0,
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.normal,
+          letterSpacing: 1.0,
+          height: 1.0,
+          decoration: TextDecoration.underline,
+        );
+
+  final TextStyle fullName;
+
+  @override
+  Typography copyWith([TextStyle? fullName]) =>
+      Typography(fullName: fullName ?? this.fullName);
+
+  @override
+  Typography lerp(
+    Typography other,
+    double t,
+  ) {
+    if (other is! Typography) return this;
+    return Typography(
+        fullName: TextStyle.lerp(
+      fullName,
+      other.fullName,
+      t,
+    )!);
+  }
+}
+
+extension TypographyBuildContextX on BuildContext {
+  Typography get typography => Theme.of(this).extension<Typography>()!;
+}
+''';

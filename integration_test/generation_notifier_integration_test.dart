@@ -29,7 +29,7 @@ void main() {
           configProvider.overrideWith((ref, arg) => config),
         ],
       );
-      token = Platform.environment['FIGMA_TOKEN'];
+      token = Platform.environment['FIGMA_FREE_TOKEN'];
     });
 
     tearDown(() {

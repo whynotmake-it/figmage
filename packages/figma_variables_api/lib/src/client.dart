@@ -82,10 +82,13 @@ class FigmaClient {
     return NodesResponse.fromJson(json);
   }
 
-  /// Retreives the file with given [key].
-  Future<FileResponse> getFile(String key, [FigmaQuery? query]) async {
+  /// Retreives the local styles for a file with given [key].
+  Future<FileStylesResponse> getLocalFileStyles(
+    String key, [
+    FigmaQuery? query,
+  ]) async {
     final json = await _getFigma('/files/$key', query);
-    return FileResponse.fromJson(json);
+    return FileStylesResponse.fromJson(json);
   }
 
   /// Does a GET request towards the Figma API.

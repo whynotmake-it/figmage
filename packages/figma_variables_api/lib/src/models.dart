@@ -1,11 +1,12 @@
-export 'dto/styles/style_type.dart';
-export 'dto/styles/styles_response.dart';
+export 'dto/file_styles_response/file_styles_response.dart';
 export 'dto/nodes/node_content.dart';
 export 'dto/nodes/nodes_response.dart';
+export 'dto/package_figma_models.dart';
+export 'dto/styles/style_type.dart';
+export 'dto/styles/styles_response.dart';
 export 'dto/variable/variable_dto.dart';
 export 'dto/variable_collection/variable_collection_dto.dart';
 export 'dto/variable_mode/variable_mode_dto.dart';
 export 'dto/variable_mode_value/variable_mode_value_dto.dart';
 export 'dto/variable_response/variables_response_dto.dart';
 export 'dto/variables_meta/variables_meta_dto.dart';
-export 'dto/package_figma_models.dart';

@@ -31,5 +31,3 @@ pubspec_overrides.yaml
 dart_test.yaml
 
 .vscode/settings.json
-.vscode/launch.json
-.vscode/settings.json

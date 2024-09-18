@@ -78,7 +78,7 @@ void main() {
       expect(generators, hasLength(2));
     });
     test('call all generator generation methods', () {
-      final result = sut.generate();
+      sut.generate();
 
       for (final gen in generators) {
         verify(gen.generateClass);

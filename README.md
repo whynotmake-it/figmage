@@ -129,6 +129,9 @@ fileId: "YOUR_FIGMA_FILE_ID"
 packageDescription: "A package generated from Figma designs."
 # Default: true. Determines whether to drop unresolvable values. When true, values that cannot be resolved (e.g., an alias pointing to a missing variable) are omitted, ensuring all tokens are resolvable in all modes (e.g., light and dark mode). When false, unresolved variables are included but will return null. Defaults to false.
 dropUnresolved: true
+# Whether to fetch only the styles that were published to the library.
+# Defaults to false, meaning the file's local styles will be fetched.
+stylesFromLibrary: false
 colors:
   # Default: true. Whether to generate color tokens.
   generate: true

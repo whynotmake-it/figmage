@@ -77,6 +77,9 @@ class _$AliasOrCopyWithImpl<T, $Res, $Val extends AliasOr<T>>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of AliasOr
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -96,6 +99,8 @@ class __$$AliasDataImplCopyWithImpl<T, $Res>
       _$AliasDataImpl<T> _value, $Res Function(_$AliasDataImpl<T>) _then)
       : super(_value, _then);
 
+  /// Create a copy of AliasOr
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -135,7 +140,9 @@ class _$AliasDataImpl<T> extends AliasData<T> {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AliasOr
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AliasDataImplCopyWith<T, _$AliasDataImpl<T>> get copyWith =>
@@ -215,7 +222,10 @@ abstract class AliasData<T> extends AliasOr<T> {
   const AliasData._() : super._();
 
   T get data;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AliasOr
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AliasDataImplCopyWith<T, _$AliasDataImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -239,6 +249,8 @@ class __$$AliasImplCopyWithImpl<T, $Res>
       _$AliasImpl<T> _value, $Res Function(_$AliasImpl<T>) _then)
       : super(_value, _then);
 
+  /// Create a copy of AliasOr
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -257,6 +269,8 @@ class __$$AliasImplCopyWithImpl<T, $Res>
     ));
   }
 
+  /// Create a copy of AliasOr
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $AliasOrCopyWith<T, $Res> get aliasOrValue {
@@ -294,7 +308,9 @@ class _$AliasImpl<T> extends Alias<T> {
   @override
   int get hashCode => Object.hash(runtimeType, id, aliasOrValue);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AliasOr
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AliasImplCopyWith<T, _$AliasImpl<T>> get copyWith =>
@@ -377,7 +393,10 @@ abstract class Alias<T> extends AliasOr<T> {
 
   String get id;
   AliasOr<T> get aliasOrValue;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AliasOr
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AliasImplCopyWith<T, _$AliasImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -399,6 +418,8 @@ class __$$AliasUnresolvedImplCopyWithImpl<T, $Res>
       $Res Function(_$AliasUnresolvedImpl<T>) _then)
       : super(_value, _then);
 
+  /// Create a copy of AliasOr
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -437,7 +458,9 @@ class _$AliasUnresolvedImpl<T> extends AliasUnresolved<T> {
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of AliasOr
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$AliasUnresolvedImplCopyWith<T, _$AliasUnresolvedImpl<T>> get copyWith =>
@@ -519,7 +542,10 @@ abstract class AliasUnresolved<T> extends AliasOr<T> {
   const AliasUnresolved._() : super._();
 
   String get id;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of AliasOr
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AliasUnresolvedImplCopyWith<T, _$AliasUnresolvedImpl<T>> get copyWith =>
       throw _privateConstructorUsedError;
 }

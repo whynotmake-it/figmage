@@ -26,7 +26,9 @@ mixin _$Typography {
   double get wordSpacing => throw _privateConstructorUsedError;
   double get height => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Typography
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $TypographyCopyWith<Typography> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -59,6 +61,8 @@ class _$TypographyCopyWithImpl<$Res, $Val extends Typography>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Typography
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -141,6 +145,8 @@ class __$$TypographyImplCopyWithImpl<$Res>
       _$TypographyImpl _value, $Res Function(_$TypographyImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Typography
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -278,7 +284,9 @@ class _$TypographyImpl extends _Typography {
       wordSpacing,
       height);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Typography
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$TypographyImplCopyWith<_$TypographyImpl> get copyWith =>
@@ -316,8 +324,11 @@ abstract class _Typography extends Typography {
   double get wordSpacing;
   @override
   double get height;
+
+  /// Create a copy of Typography
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$TypographyImplCopyWith<_$TypographyImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

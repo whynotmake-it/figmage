@@ -33,7 +33,7 @@ class FigmaVariablesRepository implements VariablesRepository {
       return await client.getLocalVariables(fileId);
     } on FigmaException catch (e) {
       if (e.code == 403) {
-        throw UnauthorizedVariablesException(e.message);
+        throw const UnauthorizedVariablesException();
       } else {
         throw UnknownVariablesException(e.message);
       }

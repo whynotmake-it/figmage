@@ -45,7 +45,7 @@ sealed class VariablesException implements Exception {
 /// {@endtemplate}
 class UnauthorizedVariablesException extends VariablesException {
   /// {@macro unauthorized_variables_exception}
-  const UnauthorizedVariablesException(String? message)
+  const UnauthorizedVariablesException([String? message])
       : message = message ??
             'Unauthorized. Make sure you have a valid access token '
                 'that can access the file and that you are a Figma Enterprise. '

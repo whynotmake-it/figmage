@@ -75,19 +75,17 @@ void main(List<String> args) {
   group('README', () {
     late DartEmitter emitter;
     late DartFormatter formatter;
-    late LibraryBuilder lib;
     setUp(() {
       emitter = DartEmitter();
       formatter = DartFormatter();
-      lib = LibraryBuilder();
     });
 
     test('colors file', () async {
       final generator = ColorFileGenerator(tokens: variableTokens.colorTokens);
 
-      lib.body.addAll(generator.generate());
-
-      final result = formatter.format(lib.build().accept(emitter).toString());
+      final result = formatter.format(
+        generator.generate().accept(emitter).toString(),
+      );
       // ignore: avoid_print
       print(
         "```dart"

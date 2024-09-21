@@ -27,4 +27,6 @@ jobs:
           uses: bluefireteam/melos-action@5a8367ec4b9942d712528c398ff3f996e03bc230
         
         - name: 🧪 Run Integration Tests
+          env:
+            FIGMA_FREE_TOKEN: ${{ secrets.FIGMA_FREE_TOKEN }}
           run: dart test integration_test/generation_notifier_integration_test.dart

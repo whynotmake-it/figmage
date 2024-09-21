@@ -8,6 +8,11 @@ const _textStyleReference = Reference(
   'package:flutter/material.dart',
 );
 
+const _googleFontsReference = Reference(
+  'GoogleFonts',
+  'package:google_fonts/google_fonts.dart',
+);
+
 /// {@template text_style_theme_extension_generator}
 /// A [ModeThemeExtensionGenerator] for text style themes from
 /// [Typography] data.
@@ -20,9 +25,7 @@ class TextStyleThemeExtensionGenerator
     required super.valuesByNameByMode,
     required this.useGoogleFonts,
     super.buildContextExtensionNullable = false,
-  }) : super(
-          symbolReference: _textStyleReference,
-        );
+  }) : super(symbolReference: _textStyleReference);
 
   /// Whether to use the google_fonts package for initializing TextStyles
   /// instead of the default TextStyle constructor.
@@ -31,40 +34,17 @@ class TextStyleThemeExtensionGenerator
   @override
   Expression getConstructorExpression(Typography value) {
     if (useGoogleFonts) {
-      return _googleFontsConstructorExpression(value);
+      return _googleFontsReference.newInstanceNamed(
+        "getFont",
+        [literalString(value.fontFamily)],
+        getNamedArguments(value, includeFamily: false),
+      );
     } else {
       return _textStyleReference.constInstance(
         [],
         getNamedArguments(value),
       );
     }
-  }
-
-  Expression _googleFontsConstructorExpression(Typography value) {
-    // TODO(tim): #29 bring this back once dependcies are resolved
-    /** 
-    final allFonts = GoogleFonts.asMap();
-    final validFontName = switch ((
-      allFonts.containsKey(value.fontFamily),
-      allFonts.containsKey(value.fontFamilyPostScriptName),
-    )) {
-      (true, _) => value.fontFamily,
-      (_, true) => value.fontFamilyPostScriptName,
-      (false, false) => null,
-    };
-    if (validFontName == null) {
-      return _textStyleReference.constInstance([], getNamedArguments(value));
-    }
-    */
-    final googleFontsReference = refer(
-      'GoogleFonts',
-      'package:google_fonts/google_fonts.dart',
-    );
-
-    return googleFontsReference.property("getFont").call(
-      [literal(value.fontFamily)],
-      getNamedArguments(value, includeFamily: false),
-    );
   }
 
   /// Returns the constructor arguments for a Flutter `TextStyle` from an
@@ -78,7 +58,7 @@ class TextStyleThemeExtensionGenerator
     bool includeFamily = true,
   }) {
     return <String, Expression>{
-      if (includeFamily) 'fontFamily': literal(typography.fontFamily),
+      if (includeFamily) 'fontFamily': literalString(typography.fontFamily),
       'fontSize': literal(typography.fontSize),
       'fontWeight': refer('FontWeight').property('w${typography.fontWeight}'),
       'fontStyle': refer('FontStyle').property(

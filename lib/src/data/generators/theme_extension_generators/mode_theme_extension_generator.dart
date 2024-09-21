@@ -287,8 +287,6 @@ abstract class ModeThemeExtensionGenerator<T>
           in valueMaps.entries)
         Constructor(
           (constructor) => constructor
-            // TODO(tim): this should be const depending on the initializers
-            ..constant = true
             ..name = switch (modeName) {
               "" => "standard",
               _ => convertToValidVariableName(modeName),
@@ -323,14 +321,17 @@ extension ReferenceX on Reference {
 }
 
 extension _ConstructorBuilderX on ConstructorBuilder {
+  /// Generates the constructors initializers from [constructorsByParamName].
+  ///
+  /// If all values are const or literals, the constructor will be marked as
+  /// constant.
   ConstructorBuilder setInitializersAndConst({
     required Map<String, Expression> constructorsByParamName,
   }) {
-    final emitter = DartEmitter();
     initializers.addAll([
       for (final MapEntry(key: name, value: expression)
           in constructorsByParamName.entries)
-        Code('$name = ${expression.accept(emitter)}'),
+        refer(name).assign(expression).code,
     ]);
     constant = initializers.isEmpty ||
         constructorsByParamName.values.every(

@@ -1,6 +1,5 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/file_generators/base_file_generator.dart';
-import 'package:figmage/src/domain/generators/file_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:mocktail/mocktail.dart';
@@ -79,15 +78,13 @@ void main() {
       expect(generators, hasLength(2));
     });
     test('call all generator generation methods', () {
-      final result = sut.generate();
+      sut.generate();
 
       for (final gen in generators) {
         verify(gen.generateClass);
         verify(gen.generateExtension);
         verifyNoMoreInteractions(gen);
       }
-
-      expect(result, isNotEmpty);
     });
 
     test('contains all generator results', () {
@@ -95,21 +92,17 @@ void main() {
 
       expect(
         result,
-        containsAllInOrder([
-          isA<Class>().having((p0) => p0.name, "name", "Test0"),
-          isA<Extension>().having((p0) => p0.name, "name", "TestX0"),
-          isA<Class>().having((p0) => p0.name, "name", "Test1"),
-          isA<Extension>().having((p0) => p0.name, "name", "TestX1"),
-        ]),
-      );
-    });
-
-    test('contains generated file prefix', () {
-      final result = sut.generate();
-
-      expect(
-        result.first,
-        equalsDart(FileGenerator.generatedFilePrefix),
+        isA<Library>().having(
+          (p0) => p0.body,
+          'body',
+          containsAllInOrder([
+            isA<Class>().having((p0) => p0.name, "name", "Test0"),
+            isA<Extension>().having((p0) => p0.name, "name", "TestX0"),
+            isA<Class>().having((p0) => p0.name, "name", "Test1"),
+            isA<Extension>().having((p0) => p0.name, "name", "TestX1"),
+          ]),
+        ),
+        reason: 'generated library body contains 2 classes and 2 extensions',
       );
     });
   });

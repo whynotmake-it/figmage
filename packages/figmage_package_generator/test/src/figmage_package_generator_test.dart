@@ -103,7 +103,7 @@ void main() {
 
         final decoded = utf8.decode(content);
 
-        expect(decoded, contains("google_fonts: ^6.1.0"));
+        expect(decoded, contains("google_fonts: ^6.2.1"));
       });
 
       test('pubspec doesnt contain google_fonts dependency if unwanted',

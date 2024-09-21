@@ -5,14 +5,14 @@ concurrency:
   cancel-in-progress: true
 
 on:
-  pull_request_review:
-    types: [submitted]
+  pull_request_target: 
+    types: [labeled]
 
 
 jobs:
     integration_test:
         name: Run Integration Tests
-        if: github.event.review.state == 'approved'
+        if: github.event.label.name == 'integration test'
         timeout-minutes: 10
         runs-on: ubuntu-latest
         steps:

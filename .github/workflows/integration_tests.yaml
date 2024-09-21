@@ -17,6 +17,9 @@ jobs:
         steps:
         - name: 📚 Checkout
           uses: actions/checkout@v4
+          with:
+            ref: ${{ github.event.pull_request.head.sha }}
+            fetch-depth: 0
 
         - name: 🎯 Setup Dart
           uses: dart-lang/setup-dart@v1.6.5

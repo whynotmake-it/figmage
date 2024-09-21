@@ -1,6 +1,7 @@
 // ignore_for_file: unused_import
 import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figma_variables_api/src/client.dart';
+import 'package:figma_variables_api/src/dto/file_styles_response/file_styles_response.dart';
 import 'package:figma_variables_api/src/dto/nodes/node_content.dart';
 import 'package:figma_variables_api/src/dto/nodes/nodes_response.dart';
 import 'package:figma_variables_api/src/dto/package_figma_models.dart';

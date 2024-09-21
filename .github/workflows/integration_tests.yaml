@@ -8,7 +8,6 @@ on:
   pull_request_target: 
     types: [labeled]
 
-
 jobs:
     integration_test:
         name: Run Integration Tests

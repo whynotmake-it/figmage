@@ -1,3 +1,15 @@
+## 0.1.0-dev.8
+
+> Note: This release has breaking changes.
+
+ - **FIX**: improve logging when no styles were found.
+ - **FIX**: improved error message when the user wasn't authorized to fetch variables.
+ - **FIX**: `google_fonts` import and generated file preamble (#129).
+ - **FEAT**(figma_variables_api): enable fetching local styles from file.
+ - **FEAT**(figma_variables_api): support file endpoint.
+ - **DOCS**: added new `stylesFromLibrary` config parameter to README.
+ - **BREAKING** **FEAT**: styles are now fetched locally from the given file by default.
+
 ## 0.1.0-dev.7
 
  - **FIX**: remove `packageDir` from figmage.yaml, the package will always be generated in the directory where you put the figmage.yaml.

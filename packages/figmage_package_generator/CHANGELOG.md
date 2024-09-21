@@ -1,3 +1,7 @@
+## 0.1.0-dev.5
+
+ - **FIX**: `google_fonts` import and generated file preamble (#129).
+
 ## 0.1.0-dev.4
 
 > Note: This release has breaking changes.

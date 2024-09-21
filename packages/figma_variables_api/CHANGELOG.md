@@ -1,3 +1,8 @@
+## 0.1.0-dev.6
+
+ - **FEAT**(figma_variables_api): enable fetching local styles from file.
+ - **FEAT**(figma_variables_api): support file endpoint.
+
 ## 0.1.0-dev.5
 
 > Note: This release has breaking changes.

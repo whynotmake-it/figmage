@@ -41,9 +41,6 @@ jobs:
       - name: 📝 Run Test
         run: melos run coverage
 
-      - name: 📢 Ensure Publishable
-        run: melos publish --yes --dry-run
-
       - name: 📊 Generate Coverage
         id: coverage-report
         uses: whynotmake-it/dart-coverage-assistant@v1

@@ -11,8 +11,7 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
       json,
       ($checkedConvert) {
         final val = Config(
-          packageName: $checkedConvert(
-              'packageName', (v) => v as String? ?? "figmage_package"),
+          packageName: $checkedConvert('packageName', (v) => v as String?),
           fileId: $checkedConvert('fileId', (v) => v as String?),
           packageDescription:
               $checkedConvert('packageDescription', (v) => v as String? ?? ''),

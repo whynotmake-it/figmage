@@ -19,6 +19,7 @@ abstract interface class StylesRepository {
     required String fileId,
     required String token,
     required bool fromLibrary,
+    required bool useFirstSegmentAsCollection,
   });
 }
 

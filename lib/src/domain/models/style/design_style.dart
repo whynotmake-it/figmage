@@ -14,22 +14,29 @@ sealed class DesignStyle<T> with EquatableMixin implements DesignToken<T> {
     required this.id,
     required this.fullName,
     required this.value,
+    required this.useFirstSegmentAsCollection,
   });
 
   /// The id of this DesignStyle.
   final String id;
 
+  /// Whether to use the first segment of the [fullName] as the collection name.
+  final bool useFirstSegmentAsCollection;
+
   @override
-  String get name => fullName.startsWith('$collectionName/')
-      ? fullName.substring(collectionName.length + 1)
-      : fullName;
+  String get name =>
+      useFirstSegmentAsCollection && fullName.startsWith('$collectionName/')
+          ? fullName.substring(collectionName.length + 1)
+          : fullName;
 
   @override
   final String fullName;
 
   @override
-  String get collectionName =>
-      fullName.contains('/') ? fullName.split('/').first : '';
+  String get collectionName => switch (useFirstSegmentAsCollection) {
+        true => fullName.contains('/') ? fullName.split('/').first : '',
+        false => '',
+      };
 
   /// For styles (unlike Variables) [collectionName] and [collectionId] are the
   /// same.
@@ -50,7 +57,7 @@ sealed class DesignStyle<T> with EquatableMixin implements DesignToken<T> {
       };
 
   @override
-  List<Object?> get props => [id, name, value];
+  List<Object?> get props => [id, fullName, value, useFirstSegmentAsCollection];
 
   @override
   bool? get stringify => true;
@@ -65,6 +72,7 @@ class ColorDesignStyle extends DesignStyle<int> {
     required super.id,
     required super.fullName,
     required super.value,
+    required super.useFirstSegmentAsCollection,
   });
 }
 
@@ -77,5 +85,6 @@ class TextDesignStyle extends DesignStyle<Typography> {
     required super.id,
     required super.fullName,
     required super.value,
+    required super.useFirstSegmentAsCollection,
   });
 }

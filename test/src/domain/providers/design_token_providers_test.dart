@@ -90,7 +90,7 @@ void main() {
             (ref, args) => Future.value(mockVariables),
           ),
           stylesProvider.overrideWith(
-            (ref, args) => Future.value(mockStyles),
+            (ref, args) => Future.value(mockStylesWithCollection),
           ),
         ],
       );
@@ -263,8 +263,9 @@ void main() {
           fileId: any(named: "fileId"),
           token: any(named: "token"),
           fromLibrary: false,
+          useFirstSegmentAsCollection: false,
         ),
-      ).thenAnswer((_) async => mockStyles);
+      ).thenAnswer((_) async => mockStylesWithCollection);
       container = createContainer(
         overrides: [
           stylesRepositoryProvider.overrideWith((ref) => stylesRepository),
@@ -280,6 +281,7 @@ void main() {
           fileId: "fileId",
           token: "token",
           fromLibrary: false,
+          useFirstSegmentAsCollection: false,
         ),
       ).called(1);
     });
@@ -289,6 +291,7 @@ void main() {
           fileId: any(named: "fileId"),
           token: any(named: "token"),
           fromLibrary: false,
+          useFirstSegmentAsCollection: false,
         ),
       ).thenAnswer((_) async => []);
       expect(
@@ -303,6 +306,7 @@ void main() {
             fileId: any(named: "fileId"),
             token: any(named: "token"),
             fromLibrary: false,
+            useFirstSegmentAsCollection: false,
           ),
         ).thenThrow(const UnknownStylesException("unknown_message"));
       });
@@ -335,6 +339,7 @@ void main() {
             fileId: any(named: "fileId"),
             token: any(named: "token"),
             fromLibrary: false,
+            useFirstSegmentAsCollection: false,
           ),
         ).thenThrow(ArgumentError("error_message"));
       });

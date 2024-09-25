@@ -13,6 +13,7 @@ class FigmaStylesRepository implements StylesRepository {
     required String fileId,
     required String token,
     required bool fromLibrary,
+    required bool useFirstSegmentAsCollection,
   }) async {
     final client = FigmaClient(token);
     final styles = switch (fromLibrary) {
@@ -39,7 +40,9 @@ class FigmaStylesRepository implements StylesRepository {
     return [
       for (final node in styleNodes)
         if (node != null)
-          if (_transformNode(node) case final style?) style,
+          if (_transformNode(node, useFirstSegmentAsCollection)
+              case final style?)
+            style,
     ];
   }
 
@@ -82,20 +85,33 @@ class FigmaStylesRepository implements StylesRepository {
     return styles;
   }
 
-  DesignStyle<dynamic>? _transformNode(Node node) {
+  DesignStyle<dynamic>? _transformNode(
+    Node node,
+    bool useFirstSegmentAsCollection,
+  ) {
     return switch (node) {
       Text(
         :final id,
         :final name?,
         :final style?,
       ) =>
-        TextDesignStyle(id: id, fullName: name, value: style.toDomain()),
+        TextDesignStyle(
+          id: id,
+          fullName: name,
+          value: style.toDomain(),
+          useFirstSegmentAsCollection: useFirstSegmentAsCollection,
+        ),
       Rectangle(
         :final id,
         :final name?,
         fills: [Paint(:final color?), ...],
       ) =>
-        ColorDesignStyle(id: id, fullName: name, value: color.toValue()),
+        ColorDesignStyle(
+          id: id,
+          fullName: name,
+          value: color.toValue(),
+          useFirstSegmentAsCollection: useFirstSegmentAsCollection,
+        ),
       _ => null,
     } as DesignStyle<dynamic>?;
   }

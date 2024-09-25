@@ -5,6 +5,7 @@ const mockColorDesignStyle = ColorDesignStyle(
   id: "color_id",
   fullName: "colors/color_name",
   value: 0xFFFFFFFF,
+  useFirstSegmentAsCollection: true,
 );
 
 const mockTextDesignStyle = TextDesignStyle(
@@ -15,9 +16,10 @@ const mockTextDesignStyle = TextDesignStyle(
     fontFamilyPostScriptName: "Inter",
     fontSize: 12,
   ),
+  useFirstSegmentAsCollection: true,
 );
 
-const mockStyles = <DesignStyle<dynamic>>[
+const mockStylesWithCollection = <DesignStyle<dynamic>>[
   mockColorDesignStyle,
   mockTextDesignStyle,
 ];

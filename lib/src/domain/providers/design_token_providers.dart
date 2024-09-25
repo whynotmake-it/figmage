@@ -139,6 +139,8 @@ final stylesProvider =
       fileId: settings.fileId,
       token: settings.token,
       fromLibrary: settings.config.stylesFromLibrary,
+      useFirstSegmentAsCollection:
+          settings.config.stylesUseFirstSegmentAsCollection,
     );
   } on StylesException catch (e) {
     stylesProgress.fail("Failed to fetch styles: ${e.message}");

@@ -19,6 +19,7 @@ void main() {
         "packageDescription": "packageDescription",
         "dropUnresolved": false,
         "stylesFromLibrary": false,
+        "stylesUseFirstSegmentAsCollection": false,
         "colors": {
           "generate": true,
           "from": ["path1", "path2"],
@@ -90,6 +91,8 @@ void main() {
         const sut = Config(fileId: "fileId", packageName: "packageName");
         expect(sut.colors.generate, isTrue);
         expect(sut.dropUnresolved, isFalse);
+        expect(sut.stylesFromLibrary, isFalse);
+        expect(sut.stylesUseFirstSegmentAsCollection, isFalse);
         expect(sut.colors.from, isEmpty);
         expect(sut.typography.generate, isTrue);
         expect(sut.typography.from, isEmpty);

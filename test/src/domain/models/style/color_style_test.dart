@@ -4,23 +4,38 @@ import 'package:test/test.dart';
 
 void main() {
   group("ColorStyle", () {
-    const style = ColorDesignStyle(
+    const styleWithCollection = ColorDesignStyle(
       id: "id",
       fullName: "colors/dark/color_name",
       value: 0xFFFFFFFF,
+      useFirstSegmentAsCollection: true,
+    );
+
+    const styleWithoutCollection = ColorDesignStyle(
+      id: "id",
+      fullName: "colors/dark/color_name",
+      value: 0xFFFFFFFF,
+      useFirstSegmentAsCollection: false,
     );
     test("is a DesignToken<int>", () {
-      expect(style, isA<DesignToken<int>>());
+      expect(styleWithCollection, isA<DesignToken<int>>());
+      expect(styleWithoutCollection, isA<DesignToken<int>>());
 
-      expect([style].whereType<DesignToken<int>>(), hasLength(1));
+      expect([styleWithCollection].whereType<DesignToken<int>>(), hasLength(1));
+      expect(
+        [styleWithoutCollection].whereType<DesignToken<int>>(),
+        hasLength(1),
+      );
     });
 
     test("has correct name", () {
-      expect(style.name, "dark/color_name");
+      expect(styleWithCollection.name, "dark/color_name");
+      expect(styleWithoutCollection.name, "colors/dark/color_name");
     });
 
     test("has correct collectionName", () {
-      expect(style.collectionName, "colors");
+      expect(styleWithCollection.collectionName, "colors");
+      expect(styleWithoutCollection.collectionName, "");
     });
   });
 }

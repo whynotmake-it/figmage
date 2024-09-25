@@ -25,6 +25,7 @@ void main() {
               fontFamilyPostScriptName: 'Roboto',
               decoration: TextDecoration.underline,
             ),
+            useFirstSegmentAsCollection: false,
           ),
         ],
         useGoogleFonts: true,

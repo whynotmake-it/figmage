@@ -31,6 +31,7 @@ class Config with EquatableMixin {
     this.packageDescription = '',
     this.dropUnresolved = false,
     this.stylesFromLibrary = false,
+    this.stylesUseFirstSegmentAsCollection = false,
     this.colors = const GenerationSettings(),
     this.typography = const TypographyGenerationSettings(),
     this.strings = const GenerationSettings(),
@@ -68,6 +69,13 @@ class Config with EquatableMixin {
   /// file.
   /// Defaults to false.
   final bool stylesFromLibrary;
+
+  /// Whether to use the first segment of the style name as the collection name.
+  ///
+  /// A `ThemeExtension` will be generated for each collection, so if this is
+  /// false, all styles will be in the same collection and there will only be
+  /// one class per token type. Defaults to false.
+  final bool stylesUseFirstSegmentAsCollection;
 
   /// Color generation settings, defaults to generating color tokens from
   /// all paths.
@@ -126,6 +134,7 @@ class Config with EquatableMixin {
         packageDescription,
         dropUnresolved,
         stylesFromLibrary,
+        stylesUseFirstSegmentAsCollection,
         colors,
         typography,
         strings,

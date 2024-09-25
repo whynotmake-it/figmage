@@ -1,6 +1,6 @@
 name: figmage
 description: A CLI tool for generating Figma styles for Flutter
-version: 0.1.0-dev.9
+version: 0.1.0-dev.10
 repository: https://github.com/whynotmake-it/figmage
 issue_tracker: https://github.com/whynotmake-it/figmage/issues
 website: https://whynotmake.it/figmage

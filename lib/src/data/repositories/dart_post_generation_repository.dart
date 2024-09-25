@@ -46,21 +46,20 @@ class DartPostGenerationRepository implements PostGenerationRepository {
     }
 
     final directory = pubspecYaml.parent;
-
     try {
-      progress?.update("Running pub get in ${directory.path}");
+      progress?.update('Running pub get in "${directory.path}"');
       await _processRunner(
         'dart',
         ['pub', 'get'],
         workingDirectory: directory.path,
       );
-      progress?.update("Running dart format in ${directory.path}");
+      progress?.update('Running dart format in "${directory.path}"');
       await _processRunner(
         'dart',
         ['format', '.'],
         workingDirectory: directory.path,
       );
-      progress?.update("Running dart fix in ${directory.path}");
+      progress?.update('Running dart fix in "${directory.path}"');
       await _processRunner(
         'dart',
         ['fix', '--apply'],

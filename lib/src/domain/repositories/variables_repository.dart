@@ -48,8 +48,8 @@ class UnauthorizedVariablesException extends VariablesException {
   const UnauthorizedVariablesException([String? message])
       : message = message ??
             'Unauthorized. Make sure you have a valid access token '
-                'that can access the file and that you are a Figma Enterprise. '
-                'team member';
+                'that can access the file and that you are a Figma Enterprise '
+                'team member.';
 
   @override
   final String message;

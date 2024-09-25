@@ -56,8 +56,8 @@ void main() {
         expect(result.path, "arg_path");
       });
 
-      test('throws an ArgumentError if path is not in the args', () async {
-        when(() => argResults['path']).thenReturn(null);
+      test('throws an ArgumentError if path is not a string or null', () async {
+        when(() => argResults['path']).thenReturn(0);
         await expectLater(
           () => container.read(settingsProvider(argResults).future),
           throwsA(

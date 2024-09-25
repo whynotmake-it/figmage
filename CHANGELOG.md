@@ -1,3 +1,10 @@
+## 0.1.0-dev.9
+
+> Note: This release has breaking changes.
+
+ - **FIX**: typos in several log messages (#141).
+ - **BREAKING** **FEAT**: if no `packageName` is provided in figmage.yaml, use the current directory's name as default. (#143).
+
 ## 0.1.0-dev.8
 
 > Note: This release has breaking changes.

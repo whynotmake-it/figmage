@@ -52,6 +52,8 @@ import 'package:figmage/src/domain/repositories/file_writer_repository.dart';
 import 'package:figmage/src/domain/repositories/post_generation_repository.dart';
 import 'package:figmage/src/domain/repositories/styles_repository.dart';
 import 'package:figmage/src/domain/repositories/variables_repository.dart';
+import 'package:figmage/src/domain/shared/dart_symbol_conversion.dart';
+import 'package:figmage/src/domain/shared/reserved_words.dart';
 import 'package:figmage/src/domain/util/token_filter_x.dart';
 import 'package:figmage/src/domain/util/values_by_name_by_mode_x.dart';
 import 'package:figmage/src/version.dart';

@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: subosito/flutter-action@v2
+      - uses: dart-lang/setup-dart@v1.6.5
       - uses: bluefireteam/melos-action@c7dcb921b23cc520cace360b95d02b37bf09cdaa
         with:
           run-versioning: ${{ inputs.prerelease == false }}

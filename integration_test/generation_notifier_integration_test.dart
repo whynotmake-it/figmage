@@ -92,7 +92,7 @@ void main() {
         expect(pubspecContent, contains("name: test_package"));
       });
 
-      test('uses config package name and warns it is different', () async {
+      test('uses config package name and warns if it is different', () async {
         config = const Config(packageName: "different_name");
         await runner.run(args);
         final pubspec = File("${testDirectory.path}/pubspec.yaml");
@@ -106,8 +106,30 @@ void main() {
         );
       });
 
-      test('logs correctly', timeout: const Timeout(Duration(seconds: 1)),
-          () async {
+      test('sanitizes directory name and warns user', () async {
+        testDirectory = Directory("./Test Package");
+        args = [
+          'forge',
+          '--token',
+          token!,
+          '--fileId',
+          localStylesFileId,
+          '--path',
+          testDirectory.path,
+        ];
+        await runner.run(args);
+        final pubspec = File("${testDirectory.path}/pubspec.yaml");
+        final pubspecContent = pubspec.readAsStringSync();
+        expect(pubspecContent, contains("name: test_package"));
+        verify(
+          () => mockLogger.warn(
+            "The package name test_package does not match the directory name "
+            "Test Package.",
+          ),
+        );
+      });
+
+      test('logs correctly', () async {
         await runner.run(args);
 
         verify(

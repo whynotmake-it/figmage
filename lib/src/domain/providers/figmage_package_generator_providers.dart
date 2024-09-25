@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
+import 'package:figmage/src/domain/shared/dart_symbol_conversion.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:path/path.dart';
 import 'package:riverpod/riverpod.dart';
@@ -29,17 +30,20 @@ final generatedPackageProvider =
   final generateNumbers = settings.config.numbers.generate &&
       tokensByFileType.numberTokens.isNotEmpty;
   final dir = Directory(settings.path);
-  if (basename(settings.path) != settings.config.packageName) {
-    logger.warn(
-        "The package name ${settings.config.packageName} does not match the "
-        "directory name ${basename(dir.path)}.");
+  final directoryName = basename(Directory(settings.path).absolute.path);
+  final packageName = settings.config.packageName ??
+      toDartPackageName(directoryName, defaultName: 'figmage_package');
+
+  if (packageName != directoryName) {
+    logger.warn("The package name $packageName does not match the "
+        "directory name $directoryName.");
   }
   final packageProgress =
       logger.progress("Generating package in ${settings.path}...");
 
   try {
     final files = await packageGenerator.generate(
-      projectName: settings.config.packageName,
+      projectName: packageName,
       dir: dir,
       description: settings.config.packageDescription,
       useGoogleFonts: settings.config.typography.useGoogleFonts,

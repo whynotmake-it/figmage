@@ -5,21 +5,26 @@ import 'package:figmage/src/commands/shared/forge_settings_providers.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/providers/config_providers.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
+import 'package:figmage/src/domain/providers/logger_providers.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
 import '../test/test_util/create_container.dart';
+import 'util/mock_logger.dart';
 
 /// A file that contains only local styles, no library styles.
 const localStylesFileId = "HHUVTJ7lsjhG24SQB5h0zX";
 
 void main() {
-  group("GenerationNotifier", () {
+  group("GenerationNotifier", timeout: const Timeout(Duration(minutes: 1)), () {
     late ProviderContainer container;
     late String? token;
 
     late Directory testDirectory;
 
+    late MockProgress mockProgress;
+    late MockLogger mockLogger;
     late Config config;
 
     late List<String> args;
@@ -28,10 +33,13 @@ void main() {
 
     setUp(() {
       config = const Config();
-      testDirectory = Directory("${Directory.current.path}/figmage_package");
+      testDirectory = Directory("./test_package");
+      mockProgress = MockProgress.create();
+      mockLogger = MockLogger.createWithMockProgress(mockProgress);
       container = createContainer(
         overrides: [
           configProvider.overrideWith((ref, arg) => config),
+          loggerProvider.overrideWith((ref) => mockLogger),
         ],
       );
       token = Platform.environment['FIGMA_FREE_TOKEN'];
@@ -59,7 +67,6 @@ void main() {
 
       test(
         'should generate 7 unpublished styles by default',
-        timeout: const Timeout(Duration(minutes: 1)),
         () async {
           await runner.run(args);
           final files = [
@@ -77,15 +84,124 @@ void main() {
           expect(files.every((f) => f.existsSync()), true);
         },
       );
-    });
 
-    test(
-      'generates no styles if stylesFromLibrary is true',
-      timeout: const Timeout(Duration(minutes: 1)),
-      () async {
-        config = const Config(stylesFromLibrary: true);
-        await expectLater(runner.run(args), throwsArgumentError);
-      },
-    );
+      test('generates package name from directory by default', () async {
+        await runner.run(args);
+        final pubspec = File("${testDirectory.path}/pubspec.yaml");
+        final pubspecContent = pubspec.readAsStringSync();
+        expect(pubspecContent, contains("name: test_package"));
+      });
+
+      test('uses config package name and warns if it is different', () async {
+        config = const Config(packageName: "different_name");
+        await runner.run(args);
+        final pubspec = File("${testDirectory.path}/pubspec.yaml");
+        final pubspecContent = pubspec.readAsStringSync();
+        expect(pubspecContent, contains("name: different_name"));
+        verify(
+          () => mockLogger.warn(
+            "The package name different_name does not match the directory name "
+            "test_package.",
+          ),
+        );
+      });
+
+      test('sanitizes directory name and warns user', () async {
+        testDirectory = Directory("./Test Package");
+        args = [
+          'forge',
+          '--token',
+          token!,
+          '--fileId',
+          localStylesFileId,
+          '--path',
+          testDirectory.path,
+        ];
+        await runner.run(args);
+        final pubspec = File("${testDirectory.path}/pubspec.yaml");
+        final pubspecContent = pubspec.readAsStringSync();
+        expect(pubspecContent, contains("name: test_package"));
+        verify(
+          () => mockLogger.warn(
+            "The package name test_package does not match the directory name "
+            "Test Package.",
+          ),
+        );
+      });
+
+      test('logs correctly', () async {
+        await runner.run(args);
+
+        verify(
+          () => mockLogger.progress("Fetching all variables..."),
+        );
+        verify(
+          () => mockProgress.fail(
+            'Failed to fetch variables: Unauthorized. Make sure you have a '
+            'valid access token that can access the file and that you are '
+            'a Figma Enterprise team member.',
+          ),
+        );
+
+        verify(
+          () => mockLogger.progress("Fetching all styles..."),
+        );
+        verify(
+          () => mockProgress.complete(
+            'Found 7 styles',
+          ),
+        );
+
+        verify(
+          () => mockLogger.progress(
+            "Generating package in ./test_package...",
+          ),
+        );
+        verify(
+          () => mockProgress.complete(
+            'Generated package at ./test_package with 8 files',
+          ),
+        );
+
+        verify(
+          () => mockLogger.progress("Generating theme classes for 2 files..."),
+        );
+        verify(
+          () => mockProgress.complete(),
+        );
+
+        verify(
+          () => mockLogger
+              .progress("Creating library form 2 generation results..."),
+        );
+
+        verify(
+          () => mockLogger.progress("Writing files..."),
+        );
+        verify(
+          () => mockProgress.complete(
+            'Wrote 2 files',
+          ),
+        );
+
+        verify(
+          () => mockLogger.progress("Running post generation tasks..."),
+        );
+
+        verifyInOrder([
+          () => mockProgress.update('Running pub get in "./test_package"'),
+          () => mockProgress.update('Running dart format in "./test_package"'),
+          () => mockProgress.update('Running dart fix in "./test_package"'),
+        ]);
+      });
+
+      test(
+        'generates no styles if stylesFromLibrary is true',
+        () async {
+          config = const Config(stylesFromLibrary: true);
+          await expectLater(runner.run(args), throwsArgumentError);
+        },
+      );
+    });
   });
 }

@@ -26,7 +26,7 @@ part 'config.g.dart';
 class Config with EquatableMixin {
   /// {@macro config}
   const Config({
-    this.packageName = "figmage_package",
+    this.packageName,
     this.fileId,
     this.packageDescription = '',
     this.dropUnresolved = false,
@@ -45,7 +45,9 @@ class Config with EquatableMixin {
   factory Config.fromMap(Map<dynamic, dynamic> json) => _$ConfigFromJson(json);
 
   /// The name of the generated dart package, e.g. figmage_example.
-  final String packageName;
+  ///
+  /// Will default to the current directory name if not provided.
+  final String? packageName;
 
   /// figma file ID.
   final String? fileId;

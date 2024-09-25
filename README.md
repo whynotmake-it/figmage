@@ -121,7 +121,7 @@ If you require more control over the generated code, create a `figmage.yaml` fil
 Below is an example, along with descriptions of what each flag accomplishes:
 
 ```yaml
-# Default: "figmage_package". The name of the generated Dart package.
+# The name of the generated Dart package. Will use the current directory name if not provided.
 packageName: "my_design_system"
 # Required. The Figma file ID from which to generate tokens.
 fileId: "YOUR_FIGMA_FILE_ID"

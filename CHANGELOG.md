@@ -1,3 +1,7 @@
+## 0.1.0-dev.10
+
+ - **FIX**: the package name is now created correctly even when no `--path` flag is passed (#151).
+
 ## 0.1.0-dev.9
 
 > Note: This release has breaking changes.

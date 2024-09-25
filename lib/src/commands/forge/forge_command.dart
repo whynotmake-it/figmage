@@ -14,16 +14,16 @@ class ForgeCommand extends Command<int> {
   ForgeCommand(this._container) {
     argParser
       ..addOption(
-        "path",
-        defaultsTo: ".",
-        help: "The ouptut path for the generated package, if not provided, "
-            "the current directory will be used.",
-      )
-      ..addOption(
         "token",
         abbr: "t",
         help: "Your figma API token",
         mandatory: true,
+      )
+      ..addOption(
+        "path",
+        abbr: "p",
+        help: "The ouptut path for the generated package, if not provided, "
+            "the current directory will be used.",
       )
       ..addOption(
         "fileId",

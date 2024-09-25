@@ -12,8 +12,9 @@ import 'package:riverpod/riverpod.dart';
 final settingsProvider = FutureProvider.autoDispose
     .family<FigmageSettings, ArgResults>((ref, args) async {
   final dir = switch (args['path']) {
+    null => Directory.current,
     final String dir => Directory(dir),
-    _ => throw ArgumentError.notNull('path'),
+    _ => throw ArgumentError.value(args['path'], 'path'),
   };
 
   final configPath = join(dir.path, 'figmage.yaml');

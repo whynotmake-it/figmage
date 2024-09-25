@@ -106,9 +106,9 @@ void main() {
 
     test('tells user how to use command when wrong arguments provided',
         () async {
-      final exitCode = await commandRunner.run(['forge', '-p']);
+      final exitCode = await commandRunner.run(['forge', '-x']);
       verify(
-        () => logger.err('Could not find an option or flag "-p".'),
+        () => logger.err('Could not find an option or flag "-x".'),
       ).called(1);
       verify(() => logger.info('')).called(1);
       final infoLog = verify(() => logger.info(captureAny())).captured.first;
@@ -121,7 +121,7 @@ void main() {
       final args = command.argParser.parse(['-t', 'token', '-f', 'fileId']);
       expect(args['token'], 'token');
       expect(args['fileId'], 'fileId');
-      expect(args['path'], '.', reason: 'defaults to "."');
+      expect(args['path'], isNull);
     });
   });
 }
@@ -129,9 +129,8 @@ void main() {
 const usage = '''
 Usage: figmage forge [arguments]
 -h, --help                 Print this usage information.
-    --path                 The ouptut path for the generated package, if not provided, the current directory will be used.
-                           (defaults to ".")
 -t, --token (mandatory)    Your figma API token
+-p, --path                 The ouptut path for the generated package, if not provided, the current directory will be used.
 -f, --fileId               Your figma file ID, needs to be either given here, or in the figmage.yaml
 
 Run "figmage help" to see global options.''';

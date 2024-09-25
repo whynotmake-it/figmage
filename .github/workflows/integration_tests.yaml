@@ -32,4 +32,6 @@ jobs:
         - name: 🧪 Run Integration Tests
           env:
             FIGMA_FREE_TOKEN: ${{ secrets.FIGMA_FREE_TOKEN }}
-          run: dart test integration_test/generation_notifier_integration_test.dart
+          run: |
+            dart test integration_test/generation_notifier_integration_test.dart
+            dart test integration_test/full_integration_test.dart

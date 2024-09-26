@@ -5,6 +5,13 @@ repository: https://github.com/whynotmake-it/figmage
 issue_tracker: https://github.com/whynotmake-it/figmage/issues
 website: https://whynotmake.it/figmage
 
+topics: 
+  - code-generation
+  - design-system
+  - cli
+  - flutter
+  - theme
+
 executables:
   figmage:
 

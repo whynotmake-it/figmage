@@ -1,0 +1,38 @@
+---
+title: Figmage
+description: Magically sync your Figma Design System with your Flutter Code!
+template: splash
+hero:
+  tagline: Magically sync your Figma Design System with your Flutter Code!
+#   image:
+#     file: ../../assets/houston.webp
+  actions:
+    - text: Quick Start Guide
+      link: /guides/getting-started/
+      icon: rocket
+    - text: View on GitHub
+      link: https://github.com/whynotmake-it/figmage
+      icon: external
+      variant: minimal
+---
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+
+<CardGrid stagger>
+	<Card title="Sync your Designs" icon="pencil">
+		Generate a Flutter package from your Figma Design Tokens.
+	</Card>
+	<Card title="All your needs" icon="add-document">
+		Supports text styles, colors, spacers and paddings in Styles and Variables.
+	</Card>
+	<Card title="Configurable" icon="setting">
+		Filter your tokens, or customize the output to your needs.
+	</Card>
+	<Card title="Read the docs" icon="open-book">
+		Start by reading the [Quick Start Guide](/guides/getting-started/).
+	</Card>
+</CardGrid>
+
+
+[![Powered by whynotmake.it](../../assets/pill.svg)](https://whynotmake.it)
+

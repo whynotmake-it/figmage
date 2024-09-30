@@ -1,10 +1,10 @@
 ---
-title: Quick Start
-description: Import your tokens with a minimal setup.
+title: Getting Started
+description: Import your tokens and learn how to use Figmage.
 ---
 import { CardGrid, Card, FileTree, LinkCard, Steps } from '@astrojs/starlight/components';
 
-This guide will teach you how to get Figmage running in your project with the minimum effort.
+This guide will teach you how to get Figmage running and set you up for success.
 
 At the end of this guide, you will have a finished Flutter package that contains all your Tokens as Dart code. Exciting, right?
 
@@ -208,31 +208,55 @@ Now that you have your Tokens as Dart code, you can use them in your Flutter app
     For example, this is how you would add the generated `ColorsSemantic` and `TypographySemantic` to your app's `ThemeData`:
     ```diff lang=dart
     // lib/main.dart
-
-    import 'package:flutter/material.dart';
     + import 'package:design_tokens/design_tokens.dart';
-
-    void main() {
-      runApp(MyApp());
+    // ...
+    @override
+    Widget build(BuildContext context) {
+      return MaterialApp(
+        theme: ThemeData(
+          // ...
+    +      extensions: [
+    +        ColorsSemantic.standard(),
+    +        TypographySemantic.standard(),
+    +      ],
+        ),
+        home: MyHomePage(),
+      );
     }
-
-    class MyApp extends StatelessWidget {
-      @override
-      Widget build(BuildContext context) {
-        return MaterialApp(
-          theme: ThemeData(
-            // ...
-    +       extensions: [
-    +         ColorsSemantic.standard(),
-    +         TypographySemantic.standard(),
-    +       ],
-          ),
-          home: MyHomePage(),
-        );
-      }
-    }
+    
 
     ```
+
+    If your Tokens were generated from Variables, you will get multiple contructors, one for each mode.
+    Let's say you have a `dark` and a `light` mode, you would use them like this:
+    ```diff lang=dart
+    // lib/main.dart
+
+    + import 'package:design_tokens/design_tokens.dart';
+    // ...
+    @override
+    Widget build(BuildContext context) {
+      return MaterialApp(
+        theme: ThemeData(
+            // ...
+            extensions: [
+    +            ColorsSemantic.light(),
+    +            TypographySemantic.standard(),
+            ],
+        ),
+        darkTheme: ThemeData(
+            // ...
+            extensions: <ThemeExtension<dynamic>>[
+    +            ColorsSemantic.dark(),
+    +            TypographySemantic.standard(),
+            ],
+        ),
+        themeMode: isLightTheme ? ThemeMode.light : ThemeMode.dark,
+        home: MyHomePage(),
+      );
+    }
+    ```
+
 3. Use your Tokens in your app
      
     You are ready to use your tokens wherever you want!

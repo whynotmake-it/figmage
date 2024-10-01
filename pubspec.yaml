@@ -4,6 +4,7 @@ version: 0.1.0-dev.11
 repository: https://github.com/whynotmake-it/figmage
 issue_tracker: https://github.com/whynotmake-it/figmage/issues
 website: https://whynotmake.it/figmage
+documentation: https://figmage.netlify.app
 
 topics: 
   - code-generation

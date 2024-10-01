@@ -1,0 +1,56 @@
+---
+title: Account Requirements
+description: In certain cases, you might need a paid Figma account to use Figmage. Find out when and why.
+---
+
+import { LinkCard } from '@astrojs/starlight/components';
+
+To use Figmage, you should have a Figma account that can access the file you want to sync with your project.
+While in most cases, a free account will be enough, it is worth mentioning that due to Figma's 
+pricing model, you might need certain Tiers for certain features.
+There are two main cases in which you will need a paid plan:
+
+## Fetching Tokens from Variables
+
+If your Design Tokens are defined using the newer 
+[Variables](https://help.figma.com/hc/en-us/articles/15339657135383-Guide-to-variables-in-Figma)
+feature, you will need a Figma Enterise Account that can access the file.
+Tokens that are defined as [Styles](https://help.figma.com/hc/en-us/articles/360039238753-Styles-in-Figma)
+will work with any Figma account.
+
+While creating Variables and using them in a design is possible with any Figma account, Figma has decided
+to restrict access to the Variables API to Enterprise accounts only. Figmage relies on this API to fetch
+the Tokens from the Variables, so you will need an Enterprise account to use this feature.
+
+:::note[Let them know this is a problem]
+We think this is an unneccessary restriction, as automating your design system
+is certainly not only something that Enterprises do. If you agree, you can let Figma know by
+commenting on this [Figma Community Post](https://forum.figma.com/t/whys-the-variables-api-only-available-on-enterprise-plans/51451).
+:::
+
+### Working around the Enterprise Requirement
+There are ways to work around this restriction, and in some cases, the drawbacks might even be insignificant.
+Unwilling to move your Figma Team to an Enterprise plan? Consider the following options.
+
+#### Use Variables only for Primitive Tokens
+This is the most straightforward solution. Use Variables for your primitive Colors, parameters of your Text Styles, etc.
+You can then alias thes Variables in your Styles, and use the Styles as semantic tokens in your design. 
+And if your Design System includes component tokens, define those as Styles and consider using Variables for your semantic and primitive tokens.
+
+This way, you'll benefit from the power of Aliasing that variables enable, while still being able to use Figmage with a free account.
+Another benefit of this approach is that, to an extent, it comes naturally anyway, since you will need Styles for some of your tokens (Text Styles, Gradients, etc.).
+
+The main drawback of this approach is that you will **not be able to use modes** in your tokens, as Variables are the only way to define them. However, a solution to this is in the works, so stay tuned!
+
+<LinkCard 
+    title="Tokens Best Practices"   
+    href="/reference/tokens-best-practices"
+    description="Unsure what primitive and semantic tokens are? Check out our recommendations."
+/>
+
+## Libraries
+
+If you are using Figmage in a large team, you might at some point want to obtain
+styles from your Team's library instead of the design file, which is not possible on a free account. 
+However, we assume that teams that benefit from this feature, will already have a paid plan, so you
+can ignore this point if you are not sure.

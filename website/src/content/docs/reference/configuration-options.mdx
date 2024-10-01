@@ -1,0 +1,191 @@
+---
+title: Configuration Options
+description: Learn how to configure Figmage to your needs.
+---
+
+import { CardGrid, Card, FileTree, Steps } from '@astrojs/starlight/components';
+
+Figmage offers you a variety of configuration options to tailor the output to your needs.
+This page will guide you through the available options and how to use them.
+
+## Configuration File Location
+Configuring Figmage happens mostly using a `figmage.yaml` file in the root of your package directory.
+
+If you have followed the [Getting Started Guide](/guides/getting-started), you should already have a `figmage.yaml` file in your package directory.
+In case you created a package without using a configuration file, make sure to create one now. 
+It should live next to the package's `pubspec.yaml` file like so:
+
+<FileTree> 
+- design_tokens/ your generated package directory
+  - lib/
+  - pubspec.yaml
+  - **figmage.yaml**
+</FileTree>
+
+## Configuration Options
+Below is a list of all available configuration options and their default values. Scroll down to see a detailed explanation of each option.
+
+:::info
+All options are optional, so an empt
+
+
+### `fileId`
+
+Your Figma file's ID.
+You can either permanently configure it here, as explained in the [Getting Started Guide](/guides/getting-started/#tell-figmage-where-to-find-your-tokens), 
+or pass it as an argument every time you run Figmage like so:
+
+```bash
+figmage forge -f YOUR_FIGMA_FILE_ID -t YOUR_FIGMA_TOKEN
+```
+
+Configuring a `fileId` in the configuration file will mean you will only ever need to pass the `-t` argument when running Figmage.
+
+
+### `packageName`
+The name of the generated Dart package. 
+Should be a valid Dart package name, see [Dart's package naming conventions](https://dart.dev/tools/pub/pubspec#name).
+
+By default, Figmage attempts to use the package's directory name to create a name.
+
+### `packageDescription`
+The generated package's description field.
+This is a free-form text field that describes the package's purpose, see [Dart's Documentation](https://dart.dev/tools/pub/pubspec#description).
+
+Defaults to an empty string.
+
+### `colors`
+Configuration for generating color tokens.
+The following sub-options are available:
+
+- `generate`: Whether to generate color tokens of this type. Defaults to `true`.
+- `from`: An array of paths to generate color tokens from.
+
+See the [Filtering generated Tokens](#filtering-generated-tokens) section for more information.
+
+### `typography`
+Configuration for generating typography tokens.
+The following sub-options are available:
+
+- `generate`: Whether to generate typography tokens of this type. Defaults to `true`.
+- `from`: An array of paths to generate typography tokens from.
+- `useGoogleFonts`: Whether to use Google Fonts for font families. Defaults to `true`.
+
+See the [Filtering generated Tokens](#filtering-generated-tokens) section for more information.
+
+:::note[Google Fonts Availability]
+When the `useGoogleFonts` flag is set (default), Figmage will use Google Fonts for
+**all typography styles** in your file.
+
+Thus, if any of your fonts are not on Google Fonts, you should set this flag to `false` and 
+add the fonts to your project manually.
+
+Checking Google Fonts availibility for each font is [planned](https://github.com/whynotmake-it/figmage/issues/29).
+:::
+
+### `numbers`, `spacers`, `paddings`
+Configuration for generating number, spacer and padding tokens respectively.
+All three options have the following sub-options:
+
+- `generate`: Whether to generate tokens of this type. Defaults to `false`.
+- `from`: An array of paths to generate tokens from.
+
+See the [Filtering generated Tokens](#filtering-generated-tokens) section for more information.
+
+### `dropUnresolved`
+Due to the way Figma built it's variable system, it can sometimes happen, that a variable alias points
+to another variable, which has since been deleted.
+This means, the alias is unresolvable and doesn't reference an actual value.
+Oftentimes, variables are unresolvable in only one of their modes.
+
+Figmage offers you two ways to deal with this. 
+By default, this variables are dropped entirely, as if they had never been in your design system.
+In this case, you can rely on all your generated tokens being present in all of their Modes.
+However, one of your variables might only be unresolved in one of the modes, and you might not want to loose all other modes for that variable.
+
+If you set this flag to `false`, all unresolved variables will be included in the generated tokens, but will return `null` as their value in the 
+respective modes. This comes with the drawback that the variable will be nullable in all modes, and you will have to handle the null case.
+
+### `stylesFromLibrary`
+By default, Figmage fetches all styles from your Figma file, including local styles and styles from other libraries that were referenced.
+Styles will be at their most recent state, so your designs in the file will never be out of sync with your Flutter code.
+
+However, you might prefer a more controlled approach, where only published styles are used.
+If you only want to generate tokens from published styles, you can set this flag to `true`.
+Be aware that publishing Libraries is not possible on a free Figma account, so you will need a paid plan to use this feature.
+
+
+## Filtering generated Tokens
+
+You have two options to filter the generated tokens:
+
+### Toggle entire Token Types
+Each of the supported Token types (colors, typography, numbers, paddings, spacers) allows you to 
+toggle the generation of tokens of that type using the `generate` flag.
+
+Colors and typography are generated by default. All other tokens need to be enabled explicitly.
+
+### Filter by Path
+Colors, typography and number tokens additionally allow you to specify certain paths to generate tokens from.
+This can be useful if you only want to generate a subset of your tokens.
+If you don't specify any paths, all tokens of that type will be generated.
+
+:::caution
+For now, spacers and paddings mirror the generated number tokens.
+
+This means that if you want to generate spacers or paddings, you need to **enable number tokens** as well.
+Furthermore, spacers and paddings can't contain their own `from` configuration.
+:::
+
+Let's say, you only want to include tokens in the `semantic/app/` path, but include 
+number tokens from the `primitive/spacing` path, your configuration file could look like this:
+
+```yaml
+# figmage.yaml
+colors:
+  generate: true
+  from:
+    - "semantic/app/"
+typography:
+  generate: true
+  from:
+    - "semantic/app/"
+numbers:
+  generate: true
+  from:
+    - "primitive/spacing"
+spacers:
+  generate: true
+paddings:
+  generate: true
+```
+
+
+## Example File
+This is what a configured `figmage.yaml` file could look like:
+
+```yaml
+# figmage.yaml
+
+fileId: "YOUR_FIGMA_FILE_ID"
+packageName: "design_tokens"
+packageDescription: "A generated package that contains all of our design tokens"
+dropUnresolved: true
+stylesFromLibrary: false
+colors:
+  generate: true # default
+  from:
+    - "semantic/colors"
+typography:
+  generate: true # default
+  from:
+    - "semantic/typography"
+  useGoogleFonts: true
+numbers:
+  generate: true # false by default
+  # omitting `from` will generate all number tokens
+spacers:
+  generate: false # false by default
+paddings:
+  generate: false # false by default
+```

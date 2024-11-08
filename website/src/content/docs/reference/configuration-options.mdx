@@ -97,7 +97,7 @@ Configuration for generating assets from Figma nodes.
 The following sub-options are available:
 
 - `generate`: Whether to generate assets. Defaults to `false`.
-- `groups`: A map of asset groups, where each group contains node configurations.
+- `nodes`: A map of node IDs to asset configurations.
 
 Each node configuration has:
 - `name`: The name to use for the asset in code
@@ -107,13 +107,11 @@ Example:
 ```yaml
 assets:
   generate: true
-  icons:
-    "1:5":  # Figma node ID
-      name: "check"
-      scales: [1, 2]
-  illustrations:
-    "23:1":
-      name: "example_name"
+  "1:5":  # Figma node ID
+    name: "check"
+    scales: [1, 2]
+  "23:1":
+    name: "example_name"
 ```
 
 ### `dropUnresolved`

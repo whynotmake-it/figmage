@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:figmage/src/data/generators/file_generators/asset_file_generator.dart';
 import 'package:figmage/src/data/generators/file_generators/color_file_generator.dart';
 import 'package:figmage/src/data/generators/file_generators/number_file_generator.dart';
 import 'package:figmage/src/data/generators/file_generators/padding_file_generator.dart';
@@ -53,6 +54,9 @@ final generatorsProvider =
             ),
           TokenFileType.paddings => PaddingFileGenerator(
               tokens: tokensByType.numberTokens,
+            ),
+          TokenFileType.assets => AssetFileGenerator(
+              settings: settings,
             ),
         },
     };

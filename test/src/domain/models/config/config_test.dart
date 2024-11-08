@@ -52,36 +52,58 @@ void main() {
           "generate": true,
           "from": ["path1", "path2"],
         },
+        "assets": {
+          "generate": true,
+          "nodes": {
+            "1:5": {
+              "name": "logo",
+              "scales": [0.5, 1, 2],
+            },
+          },
+        },
       };
 
-      fullExample = const Config(
+      fullExample = Config(
         fileId: "fileId",
         packageName: "packageName",
         packageDescription: "packageDescription",
-        colors: GenerationSettings(
+        colors: const GenerationSettings(
           from: ["path1", "path2"],
         ),
-        typography: TypographyGenerationSettings(
+        typography: const TypographyGenerationSettings(
           from: ["path1", "path2"],
           useGoogleFonts: false,
         ),
-        strings: GenerationSettings(
+        strings: const GenerationSettings(
           from: ["path1", "path2"],
         ),
-        bools: GenerationSettings(
+        bools: const GenerationSettings(
           from: ["path1", "path2"],
         ),
-        numbers: GenerationSettings(
+        numbers: const GenerationSettings(
           from: ["path1", "path2"],
         ),
-        spacers: GenerationSettings(
+        spacers: const GenerationSettings(
           from: ["path1", "path2"],
         ),
-        paddings: GenerationSettings(
+        paddings: const GenerationSettings(
           from: ["path1", "path2"],
         ),
-        radii: GenerationSettings(
+        radii: const GenerationSettings(
           from: ["path1", "path2"],
+        ),
+        assets: AssetGenerationSettings(
+          generate: true,
+          nodes: {
+            "1:5": AssetNodeSettings(
+              name: "logo",
+              scales: {
+                0.5,
+                1,
+                2,
+              },
+            ),
+          },
         ),
       );
     });
@@ -127,13 +149,11 @@ void main() {
           ...minimal,
           "assets": {
             "generate": true,
-            "icons": {
+            "nodes": {
               "1:5": {
                 "scales": [1, 2],
                 "name": "check",
               },
-            },
-            "illustrations": {
               "23:1": {
                 "name": "example_name",
               },
@@ -143,19 +163,19 @@ void main() {
         final result = Config.fromMap(map);
         expect(result.assets.generate, isTrue);
         expect(
-          result.assets.groups["icons"]?.nodes["1:5"]?.name,
+          result.assets.nodes["1:5"]?.name,
           equals("check"),
         );
         expect(
-          result.assets.groups["icons"]?.nodes["1:5"]?.scales,
+          result.assets.nodes["1:5"]?.scales,
           equals([1, 2]),
         );
         expect(
-          result.assets.groups["illustrations"]?.nodes["23:1"]?.name,
+          result.assets.nodes["23:1"]?.name,
           equals("example_name"),
         );
         expect(
-          result.assets.groups["illustrations"]?.nodes["23:1"]?.scales,
+          result.assets.nodes["23:1"]?.scales,
           equals([1]),
         );
       });

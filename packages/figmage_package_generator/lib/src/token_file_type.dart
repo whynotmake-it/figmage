@@ -25,6 +25,9 @@ enum TokenFileType {
   /// Bools tokens
   bools("bools.dart"),
   */
+
+  /// Asset tokens
+  assets("assets.dart"),
   ;
 
   const TokenFileType(this.filename);

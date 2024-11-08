@@ -6,76 +6,6 @@ part of 'config.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-AssetNodeSettings _$AssetNodeSettingsFromJson(Map json) => $checkedCreate(
-      'AssetNodeSettings',
-      json,
-      ($checkedConvert) {
-        final val = AssetNodeSettings(
-          name: $checkedConvert('name', (v) => v as String),
-          scales: $checkedConvert(
-              'scales',
-              (v) =>
-                  (v as List<dynamic>?)?.map((e) => e as num).toList() ??
-                  const [1]),
-        );
-        return val;
-      },
-    );
-
-Map<String, dynamic> _$AssetNodeSettingsToJson(AssetNodeSettings instance) =>
-    <String, dynamic>{
-      'name': instance.name,
-      'scales': instance.scales,
-    };
-
-AssetGroupSettings _$AssetGroupSettingsFromJson(Map json) => $checkedCreate(
-      'AssetGroupSettings',
-      json,
-      ($checkedConvert) {
-        final val = AssetGroupSettings(
-          nodes: $checkedConvert(
-              'nodes',
-              (v) => (v as Map).map(
-                    (k, e) => MapEntry(
-                        k as String, AssetNodeSettings.fromJson(e as Map)),
-                  )),
-        );
-        return val;
-      },
-    );
-
-Map<String, dynamic> _$AssetGroupSettingsToJson(AssetGroupSettings instance) =>
-    <String, dynamic>{
-      'nodes': instance.nodes,
-    };
-
-AssetGenerationSettings _$AssetGenerationSettingsFromJson(Map json) =>
-    $checkedCreate(
-      'AssetGenerationSettings',
-      json,
-      ($checkedConvert) {
-        final val = AssetGenerationSettings(
-          generate: $checkedConvert('generate', (v) => v as bool? ?? false),
-          groups: $checkedConvert(
-              'groups',
-              (v) =>
-                  (v as Map?)?.map(
-                    (k, e) => MapEntry(
-                        k as String, AssetGroupSettings.fromJson(e as Map)),
-                  ) ??
-                  const {}),
-        );
-        return val;
-      },
-    );
-
-Map<String, dynamic> _$AssetGenerationSettingsToJson(
-        AssetGenerationSettings instance) =>
-    <String, dynamic>{
-      'generate': instance.generate,
-      'groups': instance.groups,
-    };
-
 Config _$ConfigFromJson(Map json) => $checkedCreate(
       'Config',
       json,
@@ -133,7 +63,8 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
               'assets',
               (v) => v == null
                   ? const AssetGenerationSettings()
-                  : AssetGenerationSettings.fromJson(v as Map)),
+                  : AssetGenerationSettings.fromJson(
+                      Map<String, dynamic>.from(v as Map))),
         );
         return val;
       },
@@ -203,4 +134,55 @@ Map<String, dynamic> _$TypographyGenerationSettingsToJson(
       'generate': instance.generate,
       'from': instance.from.toList(),
       'useGoogleFonts': instance.useGoogleFonts,
+    };
+
+AssetNodeSettings _$AssetNodeSettingsFromJson(Map json) => $checkedCreate(
+      'AssetNodeSettings',
+      json,
+      ($checkedConvert) {
+        final val = AssetNodeSettings(
+          name: $checkedConvert('name', (v) => v as String),
+          scales: $checkedConvert(
+              'scales',
+              (v) =>
+                  (v as List<dynamic>?)?.map((e) => e as num).toSet() ??
+                  const {1}),
+        );
+        return val;
+      },
+    );
+
+Map<String, dynamic> _$AssetNodeSettingsToJson(AssetNodeSettings instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'scales': instance.scales.toList(),
+    };
+
+AssetGenerationSettings _$AssetGenerationSettingsFromJson(Map json) =>
+    $checkedCreate(
+      'AssetGenerationSettings',
+      json,
+      ($checkedConvert) {
+        final val = AssetGenerationSettings(
+          generate: $checkedConvert('generate', (v) => v as bool? ?? false),
+          nodes: $checkedConvert(
+              'nodes',
+              (v) =>
+                  (v as Map?)?.map(
+                    (k, e) => MapEntry(
+                        k as String,
+                        AssetNodeSettings.fromJson(
+                            Map<String, dynamic>.from(e as Map))),
+                  ) ??
+                  const <String, AssetNodeSettings>{}),
+        );
+        return val;
+      },
+    );
+
+Map<String, dynamic> _$AssetGenerationSettingsToJson(
+        AssetGenerationSettings instance) =>
+    <String, dynamic>{
+      'generate': instance.generate,
+      'nodes': instance.nodes.map((k, e) => MapEntry(k, e.toJson())),
     };

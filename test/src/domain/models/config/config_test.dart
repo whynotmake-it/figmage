@@ -121,6 +121,44 @@ void main() {
         expect(result, fullExample);
         expect(result.typography.useGoogleFonts, isFalse);
       });
+
+      test('supports asset configuration', () async {
+        final map = {
+          ...minimal,
+          "assets": {
+            "generate": true,
+            "icons": {
+              "1:5": {
+                "scales": [1, 2],
+                "name": "check",
+              },
+            },
+            "illustrations": {
+              "23:1": {
+                "name": "example_name",
+              },
+            },
+          },
+        };
+        final result = Config.fromMap(map);
+        expect(result.assets.generate, isTrue);
+        expect(
+          result.assets.groups["icons"]?.nodes["1:5"]?.name,
+          equals("check"),
+        );
+        expect(
+          result.assets.groups["icons"]?.nodes["1:5"]?.scales,
+          equals([1, 2]),
+        );
+        expect(
+          result.assets.groups["illustrations"]?.nodes["23:1"]?.name,
+          equals("example_name"),
+        );
+        expect(
+          result.assets.groups["illustrations"]?.nodes["23:1"]?.scales,
+          equals([1]),
+        );
+      });
     });
 
     group('allGenerationSettings', () {

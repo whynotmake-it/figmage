@@ -6,6 +6,76 @@ part of 'config.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+AssetNodeSettings _$AssetNodeSettingsFromJson(Map json) => $checkedCreate(
+      'AssetNodeSettings',
+      json,
+      ($checkedConvert) {
+        final val = AssetNodeSettings(
+          name: $checkedConvert('name', (v) => v as String),
+          scales: $checkedConvert(
+              'scales',
+              (v) =>
+                  (v as List<dynamic>?)?.map((e) => e as num).toList() ??
+                  const [1]),
+        );
+        return val;
+      },
+    );
+
+Map<String, dynamic> _$AssetNodeSettingsToJson(AssetNodeSettings instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'scales': instance.scales,
+    };
+
+AssetGroupSettings _$AssetGroupSettingsFromJson(Map json) => $checkedCreate(
+      'AssetGroupSettings',
+      json,
+      ($checkedConvert) {
+        final val = AssetGroupSettings(
+          nodes: $checkedConvert(
+              'nodes',
+              (v) => (v as Map).map(
+                    (k, e) => MapEntry(
+                        k as String, AssetNodeSettings.fromJson(e as Map)),
+                  )),
+        );
+        return val;
+      },
+    );
+
+Map<String, dynamic> _$AssetGroupSettingsToJson(AssetGroupSettings instance) =>
+    <String, dynamic>{
+      'nodes': instance.nodes,
+    };
+
+AssetGenerationSettings _$AssetGenerationSettingsFromJson(Map json) =>
+    $checkedCreate(
+      'AssetGenerationSettings',
+      json,
+      ($checkedConvert) {
+        final val = AssetGenerationSettings(
+          generate: $checkedConvert('generate', (v) => v as bool? ?? false),
+          groups: $checkedConvert(
+              'groups',
+              (v) =>
+                  (v as Map?)?.map(
+                    (k, e) => MapEntry(
+                        k as String, AssetGroupSettings.fromJson(e as Map)),
+                  ) ??
+                  const {}),
+        );
+        return val;
+      },
+    );
+
+Map<String, dynamic> _$AssetGenerationSettingsToJson(
+        AssetGenerationSettings instance) =>
+    <String, dynamic>{
+      'generate': instance.generate,
+      'groups': instance.groups,
+    };
+
 Config _$ConfigFromJson(Map json) => $checkedCreate(
       'Config',
       json,
@@ -59,6 +129,11 @@ Config _$ConfigFromJson(Map json) => $checkedCreate(
               (v) => v == null
                   ? const GenerationSettings(generate: false)
                   : GenerationSettings.fromJson(v as Map)),
+          assets: $checkedConvert(
+              'assets',
+              (v) => v == null
+                  ? const AssetGenerationSettings()
+                  : AssetGenerationSettings.fromJson(v as Map)),
         );
         return val;
       },
@@ -78,6 +153,7 @@ Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
       'spacers': instance.spacers.toJson(),
       'paddings': instance.paddings.toJson(),
       'radii': instance.radii.toJson(),
+      'assets': instance.assets.toJson(),
     };
 
 GenerationSettings _$GenerationSettingsFromJson(Map json) => $checkedCreate(

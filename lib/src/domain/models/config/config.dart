@@ -3,6 +3,101 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'config.g.dart';
 
+/// {@template asset_node_settings}
+/// Settings for a single asset node from Figma.
+/// {@endtemplate}
+@JsonSerializable(anyMap: true, checked: true)
+class AssetNodeSettings with EquatableMixin {
+  /// {@macro asset_node_settings}
+  const AssetNodeSettings({
+    required this.name,
+    this.scales = const [1],
+  });
+
+  /// Initializes [AssetNodeSettings] from a json map.
+  factory AssetNodeSettings.fromJson(Map<dynamic, dynamic> json) =>
+      _$AssetNodeSettingsFromJson(json);
+
+  /// The name to use for the asset.
+  final String name;
+
+  /// The scale factors to generate for this asset.
+  final List<num> scales;
+
+  /// Converts [AssetNodeSettings] to a json map.
+  Map<String, dynamic> toJson() => _$AssetNodeSettingsToJson(this);
+
+  @override
+  List<Object?> get props => [name, scales];
+}
+
+/// {@template asset_group_settings}
+/// Settings for a group of assets from Figma.
+/// {@endtemplate}
+@JsonSerializable(anyMap: true, checked: true)
+class AssetGroupSettings with EquatableMixin {
+  /// {@macro asset_group_settings}
+  const AssetGroupSettings({
+    required this.nodes,
+  });
+
+  /// Initializes [AssetGroupSettings] from a json map.
+  factory AssetGroupSettings.fromJson(Map<dynamic, dynamic> json) =>
+      _$AssetGroupSettingsFromJson(json);
+
+  /// The nodes in this group, keyed by node ID.
+  final Map<String, AssetNodeSettings> nodes;
+
+  /// Converts [AssetGroupSettings] to a json map.
+  Map<String, dynamic> toJson() => _$AssetGroupSettingsToJson(this);
+
+  @override
+  List<Object?> get props => [nodes];
+}
+
+/// {@template asset_generation_settings}
+/// Settings for generating assets from Figma nodes.
+/// {@endtemplate}
+@JsonSerializable(anyMap: true, checked: true)
+class AssetGenerationSettings extends GenerationSettings {
+  /// {@macro asset_generation_settings}
+  const AssetGenerationSettings({
+    super.generate = false,
+    this.groups = const {},
+  });
+
+  /// Initializes [AssetGenerationSettings] from a json map.
+  factory AssetGenerationSettings.fromJson(Map<dynamic, dynamic> json) {
+    final groups = <String, AssetGroupSettings>{};
+    json.forEach((key, value) {
+      if (key != 'generate' && value is Map) {
+        groups[key.toString()] = AssetGroupSettings(
+          nodes: (value as Map).map(
+            (k, v) => MapEntry(
+              k.toString(),
+              AssetNodeSettings.fromJson(v as Map),
+            ),
+          ),
+        );
+      }
+    });
+    return AssetGenerationSettings(
+      generate: json['generate'] as bool? ?? false,
+      groups: groups,
+    );
+  }
+
+  /// The asset groups, keyed by group name.
+  final Map<String, AssetGroupSettings> groups;
+
+  /// Converts [AssetGenerationSettings] to a json map.
+  @override
+  Map<String, dynamic> toJson() => _$AssetGenerationSettingsToJson(this);
+
+  @override
+  List<Object?> get props => [...super.props, groups];
+}
+
 /// {@template config}
 /// A configuration for the figmage forge command, typically parsed from a
 /// figmage.yaml file.
@@ -39,6 +134,7 @@ class Config with EquatableMixin {
     this.spacers = const GenerationSettings(generate: false),
     this.paddings = const GenerationSettings(generate: false),
     this.radii = const GenerationSettings(generate: false),
+    this.assets = const AssetGenerationSettings(),
   });
 
   /// Initializes a [Config] from a json map.
@@ -99,6 +195,9 @@ class Config with EquatableMixin {
 
   /// Borders generation settings, defaults to not generating borders.
   final GenerationSettings radii;
+
+  /// Asset generation settings, defaults to not generating assets.
+  final AssetGenerationSettings assets;
 
   /// All generation settings.
   List<GenerationSettings> get allGenerationSettings => [

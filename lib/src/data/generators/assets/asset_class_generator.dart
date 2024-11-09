@@ -13,6 +13,7 @@ class AssetClassGenerator implements ThemeClassGenerator {
   const AssetClassGenerator({
     required this.className,
     required this.assets,
+    required this.packageName,
   });
 
   @override
@@ -20,6 +21,9 @@ class AssetClassGenerator implements ThemeClassGenerator {
 
   /// The successfully downloaded assets to generate code for.
   final Map<String, List<String>> assets;
+
+  /// The name of the package these assets belong to.
+  final String packageName;
 
   @override
   bool get buildContextExtensionNullable => false;
@@ -76,7 +80,8 @@ class AssetClassGenerator implements ThemeClassGenerator {
                     ..type = MethodType.getter
                     ..returns = refer('AssetImage')
                     ..lambda = true
-                    ..body = Code('AssetImage($assetName)'),
+                    ..body =
+                        Code("AssetImage($assetName, package: '$packageName')"),
                 );
               });
             }),

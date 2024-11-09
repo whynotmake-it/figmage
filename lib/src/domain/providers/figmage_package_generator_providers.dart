@@ -8,6 +8,15 @@ import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:path/path.dart';
 import 'package:riverpod/riverpod.dart';
 
+/// Provides the name of the generated package
+final generatedPackageNameProvider = Provider.family<String, FigmageSettings>(
+  (ref, settings) {
+    final directoryName = basename(Directory(settings.path).absolute.path);
+    return settings.config.packageName ??
+        toDartPackageName(directoryName, defaultName: 'figmage_package');
+  },
+);
+
 /// Provides the [FigmagePackageGenerator] instance.
 final figmagePackageGeneratorProvider =
     Provider((ref) => const FigmagePackageGenerator());
@@ -35,8 +44,7 @@ final generatedPackageProvider =
 
   final dir = Directory(settings.path);
   final directoryName = basename(Directory(settings.path).absolute.path);
-  final packageName = settings.config.packageName ??
-      toDartPackageName(directoryName, defaultName: 'figmage_package');
+  final packageName = ref.watch(generatedPackageNameProvider(settings));
 
   if (packageName != directoryName) {
     logger.warn("The package name $packageName does not match the "

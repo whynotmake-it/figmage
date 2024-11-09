@@ -11,17 +11,25 @@ class AssetFileGenerator implements FileGenerator {
   /// {@macro asset_file_generator}
   AssetFileGenerator({
     required this.assets,
+    required this.packageName,
   });
 
   /// Map of node IDs to their downloaded asset file paths.
   final Map<String, List<String>> assets;
+
+  /// The name of the package these assets belong to.
+  final String packageName;
 
   @override
   final TokenFileType type = TokenFileType.assets;
 
   @override
   late final Iterable<ThemeClassGenerator> generators = [
-    AssetClassGenerator(className: 'Assets', assets: assets),
+    AssetClassGenerator(
+      className: 'Assets',
+      assets: assets,
+      packageName: packageName,
+    ),
   ];
 
   @override

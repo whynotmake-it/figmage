@@ -15,9 +15,10 @@ void main() {
     setUp(() {
       sut = AssetFileGenerator(
         assets: {
-          '1:5': ['check', 'check@2x'],
-          '23:1': ['exampleName'],
+          '1:5': ['check.png', 'check@2x.png'],
+          '23:1': ['exampleName.png'],
         },
+        packageName: 'test_package',
       );
     });
 
@@ -48,19 +49,19 @@ final class Assets {
   static const String _basePath = 'assets/';
 
   /// Rendered from frame 1:5
-  static const String check = '${_basePath}check.png';
+  static const String checkPng = '${_basePath}check.png';
 
   /// Rendered from frame 1:5
-  static const String check2x = '${_basePath}check@2x.png';
+  static const String check2xPng = '${_basePath}check@2x.png';
 
   /// Rendered from frame 23:1
-  static const String exampleName = '${_basePath}exampleName.png';
+  static const String exampleNamePng = '${_basePath}exampleName.png';
 
-  AssetImage get checkImage => AssetImage(check);
+  AssetImage get checkPngImage => AssetImage(checkPng, package: 'test_package');
 
-  AssetImage get check2xImage => AssetImage(check2x);
+  AssetImage get check2xPngImage => AssetImage(check2xPng, package: 'test_package');
   
-  AssetImage get exampleNameImage => AssetImage(exampleName);
+  AssetImage get exampleNamePngImage => AssetImage(exampleNamePng, package: 'test_package');
 }
 
 extension AssetsBuildContextX on BuildContext {

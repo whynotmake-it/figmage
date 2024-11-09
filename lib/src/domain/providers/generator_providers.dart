@@ -38,6 +38,8 @@ final generatorsProvider =
       "Generating theme classes for ${typesByFile.length} files...",
     );
 
+    final packageName = ref.watch(generatedPackageNameProvider(settings));
+
     final generatorsByFile = {
       for (final MapEntry(key: file, value: type) in typesByFile.entries)
         file: switch (type) {
@@ -57,9 +59,8 @@ final generatorsProvider =
           TokenFileType.paddings => PaddingFileGenerator(
               tokens: tokensByType.numberTokens,
             ),
-          TokenFileType.assets => AssetFileGenerator(
-              assets: assets,
-            ),
+          TokenFileType.assets =>
+            AssetFileGenerator(assets: assets, packageName: packageName),
         },
     };
 

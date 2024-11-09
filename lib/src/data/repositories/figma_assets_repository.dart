@@ -10,23 +10,27 @@ import 'package:path/path.dart' as path;
 /// {@endtemplate}
 class FigmaAssetsRepository implements AssetsRepository {
   @override
-  Future<Map<String, String>> fetchAndSaveAssets({
+  Future<Map<String, List<String?>>> fetchAndSaveAssets({
     required String fileId,
     required String token,
     required Map<String, AssetNodeSettings> nodeSettings,
     required Directory outputDir,
   }) async {
     final client = FigmaClient(token);
-    final assetPaths = <String, String>{};
+    final assetPaths = <String, List<String?>>{};
 
     try {
       for (final scale in _uniqueScales(nodeSettings)) {
+        final nodeIds = [
+          for (final entry in nodeSettings.entries)
+            if (entry.value.scales.contains(scale)) entry.key,
+        ];
+
+        if (nodeIds.isEmpty) continue;
+
         final result = await client.getImages(
           fileId,
-          [
-            for (final entry in nodeSettings.entries)
-              if (entry.value.scales.contains(scale)) entry.key,
-          ],
+          nodeIds,
           scale: scale,
         );
 
@@ -41,7 +45,10 @@ class FigmaAssetsRepository implements AssetsRepository {
           outputDir: outputDir,
         );
 
-        assetPaths.addAll(images);
+        // Merge the results, adding new scales
+        images.forEach((key, value) {
+          assetPaths.putIfAbsent(key, () => []).add(value);
+        });
       }
     } on FigmaException catch (e) {
       _handleFigmaException(e);
@@ -50,43 +57,57 @@ class FigmaAssetsRepository implements AssetsRepository {
     return assetPaths;
   }
 
-  Future<Map<String, String>> _downloadImages({
+  Future<Map<String, String?>> _downloadImages({
     required Map<String, String?> images,
     required Map<String, AssetNodeSettings> nodeSettings,
     required double scale,
     required Directory outputDir,
   }) async {
     final assetEntries = await Future.wait(
-      images.entries
-          .where(
-        (entry) => entry.value != null && nodeSettings.containsKey(entry.key),
-      )
-          .map((entry) async {
+      images.entries.map((entry) async {
         final key = entry.key;
-        final url = entry.value!;
-        final config = nodeSettings[key]!;
+        final url = entry.value;
+        final config = nodeSettings[key];
 
-        final scaleSuffix = scale == 1 ? '' : '@${scale}x';
-        final fileName = '${config.name}$scaleSuffix.png';
-        final filePath = path.join(outputDir.path, fileName);
-        final file = File(filePath);
+        if (url == null || config == null) {
+          // If URL is null or config is missing, map to null
+          return MapEntry(key, null);
+        }
 
-        final response = await http.get(Uri.parse(url));
-        if (response.statusCode != 200) return null;
+        try {
+          final scaleSuffix = scale == 1 ? '' : '@${scale}x';
+          final fileName = '${config.name}$scaleSuffix.png';
+          final filePath = path.join(outputDir.path, fileName);
+          final file = File(filePath);
 
-        await file.writeAsBytes(response.bodyBytes);
-        return MapEntry(key, fileName);
+          // Ensure the parent directory exists
+          await file.parent.create(recursive: true);
+
+          final response = await http.get(Uri.parse(url));
+          if (response.statusCode != 200) {
+            // If the download fails, map to null
+            return MapEntry(key, null);
+          }
+
+          await file.writeAsBytes(response.bodyBytes);
+          return MapEntry(key, fileName);
+        } catch (_) {
+          // In case of any exception, map to null
+          return MapEntry(key, null);
+        }
       }),
     );
 
-    return Map.fromEntries(
-      assetEntries.whereType<MapEntry<String, String>>(),
-    );
+    // Convert the list of MapEntries to a Map
+    return Map.fromEntries(assetEntries);
   }
 
   Never _handleFigmaException(FigmaException e) {
     throw switch (e) {
-      FigmaException(code: 403) => const UnauthorizedAssetsException(),
+      FigmaException(code: 400) => InvalidParameterAssetsException(e.message),
+      FigmaException(code: 403) => UnauthorizedAssetsException(e.message),
+      FigmaException(code: 404) => FileNotFoundAssetsException(e.message),
+      FigmaException(code: 500) => RenderingAssetsException(e.message),
       _ => UnknownAssetsException(e.message),
     };
   }
@@ -95,5 +116,8 @@ class FigmaAssetsRepository implements AssetsRepository {
 Set<num> _uniqueScales(
   Map<String, AssetNodeSettings> nodeSettings,
 ) {
-  return nodeSettings.values.expand((setting) => setting.scales).toSet();
+  // Scale must be a number between 0.01 and 4, the image scaling factor.
+  return nodeSettings.values
+      .expand((setting) => setting.scales.where((s) => s >= 0.01 && s <= 4))
+      .toSet();
 }

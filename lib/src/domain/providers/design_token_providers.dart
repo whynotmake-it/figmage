@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:figmage/src/data/util/converters/string_dart_conversion_x.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
@@ -6,6 +8,7 @@ import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_type.dar
 import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
+import 'package:figmage/src/domain/repositories/assets_repository.dart';
 import 'package:figmage/src/domain/repositories/styles_repository.dart';
 import 'package:figmage/src/domain/repositories/variables_repository.dart';
 import 'package:figmage/src/domain/util/token_filter_x.dart';
@@ -119,6 +122,77 @@ final variablesProvider =
   } catch (e) {
     varProgress.fail("Failed to fetch variables for unknown reason ($e)");
     rethrow;
+  }
+});
+
+/// Provides a map of downloaded assets from the file in [FigmageSettings].
+///
+/// Returns a map of node IDs to their downloaded asset file paths (per scale).
+final assetsProvider =
+    FutureProvider.family<Map<String, List<String>>, FigmageSettings>(
+        (ref, settings) async {
+  final logger = ref.watch(loggerProvider);
+  final repo = ref.watch(assetsRepositoryProvider);
+  final assetsProgress = logger.progress("Downloading assets...");
+
+  try {
+    if (settings.config.assets.nodes.isEmpty) {
+      assetsProgress
+          .fail("No assets specified in figmage.yaml - nothing to download");
+      return {};
+    }
+    // Scale must be a number between 0.01 and 4
+    if (settings.config.assets.nodes.entries
+        .any((e) => e.value.scales.any((s) => s < 0.01 || s > 4))) {
+      logger.warn(
+        """
+Figma only supports scale values between 0.01 and 4, values out of this range will be ignored""",
+      );
+    }
+
+    final assets = await repo.fetchAndSaveAssets(
+      fileId: settings.fileId,
+      token: settings.token,
+      nodeSettings: settings.config.assets.nodes,
+      outputDir: Directory('${settings.path}/assets'),
+    );
+    assetsProgress.update('Download complete.');
+    if (assets.values.any((l) => l.contains(null))) {
+      logger.warn(
+        '''
+Some assets failed to render. This may be due to: 
+  - Invalid node IDs  
+  - Nodes with no renderable components (e.g., invisible nodes or nodes with 0% opacity)
+  ''',
+      );
+      for (final asset in assets.entries.where((e) => e.value.contains(null))) {
+        logger.warn('${asset.key} could not be rendered');
+      }
+    }
+
+    // Remove all entries where rendering failed.
+    final successAssets = {
+      for (final entry in assets.entries)
+        // Create a filtered list without nulls
+        if (entry.value.whereType<String>().isNotEmpty)
+          entry.key: entry.value.whereType<String>().toList(),
+    };
+
+    if (successAssets.isEmpty) {
+      assetsProgress.fail("No assets downloaded");
+      return {};
+    } else {
+      assetsProgress.complete(
+        "Downloaded ${successAssets.length} assets",
+      );
+      return successAssets;
+    }
+  } on AssetsException catch (e) {
+    assetsProgress.fail("Failed to download assets: ${e.message}");
+    return {};
+  } catch (e) {
+    assetsProgress.fail("Failed to download assets for unknown reason ($e)");
+    return {};
   }
 });
 

@@ -1,7 +1,5 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/file_generators/asset_file_generator.dart';
-import 'package:figmage/src/domain/models/config/config.dart';
-import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:test/test.dart';
 
@@ -13,29 +11,14 @@ void main() {
 
   group('AssetFileGenerator', () {
     late AssetFileGenerator sut;
-    late FigmageSettings settings;
 
     setUp(() {
-      settings = (
-        fileId: 'fileId',
-        token: 'token',
-        path: 'path',
-        config: const Config(
-          assets: AssetGenerationSettings(
-            generate: true,
-            nodes: {
-              '1:5': AssetNodeSettings(
-                name: 'check',
-                scales: {1, 2},
-              ),
-              '23:1': AssetNodeSettings(
-                name: 'exampleName',
-              ),
-            },
-          ),
-        ),
+      sut = AssetFileGenerator(
+        assets: {
+          '1:5': ['check', 'check@2x'],
+          '23:1': ['exampleName'],
+        },
       );
-      sut = AssetFileGenerator(settings: settings);
     });
 
     test('Should have correct type', () {
@@ -62,13 +45,20 @@ import 'package:flutter/widgets.dart';
 final class Assets {
   const Assets();
 
-  static const String _basePath = 'assets/images/';
+  static const String _basePath = 'assets/';
 
+  /// Rendered from frame 1:5
   static const String check = '${_basePath}check.png';
 
+  /// Rendered from frame 1:5
+  static const String check2x = '${_basePath}check@2x.png';
+
+  /// Rendered from frame 23:1
   static const String exampleName = '${_basePath}exampleName.png';
 
   AssetImage get checkImage => AssetImage(check);
+
+  AssetImage get check2xImage => AssetImage(check2x);
   
   AssetImage get exampleNameImage => AssetImage(exampleName);
 }

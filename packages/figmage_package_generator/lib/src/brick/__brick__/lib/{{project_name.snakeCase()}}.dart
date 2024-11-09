@@ -9,3 +9,4 @@ library {{project_name.snakeCase()}};
 {{#generate_spacers}}export 'src/spacers.dart';{{/generate_spacers}}
 {{#generate_strings}}export 'src/strings.dart';{{/generate_strings}}
 {{#generate_typography}}export 'src/typography.dart';{{/generate_typography}}
+{{#generate_assets}}export 'src/assets.dart';{{/generate_assets}}

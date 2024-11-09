@@ -21,6 +21,8 @@ final generatorsProvider =
   (ref, settings) async {
     final logger = ref.watch(loggerProvider);
 
+    final assets = await ref.watch(assetsProvider(settings).future);
+
     final tokensByType = await ref.watch(
       filterUnresolvedTokensProvider(settings).future,
     );
@@ -56,7 +58,7 @@ final generatorsProvider =
               tokens: tokensByType.numberTokens,
             ),
           TokenFileType.assets => AssetFileGenerator(
-              settings: settings,
+              assets: assets,
             ),
         },
     };

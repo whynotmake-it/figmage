@@ -1,6 +1,6 @@
 import 'package:code_builder/code_builder.dart';
+import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
-import 'package:figmage/src/domain/models/config/config.dart';
 
 /// {@template asset_class_generator}
 /// Generates a class for accessing Figma assets.
@@ -15,8 +15,8 @@ class AssetClassGenerator implements ThemeClassGenerator {
   @override
   final String className;
 
-  /// The assets to generate code for.
-  final Map<String, AssetNodeSettings> assets;
+  /// The successfully downloaded assets to generate code for.
+  final Map<String, List<String>> assets;
 
   @override
   bool get buildContextExtensionNullable => false;
@@ -43,33 +43,39 @@ class AssetClassGenerator implements ThemeClassGenerator {
                 ..static = true
                 ..modifier = FieldModifier.constant
                 ..type = refer('String')
-                ..assignment = Code("'assets/images/'"),
+                ..assignment = const Code("'assets/'"),
             ),
           )
           ..fields.addAll(
-            assets.entries.map((entry) {
-              final assetName = entry.value.name;
-              return Field(
-                (b) => b
-                  ..name = assetName
-                  ..static = true
-                  ..modifier = FieldModifier.constant
-                  ..type = refer('String')
-                  ..assignment = Code("'\${_basePath}$assetName.png'"),
-              );
+            assets.entries.expand((entry) {
+              return entry.value.map((asset) {
+                final assetName = convertToValidVariableName(asset);
+                return Field(
+                  (b) => b
+                    ..name = assetName
+                    ..static = true
+                    ..modifier = FieldModifier.constant
+                    ..type = refer('String')
+                    ..assignment = Code("'\${_basePath}$asset'")
+                    ..docs.add('/// Rendered from frame ${entry.key}'),
+                );
+              });
             }),
           )
           ..methods.addAll(
-            assets.entries.map((entry) {
-              final assetName = entry.value.name;
-              return Method(
-                (b) => b
-                  ..name = '${assetName}Image'
-                  ..type = MethodType.getter
-                  ..returns = refer('AssetImage')
-                  ..lambda = true
-                  ..body = Code('AssetImage($assetName)'),
-              );
+            assets.entries.expand((entry) {
+              return entry.value.map((asset) {
+                final assetName = convertToValidVariableName(asset);
+
+                return Method(
+                  (b) => b
+                    ..name = '${assetName}Image'
+                    ..type = MethodType.getter
+                    ..returns = refer('AssetImage')
+                    ..lambda = true
+                    ..body = Code('AssetImage($assetName)'),
+                );
+              });
             }),
           );
       },

@@ -48,6 +48,7 @@ class FigmagePackageGenerator {
     bool generateRadii = true,
     bool generateStrings = true,
     bool generateBools = true,
+    bool generateAssets = true,
     bool useGoogleFonts = true,
   }) async {
     final brick = await _getBrick();
@@ -64,6 +65,7 @@ class FigmagePackageGenerator {
       'generate_radii': generateRadii,
       'generate_strings': generateStrings,
       'generate_bools': generateBools,
+      'generate_assets': generateAssets,
       'use_google_fonts': useGoogleFonts,
     };
     final target = _generatorTargetFactory(dir);

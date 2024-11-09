@@ -3,11 +3,11 @@ import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/repositories/assets_repository.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart' as path;
-
-/// {@template figma_assets_repository}
-/// A repository that fetches assets from Figma and saves them to disk.
-/// {@endtemplate}
+import 'package:path/path.dart' as path;  /// {@template figma_assets_repository}
+  /// A repository that fetches assets from Figma and saves them to disk.
+  /// Supports downloading assets at multiple scale factors (between 0.01 and 4.0).
+  /// Assets are saved with scale indicators in their filenames (e.g. @2x.png).
+  /// {@endtemplate}
 class FigmaAssetsRepository implements AssetsRepository {
   @override
   Future<Map<String, List<String?>>> fetchAndSaveAssets({

@@ -4,6 +4,9 @@ import 'package:figmage/src/domain/generators/theme_class_generator.dart';
 
 /// {@template asset_class_generator}
 /// Generates a class for accessing Figma assets.
+/// Creates constants for asset paths and convenience getters for AssetImage
+/// instances. Supports assets with different scale factors through filename
+/// suffixes.
 /// {@endtemplate}
 class AssetClassGenerator implements ThemeClassGenerator {
   /// {@macro asset_class_generator}

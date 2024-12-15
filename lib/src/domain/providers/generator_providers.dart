@@ -6,6 +6,7 @@ import 'package:figmage/src/data/generators/file_generators/number_file_generato
 import 'package:figmage/src/data/generators/file_generators/padding_file_generator.dart';
 import 'package:figmage/src/data/generators/file_generators/spacer_file_generator.dart';
 import 'package:figmage/src/data/generators/file_generators/typography_file_generator.dart';
+import 'package:figmage/src/domain/generated_package_name_provider.dart';
 import 'package:figmage/src/domain/generators/file_generator.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';

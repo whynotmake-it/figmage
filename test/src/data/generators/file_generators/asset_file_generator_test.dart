@@ -57,11 +57,11 @@ final class Assets {
   /// Rendered from frame 23:1
   static const String exampleNamePng = '${_basePath}exampleName.png';
 
-  AssetImage get checkPngImage => AssetImage(checkPng, package: 'test_package');
+  static AssetImage get checkPngImage => AssetImage(checkPng, package: 'test_package');
 
-  AssetImage get check2xPngImage => AssetImage(check2xPng, package: 'test_package');
+  static AssetImage get check2xPngImage => AssetImage(check2xPng, package: 'test_package');
   
-  AssetImage get exampleNamePngImage => AssetImage(exampleNamePng, package: 'test_package');
+  static AssetImage get exampleNamePngImage => AssetImage(exampleNamePng, package: 'test_package');
 }
 
 extension AssetsBuildContextX on BuildContext {

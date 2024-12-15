@@ -14,7 +14,7 @@ class AssetFileGenerator implements FileGenerator {
     required this.packageName,
   });
 
-  /// Map of node IDs to their downloaded asset file paths.
+  /// Map of node IDs to their downloaded asset file names.
   final Map<String, List<String>> assets;
 
   /// The name of the package these assets belong to.

@@ -16,8 +16,8 @@ dev_dependencies:
   lintervention: ^0.1.1
   mocktail: ^1.0.0
 
+{{#generate_assets}}
 flutter:
-  {{#generate_assets}}
   assets:
     - assets/
   {{/generate_assets}}

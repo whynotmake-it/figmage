@@ -60,50 +60,64 @@ class FigmaAssetsRepository implements AssetsRepository {
     return assetPaths;
   }
 
-  Future<Map<String, String?>> _downloadImages({
-    required Map<String, String?> images,
-    required Map<String, AssetNodeSettings> nodeSettings,
-    required double scale,
-    required Directory outputDir,
-  }) async {
-    final assetEntries = await Future.wait(
-      images.entries.map((entry) async {
-        final key = entry.key;
-        final url = entry.value;
-        final config = nodeSettings[key];
+  Future<File?> _downloadImage({
+  required String url,
+  required String fileName,
+  required Directory outputDir,
+}) async {
+  try {
+    final filePath = path.join(outputDir.path, fileName);
+    final file = File(filePath);
 
-        if (url == null || config == null) {
-          // If URL is null or config is missing, map to null
-          return MapEntry(key, null);
-        }
+    // Ensure the parent directory exists
+    await file.parent.create(recursive: true);
 
-        try {
-          final scaleSuffix = scale == 1 ? '' : '@${scale}x';
-          final fileName = '${config.name}$scaleSuffix.png';
-          final filePath = path.join(outputDir.path, fileName);
-          final file = File(filePath);
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode != 200) {
+      // Download failed
+      return null;
+    }
 
-          // Ensure the parent directory exists
-          await file.parent.create(recursive: true);
-
-          final response = await http.get(Uri.parse(url));
-          if (response.statusCode != 200) {
-            // If the download fails, map to null
-            return MapEntry(key, null);
-          }
-
-          await file.writeAsBytes(response.bodyBytes);
-          return MapEntry(key, fileName);
-        } catch (_) {
-          // In case of any exception, map to null
-          return MapEntry(key, null);
-        }
-      }),
-    );
-
-    // Convert the list of MapEntries to a Map
-    return Map.fromEntries(assetEntries);
+    await file.writeAsBytes(response.bodyBytes);
+    return file;
+  } catch (_) {
+    // If anything goes wrong, return null
+    return null;
   }
+}
+
+Future<Map<String, String?>> _downloadImages({
+  required Map<String, String?> images,
+  required Map<String, AssetNodeSettings> nodeSettings,
+  required double scale,
+  required Directory outputDir,
+}) async {
+  final assetEntries = await Future.wait(
+    images.entries.map((entry) async {
+      final key = entry.key;
+      final url = entry.value;
+      final config = nodeSettings[key];
+
+      if (url == null || config == null) {
+        return MapEntry(key, null);
+      }
+
+      final scaleSuffix = scale == 1 ? '' : '@${scale}x';
+      final fileName = '${config.name}$scaleSuffix.png';
+
+      final file = await _downloadImage(
+        url: url,
+        fileName: fileName,
+        outputDir: outputDir,
+      );
+
+      return MapEntry(key, file?.uri.pathSegments.last);
+    }),
+  );
+
+  return Map.fromEntries(assetEntries);
+}
+
 
   Never _handleFigmaException(FigmaException e) {
     throw switch (e) {

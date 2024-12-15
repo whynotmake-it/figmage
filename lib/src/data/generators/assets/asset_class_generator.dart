@@ -20,6 +20,7 @@ class AssetClassGenerator implements ThemeClassGenerator {
   final String className;
 
   /// The successfully downloaded assets to generate code for.
+  /// where each entry: key: id, value: assetNames
   final Map<String, List<String>> assets;
 
   /// The name of the package these assets belong to.
@@ -53,9 +54,9 @@ class AssetClassGenerator implements ThemeClassGenerator {
                 ..assignment = const Code("'assets/'"),
             ),
           )
-          ..fields.addAll(
-            assets.entries.expand((entry) {
-              return entry.value.map((asset) {
+          ..fields.addAll([
+            for (final MapEntry(key: id, value: assetNames) in assets.entries)
+              ...assetNames.map((asset) {
                 final assetName = convertToValidVariableName(asset);
                 return Field(
                   (b) => b
@@ -64,19 +65,19 @@ class AssetClassGenerator implements ThemeClassGenerator {
                     ..modifier = FieldModifier.constant
                     ..type = refer('String')
                     ..assignment = Code("'\${_basePath}$asset'")
-                    ..docs.add('/// Rendered from frame ${entry.key}'),
+                    ..docs.add('/// Rendered from frame $id'),
                 );
-              });
-            }),
-          )
+              }),
+          ])
           ..methods.addAll(
-            assets.entries.expand((entry) {
-              return entry.value.map((asset) {
+            assets.values.expand((values) {
+              return values.map((asset) {
                 final assetName = convertToValidVariableName(asset);
 
                 return Method(
                   (b) => b
                     ..name = '${assetName}Image'
+                    ..static = true
                     ..type = MethodType.getter
                     ..returns = refer('AssetImage')
                     ..lambda = true

@@ -17,7 +17,7 @@ abstract interface class AssetsRepository {
   /// Parameters:
   /// - [fileId]: The unique identifier of the Figma file
   /// - [token]: The access token for authentication
-  /// - [nodeIds]: Map of node IDs to their configurations
+  /// - [nodeSettings]: Map of node IDs to their configurations
   /// - [outputDir]: Directory to save the assets to
   ///
   /// Returns a map of downloaded assets and their paths per scale.

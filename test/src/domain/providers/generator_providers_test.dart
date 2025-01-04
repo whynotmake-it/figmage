@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:figmage/src/data/generators/file_generators/asset_file_generator.dart';
 import 'package:figmage/src/data/generators/file_generators/color_file_generator.dart';
 import 'package:figmage/src/data/generators/file_generators/number_file_generator.dart';
 import 'package:figmage/src/data/generators/file_generators/padding_file_generator.dart';
@@ -76,7 +77,7 @@ void main() {
 
     test('All types, 2 ColorThemeGenerators since 2 collections', () async {
       final result = await container.read(generatorsProvider(settings).future);
-      expect(result, hasLength(5));
+      expect(result, hasLength(6));
       expect(
         result.values,
         containsAll([
@@ -85,6 +86,7 @@ void main() {
           isA<NumberFileGenerator>(),
           isA<SpacerFileGenerator>(),
           isA<PaddingFileGenerator>(),
+          isA<AssetFileGenerator>(),
         ]),
       );
     });

@@ -39,6 +39,7 @@ class Config with EquatableMixin {
     this.spacers = const GenerationSettings(generate: false),
     this.paddings = const GenerationSettings(generate: false),
     this.radii = const GenerationSettings(generate: false),
+    this.assets = const AssetGenerationSettings(),
   });
 
   /// Initializes a [Config] from a json map.
@@ -99,6 +100,9 @@ class Config with EquatableMixin {
 
   /// Borders generation settings, defaults to not generating borders.
   final GenerationSettings radii;
+
+  /// AssetGenerationSettings
+  final AssetGenerationSettings assets;
 
   /// All generation settings.
   List<GenerationSettings> get allGenerationSettings => [
@@ -196,4 +200,59 @@ class TypographyGenerationSettings extends GenerationSettings {
 
   @override
   List<Object?> get props => [...super.props, useGoogleFonts];
+}
+
+/// {@template asset_node_settings}
+/// Settings for a single asset node from Figma.
+/// {@endtemplate}
+@JsonSerializable(anyMap: true, checked: true)
+class AssetNodeSettings with EquatableMixin {
+  /// {@macro asset_node_settings}
+  const AssetNodeSettings({
+    required this.name,
+    this.scales = const {1},
+  });
+
+  /// Factory constructor for creating a new `AssetNodeSettings` instance from a
+  /// map.
+  factory AssetNodeSettings.fromJson(Map<String, dynamic> json) =>
+      _$AssetNodeSettingsFromJson(json);
+
+  /// The name to use for the asset.
+  final String name;
+
+  /// The scale factors to generate for this asset.
+  final Set<num> scales;
+
+  /// Converts this `AssetNodeSettings` instance to a map.
+  Map<String, dynamic> toJson() => _$AssetNodeSettingsToJson(this);
+
+  @override
+  List<Object?> get props => [name, scales];
+}
+
+/// {@template asset_generation_settings}
+/// Settings for generating assets from Figma nodes.
+/// {@endtemplate}
+@JsonSerializable(anyMap: true, checked: true, explicitToJson: true)
+class AssetGenerationSettings extends GenerationSettings {
+  /// {@macro asset_generation_settings}
+  const AssetGenerationSettings({
+    super.generate = false,
+    this.nodes = const <String, AssetNodeSettings>{},
+  });
+
+  /// Creates a [AssetGenerationSettings] from a json map.
+  factory AssetGenerationSettings.fromJson(Map<String, dynamic> json) =>
+      _$AssetGenerationSettingsFromJson(json);
+
+  /// The nodes to generate assets from, keyed by node ID.
+  final Map<String, AssetNodeSettings> nodes;
+
+  /// Converts [AssetGenerationSettings] to a json map.
+  @override
+  Map<String, dynamic> toJson() => _$AssetGenerationSettingsToJson(this);
+
+  @override
+  List<Object?> get props => [...super.props, nodes];
 }

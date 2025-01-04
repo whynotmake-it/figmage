@@ -1,9 +1,9 @@
 import 'dart:io';
 
+import 'package:figmage/src/domain/generated_package_name_provider.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
-import 'package:figmage/src/domain/shared/dart_symbol_conversion.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:path/path.dart';
 import 'package:riverpod/riverpod.dart';
@@ -19,6 +19,8 @@ final generatedPackageProvider =
         (ref, settings) async {
   final tokensByFileType =
       await ref.watch(filteredTokensProvider(settings).future);
+
+  final assets = await ref.watch(assetsProvider(settings).future);
   final logger = ref.watch(loggerProvider);
 
   final packageGenerator = ref.watch(figmagePackageGeneratorProvider);
@@ -29,10 +31,11 @@ final generatedPackageProvider =
       tokensByFileType.typographyTokens.isNotEmpty;
   final generateNumbers = settings.config.numbers.generate &&
       tokensByFileType.numberTokens.isNotEmpty;
+  final generateAssets = settings.config.assets.generate && assets.isNotEmpty;
+
   final dir = Directory(settings.path);
   final directoryName = basename(Directory(settings.path).absolute.path);
-  final packageName = settings.config.packageName ??
-      toDartPackageName(directoryName, defaultName: 'figmage_package');
+  final packageName = ref.watch(generatedPackageNameProvider(settings));
 
   if (packageName != directoryName) {
     logger.warn("The package name $packageName does not match the "
@@ -49,6 +52,7 @@ final generatedPackageProvider =
       useGoogleFonts: settings.config.typography.useGoogleFonts,
       generateColors: generateColors,
       generateTypography: generateTypography,
+      generateAssets: generateAssets,
       generateNumbers: generateNumbers,
       // TODO(tim): support better
       generatePaddings: generateNumbers,

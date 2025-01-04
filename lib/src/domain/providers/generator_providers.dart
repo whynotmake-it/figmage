@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:figmage/src/data/generators/file_generators/asset_file_generator.dart';
 import 'package:figmage/src/data/generators/file_generators/color_file_generator.dart';
 import 'package:figmage/src/data/generators/file_generators/number_file_generator.dart';
 import 'package:figmage/src/data/generators/file_generators/padding_file_generator.dart';
 import 'package:figmage/src/data/generators/file_generators/spacer_file_generator.dart';
 import 'package:figmage/src/data/generators/file_generators/typography_file_generator.dart';
+import 'package:figmage/src/domain/generated_package_name_provider.dart';
 import 'package:figmage/src/domain/generators/file_generator.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
@@ -20,6 +22,8 @@ final generatorsProvider =
   (ref, settings) async {
     final logger = ref.watch(loggerProvider);
 
+    final assets = await ref.watch(assetsProvider(settings).future);
+
     final tokensByType = await ref.watch(
       filterUnresolvedTokensProvider(settings).future,
     );
@@ -34,6 +38,8 @@ final generatorsProvider =
     final progress = logger.progress(
       "Generating theme classes for ${typesByFile.length} files...",
     );
+
+    final packageName = ref.watch(generatedPackageNameProvider(settings));
 
     final generatorsByFile = {
       for (final MapEntry(key: file, value: type) in typesByFile.entries)
@@ -54,6 +60,8 @@ final generatorsProvider =
           TokenFileType.paddings => PaddingFileGenerator(
               tokens: tokensByType.numberTokens,
             ),
+          TokenFileType.assets =>
+            AssetFileGenerator(assets: assets, packageName: packageName),
         },
     };
 

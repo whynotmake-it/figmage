@@ -82,6 +82,25 @@ class FigmaClient {
     return NodesResponse.fromJson(json);
   }
 
+  /// Retrieves images for the specified nodes.
+  Future<({Map<String, String?> images, String? err})> getImages(
+    String key,
+    List<String> ids, {
+    String format = 'png',
+    num? scale,
+  }) async {
+    final query = FigmaQuery(
+      ids: ids,
+      format: format,
+      scale: scale?.toDouble(),
+    );
+    final json = await _getFigma('/images/$key', query);
+    return (
+      images: Map<String, String?>.from(json['images'] as Map),
+      err: json['err'] as String?,
+    );
+  }
+
   /// Retreives the local styles for a file with given [key].
   Future<FileStylesResponse> getLocalFileStyles(
     String key, [

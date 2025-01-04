@@ -208,6 +208,7 @@ void main() {
             generateRadii: false,
             generateStrings: false,
             generateBools: false,
+            generateAssets: false,
           );
         });
 
@@ -354,11 +355,13 @@ export 'src/radii.dart';
 export 'src/spacers.dart';
 export 'src/strings.dart';
 export 'src/typography.dart';
+export 'src/assets.dart';
 ''';
 
 const _expectedEmptyLibraryFile = '''
 /// A test
 library figmage_example;
+
 
 
 
@@ -382,4 +385,5 @@ export 'src/colors.dart';
 
 
 export 'src/typography.dart';
+export 'src/assets.dart';
 ''';

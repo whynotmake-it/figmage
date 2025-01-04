@@ -92,6 +92,28 @@ All three options have the following sub-options:
 
 See the [Filtering generated Tokens](#filtering-generated-tokens) section for more information.
 
+### `assets`
+Configuration for generating assets from Figma nodes.
+The following sub-options are available:
+
+- `generate`: Whether to generate assets. Defaults to `false`.
+- `nodes`: A map of node IDs to asset configurations.
+
+Each node configuration has:
+- `name`: The name to use for the asset in code
+- `scales`: List of scale factors to generate. Defaults to `[1]`
+
+Example:
+```yaml
+assets:
+  generate: true
+  "1:5":  # Figma node ID
+    name: "check"
+    scales: [1, 2]
+  "23:1":
+    name: "example_name"
+```
+
 ### `dropUnresolved`
 Due to the way Figma built it's variable system, it can sometimes happen, that a variable alias points
 to another variable, which has since been deleted.
@@ -188,4 +210,11 @@ spacers:
   generate: false # false by default
 paddings:
   generate: false # false by default
+assets:
+  generate: true # false by default
+  "1:5":  # Figma node ID
+    name: "check" # name of the asset
+    scales: [1, 2] # different scales 
+  "23:1":
+    name: "example_name"
 ```

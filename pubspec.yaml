@@ -24,7 +24,7 @@ dependencies:
   cli_completion: ^0.5.0
   code_builder: ^4.10.0
   collection: ">=1.17.2 <2.0.0"
-  dart_style: ^2.3.4
+  dart_style: ">=2.3.4 <4.0.0"
   equatable: ^2.0.5
   figma_variables_api: ^0.1.0-dev.6
   figmage_package_generator: ^0.1.0-dev.5
@@ -36,7 +36,7 @@ dependencies:
   path: ^1.8.3
   pub_updater: ^0.4.0
   riverpod: ^2.4.6
-  source_gen: ^1.4.0
+  source_gen: ">=1.4.0 <3.0.0"
   yaml: ^3.1.2
 
 dev_dependencies:

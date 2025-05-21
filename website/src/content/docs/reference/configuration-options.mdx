@@ -64,6 +64,12 @@ file.
 
 Defaults to true.
 
+### `tokenPath`
+The path to generate the tokens at, defaults to "src".
+
+This makes sense to override if you are not using the default package
+structure, e.g. if you want figmage to add tokens to your existing app.
+
 ### `colors`
 Configuration for generating color tokens.
 The following sub-options are available:
@@ -203,6 +209,7 @@ fileId: "YOUR_FIGMA_FILE_ID"
 packageName: "design_tokens"
 packageDescription: "A generated package that contains all of our design tokens"
 asPackage: true
+tokenPath: "src"
 dropUnresolved: true
 stylesFromLibrary: false
 colors:

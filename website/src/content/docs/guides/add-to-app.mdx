@@ -1,0 +1,207 @@
+---
+title: Add to your App
+description: Learn how to configure Figmage to add tokens to your app, instead of generating a new package.
+---
+
+import { CardGrid, Card, FileTree, Steps, LinkCard } from '@astrojs/starlight/components';
+
+This guide will show you how to add Figmage tokens directly to your existing Flutter app, rather than generating a separate package.
+
+## Prerequisites
+
+<CardGrid>
+<Card title="Figma Design File" icon="document">
+You need a Figma file containing your design tokens (variables and/or styles).
+</Card>
+
+<Card title="Figma Personal Access Token" icon="seti:license">
+You'll need a personal access token to access your Figma file.
+</Card>
+
+<Card title="Flutter App" icon="rocket">
+An existing Flutter app where you want to add the design tokens.
+</Card>
+</CardGrid>
+
+## Install Figmage CLI
+
+First, install the Figmage CLI by running:
+
+```bash
+dart pub global activate figmage
+```
+
+## Configure Figmage for your App
+
+<Steps>
+1. Create a `figmage.yaml` configuration file in your Flutter app's root directory.
+
+    ```bash
+    touch figmage.yaml
+    ```
+
+2. Configure `figmage.yaml` with the following essential settings:
+
+    ```yaml
+    # figmage.yaml
+    fileId: "YOUR_FIGMA_FILE_ID"
+    asPackage: false
+    tokenPath: "design" # or any other path under lib
+    ```
+
+    The key settings for app integration are:
+    - `asPackage: false` - This tells Figmage not to generate a standalone package
+    - `tokenPath: "design"` - Specifies where to create token files within your app's `lib` directory
+
+3. Customize which tokens to generate:
+
+    ```yaml
+    # Additional configuration options
+    colors:
+      generate: true
+    typography:
+      generate: true
+      useGoogleFonts: true
+    numbers:
+      generate: false
+    spacers:
+      generate: false
+    paddings:
+      generate: false
+    ```
+
+
+4. Optionally filter tokens by path:
+
+    ```yaml
+    # Generate only specific token paths if needed
+    colors:
+      generate: true
+      from:
+        - "semantic/app/"
+    typography:
+      generate: true
+      from:
+        - "semantic/typography"
+    ```
+</Steps>
+
+## Run Figmage
+
+From your Flutter app's root directory, run:
+
+```bash
+figmage forge -t YOUR_FIGMA_PERSONAL_ACCESS_TOKEN
+```
+
+This will generate token files directly within your app at the specified `tokenPath`.
+
+## Structure After Generation
+
+Your app's directory structure should now include the generated token files:
+
+<FileTree>
+- my_flutter_app/
+  - lib/
+    - design/
+      - colors.dart
+      - typography.dart
+      - ...
+    - main.dart
+    - ...
+  - figmage.yaml
+  - pubspec.yaml
+</FileTree>
+
+## Update Dependencies
+
+Since tokens are now part of your app, you'll need to ensure you have the necessary dependencies:
+
+<Steps>
+1. Open your app's `pubspec.yaml` file
+
+2. Add required dependencies:
+
+    ```yaml
+    dependencies:
+      flutter:
+        sdk: flutter
+      google_fonts: ^6.1.0 # Only if useGoogleFonts: true
+    ```
+
+3. Run flutter pub get:
+
+    ```bash
+    flutter pub get
+    ```
+</Steps>
+
+## Using Tokens in your App
+
+Now you can use the generated tokens directly in your app:
+
+```dart
+// lib/main.dart
+import 'package:flutter/material.dart';
+import 'design/colors.dart';
+import 'design/typography.dart';
+
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
+    theme: ThemeData(
+      extensions: [
+        ColorsSemantic.standard(), // or .light() if you have modes
+        TypographySemantic.standard(),
+      ],
+    ),
+    // Add dark theme if you have it
+    darkTheme: ThemeData(
+      extensions: [
+        ColorsSemantic.dark(), // Only if you have a dark mode
+        TypographySemantic.standard(),
+      ],
+    ),
+    themeMode: ThemeMode.system,
+    home: MyHomePage(),
+  );
+}
+```
+
+Use the tokens in your widgets:
+
+```dart
+ElevatedButton(
+  style: ElevatedButton.styleFrom(
+    backgroundColor: context.colorsSemantic.surfacePrimary,
+    foregroundColor: context.colorsSemantic.onSurfacePrimary,
+    textStyle: context.typographySemantic.headline1,
+  ),
+  onPressed: () {},
+  child: Text('Click me!'),
+)
+```
+
+## Updating Tokens
+
+Whenever your design tokens change in Figma, simply rerun the Figmage command:
+
+```bash
+figmage forge -t YOUR_FIGMA_PERSONAL_ACCESS_TOKEN
+```
+
+This will update all token files in your app with the latest changes from Figma.
+
+## What's Next?
+
+<LinkCard 
+    title='Configuration Options' 
+    description='Explore all configuration options to customize your token generation.'
+    href="/reference/configuration-options"
+/>
+
+<LinkCard 
+    title='Getting Started with Packages' 
+    description='Learn about the package-based approach if you need more flexibility.'
+    href="/guides/getting-started"
+/>

@@ -15,10 +15,11 @@ vars:
     type: string
     description: The package description
     prompt: What is the project description?
-  generatePubspec:
+  asPackage:
     type: boolean
-    description: Whether to generate a pubspec.yaml file
-    prompt: Generate pubspec.yaml?
+    description: Whether to generate a pubspec.yaml file and a barrel file in lib/
+    prompt: Generate as independent package?
+  
   generateColors:
     type: boolean
     description: Whether to generate a file for colors

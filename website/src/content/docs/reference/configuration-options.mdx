@@ -54,10 +54,13 @@ This is a free-form text field that describes the package's purpose, see [Dart's
 
 Defaults to an empty string.
 
-### `generatePubspec`
-Whether to generate a pubspec.yaml file in the generated package.
+### `asPackage`
+ Whether to generate the files in a standalone package.
 
-It can be useful to set this to false, if you want to use Figmage to generate files in an existing package, so that it won't overwrite your existing pubspec.yaml file.
+It can be useful to set this to false, if you want to use Figmage to
+generate files in an existing package (such as your app), so that it won't
+overwrite your existing pubspec.yaml file and generate a useless barrel
+file.
 
 Defaults to true.
 
@@ -199,6 +202,7 @@ This is what a configured `figmage.yaml` file could look like:
 fileId: "YOUR_FIGMA_FILE_ID"
 packageName: "design_tokens"
 packageDescription: "A generated package that contains all of our design tokens"
+asPackage: true
 dropUnresolved: true
 stylesFromLibrary: false
 colors:

@@ -49,7 +49,7 @@ final generatedPackageProvider =
       projectName: packageName,
       dir: dir,
       description: settings.config.packageDescription,
-      generatePubspec: settings.config.generatePubspec,
+      asPackage: settings.config.asPackage,
       useGoogleFonts: settings.config.typography.useGoogleFonts,
       generateColors: generateColors,
       generateTypography: generateTypography,

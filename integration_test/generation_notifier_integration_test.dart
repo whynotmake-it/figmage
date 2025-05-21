@@ -244,11 +244,18 @@ void main() {
         },
       );
 
-      test('generates no pubspec if generatePubspec is false', () async {
-        config = const Config(generatePubspec: false);
+      test('generates no pubspec if asPackage is false', () async {
+        config = const Config(asPackage: false);
         await runner.run(args);
         final pubspec = File("${testDirectory.path}/pubspec.yaml");
         expect(pubspec.existsSync(), false);
+      });
+
+      test('generates no barrel file if asPackage is false', () async {
+        config = const Config(asPackage: false);
+        await runner.run(args);
+        final barrel = File("${testDirectory.path}/lib/test_package.dart");
+        expect(barrel.existsSync(), false);
       });
     });
   });

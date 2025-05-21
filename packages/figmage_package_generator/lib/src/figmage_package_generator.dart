@@ -50,7 +50,7 @@ class FigmagePackageGenerator {
     bool generateBools = true,
     bool generateAssets = true,
     bool useGoogleFonts = true,
-    bool generatePubspec = true,
+    bool asPackage = true,
   }) async {
     final brick = await _getBrick();
 
@@ -69,7 +69,7 @@ class FigmagePackageGenerator {
       'generateBools': generateBools,
       'generateAssets': generateAssets,
       'useGoogleFonts': useGoogleFonts,
-      'generatePubspec': generatePubspec,
+      'asPackage': asPackage,
     };
     final target = _generatorTargetFactory(dir);
     await generator.hooks.preGen(vars: vars);

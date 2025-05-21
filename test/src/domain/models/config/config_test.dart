@@ -17,7 +17,7 @@ void main() {
       full = {
         ...minimal,
         "packageDescription": "packageDescription",
-        "generatePubspec": true,
+        "asPackage": true,
         "dropUnresolved": false,
         "stylesFromLibrary": false,
         "colors": {

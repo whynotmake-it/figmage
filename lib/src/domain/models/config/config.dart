@@ -31,6 +31,7 @@ class Config with EquatableMixin {
     this.packageDescription = '',
     this.dropUnresolved = false,
     this.stylesFromLibrary = false,
+    this.generatePubspec = true,
     this.colors = const GenerationSettings(),
     this.typography = const TypographyGenerationSettings(),
     this.strings = const GenerationSettings(),
@@ -71,6 +72,15 @@ class Config with EquatableMixin {
   /// file.
   /// Defaults to false.
   final bool stylesFromLibrary;
+
+  /// Whether to generate a pubspec.yaml file in the generated package.
+  ///
+  /// It can be useful to set this to false, if you want to use Figmage to
+  /// generate files in an existing package, so that it won't overwrite your
+  /// existing pubspec.yaml file.
+  ///
+  /// Defaults to true.
+  final bool generatePubspec;
 
   /// Color generation settings, defaults to generating color tokens from
   /// all paths.
@@ -132,6 +142,7 @@ class Config with EquatableMixin {
         packageDescription,
         dropUnresolved,
         stylesFromLibrary,
+        generatePubspec,
         colors,
         typography,
         strings,

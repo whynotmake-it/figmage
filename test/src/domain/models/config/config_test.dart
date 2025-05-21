@@ -17,6 +17,7 @@ void main() {
       full = {
         ...minimal,
         "packageDescription": "packageDescription",
+        "generatePubspec": true,
         "dropUnresolved": false,
         "stylesFromLibrary": false,
         "colors": {
@@ -134,7 +135,10 @@ void main() {
         final result = Config.fromMap(minimal);
         expect(
           result,
-          const Config(fileId: "fileId", packageName: "packageName"),
+          const Config(
+            fileId: "fileId",
+            packageName: "packageName",
+          ),
         );
       });
 

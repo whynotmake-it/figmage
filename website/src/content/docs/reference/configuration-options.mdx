@@ -54,6 +54,13 @@ This is a free-form text field that describes the package's purpose, see [Dart's
 
 Defaults to an empty string.
 
+### `generatePubspec`
+Whether to generate a pubspec.yaml file in the generated package.
+
+It can be useful to set this to false, if you want to use Figmage to generate files in an existing package, so that it won't overwrite your existing pubspec.yaml file.
+
+Defaults to true.
+
 ### `colors`
 Configuration for generating color tokens.
 The following sub-options are available:

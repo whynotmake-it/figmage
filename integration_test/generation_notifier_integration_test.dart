@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:figmage/src/command_runner.dart';
 import 'package:figmage/src/commands/shared/forge_settings_providers.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
+import 'package:figmage/src/domain/models/style/design_style.dart';
 import 'package:figmage/src/domain/providers/config_providers.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
@@ -85,6 +86,40 @@ void main() {
         },
       );
 
+      test(
+        'should generate correct color styles',
+        () async {
+          await runner.run(args);
+
+          final argResults = runner.parse(args).command!;
+          final settings =
+              await container.read(settingsProvider(argResults).future);
+          final styles = await container.read(stylesProvider(settings).future);
+
+          expect(
+            styles,
+            containsAll(
+              const [
+                ColorDesignStyle(
+                  id: '1:6',
+                  fullName: 'primitives/red/50',
+                  value: 0xFFFF0000,
+                ),
+                ColorDesignStyle(
+                  id: '1:8',
+                  fullName: 'primitives/green/50',
+                  value: 0xFF00FF00,
+                ),
+                ColorDesignStyle(
+                  id: '1:11',
+                  fullName: 'primitives/blue/50',
+                  value: 0x800000FF,
+                ),
+              ],
+            ),
+          );
+        },
+      );
       test('generates package name from directory by default', () async {
         await runner.run(args);
         final pubspec = File("${testDirectory.path}/pubspec.yaml");

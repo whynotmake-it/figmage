@@ -18,6 +18,7 @@ void main() {
         ...minimal,
         "packageDescription": "packageDescription",
         "asPackage": true,
+        "tokenPath": "src",
         "dropUnresolved": false,
         "stylesFromLibrary": false,
         "colors": {

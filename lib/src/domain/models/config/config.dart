@@ -32,6 +32,7 @@ class Config with EquatableMixin {
     this.dropUnresolved = false,
     this.stylesFromLibrary = false,
     this.asPackage = true,
+    this.tokenPath = 'src',
     this.colors = const GenerationSettings(),
     this.typography = const TypographyGenerationSettings(),
     this.strings = const GenerationSettings(),
@@ -79,9 +80,18 @@ class Config with EquatableMixin {
   /// generate files in an existing package (such as your app), so that it won't
   /// overwrite your existing pubspec.yaml file and generate a useless barrel
   /// file.
+  /// In that case, you should probably also override [tokenPath].
   ///
   /// Defaults to true.
   final bool asPackage;
+
+  /// The path to generate the tokens at, defaults to "src".
+  ///
+  /// This makes sense to override if you are not using the default package
+  /// structure, e.g. if you want figmage to add tokens to your existing app.
+  ///
+  /// See also: [asPackage]
+  final String tokenPath;
 
   /// Color generation settings, defaults to generating color tokens from
   /// all paths.
@@ -144,6 +154,7 @@ class Config with EquatableMixin {
         dropUnresolved,
         stylesFromLibrary,
         asPackage,
+        tokenPath,
         colors,
         typography,
         strings,

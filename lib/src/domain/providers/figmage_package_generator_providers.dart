@@ -50,6 +50,7 @@ final generatedPackageProvider =
       dir: dir,
       description: settings.config.packageDescription,
       asPackage: settings.config.asPackage,
+      tokenPath: settings.config.tokenPath,
       useGoogleFonts: settings.config.typography.useGoogleFonts,
       generateColors: generateColors,
       generateTypography: generateTypography,

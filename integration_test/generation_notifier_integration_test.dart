@@ -202,6 +202,13 @@ void main() {
           await expectLater(runner.run(args), throwsArgumentError);
         },
       );
+
+      test('generates no pubspec if generatePubspec is false', () async {
+        config = const Config(generatePubspec: false);
+        await runner.run(args);
+        final pubspec = File("${testDirectory.path}/pubspec.yaml");
+        expect(pubspec.existsSync(), false);
+      });
     });
   });
 }

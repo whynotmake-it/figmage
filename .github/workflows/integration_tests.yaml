@@ -22,7 +22,7 @@ jobs:
             fetch-depth: 0
 
         - name: 🎯 Setup Dart
-          uses: dart-lang/setup-dart@v1.6.5
+          uses: dart-lang/setup-dart@v1.7.0
           with:
             sdk: "stable"
 

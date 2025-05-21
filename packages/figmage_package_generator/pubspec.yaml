@@ -7,7 +7,7 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  mason: ^0.1.0-dev.53
+  mason: ^0.1.1
   package_config: ^2.1.0
 
 dev_dependencies:

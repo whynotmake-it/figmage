@@ -1,4 +1,4 @@
-# {{project_name.titleCase()}}
+# {{projectName.titleCase()}}
 
 [![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
 [![melos](https://img.shields.io/badge/maintained%20with-melos-f700ff.svg?style=flat-square)](https://github.com/invertase/melos)
@@ -8,21 +8,20 @@
 
 ## Installation 💻
 
-**❗ In order to start using {{project_name.titleCase()}} you must have the [Dart SDK][dart_install_link] installed on your machine.**
+**❗ In order to start using {{projectName.titleCase()}} you must have the [Dart SDK][dart_install_link] installed on your machine.**
 
 Install via `dart pub add`:
 
 ```sh
-dart pub add {{project_name.snakeCase()}}
+dart pub add {{projectName.snakeCase()}}
 ```
 
 ---
 
 ## Continuous Integration 🤖
 
-{{project_name.titleCase()}} comes with a built-in [GitHub Actions workflow][github_actions_link] but you can also add your preferred CI/CD solution.
+{{projectName.titleCase()}} comes with a built-in [GitHub Actions workflow][github_actions_link] but you can also add your preferred CI/CD solution.
 
-{{#main}}This project includes [Melos](https://github.com/invertase/melos).{{/main}}
 ---
 
 

@@ -19,7 +19,11 @@ vars:
     type: boolean
     description: Whether to generate a pubspec.yaml file and a barrel file in lib/
     prompt: Generate as independent package?
-  
+  tokenPath:
+    type: string
+    description: The path to the token files
+    prompt: Where should the token files be generated?
+    default: src
   generateColors:
     type: boolean
     description: Whether to generate a file for colors

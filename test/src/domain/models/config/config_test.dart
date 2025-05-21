@@ -135,7 +135,10 @@ void main() {
         final result = Config.fromMap(minimal);
         expect(
           result,
-          const Config(fileId: "fileId", packageName: "packageName"),
+          const Config(
+            fileId: "fileId",
+            packageName: "packageName",
+          ),
         );
       });
 

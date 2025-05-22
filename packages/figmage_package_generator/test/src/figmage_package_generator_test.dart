@@ -340,12 +340,39 @@ void main() {
         );
       });
 
+      test('generates none of the package specific files if asPackage is false',
+          () async {
+        await sut.generate(
+          projectName: "figmage_example",
+          dir: testDirectory,
+          description: "A test",
+          asPackage: false,
+        );
+
+        final files = [
+          '.gitignore',
+          'analysis_options.yaml',
+          'CHANGELOG.md',
+          'pubspec.yaml',
+          'README.md',
+        ];
+
+        for (final file in files) {
+          verifyNever(
+            () => generatorTarget.createFile(
+              any(that: equals(file)),
+              any(),
+            ),
+          );
+        }
+      });
+
       test('generates correctly at custom token path', () async {
         await sut.generate(
           projectName: "figmage_example",
           dir: testDirectory,
           description: "A test",
-          tokenPath: "custom",
+          tokenPath: "custom/path/to/tokens",
         );
 
         final barrelFile = verify(
@@ -357,15 +384,37 @@ void main() {
 
         expect(
           utf8.decode(barrelFile),
-          contains("export 'custom/bools.dart';"),
+          contains("export 'custom/path/to/tokens/bools.dart';"),
         );
 
         verify(
           () => generatorTarget.createFile(
-            any(that: contains("lib/custom/bools.dart")),
+            any(that: contains("lib/custom/path/to/tokens/bools.dart")),
             any(that: isEmpty),
           ),
         ).called(1);
+      });
+
+      test('throws if token path is invalid', () async {
+        await expectLater(
+          () => sut.generate(
+            projectName: "figmage_example",
+            dir: testDirectory,
+            description: "A test",
+            tokenPath: "",
+          ),
+          throwsArgumentError,
+        );
+
+        await expectLater(
+          () => sut.generate(
+            projectName: "figmage_example",
+            dir: testDirectory,
+            description: "A test",
+            tokenPath: "/",
+          ),
+          throwsArgumentError,
+        );
       });
     });
   });

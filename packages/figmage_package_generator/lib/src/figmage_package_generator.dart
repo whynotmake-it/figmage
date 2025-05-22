@@ -53,6 +53,14 @@ class FigmagePackageGenerator {
     bool generateAssets = true,
     bool useGoogleFonts = true,
   }) async {
+    if (tokenPath.isEmpty || tokenPath.startsWith('/')) {
+      throw ArgumentError.value(
+        tokenPath,
+        'tokenPath',
+        'Token path must be a valid directory name',
+      );
+    }
+
     final brick = await _getBrick();
 
     final generator = await MasonGenerator.fromBrick(brick);

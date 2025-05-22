@@ -255,11 +255,34 @@ void main() {
         },
       );
 
-      test('generates no pubspec if generatePubspec is false', () async {
-        config = const Config(generatePubspec: false);
+      test('generates no pubspec if asPackage is false', () async {
+        config = const Config(asPackage: false);
         await runner.run(args);
         final pubspec = File("${testDirectory.path}/pubspec.yaml");
         expect(pubspec.existsSync(), false);
+      });
+
+      test('generates no barrel file if asPackage is false', () async {
+        config = const Config(asPackage: false);
+        await runner.run(args);
+        final barrel = File("${testDirectory.path}/lib/test_package.dart");
+        expect(barrel.existsSync(), false);
+      });
+
+      test('generates tokens at custom path if tokenPath is set', () async {
+        config = const Config(
+          packageName: "test_package",
+          tokenPath: "custom",
+        );
+        await runner.run(args);
+        final barrel = File("${testDirectory.path}/lib/test_package.dart");
+        expect(barrel.existsSync(), true);
+
+        final barrelFileContent = barrel.readAsStringSync();
+        expect(barrelFileContent, contains("custom/colors.dart"));
+
+        final colorsFile = File("${testDirectory.path}/lib/custom/colors.dart");
+        expect(colorsFile.existsSync(), true);
       });
     });
   });

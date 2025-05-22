@@ -1,0 +1,257 @@
+---
+title: Getting Started with an App
+description: Learn how to configure Figmage to add tokens directly to your existing Flutter app.
+sidebar:
+  order: 2
+---
+
+import { CardGrid, Card, FileTree, Steps, LinkCard } from '@astrojs/starlight/components';
+
+This guide will teach you how to get Figmage running to add tokens directly to your existing Flutter app.
+
+At the end of this guide, you will have added your Figma design tokens to your Flutter app, completely automatically.
+
+<LinkCard 
+    title='📦 Generate a Package Instead' 
+    description='Figmage also supports generating a standalone design package.'
+    href="/guides/getting-started"
+/>
+
+## Prerequisites
+
+Before you start, we assume that you have a few things ready.
+
+<Card title="Figma Credentials" icon="seti:config" >
+You'll need your Figma file ID and a personal access token.
+See the [Obtaining Figma Credentials](/guides/figma-credentials) guide for instructions.
+</Card>
+
+<Card title="Design Tokens" icon="open-book" >
+You'll need at least some design tokens in your Figma file.
+See the [Design Tokens](/reference/tokens-best-practices) reference for instructions.
+</Card>
+
+<Card title="Flutter App" icon="rocket">
+An existing Flutter app where you want to add the design tokens.
+</Card>
+
+## Install Figmage CLI
+
+First, install the Figmage CLI by running:
+
+```bash
+dart pub global activate figmage
+```
+
+## Configure Figmage
+
+<Steps>
+1. Create a `figmage.yaml` configuration file in your Flutter app's root directory.
+
+    ```bash
+    touch figmage.yaml
+    ```
+
+2. Configure `figmage.yaml` with the following essential settings:
+
+    ```yaml
+    # figmage.yaml
+    fileId: "YOUR_FIGMA_FILE_ID"
+    asPackage: false
+    tokenPath: "design" # or any other path under lib
+    ```
+
+    The key settings for app integration are:
+    - `asPackage: false` - This tells Figmage not to generate a standalone package
+    - `tokenPath: "design"` - Specifies where to create token files within your app's `lib` directory
+
+3. Customize which tokens to generate:
+
+    ```yaml
+    # Additional configuration options
+    colors:
+      generate: true
+    typography:
+      generate: true
+      useGoogleFonts: true
+    numbers:
+      generate: false
+    spacers:
+      generate: false
+    paddings:
+      generate: false
+    ```
+
+4. Optionally filter tokens by path:
+
+    ```yaml
+    # Generate only specific token paths if needed
+    colors:
+      generate: true
+      from:
+        - "semantic/app/"
+    typography:
+      generate: true
+      from:
+        - "semantic/typography"
+    ```
+</Steps>
+
+## Run Figmage
+
+From your Flutter app's root directory, run:
+
+```bash
+figmage forge -t YOUR_FIGMA_PERSONAL_ACCESS_TOKEN
+```
+
+If you don't have your file ID or personal access token yet, see the [Obtaining Figma Credentials](/guides/figma-credentials) guide.
+
+Figmage will fetch your Tokens from Figma and generate the Dart code directly within your app.
+Pay attention to the output in your terminal.
+Unless you are running Figmage with an Enterprise Figma account, you will see an error message:
+```bash {1}
+✗ Failed to fetch variables: Unauthorized. Make sure you have a valid access token that can access the file and that you are a Figma Enterprise team member. (0.7s)
+✓ Found ... styles (3.0s)
+✓ Generated files at ... (0.1s)
+...
+```
+This is expected and does not affect the generation of your Style-based Tokens.
+Take a look at the [Figma Account Requirements](/reference/account-requirements) for more information.
+
+## Structure After Generation
+
+Your app's directory structure should now include the generated token files:
+
+<FileTree>
+- my_flutter_app/
+  - lib/
+    - design/
+      - colors.dart
+      - typography.dart
+      - ...
+    - main.dart
+    - ...
+  - figmage.yaml
+  - pubspec.yaml
+</FileTree>
+
+The generated token files will follow the same structure as in the package approach. You will notice that Figmage generated a class for each of your top-level Token collections.
+
+:::tip
+If you have many top-level collections in Figma, you will see a lot of classes in these Dart files.
+
+This might complicate the usage of your tokens in your Flutter app, so we recommend you to limit yourself to
+a few top-level collections and use nested structures for more detailed Tokens.
+A good start is grouping your collections by their type, like `primitive`, `semantic`, and `component`.
+:::
+
+## Update Dependencies
+
+Since tokens are now part of your app, you'll need to ensure you have the necessary dependencies:
+
+<Steps>
+1. Open your app's `pubspec.yaml` file
+
+2. Add required dependencies:
+
+    ```yaml
+    # pubspec.yaml
+    dependencies:
+      flutter:
+        sdk: flutter
+      google_fonts: ^6.1.0 # Only if useGoogleFonts: true
+    ```
+
+3. Run flutter pub get:
+
+    ```bash
+    flutter pub get
+    ```
+</Steps>
+
+## Using Tokens in your App
+
+<Steps>
+1. Add the generated Tokens to your app's `Theme`
+
+    Figmage generates [`ThemeExtension`](https://api.flutter.dev/flutter/material/ThemeExtension-class.html)
+    classes, which you will need to add to your app's `ThemeData` to use them.
+
+    ```dart
+    // lib/main.dart
+    import 'design/colors.dart';
+    import 'design/typography.dart';
+    // ...
+    @override
+    Widget build(BuildContext context) {
+      return MaterialApp(
+        theme: ThemeData(
+          // ...
+          extensions: [
+            ColorsSemantic.standard(), // or .light() if you have modes
+            TypographySemantic.standard(),
+          ],
+        ),
+        // Add dark theme if you have it
+        darkTheme: ThemeData(
+          // ...
+          extensions: [
+            ColorsSemantic.dark(), // Only if you have a dark mode
+            TypographySemantic.standard(),
+          ],
+        ),
+        themeMode: ThemeMode.system,
+        home: MyHomePage(),
+      );
+    }
+    ```
+
+2. Use your Tokens in your widgets:
+
+    ```dart
+    // lib/example_button.dart
+    import 'design/colors.dart';
+    import 'design/typography.dart';
+    import 'package:flutter/material.dart';
+
+    class ExampleButton extends StatelessWidget {
+      @override
+      Widget build(BuildContext context) {
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: context.colorsSemantic.surfacePrimary,
+            foregroundColor: context.colorsSemantic.onSurfacePrimary,
+            textStyle: context.typographySemantic.headline1,
+          ),
+          onPressed: () {},
+          child: Text('Click me!'),
+        );
+      }
+    }
+    ```
+</Steps>
+
+## Updating Tokens
+
+Whenever your design tokens change in Figma, simply rerun the Figmage command:
+
+```bash
+figmage forge -t YOUR_FIGMA_PERSONAL_ACCESS_TOKEN
+```
+
+This will update all token files in your app with the latest changes from Figma.
+
+## What's Next?
+
+<LinkCard 
+    title='Configuration Options' 
+    description='Explore all configuration options to customize your token generation.'
+    href="/reference/configuration-options"
+/>
+
+<LinkCard 
+    title='Getting Started with Packages' 
+    description='Learn about the package-based approach if you need more flexibility.'
+    href="/guides/getting-started"
+/>

@@ -1,0 +1,12 @@
+/// {{{description}}}
+library {{projectName.snakeCase()}};
+
+{{#generateBools}}export '{{tokenPath}}/bools.dart';{{/generateBools}}
+{{#generateColors}}export '{{tokenPath}}/colors.dart';{{/generateColors}}
+{{#generateNumbers}}export '{{tokenPath}}/numbers.dart';{{/generateNumbers}}
+{{#generatePaddings}}export '{{tokenPath}}/paddings.dart';{{/generatePaddings}}
+{{#generateRadii}}export '{{tokenPath}}/radii.dart';{{/generateRadii}}
+{{#generateSpacers}}export '{{tokenPath}}/spacers.dart';{{/generateSpacers}}
+{{#generateStrings}}export '{{tokenPath}}/strings.dart';{{/generateStrings}}
+{{#generateTypography}}export '{{tokenPath}}/typography.dart';{{/generateTypography}}
+{{#generateAssets}}export '{{tokenPath}}/assets.dart';{{/generateAssets}}

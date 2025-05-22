@@ -339,6 +339,34 @@ void main() {
           ),
         );
       });
+
+      test('generates correctly at custom token path', () async {
+        await sut.generate(
+          projectName: "figmage_example",
+          dir: testDirectory,
+          description: "A test",
+          tokenPath: "custom",
+        );
+
+        final barrelFile = verify(
+          () => generatorTarget.createFile(
+            any(that: contains("figmage_example.dart")),
+            captureAny(),
+          ),
+        ).captured.first as List<int>;
+
+        expect(
+          utf8.decode(barrelFile),
+          contains("export 'custom/bools.dart';"),
+        );
+
+        verify(
+          () => generatorTarget.createFile(
+            any(that: contains("lib/custom/bools.dart")),
+            any(that: isEmpty),
+          ),
+        ).called(1);
+      });
     });
   });
 }

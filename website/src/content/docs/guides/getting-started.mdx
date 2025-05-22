@@ -1,36 +1,42 @@
 ---
-title: Getting Started
-description: Import your tokens and learn how to use Figmage.
+title: Getting Started with a Package
+description: Learn how to configure Figmage to generate a standalone design package from your Figma tokens.
+sidebar:
+  order: 1
 ---
 import { CardGrid, Card, FileTree, LinkCard, Steps } from '@astrojs/starlight/components';
 
-This guide will teach you how to get Figmage running and set you up for success.
+This guide will teach you how to get Figmage running to generate a standalone design package.
 
-At the end of this guide, you will have a finished Flutter package that contains all your Tokens as Dart code. Exciting, right?
+At the end of this guide, you will have a finished Flutter package that contains all your Tokens as Dart code.
 
-## What you need
+<LinkCard 
+    title='📱 Add to your App Instead' 
+    description='Figmage also supports adding tokens directly to your existing Flutter app.'
+    href="/guides/add-to-app"
+/>
+
+## Prerequisites
 
 Before you start, we assume that you have a few things ready.
 
-<CardGrid>
-
-<Card title="Figma Design File" icon="document" >
-You should have a Figma file that represents your Design System, or just a simple app design. 
-In both cases, you should have at least a few Tokens defined in your file.
+<Card title="Figma Credentials" icon="seti:config" >
+You'll need your Figma file ID and a personal access token.
+See the [Obtaining Figma Credentials](/guides/figma-credentials) guide for instructions.
 </Card>
 
-
-<Card title="Figma Account" icon="laptop" >
-In most cases, you will only need an account that can access the file you want to sync with your project.
-However, if you are using Variables in Figma, you might need a paid plan. 
-Find out more [here](/reference/account-requirements).
+<Card title="Design Tokens" icon="open-book" >
+You'll need at least some design tokens in your Figma file.
+See the [Design Tokens](/reference/tokens-best-practices) reference for instructions.
 </Card>
-</CardGrid>
 
+<Card title="Flutter App" icon="rocket">
+An existing Flutter app where you want to use the design tokens package.
+</Card>
 
-## Install Figmage
+## Install Figmage CLI
 
-First, you need to install the Figmage CLI. You can do this by running the following command in your terminal:
+First, install the Figmage CLI by running:
 
 ```bash
 dart pub global activate figmage
@@ -44,11 +50,13 @@ You can create the package anywhere on your machine, use a monorepo, check it in
 <Steps>
 1. Decide on a name and location for your package.
     Make sure to follow the Dart package naming conventions when choosing a name.
+
 2. Create a directory with that name for your package to live in.
-    Let's say you want to call your package `design_tokens`, you would run the following command in your terminal:
+    Let's say you want to call your package `design_tokens`, you would run the following command:
     ```bash
     mkdir design_tokens
     ```
+
 3. Create a `figmage.yaml` file in the root of your package directory.
     While this is not strictly necessary, it is recommended to have a `figmage.yaml` file in the root of your package directory. 
     This file will contain the configuration for Figmage.
@@ -65,68 +73,58 @@ You can create the package anywhere on your machine, use a monorepo, check it in
     </FileTree>
 </Steps>
 
-## Tell Figmage where to find your Tokens
-
-Now that you have your package set up, you need to tell Figmage where to find your Tokens in Figma.
+## Configure Figmage
 
 <Steps>
-1. Get your Figma file's ID.
-    You can find the ID of your Figma file in the URL when you have the file open in your browser.
-    It looks something like this:
+1. Open the `figmage.yaml` file you created earlier and add your Figma file ID:
+    ```yaml
+    # figmage.yaml
+    fileId: "YOUR_FIGMA_FILE_ID"
     ```
-    https://www.figma.com/design/<<your-file-id>>/...
-    ```
-    An easy way to obtain the link from the Figma app is to click the Share button in the top right corner of the app
-    and select the **Copy link** option.
-2. Add the Figma file ID to your `figmage.yaml` file.
-    Open the file you created earlier and add the following content:
-    ```diff lang=yaml
-    // figmage.yaml
-    + fileId: <<your-file-id>>
-    ```
-3. Obtain a Personal Access Token from Figma.
-    
-    You can generate a Personal Access Token in the Figma app by going to your account settings and selecting the **Generate new token** option.
-    Make sure to copy the token to a safe place, as you will not be able to see it again.
 
-    :::caution
-    To prevent accidental leaks, Figmage does not allow adding your Personal Access Token directly to the `figmage.yaml` file.
-    You have to pass it as input every time you run Figmage. 
-    You can store your access token in an environment variable or a secret manager and use it from there.
-    :::
+    If you don't have your file ID yet, see the [Obtaining Figma Credentials](/guides/figma-credentials) guide.
+
+2. Optionally, configure additional settings as needed:
+    ```yaml
+    # Additional configuration options
+    colors:
+      generate: true
+    typography:
+      generate: true
+      useGoogleFonts: true
+    numbers:
+      generate: true
+    spacers:
+      generate: true
+    ```
+
+3. For more detailed configuration, see the [Configuration Options](/reference/configuration-options) reference.
 </Steps>
 
+## Run Figmage
 
-## Run Figmage ✨
+From your package directory, run:
 
-Now that you have everything set up, you can run Figmage to generate your Tokens package.
+```bash
+figmage forge -t YOUR_FIGMA_PERSONAL_ACCESS_TOKEN
+```
 
-<Steps>
-1. Navigate to your package directory in your terminal.
-    ```bash
-    cd design_tokens
-    ```
-2. Run Figmage with the following command:
-    ```bash
-    figmage forge -t <<your-personal-access-token>>
-    ```
-    Replace `<<your-personal-access-token>>` with the Personal Access Token you obtained earlier.
-3. Let Figmage do its magic.
-    
-    Figmage will now fetch your Tokens from Figma and generate the Dart code for your package.
-    Pay attention to the output in your terminal.
-    Unless you are running Figmage with an Enterprise Figma account, you will see an error message:
-    ```bash {1}
-    ✗ Failed to fetch variables: Unauthorized. Make sure you have a valid access token that can access the file and that you are a Figma Enterprise team member. (0.7s)
-    ✓ Found ... styles (3.0s)
-    ✓ Generated package at ... with ... files (0.1s)
-    ...
-    ```
-    This is expected and does not affect the generation of your Style-based Tokens.
-    Take a look at the [Figma Account Requirements](/reference/account-requirements) for more information.
-</Steps>
+If you don't have your personal access token yet, see the [Obtaining Figma Credentials](/guides/figma-credentials) guide.
 
-## Inspect the generated package
+Figmage will fetch your Tokens from Figma and generate the Dart code for your package.
+Pay attention to the output in your terminal.
+Unless you are running Figmage with an Enterprise Figma account, you will see an error message:
+```bash {1}
+✗ Failed to fetch variables: Unauthorized. Make sure you have a valid access token that can access the file and that you are a Figma Enterprise team member. (0.7s)
+✓ Found ... styles (3.0s)
+✓ Generated package at ... with ... files (0.1s)
+...
+```
+This is expected and does not affect the generation of your Style-based Tokens.
+Take a look at the [Figma Account Requirements](/reference/account-requirements) for more information.
+
+## Structure After Generation
+
 If everything went well, you should now have a Dart package in your package directory that contains all your Tokens as Dart code.
 
 Your package should look something like this:
@@ -183,16 +181,14 @@ a few top-level collections and use nested structures for more detailed Tokens.
 A good start is grouping your collections by their type, like `primitive`, `semantic`, and `component`.
 :::
 
-## ✅ Using your Tokens in your Flutter app
+## Update Dependencies
 
-Now that you have your Tokens as Dart code, you can use them in your Flutter app.
+Now add your Tokens package as a dependency to your Flutter app.
 
 <Steps>
-1. Add your Tokens package as a dependency to your Flutter app.
-
-    Open the `pubspec.yaml` file of your Flutter app and add the following line to the `dependencies` section:
+1. Open the `pubspec.yaml` file of your Flutter app and add the following line to the `dependencies` section:
     ```diff lang=yaml
-    // pubspec.yaml
+    # pubspec.yaml
 
     dependencies:
     +  design_tokens:
@@ -200,70 +196,53 @@ Now that you have your Tokens as Dart code, you can use them in your Flutter app
     ```
 
     If you decided to give your package a different name, make sure to replace `design_tokens` with the name you chose.
-2. Add the generated Tokens to your app's `Theme`
+
+2. Run flutter pub get:
+    ```bash
+    flutter pub get
+    ```
+</Steps>
+
+## Using Tokens in your App
+
+<Steps>
+1. Add the generated Tokens to your app's `Theme`
 
     Figmage generates [`ThemeExtension`](https://api.flutter.dev/flutter/material/ThemeExtension-class.html)
     classes, which you will need to add to your app's `ThemeData` to use them.
 
-    For example, this is how you would add the generated `ColorsSemantic` and `TypographySemantic` to your app's `ThemeData`:
-    ```diff lang=dart
+    ```dart
     // lib/main.dart
-    + import 'package:design_tokens/design_tokens.dart';
+    import 'package:design_tokens/design_tokens.dart';
     // ...
     @override
     Widget build(BuildContext context) {
       return MaterialApp(
         theme: ThemeData(
           // ...
-    +      extensions: [
-    +        ColorsSemantic.standard(),
-    +        TypographySemantic.standard(),
-    +      ],
+          extensions: [
+            ColorsSemantic.standard(), // or .light() if you have modes
+            TypographySemantic.standard(),
+          ],
         ),
-        home: MyHomePage(),
-      );
-    }
-    
-
-    ```
-
-    If your Tokens were generated from Variables, you will get multiple contructors, one for each mode.
-    Let's say you have a `dark` and a `light` mode, you would use them like this:
-    ```diff lang=dart
-    // lib/main.dart
-
-    + import 'package:design_tokens/design_tokens.dart';
-    // ...
-    @override
-    Widget build(BuildContext context) {
-      return MaterialApp(
-        theme: ThemeData(
-            // ...
-            extensions: [
-    +            ColorsSemantic.light(),
-    +            TypographySemantic.standard(),
-            ],
-        ),
+        // Add dark theme if you have it
         darkTheme: ThemeData(
-            // ...
-            extensions: <ThemeExtension<dynamic>>[
-    +            ColorsSemantic.dark(),
-    +            TypographySemantic.standard(),
-            ],
+          // ...
+          extensions: [
+            ColorsSemantic.dark(), // Only if you have a dark mode
+            TypographySemantic.standard(),
+          ],
         ),
-        themeMode: isLightTheme ? ThemeMode.light : ThemeMode.dark,
+        themeMode: ThemeMode.system,
         home: MyHomePage(),
       );
     }
     ```
 
-3. Use your Tokens in your app
-     
-    You are ready to use your tokens wherever you want!
+2. Use your Tokens in your widgets:
 
-    ```dart {11-13}
+    ```dart
     // lib/example_button.dart
-
     import 'package:design_tokens/design_tokens.dart';
     import 'package:flutter/material.dart';
 
@@ -284,16 +263,20 @@ Now that you have your Tokens as Dart code, you can use them in your Flutter app
     ```
 </Steps>
 
-That's it! You now have your Tokens as Dart code in your Flutter app. 🎉
+## Updating Tokens
 
-Whenever your Tokens change in Figma, you can run Figmage again in the same directory 
-to automatically update your package with the latest changes.
+Whenever your Tokens change in Figma, you can run Figmage again in the same package directory 
+to automatically update your package with the latest changes:
 
-## What's next?
+```bash
+figmage forge -t YOUR_FIGMA_PERSONAL_ACCESS_TOKEN
+```
+
+## What's Next?
 
 <LinkCard 
-    title='Customize your Experience' 
-    description='Learn how to configure Figmage to your needs.'
+    title='Configuration Options' 
+    description='Explore all configuration options to customize your token generation.'
     href="/reference/configuration-options"
 />
 

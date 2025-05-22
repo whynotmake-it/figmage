@@ -394,6 +394,28 @@ void main() {
           ),
         ).called(1);
       });
+
+      test('throws if token path is invalid', () async {
+        await expectLater(
+          () => sut.generate(
+            projectName: "figmage_example",
+            dir: testDirectory,
+            description: "A test",
+            tokenPath: "",
+          ),
+          throwsArgumentError,
+        );
+
+        await expectLater(
+          () => sut.generate(
+            projectName: "figmage_example",
+            dir: testDirectory,
+            description: "A test",
+            tokenPath: "/",
+          ),
+          throwsArgumentError,
+        );
+      });
     });
   });
 }

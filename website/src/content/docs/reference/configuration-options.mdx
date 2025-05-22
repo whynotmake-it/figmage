@@ -70,6 +70,10 @@ The path to generate the tokens at, defaults to "src".
 This makes sense to override if you are not using the default package
 structure, e.g. if you want figmage to add tokens to your existing app.
 
+This path has to be a valid directory name, e.g. `design/tokens` is valid, but `/design/tokens` is not.
+
+Stepping out of the directory using `..`, or passing an empty string to generate tokens in the `lib` directory is not supported yet.
+
 ### `colors`
 Configuration for generating color tokens.
 The following sub-options are available:

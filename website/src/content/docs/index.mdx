@@ -1,11 +1,20 @@
 ---
-title: 🧙 Figmage
+title: Figmage
 description: Magically sync your Figma Design System with your Flutter Code!
 template: splash
+head:
+  - tag: style
+    content: |
+      .hero-html {
+        --size: 12rem;
+        font-size: var(--size);
+        justify-content: center;
+        line-height: var(--size);
+      }
 hero:
   tagline: Magically sync your Figma Design System with your Flutter Code!
-#   image:
-#     file: ../../assets/houston.webp
+  image:
+    html: 🧙
   actions:
     - text: Get Started
       link: /guides/getting-started/

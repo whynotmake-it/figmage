@@ -21,25 +21,16 @@ jobs:
             ref: ${{ github.event.pull_request.head.sha }}
             fetch-depth: 0
 
-        - name: 🎯 Setup Dart
-          uses: dart-lang/setup-dart@v1.7.0
+        - name: 🐦 Setup Flutter
+          uses: subosito/flutter-action@v2.19.0
           with:
             sdk: "stable"
 
         - name: Ⓜ️ Set up Melos
           uses: bluefireteam/melos-action@ec2c512a52c2f359186ca19bac0be977c44913e6
         
-        - name: 🧪 Run Generation Notifier Integration Test
+        - name: 🤖 Run Integration Tests
           env:
             FIGMA_FREE_TOKEN: ${{ secrets.FIGMA_FREE_TOKEN }}
-          run: dart test integration_test/generation_notifier_integration_test.dart
-
-        - name: 🧪 Run Full Integration Test
-          env:
-            FIGMA_FREE_TOKEN: ${{ secrets.FIGMA_FREE_TOKEN }}
-          run: dart test integration_test/full_integration_test.dart
-
-        - name: 🧪 Run Asset Download Integration Test
-          env:
-            FIGMA_FREE_TOKEN: ${{ secrets.FIGMA_FREE_TOKEN }}
-          run: dart test integration_test/asset_download_integration_test.dart
+          run: dart test integration_test
+          

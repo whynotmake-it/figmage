@@ -47,9 +47,8 @@ void main() {
       expect(pubspec.existsSync(), true);
 
       final pubspecContent = pubspec.readAsStringSync();
-      // Extract directory name from path for the package name comparison
-      final dirName = path.basename(testDir.path).toLowerCase();
-      expect(pubspecContent, contains('name: $dirName'));
+
+      expect(pubspecContent, contains('name: test_package'));
 
       final colorFile =
           File(path.join(testDir.path, 'lib', 'src', 'colors.dart'));

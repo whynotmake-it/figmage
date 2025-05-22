@@ -8,11 +8,13 @@ import 'package:figmage/src/domain/providers/config_providers.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:path/path.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
 import '../test/test_util/create_container.dart';
 import 'util/mock_logger.dart';
+import 'util/util.dart';
 
 /// A file that contains only local styles, no library styles.
 const localStylesFileId = "HHUVTJ7lsjhG24SQB5h0zX";
@@ -20,7 +22,8 @@ const localStylesFileId = "HHUVTJ7lsjhG24SQB5h0zX";
 void main() {
   group("GenerationNotifier", timeout: const Timeout(Duration(minutes: 1)), () {
     late ProviderContainer container;
-    late String? token;
+
+    final (:token, :skipMessage) = getTokenOrSkip();
 
     late Directory testDirectory;
 
@@ -34,7 +37,7 @@ void main() {
 
     setUp(() {
       config = const Config();
-      testDirectory = Directory("./test_package");
+      testDirectory = createFigmageTestDirectory();
       mockProgress = MockProgress.create();
       mockLogger = MockLogger.createWithMockProgress(mockProgress);
       container = createContainer(
@@ -43,7 +46,6 @@ void main() {
           loggerProvider.overrideWith((ref) => mockLogger),
         ],
       );
-      token = Platform.environment['FIGMA_FREE_TOKEN'];
       runner = FigmageCommandRunner(container);
     });
 
@@ -53,7 +55,7 @@ void main() {
       } catch (_) {}
     });
 
-    group('can generate from local styles file', () {
+    group('can generate from local styles file', skip: skipMessage, () {
       setUp(() {
         args = [
           'forge',
@@ -124,7 +126,10 @@ void main() {
         await runner.run(args);
         final pubspec = File("${testDirectory.path}/pubspec.yaml");
         final pubspecContent = pubspec.readAsStringSync();
-        expect(pubspecContent, contains("name: test_package"));
+        expect(
+          pubspecContent,
+          contains("name: ${basename(testDirectory.path).toLowerCase()}"),
+        );
         expect(
           pubspecContent,
           contains(
@@ -142,7 +147,7 @@ void main() {
         verify(
           () => mockLogger.warn(
             "The package name different_name does not match the directory name "
-            "test_package.",
+            "${basename(testDirectory.path)}.",
           ),
         );
       });
@@ -195,12 +200,12 @@ void main() {
 
         verify(
           () => mockLogger.progress(
-            "Generating package in ./test_package...",
+            "Generating package in ${testDirectory.path}...",
           ),
         );
         verify(
           () => mockProgress.complete(
-            'Generated package at ./test_package with 8 files',
+            'Generated package at ${testDirectory.path} with 8 files',
           ),
         );
 
@@ -230,9 +235,15 @@ void main() {
         );
 
         verifyInOrder([
-          () => mockProgress.update('Running pub get in "./test_package"'),
-          () => mockProgress.update('Running dart format in "./test_package"'),
-          () => mockProgress.update('Running dart fix in "./test_package"'),
+          () => mockProgress.update(
+                'Running pub get in "${testDirectory.path}"',
+              ),
+          () => mockProgress.update(
+                'Running dart format in "${testDirectory.path}"',
+              ),
+          () => mockProgress.update(
+                'Running dart fix in "${testDirectory.path}"',
+              ),
         ]);
       });
 

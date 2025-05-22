@@ -35,9 +35,11 @@ final logger = Logger();
 /// to delete it when the test is finished.
 ///
 /// Returns the created directory.
-Directory createFigmageTestDirectory() {
-  final testDir =
+Directory createFigmageTestDirectory({String name = 'test_package'}) {
+  final tmpDir =
       Directory.systemTemp.createTempSync('figmage_integration_test_');
+  final testDir = Directory(path.join(tmpDir.path, name))
+    ..createSync(recursive: true);
   addTearDown(() {
     try {
       testDir.deleteSync(recursive: true);

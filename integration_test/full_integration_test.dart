@@ -65,6 +65,9 @@ void main() {
         workingDirectory: testDir.path,
       );
 
+      process.stdout.transform(utf8.decoder).listen(logger.info);
+      process.stderr.transform(utf8.decoder).listen(logger.err);
+
       final analyzeExitCode = await analyzeProcess.exitCode;
       expect(
         analyzeExitCode,

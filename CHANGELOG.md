@@ -1,3 +1,11 @@
+## 0.1.0-dev.13
+
+ - **FIX**: correctly fetch opacity for color styles (#175).
+ - **FEAT**: allow configuring the path under `lib/` where tokens are generated (#176).
+ - **FEAT**: allow for using figmage to generate styles for your existing app (#174).
+ - **FEAT**: pull assets from Figma (#162).
+ - **DOCS**: added guides for the new features and updated the theme (#181).
+
 ## 0.1.0-dev.12
 
  - **DOCS**: added documentation website (#159).

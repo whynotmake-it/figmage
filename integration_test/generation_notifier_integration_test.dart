@@ -270,16 +270,19 @@ void main() {
       });
 
       test('generates tokens at custom path if tokenPath is set', () async {
-        config = const Config(tokenPath: "custom");
+        config = const Config(
+          packageName: "test_package",
+          tokenPath: "custom",
+        );
         await runner.run(args);
         final barrel = File("${testDirectory.path}/lib/test_package.dart");
         expect(barrel.existsSync(), true);
 
-        final colorsFile = File("${testDirectory.path}/lib/custom/colors.dart");
-        expect(colorsFile.existsSync(), true);
-
         final barrelFileContent = barrel.readAsStringSync();
         expect(barrelFileContent, contains("custom/colors.dart"));
+
+        final colorsFile = File("${testDirectory.path}/lib/custom/colors.dart");
+        expect(colorsFile.existsSync(), true);
       });
     });
   });

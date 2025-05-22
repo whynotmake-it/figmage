@@ -128,7 +128,7 @@ void main() {
         final pubspecContent = pubspec.readAsStringSync();
         expect(
           pubspecContent,
-          contains("name: ${basename(testDirectory.path).toLowerCase()}"),
+          contains("name: test_package"),
         );
         expect(
           pubspecContent,

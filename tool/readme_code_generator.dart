@@ -71,6 +71,7 @@ const variableTokens = TokensByType(
     ),
   ],
 );
+
 void main(List<String> args) {
   group('README', () {
     late DartEmitter emitter;

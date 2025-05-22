@@ -4,13 +4,17 @@ import 'package:figmage/src/command_runner.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
+import 'util/util.dart';
+
 void main() {
   group('Asset download integration test', () {
+    final (:token, :skipMessage) = getTokenOrSkip();
+
     test(
       'downloads and generates assets from figma with config',
+      skip: skipMessage,
       () async {
-        final dir = Directory('./asset_test_package')..createSync();
-        addTearDown(() => dir.deleteSync(recursive: true));
+        final dir = createFigmageTestDirectory();
 
         // Create figmage.yaml with asset configuration
         File('${dir.path}/figmage.yaml').writeAsStringSync('''
@@ -39,7 +43,7 @@ assets:
         final exitCode = await commandRunner.run([
           'forge',
           '-t',
-          Platform.environment['FIGMA_FREE_TOKEN']!,
+          token!,
           '-p',
           dir.path,
         ]);
@@ -93,9 +97,7 @@ assets:
           reason: 'Assets class missing iconTwo constant',
         );
       },
-      timeout: const Timeout(
-        Duration(minutes: 1),
-      ),
+      timeout: const Timeout(Duration(minutes: 1)),
     );
   });
 }

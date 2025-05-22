@@ -280,7 +280,9 @@ void main() {
 
         final barrelFileContent = barrel.readAsStringSync();
         expect(
-            barrelFileContent, contains("custom/path/to/tokens/colors.dart"));
+          barrelFileContent,
+          contains("custom/path/to/tokens/colors.dart"),
+        );
 
         final colorsFile = File(
           "${testDirectory.path}/lib/custom/path/to/tokens/colors.dart",

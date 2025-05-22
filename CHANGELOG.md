@@ -1,3 +1,12 @@
+## 0.1.0-dev.13
+
+ - **FIX**: don't generate .gitignore and escape nested paths properly (#182).
+ - **FIX**: correctly fetch opacity for color styles (#175).
+ - **FEAT**: allow configuring the path under `lib/` where tokens are generated (#176).
+ - **FEAT**: allow for disabling the generation of a `pubspec.yaml` file (#174).
+ - **FEAT**: pull assets from Figma (#162).
+ - **DOCS**: new theme and small fixes (#181).
+
 ## 0.1.0-dev.12
 
  - **DOCS**: added documentation website (#159).

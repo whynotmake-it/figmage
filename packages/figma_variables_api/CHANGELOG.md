@@ -1,3 +1,7 @@
+## 0.1.0-dev.7
+
+ - **FEAT**: pull assets from Figma (#162).
+
 ## 0.1.0-dev.6
 
  - **FEAT**(figma_variables_api): enable fetching local styles from file.

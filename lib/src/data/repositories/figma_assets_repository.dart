@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:collection/collection.dart';
 import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/repositories/assets_repository.dart';
@@ -31,27 +32,38 @@ class FigmaAssetsRepository implements AssetsRepository {
 
         if (nodeIds.isEmpty) continue;
 
-        final result = await client.getImages(
-          fileId,
-          nodeIds,
-          scale: scale,
-        );
+        // Process nodes in batches to avoid CloudFront URL size limits
+        final batches = nodeIds.slices(80).toList(); // Keep URL under ~6KB
 
-        if (result.err != null) {
-          throw UnknownAssetsException(result.err);
+        for (final batch in batches) {
+          // Rate limiting: delay between requests to avoid 429 errors
+          // Figma allows ~30 requests per minute for images
+          if (batches.indexOf(batch) > 0) {
+            await Future<void>.delayed(const Duration(seconds: 2));
+          }
+
+          final result = await client.getImages(
+            fileId,
+            batch,
+            scale: scale,
+          );
+
+          if (result.err != null) {
+            throw UnknownAssetsException(result.err);
+          }
+
+          final images = await _downloadImages(
+            images: result.images,
+            nodeSettings: nodeSettings,
+            scale: scale.toDouble(),
+            outputDir: outputDir,
+          );
+
+          // Merge the results, adding new scales
+          images.forEach((key, value) {
+            assetPaths.putIfAbsent(key, () => []).add(value);
+          });
         }
-
-        final images = await _downloadImages(
-          images: result.images,
-          nodeSettings: nodeSettings,
-          scale: scale.toDouble(),
-          outputDir: outputDir,
-        );
-
-        // Merge the results, adding new scales
-        images.forEach((key, value) {
-          assetPaths.putIfAbsent(key, () => []).add(value);
-        });
       }
     } on FigmaException catch (e) {
       _handleFigmaException(e);

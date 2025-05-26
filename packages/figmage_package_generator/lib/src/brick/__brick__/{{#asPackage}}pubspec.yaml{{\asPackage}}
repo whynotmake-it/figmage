@@ -3,7 +3,7 @@ description: {{{description}}}
 version: 0.1.0+1
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.8.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -13,7 +13,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  lintervention: ^0.1.1
+  lintervention: ^0.3.1
   mocktail: ^1.0.0
 
 {{#generateAssets}}

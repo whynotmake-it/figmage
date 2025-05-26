@@ -20,7 +20,7 @@ const description = 'A CLI tool for generating Figma styles for Flutter';
 /// {@template figmage_command_runner}
 /// A [CommandRunner] for the CLI.
 ///
-/// ```
+/// ```sh
 /// $ figmage --version
 /// ```
 /// {@endtemplate}

@@ -31,27 +31,38 @@ class FigmaAssetsRepository implements AssetsRepository {
 
         if (nodeIds.isEmpty) continue;
 
-        final result = await client.getImages(
-          fileId,
-          nodeIds,
-          scale: scale,
-        );
+        // Process nodes in batches to avoid CloudFront URL size limits
+        final batches = _chunkList(nodeIds, 80); // Keep URL under ~6KB
 
-        if (result.err != null) {
-          throw UnknownAssetsException(result.err);
+        for (final batch in batches) {
+          // Rate limiting: delay between requests to avoid 429 errors
+          // Figma allows ~30 requests per minute for images
+          if (batches.indexOf(batch) > 0) {
+            await Future<void>.delayed(const Duration(seconds: 2));
+          }
+
+          final result = await client.getImages(
+            fileId,
+            batch,
+            scale: scale,
+          );
+
+          if (result.err != null) {
+            throw UnknownAssetsException(result.err);
+          }
+
+          final images = await _downloadImages(
+            images: result.images,
+            nodeSettings: nodeSettings,
+            scale: scale.toDouble(),
+            outputDir: outputDir,
+          );
+
+          // Merge the results, adding new scales
+          images.forEach((key, value) {
+            assetPaths.putIfAbsent(key, () => []).add(value);
+          });
         }
-
-        final images = await _downloadImages(
-          images: result.images,
-          nodeSettings: nodeSettings,
-          scale: scale.toDouble(),
-          outputDir: outputDir,
-        );
-
-        // Merge the results, adding new scales
-        images.forEach((key, value) {
-          assetPaths.putIfAbsent(key, () => []).add(value);
-        });
       }
     } on FigmaException catch (e) {
       _handleFigmaException(e);
@@ -138,3 +149,13 @@ Set<num> _uniqueScales(
       .expand((setting) => setting.scales.where((s) => s >= 0.01 && s <= 4))
       .toSet();
 }
+
+/// Splits a list into smaller chunks of the specified size.
+List<List<T>> _chunkList<T>(List<T> list, int chunkSize) =>
+  List.generate(
+    (list.length / chunkSize).ceil(),
+    (i) => list.sublist(
+    i * chunkSize,
+    (i * chunkSize + chunkSize).clamp(0, list.length),
+    ),
+  );

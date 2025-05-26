@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:collection/collection.dart';
 import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/repositories/assets_repository.dart';
@@ -32,7 +33,7 @@ class FigmaAssetsRepository implements AssetsRepository {
         if (nodeIds.isEmpty) continue;
 
         // Process nodes in batches to avoid CloudFront URL size limits
-        final batches = _chunkList(nodeIds, 80); // Keep URL under ~6KB
+        final batches = nodeIds.slices(80).toList(); // Keep URL under ~6KB
 
         for (final batch in batches) {
           // Rate limiting: delay between requests to avoid 429 errors
@@ -149,13 +150,3 @@ Set<num> _uniqueScales(
       .expand((setting) => setting.scales.where((s) => s >= 0.01 && s <= 4))
       .toSet();
 }
-
-/// Splits a list into smaller chunks of the specified size.
-List<List<T>> _chunkList<T>(List<T> list, int chunkSize) =>
-  List.generate(
-    (list.length / chunkSize).ceil(),
-    (i) => list.sublist(
-    i * chunkSize,
-    (i * chunkSize + chunkSize).clamp(0, list.length),
-    ),
-  );

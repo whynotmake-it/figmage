@@ -261,6 +261,12 @@ class ImplementsSettings with EquatableMixin {
   /// The interfaces to implement in the generated code.
   final List<InterfaceSettings> interfaces;
 
+  /// Whether this setting applies to all collections, meaning that the
+  /// interfaces will be implemented in all collections, regardless of the
+  /// collection name.
+  bool get appliesToAllCollections =>
+      collections.isEmpty && interfaces.isNotEmpty;
+
   /// Converts a [ImplementsSettings] to a map.
   Map<String, dynamic> toJson() => _$ImplementsSettingsToJson(this);
 

@@ -86,7 +86,7 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
       yield buildGeneratorForCollection(
         collectionName: name,
         collectionTokens: value,
-        interfaces: [],
+        interfaces: _getInterfacesForCollection(name),
       );
     }
   }
@@ -96,5 +96,17 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
     return usedNames.contains(name)
         ? '$name${usedNames.where((item) => item == name).length}'
         : name;
+  }
+
+  Iterable<InterfaceSettings> _getInterfacesForCollection(
+    String collectionName,
+  ) {
+    return implementsSettings
+        .where(
+          (s) =>
+              s.appliesToAllCollections ||
+              s.collections.contains(collectionName),
+        )
+        .expand((s) => s.interfaces);
   }
 }

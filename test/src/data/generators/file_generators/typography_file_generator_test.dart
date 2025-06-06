@@ -28,6 +28,7 @@ void main() {
           ),
         ],
         useGoogleFonts: true,
+        implementsSettings: [],
       );
     });
 

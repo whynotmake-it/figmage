@@ -16,6 +16,7 @@ class PaddingFileGenerator extends BaseFileGenerator<double> {
   /// {@macro padding_file_generator}
   PaddingFileGenerator({
     required super.tokens,
+    required super.implementsSettings,
   }) : super(type: TokenFileType.paddings);
 
   @override

@@ -16,6 +16,7 @@ class SpacerFileGenerator extends BaseFileGenerator<double> {
   /// {@macro spacer_file_generator}
   SpacerFileGenerator({
     required super.tokens,
+    required super.implementsSettings,
   }) : super(type: TokenFileType.spacers);
 
   @override

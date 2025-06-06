@@ -15,6 +15,7 @@ class ColorFileGenerator extends BaseFileGenerator<int> {
   /// {@macro color_file_generator}
   ColorFileGenerator({
     required super.tokens,
+    required super.implementsSettings,
   }) : super(type: TokenFileType.color);
 
   @override

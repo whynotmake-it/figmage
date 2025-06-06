@@ -1,5 +1,6 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
+import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 
@@ -30,4 +31,8 @@ abstract interface class FileGenerator {
 abstract interface class DesignTokenFileGenerator<T> implements FileGenerator {
   /// The list of tokens that will be generated for.
   Iterable<DesignToken<T>> get tokens;
+
+  /// The settings that specify which collection should implement which
+  /// interface.
+  Iterable<ImplementsSettings> get implementsSettings;
 }

@@ -21,6 +21,7 @@ void main() {
           mockColorDesignStyle,
           mockColorVariableUnresolvable,
         ],
+        implementsSettings: [],
       );
     });
 

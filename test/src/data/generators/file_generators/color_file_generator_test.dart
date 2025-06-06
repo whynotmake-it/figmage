@@ -33,7 +33,6 @@ void main() {
             ],
           ),
           const ImplementsSettings(
-            collections: const [],
             interfaces: [
               InterfaceSettings(
                 name: 'Tokens',

@@ -300,7 +300,7 @@ void main() {
                 interfaces: [
                   InterfaceSettings(name: 'Tokens', import: 'tokens.dart'),
                 ],
-              )
+              ),
             ],
           ),
         );

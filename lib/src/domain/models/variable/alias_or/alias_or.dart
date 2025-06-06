@@ -37,9 +37,9 @@ sealed class AliasOr<T> with _$AliasOr<T> {
   }) = AliasUnresolved;
 
   /// Returns the resolved value of the [AliasOr] instance.
-  T? get resolveValue => map(
-        alias: (alias) => alias.aliasOrValue.resolveValue,
-        data: (aliasData) => aliasData.data,
-        unresolved: (aliasUnresolved) => null,
-      );
+  T? get resolveValue => switch (this) {
+        AliasData(:final data) => data,
+        Alias(:final aliasOrValue) => aliasOrValue.resolveValue,
+        AliasUnresolved() => null,
+      };
 }

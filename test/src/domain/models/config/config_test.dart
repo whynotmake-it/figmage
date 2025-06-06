@@ -1,3 +1,5 @@
+// ignore_for_file: inference_failure_on_collection_literal
+
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:test/test.dart';
 
@@ -24,35 +26,43 @@ void main() {
         "colors": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
         },
         "typography": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
           "useGoogleFonts": false,
         },
         "strings": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
         },
         "bools": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
         },
         "numbers": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
         },
         "spacers": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
         },
         "paddings": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
         },
         "radii": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
         },
         "assets": {
           "generate": true,

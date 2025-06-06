@@ -23,8 +23,6 @@ jobs:
 
         - name: 🐦 Setup Flutter
           uses: subosito/flutter-action@v2.19.0
-          with:
-            sdk: "stable"
 
         - name: Ⓜ️ Set up Melos
           uses: bluefireteam/melos-action@ec2c512a52c2f359186ca19bac0be977c44913e6

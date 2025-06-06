@@ -305,6 +305,7 @@ void main() {
 }
 
 const docsYaml = '''
+
 fileId: "YOUR_FIGMA_FILE_ID"
 packageName: "design_tokens"
 packageDescription: "A generated package that contains all of our design tokens"
@@ -319,8 +320,8 @@ colors:
   implements:
     - collections: ["semantic"]
       interfaces:
-        - name: "MyColors"
-          import: "package:my_package/my_colors.dart"
+      - name: "MyColors"
+        import: "package:my_package/my_colors.dart"
 typography:
   generate: true # default
   from:
@@ -337,7 +338,7 @@ assets:
   generate: true # false by default
   "1:5":  # Figma node ID
     name: "check" # name of the asset
-    scales: [1, 2] # different scales
+    scales: [1, 2] # different scales 
   "23:1":
     name: "example_name"
 ''';

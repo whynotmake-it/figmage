@@ -44,6 +44,7 @@ void main() {
       () => sut.buildGeneratorForCollection(
         collectionName: any(named: 'collectionName'),
         collectionTokens: any(named: 'collectionTokens'),
+        interfaces: any(named: 'interfaces'),
       ),
     ).thenAnswer((_) => getGenerator(generators.length));
   });
@@ -61,19 +62,15 @@ void main() {
             named: "collectionTokens",
             that: equals([mockColorDesignStyle]),
           ),
+          interfaces: [],
         ),
       );
 
       verify(
         () => sut.buildGeneratorForCollection(
-          collectionName: any(
-            named: "collectionName",
-            that: equals(mockColorVariable.collectionName),
-          ),
-          collectionTokens: any(
-            named: "collectionTokens",
-            that: equals([mockColorVariable]),
-          ),
+          collectionName: mockColorVariable.collectionName,
+          collectionTokens: [mockColorVariable],
+          interfaces: [],
         ),
       );
 

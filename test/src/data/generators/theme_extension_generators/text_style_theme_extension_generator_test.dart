@@ -45,6 +45,7 @@ void main() {
       className: 'MyTextStyles',
       valuesByNameByMode: valuesByNameByMode,
       useGoogleFonts: false,
+      interfaces: [],
     );
     expect(
       generator.generateClass(),
@@ -67,6 +68,7 @@ void main() {
       valuesByNameByMode: valuesByNameByMode,
       buildContextExtensionNullable: true,
       useGoogleFonts: false,
+      interfaces: [],
     );
 
     expect(
@@ -89,6 +91,7 @@ void main() {
       className: 'MyTextStyles',
       valuesByNameByMode: valuesByNameByMode,
       useGoogleFonts: true,
+      interfaces: [],
     );
     expect(
       generator.generateClass(),

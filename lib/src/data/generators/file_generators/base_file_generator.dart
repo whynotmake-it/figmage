@@ -68,6 +68,7 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
   ThemeClassGenerator buildGeneratorForCollection({
     required String collectionName,
     required Iterable<DesignToken<T>> collectionTokens,
+    required Iterable<InterfaceSettings> interfaces,
   });
 
   Iterable<ThemeClassGenerator> get _generators sync* {
@@ -85,6 +86,7 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
       yield buildGeneratorForCollection(
         collectionName: name,
         collectionTokens: value,
+        interfaces: [],
       );
     }
   }

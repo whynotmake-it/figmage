@@ -22,6 +22,7 @@ void main() {
     final generator = ColorThemeExtensionGenerator(
       className: 'MyColorTheme',
       valuesByNameByMode: valuesByNameByMode,
+      interfaces: [],
     );
     expect(
       generator.generateClass(),
@@ -40,6 +41,7 @@ void main() {
       className: 'MyColorTheme',
       valuesByNameByMode: valuesByNameByMode,
       buildContextExtensionNullable: true,
+      interfaces: [],
     );
     expect(
       generator.generateClass(),
@@ -63,6 +65,7 @@ void main() {
         '': {'color1': 0xFF000000, 'color2': 0xFFFFFFFF},
       },
       buildContextExtensionNullable: true,
+      interfaces: [],
     );
     expect(
       generator.generateClass(),

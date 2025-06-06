@@ -84,7 +84,10 @@ void main(List<String> args) {
     });
 
     test('colors file', () async {
-      final generator = ColorFileGenerator(tokens: variableTokens.colorTokens);
+      final generator = ColorFileGenerator(
+        tokens: variableTokens.colorTokens,
+        implementsSettings: [],
+      );
 
       final result = formatter.format(
         generator.generate().accept(emitter).toString(),

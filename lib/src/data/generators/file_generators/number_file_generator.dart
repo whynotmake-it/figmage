@@ -2,6 +2,7 @@ import 'package:figmage/src/data/generators/file_generators/base_file_generator.
 import 'package:figmage/src/data/generators/theme_extension_generators/number_theme_extension_generator.dart';
 import 'package:figmage/src/domain/generators/file_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
+import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/util/token_filter_x.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
@@ -22,10 +23,12 @@ class NumberFileGenerator extends BaseFileGenerator<double> {
   ThemeClassGenerator buildGeneratorForCollection({
     required String collectionName,
     required Iterable<DesignToken<double>> collectionTokens,
+    required Iterable<InterfaceSettings> interfaces,
   }) {
     return NumberThemeExtensionGenerator(
       className: getClassNameForCollection(collectionName),
       valuesByNameByMode: collectionTokens.valuesByNameByMode,
+      interfaces: interfaces,
     );
   }
 }

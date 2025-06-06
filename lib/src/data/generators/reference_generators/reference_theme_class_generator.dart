@@ -8,7 +8,7 @@ import 'package:meta/meta.dart';
 /// but rather contains a bunch of getters that build values based on the fields
 /// of another class.
 /// {@endtemplate}
-abstract class ReferenceThemeClassGenerator<T> implements ThemeClassGenerator {
+abstract class ReferenceThemeClassGenerator implements ThemeClassGenerator {
   /// {@macro reference_theme_class_generator}
   ReferenceThemeClassGenerator({
     required String className,

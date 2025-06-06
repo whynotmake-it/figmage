@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,98 +10,62 @@ part of 'tokens_by_type.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$TokensByType {
-  Iterable<DesignToken<int>> get colorTokens =>
-      throw _privateConstructorUsedError;
-  Iterable<DesignToken<Typography>> get typographyTokens =>
-      throw _privateConstructorUsedError;
-  Iterable<DesignToken<double>> get numberTokens =>
-      throw _privateConstructorUsedError;
-  Iterable<DesignToken<String>> get stringTokens =>
-      throw _privateConstructorUsedError;
-  Iterable<DesignToken<bool>> get boolTokens =>
-      throw _privateConstructorUsedError;
+  Iterable<DesignToken<int>> get colorTokens;
+  Iterable<DesignToken<Typography>> get typographyTokens;
+  Iterable<DesignToken<double>> get numberTokens;
+  Iterable<DesignToken<String>> get stringTokens;
+  Iterable<DesignToken<bool>> get boolTokens;
 
   /// Create a copy of TokensByType
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
-  $TokensByTypeCopyWith<TokensByType> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $TokensByTypeCopyWith<$Res> {
-  factory $TokensByTypeCopyWith(
-          TokensByType value, $Res Function(TokensByType) then) =
-      _$TokensByTypeCopyWithImpl<$Res, TokensByType>;
-  @useResult
-  $Res call(
-      {Iterable<DesignToken<int>> colorTokens,
-      Iterable<DesignToken<Typography>> typographyTokens,
-      Iterable<DesignToken<double>> numberTokens,
-      Iterable<DesignToken<String>> stringTokens,
-      Iterable<DesignToken<bool>> boolTokens});
-}
-
-/// @nodoc
-class _$TokensByTypeCopyWithImpl<$Res, $Val extends TokensByType>
-    implements $TokensByTypeCopyWith<$Res> {
-  _$TokensByTypeCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  /// Create a copy of TokensByType
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
+  $TokensByTypeCopyWith<TokensByType> get copyWith =>
+      _$TokensByTypeCopyWithImpl<TokensByType>(
+          this as TokensByType, _$identity);
+
   @override
-  $Res call({
-    Object? colorTokens = null,
-    Object? typographyTokens = null,
-    Object? numberTokens = null,
-    Object? stringTokens = null,
-    Object? boolTokens = null,
-  }) {
-    return _then(_value.copyWith(
-      colorTokens: null == colorTokens
-          ? _value.colorTokens
-          : colorTokens // ignore: cast_nullable_to_non_nullable
-              as Iterable<DesignToken<int>>,
-      typographyTokens: null == typographyTokens
-          ? _value.typographyTokens
-          : typographyTokens // ignore: cast_nullable_to_non_nullable
-              as Iterable<DesignToken<Typography>>,
-      numberTokens: null == numberTokens
-          ? _value.numberTokens
-          : numberTokens // ignore: cast_nullable_to_non_nullable
-              as Iterable<DesignToken<double>>,
-      stringTokens: null == stringTokens
-          ? _value.stringTokens
-          : stringTokens // ignore: cast_nullable_to_non_nullable
-              as Iterable<DesignToken<String>>,
-      boolTokens: null == boolTokens
-          ? _value.boolTokens
-          : boolTokens // ignore: cast_nullable_to_non_nullable
-              as Iterable<DesignToken<bool>>,
-    ) as $Val);
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is TokensByType &&
+            const DeepCollectionEquality()
+                .equals(other.colorTokens, colorTokens) &&
+            const DeepCollectionEquality()
+                .equals(other.typographyTokens, typographyTokens) &&
+            const DeepCollectionEquality()
+                .equals(other.numberTokens, numberTokens) &&
+            const DeepCollectionEquality()
+                .equals(other.stringTokens, stringTokens) &&
+            const DeepCollectionEquality()
+                .equals(other.boolTokens, boolTokens));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(colorTokens),
+      const DeepCollectionEquality().hash(typographyTokens),
+      const DeepCollectionEquality().hash(numberTokens),
+      const DeepCollectionEquality().hash(stringTokens),
+      const DeepCollectionEquality().hash(boolTokens));
+
+  @override
+  String toString() {
+    return 'TokensByType(colorTokens: $colorTokens, typographyTokens: $typographyTokens, numberTokens: $numberTokens, stringTokens: $stringTokens, boolTokens: $boolTokens)';
   }
 }
 
 /// @nodoc
-abstract class _$$TokensByTypeImplCopyWith<$Res>
-    implements $TokensByTypeCopyWith<$Res> {
-  factory _$$TokensByTypeImplCopyWith(
-          _$TokensByTypeImpl value, $Res Function(_$TokensByTypeImpl) then) =
-      __$$TokensByTypeImplCopyWithImpl<$Res>;
-  @override
+abstract mixin class $TokensByTypeCopyWith<$Res> {
+  factory $TokensByTypeCopyWith(
+          TokensByType value, $Res Function(TokensByType) _then) =
+      _$TokensByTypeCopyWithImpl;
   @useResult
   $Res call(
       {Iterable<DesignToken<int>> colorTokens,
@@ -111,12 +76,11 @@ abstract class _$$TokensByTypeImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$TokensByTypeImplCopyWithImpl<$Res>
-    extends _$TokensByTypeCopyWithImpl<$Res, _$TokensByTypeImpl>
-    implements _$$TokensByTypeImplCopyWith<$Res> {
-  __$$TokensByTypeImplCopyWithImpl(
-      _$TokensByTypeImpl _value, $Res Function(_$TokensByTypeImpl) _then)
-      : super(_value, _then);
+class _$TokensByTypeCopyWithImpl<$Res> implements $TokensByTypeCopyWith<$Res> {
+  _$TokensByTypeCopyWithImpl(this._self, this._then);
+
+  final TokensByType _self;
+  final $Res Function(TokensByType) _then;
 
   /// Create a copy of TokensByType
   /// with the given fields replaced by the non-null parameter values.
@@ -129,25 +93,25 @@ class __$$TokensByTypeImplCopyWithImpl<$Res>
     Object? stringTokens = null,
     Object? boolTokens = null,
   }) {
-    return _then(_$TokensByTypeImpl(
+    return _then(_self.copyWith(
       colorTokens: null == colorTokens
-          ? _value.colorTokens
+          ? _self.colorTokens
           : colorTokens // ignore: cast_nullable_to_non_nullable
               as Iterable<DesignToken<int>>,
       typographyTokens: null == typographyTokens
-          ? _value.typographyTokens
+          ? _self.typographyTokens
           : typographyTokens // ignore: cast_nullable_to_non_nullable
               as Iterable<DesignToken<Typography>>,
       numberTokens: null == numberTokens
-          ? _value.numberTokens
+          ? _self.numberTokens
           : numberTokens // ignore: cast_nullable_to_non_nullable
               as Iterable<DesignToken<double>>,
       stringTokens: null == stringTokens
-          ? _value.stringTokens
+          ? _self.stringTokens
           : stringTokens // ignore: cast_nullable_to_non_nullable
               as Iterable<DesignToken<String>>,
       boolTokens: null == boolTokens
-          ? _value.boolTokens
+          ? _self.boolTokens
           : boolTokens // ignore: cast_nullable_to_non_nullable
               as Iterable<DesignToken<bool>>,
     ));
@@ -156,8 +120,8 @@ class __$$TokensByTypeImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$TokensByTypeImpl extends _TokensByType {
-  const _$TokensByTypeImpl(
+class _TokensByType extends TokensByType {
+  const _TokensByType(
       {this.colorTokens = const [],
       this.typographyTokens = const [],
       this.numberTokens = const [],
@@ -181,16 +145,19 @@ class _$TokensByTypeImpl extends _TokensByType {
   @JsonKey()
   final Iterable<DesignToken<bool>> boolTokens;
 
+  /// Create a copy of TokensByType
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  String toString() {
-    return 'TokensByType(colorTokens: $colorTokens, typographyTokens: $typographyTokens, numberTokens: $numberTokens, stringTokens: $stringTokens, boolTokens: $boolTokens)';
-  }
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  _$TokensByTypeCopyWith<_TokensByType> get copyWith =>
+      __$TokensByTypeCopyWithImpl<_TokensByType>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$TokensByTypeImpl &&
+            other is _TokensByType &&
             const DeepCollectionEquality()
                 .equals(other.colorTokens, colorTokens) &&
             const DeepCollectionEquality()
@@ -212,39 +179,70 @@ class _$TokensByTypeImpl extends _TokensByType {
       const DeepCollectionEquality().hash(stringTokens),
       const DeepCollectionEquality().hash(boolTokens));
 
+  @override
+  String toString() {
+    return 'TokensByType(colorTokens: $colorTokens, typographyTokens: $typographyTokens, numberTokens: $numberTokens, stringTokens: $stringTokens, boolTokens: $boolTokens)';
+  }
+}
+
+/// @nodoc
+abstract mixin class _$TokensByTypeCopyWith<$Res>
+    implements $TokensByTypeCopyWith<$Res> {
+  factory _$TokensByTypeCopyWith(
+          _TokensByType value, $Res Function(_TokensByType) _then) =
+      __$TokensByTypeCopyWithImpl;
+  @override
+  @useResult
+  $Res call(
+      {Iterable<DesignToken<int>> colorTokens,
+      Iterable<DesignToken<Typography>> typographyTokens,
+      Iterable<DesignToken<double>> numberTokens,
+      Iterable<DesignToken<String>> stringTokens,
+      Iterable<DesignToken<bool>> boolTokens});
+}
+
+/// @nodoc
+class __$TokensByTypeCopyWithImpl<$Res>
+    implements _$TokensByTypeCopyWith<$Res> {
+  __$TokensByTypeCopyWithImpl(this._self, this._then);
+
+  final _TokensByType _self;
+  final $Res Function(_TokensByType) _then;
+
   /// Create a copy of TokensByType
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$TokensByTypeImplCopyWith<_$TokensByTypeImpl> get copyWith =>
-      __$$TokensByTypeImplCopyWithImpl<_$TokensByTypeImpl>(this, _$identity);
+  $Res call({
+    Object? colorTokens = null,
+    Object? typographyTokens = null,
+    Object? numberTokens = null,
+    Object? stringTokens = null,
+    Object? boolTokens = null,
+  }) {
+    return _then(_TokensByType(
+      colorTokens: null == colorTokens
+          ? _self.colorTokens
+          : colorTokens // ignore: cast_nullable_to_non_nullable
+              as Iterable<DesignToken<int>>,
+      typographyTokens: null == typographyTokens
+          ? _self.typographyTokens
+          : typographyTokens // ignore: cast_nullable_to_non_nullable
+              as Iterable<DesignToken<Typography>>,
+      numberTokens: null == numberTokens
+          ? _self.numberTokens
+          : numberTokens // ignore: cast_nullable_to_non_nullable
+              as Iterable<DesignToken<double>>,
+      stringTokens: null == stringTokens
+          ? _self.stringTokens
+          : stringTokens // ignore: cast_nullable_to_non_nullable
+              as Iterable<DesignToken<String>>,
+      boolTokens: null == boolTokens
+          ? _self.boolTokens
+          : boolTokens // ignore: cast_nullable_to_non_nullable
+              as Iterable<DesignToken<bool>>,
+    ));
+  }
 }
 
-abstract class _TokensByType extends TokensByType {
-  const factory _TokensByType(
-      {final Iterable<DesignToken<int>> colorTokens,
-      final Iterable<DesignToken<Typography>> typographyTokens,
-      final Iterable<DesignToken<double>> numberTokens,
-      final Iterable<DesignToken<String>> stringTokens,
-      final Iterable<DesignToken<bool>> boolTokens}) = _$TokensByTypeImpl;
-  const _TokensByType._() : super._();
-
-  @override
-  Iterable<DesignToken<int>> get colorTokens;
-  @override
-  Iterable<DesignToken<Typography>> get typographyTokens;
-  @override
-  Iterable<DesignToken<double>> get numberTokens;
-  @override
-  Iterable<DesignToken<String>> get stringTokens;
-  @override
-  Iterable<DesignToken<bool>> get boolTokens;
-
-  /// Create a copy of TokensByType
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$TokensByTypeImplCopyWith<_$TokensByTypeImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

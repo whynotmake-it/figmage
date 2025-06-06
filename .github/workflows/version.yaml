@@ -8,6 +8,11 @@ on:
         required: false
         default: false
         type: boolean
+      graduate:
+        description: 'Graduate prereleases'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   prepare-release:
@@ -17,15 +22,26 @@ jobs:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: 📚 Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: dart-lang/setup-dart@v1.7.0
-      - uses: bluefireteam/melos-action@ec2c512a52c2f359186ca19bac0be977c44913e6
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+
+      - name: Ⓜ️ Set up Melos
+        uses: bluefireteam/melos-action@v3
         with:
           run-versioning: ${{ inputs.prerelease == false }}
           run-versioning-prerelease: ${{ inputs.prerelease == true }}
+          run-versioning-graduate: ${{ inputs.graduate == true }}
           publish-dry-run: true
-          create-pr: true
-          git-email: github-actions[bot]@users.noreply.github.com
-          git-name: github-actions[bot]
+
+      - name: 🎋 Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          title: "chore(release): Publish packages"
+          body: "Prepared all packages to be released to pub.dev"
+          branch: chore/release
+          delete-branch: true

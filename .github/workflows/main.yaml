@@ -1,17 +1,20 @@
-name: Continuous Integration
+name: CI
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 on:
-  pull_request:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
 
 jobs:
   semantic_pull_request:
+    name: Check PR Title
     uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/semantic_pull_request.yml@v1
 
   flutter-check:
@@ -19,21 +22,22 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
-      id-token: write
-      contents: write
-      checks: write
       pull-requests: write
+      contents: write
     steps:
       - name: 📚 Checkout
         uses: actions/checkout@v4
-
-      - name: 🎯 Setup Dart
-        uses: dart-lang/setup-dart@v1.7.0
         with:
-          sdk: "stable"
-
+          fetch-depth: 0
+      
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+      
       - name: Ⓜ️ Set up Melos
-        uses: bluefireteam/melos-action@ec2c512a52c2f359186ca19bac0be977c44913e6
+        uses: bluefireteam/melos-action@v3
 
       - name: 🧪 Run Analyze
         run: melos run analyze
@@ -43,12 +47,13 @@ jobs:
 
       - name: 📊 Generate Coverage
         id: coverage-report
-        uses: whynotmake-it/dart-coverage-assistant@v1
+        uses: whynotmake-it/dart-coverage-assistant@v1.1
         with:
           lower_threshold: 50
           upper_threshold: 75
           generate_badges: pr
-
+      
+  
   check_generation:
     name: Check Code Generation
     timeout-minutes: 10
@@ -57,16 +62,18 @@ jobs:
       - name: 📚 Checkout
         uses: actions/checkout@v4
 
-      - name: 🎯 Setup Dart
-        uses: dart-lang/setup-dart@v1.7.0
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
-          sdk: "stable"
+          channel: 'stable'
+          cache: true
 
       - name: Ⓜ️ Set up Melos
-        uses: bluefireteam/melos-action@ec2c512a52c2f359186ca19bac0be977c44913e6
+        uses: bluefireteam/melos-action@v3
 
       - name: 🔨 Generate
         run: melos run generate
 
       - name: 🔎 Check there are no uncommitted changes
-        run: git diff --exit-code
+        run: git add . && git diff --cached --exit-code
+  

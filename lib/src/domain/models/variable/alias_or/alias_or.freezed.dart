@@ -1,3 +1,4 @@
+// dart format width=80
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
@@ -9,106 +10,89 @@ part of 'alias_or.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$AliasOr<T> {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(T data) data,
-    required TResult Function(String id, AliasOr<T> aliasOrValue) alias,
-    required TResult Function(String id) unresolved,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(T data)? data,
-    TResult? Function(String id, AliasOr<T> aliasOrValue)? alias,
-    TResult? Function(String id)? unresolved,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(T data)? data,
-    TResult Function(String id, AliasOr<T> aliasOrValue)? alias,
-    TResult Function(String id)? unresolved,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AliasData<T> value) data,
-    required TResult Function(Alias<T> value) alias,
-    required TResult Function(AliasUnresolved<T> value) unresolved,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AliasData<T> value)? data,
-    TResult? Function(Alias<T> value)? alias,
-    TResult? Function(AliasUnresolved<T> value)? unresolved,
-  }) =>
-      throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AliasData<T> value)? data,
-    TResult Function(Alias<T> value)? alias,
-    TResult Function(AliasUnresolved<T> value)? unresolved,
-    required TResult orElse(),
-  }) =>
-      throw _privateConstructorUsedError;
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType && other is AliasOr<T>);
+  }
+
+  @override
+  int get hashCode => runtimeType.hashCode;
+
+  @override
+  String toString() {
+    return 'AliasOr<$T>()';
+  }
 }
 
 /// @nodoc
-abstract class $AliasOrCopyWith<T, $Res> {
-  factory $AliasOrCopyWith(AliasOr<T> value, $Res Function(AliasOr<T>) then) =
-      _$AliasOrCopyWithImpl<T, $Res, AliasOr<T>>;
+class $AliasOrCopyWith<T, $Res> {
+  $AliasOrCopyWith(AliasOr<T> _, $Res Function(AliasOr<T>) __);
 }
 
 /// @nodoc
-class _$AliasOrCopyWithImpl<T, $Res, $Val extends AliasOr<T>>
-    implements $AliasOrCopyWith<T, $Res> {
-  _$AliasOrCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+class AliasData<T> extends AliasOr<T> {
+  const AliasData({required this.data}) : super._();
+
+  final T data;
 
   /// Create a copy of AliasOr
   /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $AliasDataCopyWith<T, AliasData<T>> get copyWith =>
+      _$AliasDataCopyWithImpl<T, AliasData<T>>(this, _$identity);
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is AliasData<T> &&
+            const DeepCollectionEquality().equals(other.data, data));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
+
+  @override
+  String toString() {
+    return 'AliasOr<$T>.data(data: $data)';
+  }
 }
 
 /// @nodoc
-abstract class _$$AliasDataImplCopyWith<T, $Res> {
-  factory _$$AliasDataImplCopyWith(
-          _$AliasDataImpl<T> value, $Res Function(_$AliasDataImpl<T>) then) =
-      __$$AliasDataImplCopyWithImpl<T, $Res>;
+abstract mixin class $AliasDataCopyWith<T, $Res>
+    implements $AliasOrCopyWith<T, $Res> {
+  factory $AliasDataCopyWith(
+          AliasData<T> value, $Res Function(AliasData<T>) _then) =
+      _$AliasDataCopyWithImpl;
   @useResult
   $Res call({T data});
 }
 
 /// @nodoc
-class __$$AliasDataImplCopyWithImpl<T, $Res>
-    extends _$AliasOrCopyWithImpl<T, $Res, _$AliasDataImpl<T>>
-    implements _$$AliasDataImplCopyWith<T, $Res> {
-  __$$AliasDataImplCopyWithImpl(
-      _$AliasDataImpl<T> _value, $Res Function(_$AliasDataImpl<T>) _then)
-      : super(_value, _then);
+class _$AliasDataCopyWithImpl<T, $Res> implements $AliasDataCopyWith<T, $Res> {
+  _$AliasDataCopyWithImpl(this._self, this._then);
+
+  final AliasData<T> _self;
+  final $Res Function(AliasData<T>) _then;
 
   /// Create a copy of AliasOr
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? data = freezed,
   }) {
-    return _then(_$AliasDataImpl<T>(
+    return _then(AliasData<T>(
       data: freezed == data
-          ? _value.data
+          ? _self.data
           : data // ignore: cast_nullable_to_non_nullable
               as T,
     ));
@@ -117,124 +101,43 @@ class __$$AliasDataImplCopyWithImpl<T, $Res>
 
 /// @nodoc
 
-class _$AliasDataImpl<T> extends AliasData<T> {
-  const _$AliasDataImpl({required this.data}) : super._();
+class Alias<T> extends AliasOr<T> {
+  const Alias({required this.id, required this.aliasOrValue}) : super._();
 
-  @override
-  final T data;
+  final String id;
+  final AliasOr<T> aliasOrValue;
 
-  @override
-  String toString() {
-    return 'AliasOr<$T>.data(data: $data)';
-  }
+  /// Create a copy of AliasOr
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $AliasCopyWith<T, Alias<T>> get copyWith =>
+      _$AliasCopyWithImpl<T, Alias<T>>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AliasDataImpl<T> &&
-            const DeepCollectionEquality().equals(other.data, data));
+            other is Alias<T> &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.aliasOrValue, aliasOrValue) ||
+                other.aliasOrValue == aliasOrValue));
   }
 
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
-
-  /// Create a copy of AliasOr
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$AliasDataImplCopyWith<T, _$AliasDataImpl<T>> get copyWith =>
-      __$$AliasDataImplCopyWithImpl<T, _$AliasDataImpl<T>>(this, _$identity);
+  int get hashCode => Object.hash(runtimeType, id, aliasOrValue);
 
   @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(T data) data,
-    required TResult Function(String id, AliasOr<T> aliasOrValue) alias,
-    required TResult Function(String id) unresolved,
-  }) {
-    return data(this.data);
+  String toString() {
+    return 'AliasOr<$T>.alias(id: $id, aliasOrValue: $aliasOrValue)';
   }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(T data)? data,
-    TResult? Function(String id, AliasOr<T> aliasOrValue)? alias,
-    TResult? Function(String id)? unresolved,
-  }) {
-    return data?.call(this.data);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(T data)? data,
-    TResult Function(String id, AliasOr<T> aliasOrValue)? alias,
-    TResult Function(String id)? unresolved,
-    required TResult orElse(),
-  }) {
-    if (data != null) {
-      return data(this.data);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AliasData<T> value) data,
-    required TResult Function(Alias<T> value) alias,
-    required TResult Function(AliasUnresolved<T> value) unresolved,
-  }) {
-    return data(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AliasData<T> value)? data,
-    TResult? Function(Alias<T> value)? alias,
-    TResult? Function(AliasUnresolved<T> value)? unresolved,
-  }) {
-    return data?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AliasData<T> value)? data,
-    TResult Function(Alias<T> value)? alias,
-    TResult Function(AliasUnresolved<T> value)? unresolved,
-    required TResult orElse(),
-  }) {
-    if (data != null) {
-      return data(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class AliasData<T> extends AliasOr<T> {
-  const factory AliasData({required final T data}) = _$AliasDataImpl<T>;
-  const AliasData._() : super._();
-
-  T get data;
-
-  /// Create a copy of AliasOr
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AliasDataImplCopyWith<T, _$AliasDataImpl<T>> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class _$$AliasImplCopyWith<T, $Res> {
-  factory _$$AliasImplCopyWith(
-          _$AliasImpl<T> value, $Res Function(_$AliasImpl<T>) then) =
-      __$$AliasImplCopyWithImpl<T, $Res>;
+abstract mixin class $AliasCopyWith<T, $Res>
+    implements $AliasOrCopyWith<T, $Res> {
+  factory $AliasCopyWith(Alias<T> value, $Res Function(Alias<T>) _then) =
+      _$AliasCopyWithImpl;
   @useResult
   $Res call({String id, AliasOr<T> aliasOrValue});
 
@@ -242,28 +145,26 @@ abstract class _$$AliasImplCopyWith<T, $Res> {
 }
 
 /// @nodoc
-class __$$AliasImplCopyWithImpl<T, $Res>
-    extends _$AliasOrCopyWithImpl<T, $Res, _$AliasImpl<T>>
-    implements _$$AliasImplCopyWith<T, $Res> {
-  __$$AliasImplCopyWithImpl(
-      _$AliasImpl<T> _value, $Res Function(_$AliasImpl<T>) _then)
-      : super(_value, _then);
+class _$AliasCopyWithImpl<T, $Res> implements $AliasCopyWith<T, $Res> {
+  _$AliasCopyWithImpl(this._self, this._then);
+
+  final Alias<T> _self;
+  final $Res Function(Alias<T>) _then;
 
   /// Create a copy of AliasOr
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
-  @override
   $Res call({
     Object? id = null,
     Object? aliasOrValue = null,
   }) {
-    return _then(_$AliasImpl<T>(
+    return _then(Alias<T>(
       id: null == id
-          ? _value.id
+          ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
       aliasOrValue: null == aliasOrValue
-          ? _value.aliasOrValue
+          ? _self.aliasOrValue
           : aliasOrValue // ignore: cast_nullable_to_non_nullable
               as AliasOr<T>,
     ));
@@ -274,278 +175,74 @@ class __$$AliasImplCopyWithImpl<T, $Res>
   @override
   @pragma('vm:prefer-inline')
   $AliasOrCopyWith<T, $Res> get aliasOrValue {
-    return $AliasOrCopyWith<T, $Res>(_value.aliasOrValue, (value) {
-      return _then(_value.copyWith(aliasOrValue: value));
+    return $AliasOrCopyWith<T, $Res>(_self.aliasOrValue, (value) {
+      return _then(_self.copyWith(aliasOrValue: value));
     });
   }
 }
 
 /// @nodoc
 
-class _$AliasImpl<T> extends Alias<T> {
-  const _$AliasImpl({required this.id, required this.aliasOrValue}) : super._();
+class AliasUnresolved<T> extends AliasOr<T> {
+  const AliasUnresolved({required this.id}) : super._();
 
-  @override
   final String id;
-  @override
-  final AliasOr<T> aliasOrValue;
 
-  @override
-  String toString() {
-    return 'AliasOr<$T>.alias(id: $id, aliasOrValue: $aliasOrValue)';
-  }
+  /// Create a copy of AliasOr
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @pragma('vm:prefer-inline')
+  $AliasUnresolvedCopyWith<T, AliasUnresolved<T>> get copyWith =>
+      _$AliasUnresolvedCopyWithImpl<T, AliasUnresolved<T>>(this, _$identity);
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$AliasImpl<T> &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.aliasOrValue, aliasOrValue) ||
-                other.aliasOrValue == aliasOrValue));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, id, aliasOrValue);
-
-  /// Create a copy of AliasOr
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$AliasImplCopyWith<T, _$AliasImpl<T>> get copyWith =>
-      __$$AliasImplCopyWithImpl<T, _$AliasImpl<T>>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(T data) data,
-    required TResult Function(String id, AliasOr<T> aliasOrValue) alias,
-    required TResult Function(String id) unresolved,
-  }) {
-    return alias(id, aliasOrValue);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(T data)? data,
-    TResult? Function(String id, AliasOr<T> aliasOrValue)? alias,
-    TResult? Function(String id)? unresolved,
-  }) {
-    return alias?.call(id, aliasOrValue);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(T data)? data,
-    TResult Function(String id, AliasOr<T> aliasOrValue)? alias,
-    TResult Function(String id)? unresolved,
-    required TResult orElse(),
-  }) {
-    if (alias != null) {
-      return alias(id, aliasOrValue);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AliasData<T> value) data,
-    required TResult Function(Alias<T> value) alias,
-    required TResult Function(AliasUnresolved<T> value) unresolved,
-  }) {
-    return alias(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AliasData<T> value)? data,
-    TResult? Function(Alias<T> value)? alias,
-    TResult? Function(AliasUnresolved<T> value)? unresolved,
-  }) {
-    return alias?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AliasData<T> value)? data,
-    TResult Function(Alias<T> value)? alias,
-    TResult Function(AliasUnresolved<T> value)? unresolved,
-    required TResult orElse(),
-  }) {
-    if (alias != null) {
-      return alias(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class Alias<T> extends AliasOr<T> {
-  const factory Alias(
-      {required final String id,
-      required final AliasOr<T> aliasOrValue}) = _$AliasImpl<T>;
-  const Alias._() : super._();
-
-  String get id;
-  AliasOr<T> get aliasOrValue;
-
-  /// Create a copy of AliasOr
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AliasImplCopyWith<T, _$AliasImpl<T>> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$AliasUnresolvedImplCopyWith<T, $Res> {
-  factory _$$AliasUnresolvedImplCopyWith(_$AliasUnresolvedImpl<T> value,
-          $Res Function(_$AliasUnresolvedImpl<T>) then) =
-      __$$AliasUnresolvedImplCopyWithImpl<T, $Res>;
-  @useResult
-  $Res call({String id});
-}
-
-/// @nodoc
-class __$$AliasUnresolvedImplCopyWithImpl<T, $Res>
-    extends _$AliasOrCopyWithImpl<T, $Res, _$AliasUnresolvedImpl<T>>
-    implements _$$AliasUnresolvedImplCopyWith<T, $Res> {
-  __$$AliasUnresolvedImplCopyWithImpl(_$AliasUnresolvedImpl<T> _value,
-      $Res Function(_$AliasUnresolvedImpl<T>) _then)
-      : super(_value, _then);
-
-  /// Create a copy of AliasOr
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? id = null,
-  }) {
-    return _then(_$AliasUnresolvedImpl<T>(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-
-class _$AliasUnresolvedImpl<T> extends AliasUnresolved<T> {
-  const _$AliasUnresolvedImpl({required this.id}) : super._();
-
-  @override
-  final String id;
-
-  @override
-  String toString() {
-    return 'AliasOr<$T>.unresolved(id: $id)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$AliasUnresolvedImpl<T> &&
+            other is AliasUnresolved<T> &&
             (identical(other.id, id) || other.id == id));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, id);
 
+  @override
+  String toString() {
+    return 'AliasOr<$T>.unresolved(id: $id)';
+  }
+}
+
+/// @nodoc
+abstract mixin class $AliasUnresolvedCopyWith<T, $Res>
+    implements $AliasOrCopyWith<T, $Res> {
+  factory $AliasUnresolvedCopyWith(
+          AliasUnresolved<T> value, $Res Function(AliasUnresolved<T>) _then) =
+      _$AliasUnresolvedCopyWithImpl;
+  @useResult
+  $Res call({String id});
+}
+
+/// @nodoc
+class _$AliasUnresolvedCopyWithImpl<T, $Res>
+    implements $AliasUnresolvedCopyWith<T, $Res> {
+  _$AliasUnresolvedCopyWithImpl(this._self, this._then);
+
+  final AliasUnresolved<T> _self;
+  final $Res Function(AliasUnresolved<T>) _then;
+
   /// Create a copy of AliasOr
   /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
   @pragma('vm:prefer-inline')
-  _$$AliasUnresolvedImplCopyWith<T, _$AliasUnresolvedImpl<T>> get copyWith =>
-      __$$AliasUnresolvedImplCopyWithImpl<T, _$AliasUnresolvedImpl<T>>(
-          this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(T data) data,
-    required TResult Function(String id, AliasOr<T> aliasOrValue) alias,
-    required TResult Function(String id) unresolved,
+  $Res call({
+    Object? id = null,
   }) {
-    return unresolved(id);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(T data)? data,
-    TResult? Function(String id, AliasOr<T> aliasOrValue)? alias,
-    TResult? Function(String id)? unresolved,
-  }) {
-    return unresolved?.call(id);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(T data)? data,
-    TResult Function(String id, AliasOr<T> aliasOrValue)? alias,
-    TResult Function(String id)? unresolved,
-    required TResult orElse(),
-  }) {
-    if (unresolved != null) {
-      return unresolved(id);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(AliasData<T> value) data,
-    required TResult Function(Alias<T> value) alias,
-    required TResult Function(AliasUnresolved<T> value) unresolved,
-  }) {
-    return unresolved(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(AliasData<T> value)? data,
-    TResult? Function(Alias<T> value)? alias,
-    TResult? Function(AliasUnresolved<T> value)? unresolved,
-  }) {
-    return unresolved?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(AliasData<T> value)? data,
-    TResult Function(Alias<T> value)? alias,
-    TResult Function(AliasUnresolved<T> value)? unresolved,
-    required TResult orElse(),
-  }) {
-    if (unresolved != null) {
-      return unresolved(this);
-    }
-    return orElse();
+    return _then(AliasUnresolved<T>(
+      id: null == id
+          ? _self.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
   }
 }
 
-abstract class AliasUnresolved<T> extends AliasOr<T> {
-  const factory AliasUnresolved({required final String id}) =
-      _$AliasUnresolvedImpl<T>;
-  const AliasUnresolved._() : super._();
-
-  String get id;
-
-  /// Create a copy of AliasOr
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$AliasUnresolvedImplCopyWith<T, _$AliasUnresolvedImpl<T>> get copyWith =>
-      throw _privateConstructorUsedError;
-}
+// dart format on

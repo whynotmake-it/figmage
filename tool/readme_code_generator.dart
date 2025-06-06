@@ -78,7 +78,9 @@ void main(List<String> args) {
     late DartFormatter formatter;
     setUp(() {
       emitter = DartEmitter();
-      formatter = DartFormatter();
+      formatter = DartFormatter(
+        languageVersion: DartFormatter.latestLanguageVersion,
+      );
     });
 
     test('colors file', () async {

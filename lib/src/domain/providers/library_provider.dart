@@ -16,7 +16,9 @@ final librariesProvider =
       "Creating library form ${generatorsByFile.length} generation results...",
     );
 
-    final dartfmt = DartFormatter();
+    final dartfmt = DartFormatter(
+      languageVersion: DartFormatter.latestLanguageVersion,
+    );
 
     final emitter = DartEmitter(
       allocator: Allocator(),

@@ -11,10 +11,15 @@ jobs:
     runs-on: [ ubuntu-latest ]
     if: contains(github.event.head_commit.message, 'chore(release)')
     steps:
-      - uses: actions/checkout@v4
+      - name: 📚 Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: dart-lang/setup-dart@v1.7.0
-      - uses: bluefireteam/melos-action@ec2c512a52c2f359186ca19bac0be977c44913e6
+          
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+
+      - name: Ⓜ️ Set up Melos
+        uses: bluefireteam/melos-action@v3
         with:
           tag: true

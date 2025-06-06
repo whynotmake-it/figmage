@@ -1,5 +1,6 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/theme_extension_generators/color_theme_extension_generator.dart';
+import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:test/test.dart';
 
 import '../common.dart';
@@ -18,11 +19,16 @@ void main() {
     'mode2': {'color1': 0xFF111111, 'color2': null},
   };
 
+  const interfaces = [
+    InterfaceSettings(name: 'MyColors', import: 'my_colors.dart'),
+    InterfaceSettings(name: 'MyColors2', import: 'my_colors2.dart'),
+  ];
+
   test('Should create a class and non-nullable BuildContext extension', () {
     final generator = ColorThemeExtensionGenerator(
       className: 'MyColorTheme',
       valuesByNameByMode: valuesByNameByMode,
-      interfaces: [],
+      interfaces: interfaces,
     );
     expect(
       generator.generateClass(),
@@ -41,7 +47,7 @@ void main() {
       className: 'MyColorTheme',
       valuesByNameByMode: valuesByNameByMode,
       buildContextExtensionNullable: true,
-      interfaces: [],
+      interfaces: interfaces,
     );
     expect(
       generator.generateClass(),
@@ -83,7 +89,8 @@ void main() {
 
 const _expectedColorThemeExtensionClassString = '''
 @immutable
-class MyColorTheme extends ThemeExtension<MyColorTheme> {
+class MyColorTheme extends ThemeExtension<MyColorTheme> 
+  implements MyColors, MyColors2 {
   const MyColorTheme({
     required this.color1,
     required this.color2,

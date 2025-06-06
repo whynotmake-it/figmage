@@ -129,6 +129,9 @@ abstract class ModeThemeExtensionGenerator<T>
         )
         ..extend =
             refer('ThemeExtension<$className>', 'package:flutter/material.dart')
+        ..implements.addAll([
+          for (final i in interfaces) refer(i.name, i.import),
+        ])
         ..constructors.add(_getConstructor(nameList: parameterNames))
         ..constructors.addAll(_getNamedConstructors(valueMaps: valueMaps))
         ..fields.addAll(

@@ -14,6 +14,7 @@ class ColorThemeExtensionGenerator extends ModeThemeExtensionGenerator<int> {
   ColorThemeExtensionGenerator({
     required super.className,
     required super.valuesByNameByMode,
+    required super.interfaces,
     super.buildContextExtensionNullable = false,
   }) : super(
           symbolReference: _colorReference,

@@ -289,6 +289,40 @@ void main() {
         );
         expect(colorsFile.existsSync(), true);
       });
+
+      test('generates interface implements if wanted', () async {
+        config = const Config(
+          packageName: "test_package",
+          tokenPath: "custom/path/to/tokens",
+          colors: GenerationSettings(
+            implements: [
+              ImplementsSettings(
+                interfaces: [
+                  InterfaceSettings(name: 'Tokens', import: 'tokens.dart'),
+                ],
+              ),
+            ],
+          ),
+        );
+        await runner.run(args);
+
+        final colorsFile = File(
+          "${testDirectory.path}/lib/custom/path/to/tokens/colors.dart",
+        );
+        expect(colorsFile.existsSync(), true);
+
+        final colorsFileContent = colorsFile.readAsStringSync();
+
+        expect(colorsFileContent, contains("import 'tokens.dart';"));
+        expect(
+          'class Colors'.allMatches(colorsFileContent),
+          hasLength(2),
+        );
+        expect(
+          'implements Tokens'.allMatches(colorsFileContent),
+          hasLength(2),
+        );
+      });
     });
   });
 }

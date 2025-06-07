@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
+import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/util/values_by_name_by_mode_x.dart';
 
 /// {@template theme_extension_generator}
@@ -36,6 +37,7 @@ abstract class ModeThemeExtensionGenerator<T>
     required String className,
     required this.valuesByNameByMode,
     required this.symbolReference,
+    required this.interfaces,
     this.buildContextExtensionNullable = false,
     this.lerpReference,
   })  : className = convertToValidClassName(className),
@@ -52,6 +54,9 @@ abstract class ModeThemeExtensionGenerator<T>
 
   @override
   final bool buildContextExtensionNullable;
+
+  @override
+  final Iterable<InterfaceSettings> interfaces;
 
   /// A map with the following structure: <ModeName<ValueName, Value>>
   ///
@@ -124,6 +129,9 @@ abstract class ModeThemeExtensionGenerator<T>
         )
         ..extend =
             refer('ThemeExtension<$className>', 'package:flutter/material.dart')
+        ..implements.addAll([
+          for (final i in interfaces) refer(i.name, i.import),
+        ])
         ..constructors.add(_getConstructor(nameList: parameterNames))
         ..constructors.addAll(_getNamedConstructors(valueMaps: valueMaps))
         ..fields.addAll(

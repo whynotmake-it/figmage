@@ -103,8 +103,13 @@ GenerationSettings _$GenerationSettingsFromJson(Map json) => $checkedCreate(
           from: $checkedConvert(
               'from',
               (v) =>
-                  (v as List<dynamic>?)?.map((e) => e as String) ??
-                  const <String>[]),
+                  (v as List<dynamic>?)?.map((e) => e as String) ?? const []),
+          implements: $checkedConvert(
+              'implements',
+              (v) =>
+                  (v as List<dynamic>?)?.map((e) => ImplementsSettings.fromJson(
+                      Map<String, dynamic>.from(e as Map))) ??
+                  const []),
         );
         return val;
       },
@@ -114,6 +119,7 @@ Map<String, dynamic> _$GenerationSettingsToJson(GenerationSettings instance) =>
     <String, dynamic>{
       'generate': instance.generate,
       'from': instance.from.toList(),
+      'implements': instance.implements.toList(),
     };
 
 TypographyGenerationSettings _$TypographyGenerationSettingsFromJson(Map json) =>
@@ -126,8 +132,13 @@ TypographyGenerationSettings _$TypographyGenerationSettingsFromJson(Map json) =>
           from: $checkedConvert(
               'from',
               (v) =>
-                  (v as List<dynamic>?)?.map((e) => e as String) ??
-                  const <String>[]),
+                  (v as List<dynamic>?)?.map((e) => e as String) ?? const []),
+          implements: $checkedConvert(
+              'implements',
+              (v) =>
+                  (v as List<dynamic>?)?.map((e) => ImplementsSettings.fromJson(
+                      Map<String, dynamic>.from(e as Map))) ??
+                  const []),
           useGoogleFonts:
               $checkedConvert('useGoogleFonts', (v) => v as bool? ?? true),
         );
@@ -140,7 +151,55 @@ Map<String, dynamic> _$TypographyGenerationSettingsToJson(
     <String, dynamic>{
       'generate': instance.generate,
       'from': instance.from.toList(),
+      'implements': instance.implements.toList(),
       'useGoogleFonts': instance.useGoogleFonts,
+    };
+
+ImplementsSettings _$ImplementsSettingsFromJson(Map json) => $checkedCreate(
+      'ImplementsSettings',
+      json,
+      ($checkedConvert) {
+        final val = ImplementsSettings(
+          collections: $checkedConvert(
+              'collections',
+              (v) =>
+                  (v as List<dynamic>?)?.map((e) => e as String).toList() ??
+                  const []),
+          interfaces: $checkedConvert(
+              'interfaces',
+              (v) =>
+                  (v as List<dynamic>?)
+                      ?.map((e) => InterfaceSettings.fromJson(
+                          Map<String, dynamic>.from(e as Map)))
+                      .toList() ??
+                  const []),
+        );
+        return val;
+      },
+    );
+
+Map<String, dynamic> _$ImplementsSettingsToJson(ImplementsSettings instance) =>
+    <String, dynamic>{
+      'collections': instance.collections,
+      'interfaces': instance.interfaces,
+    };
+
+InterfaceSettings _$InterfaceSettingsFromJson(Map json) => $checkedCreate(
+      'InterfaceSettings',
+      json,
+      ($checkedConvert) {
+        final val = InterfaceSettings(
+          name: $checkedConvert('name', (v) => v as String),
+          import: $checkedConvert('import', (v) => v as String),
+        );
+        return val;
+      },
+    );
+
+Map<String, dynamic> _$InterfaceSettingsToJson(InterfaceSettings instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'import': instance.import,
     };
 
 AssetNodeSettings _$AssetNodeSettingsFromJson(Map json) => $checkedCreate(

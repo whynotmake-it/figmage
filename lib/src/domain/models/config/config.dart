@@ -175,7 +175,8 @@ class GenerationSettings with EquatableMixin {
   /// {@macro generation_settings}
   const GenerationSettings({
     this.generate = true,
-    this.from = const <String>[],
+    this.from = const [],
+    this.implements = const [],
   });
 
   /// Initializes a [GenerationSettings] from a json map.
@@ -188,11 +189,17 @@ class GenerationSettings with EquatableMixin {
   /// The paths to generate from, defaults to empty which means all paths.
   final Iterable<String> from;
 
+  /// The implements settings for this type of token.
+  ///
+  /// By default, generated classes don't implement any interfaces, but you can
+  /// use this setting to specify a custom list of interfaces to implement.
+  final Iterable<ImplementsSettings> implements;
+
   /// Converts a [GenerationSettings] to a map.
   Map<dynamic, dynamic> toJson() => _$GenerationSettingsToJson(this);
 
   @override
-  List<Object?> get props => [generate, ...from];
+  List<Object?> get props => [generate, ...from, ...implements];
 }
 
 /// {@template typography_generation_settings}
@@ -206,6 +213,7 @@ class TypographyGenerationSettings extends GenerationSettings {
   const TypographyGenerationSettings({
     super.generate,
     super.from,
+    super.implements,
     this.useGoogleFonts = true,
   });
 
@@ -223,6 +231,78 @@ class TypographyGenerationSettings extends GenerationSettings {
 
   @override
   List<Object?> get props => [...super.props, useGoogleFonts];
+}
+
+/// {@template implements_settings}
+/// Settings for implementing interfaces in the generated code.
+///
+/// You can specify a list of [collections] for which this setting applies,
+/// as well as a list of [interfaces] to implement in the generated code.
+///
+/// {@endtemplate}
+@JsonSerializable(anyMap: true, checked: true)
+class ImplementsSettings with EquatableMixin {
+  /// {@macro implements_settings}
+  const ImplementsSettings({
+    this.collections = const [],
+    this.interfaces = const [],
+  });
+
+  /// Initializes a [ImplementsSettings] from a json map.
+  factory ImplementsSettings.fromJson(Map<String, dynamic> json) =>
+      _$ImplementsSettingsFromJson(json);
+
+  /// The paths to generate from, defaults to empty.
+  ///
+  /// If you leave this empty, but specify [interfaces], the interfaces will
+  /// apply to all collections.
+  final List<String> collections;
+
+  /// The interfaces to implement in the generated code.
+  final List<InterfaceSettings> interfaces;
+
+  /// Whether this setting applies to all collections, meaning that the
+  /// interfaces will be implemented in all collections, regardless of the
+  /// collection name.
+  bool get appliesToAllCollections =>
+      collections.isEmpty && interfaces.isNotEmpty;
+
+  /// Converts a [ImplementsSettings] to a map.
+  Map<String, dynamic> toJson() => _$ImplementsSettingsToJson(this);
+
+  @override
+  List<Object?> get props => [...collections, ...interfaces];
+}
+
+/// {@template interface_settings}
+/// Settings for a single interface to implement in the generated code.
+///
+/// This includes the name of the interface and the import directive for that
+/// interface.
+/// {@endtemplate}
+@JsonSerializable(anyMap: true, checked: true)
+class InterfaceSettings with EquatableMixin {
+  /// {@macro interface_settings}
+  const InterfaceSettings({
+    required this.name,
+    required this.import,
+  });
+
+  /// Initializes a [InterfaceSettings] from a json map.
+  factory InterfaceSettings.fromJson(Map<String, dynamic> json) =>
+      _$InterfaceSettingsFromJson(json);
+
+  /// The name of the interface to implement.
+  final String name;
+
+  /// The content of the import directive for that interface.
+  final String import;
+
+  /// Converts a [ImplementsSettings] to a map.
+  Map<String, dynamic> toJson() => _$InterfaceSettingsToJson(this);
+
+  @override
+  List<Object?> get props => [name, import];
 }
 
 /// {@template asset_node_settings}

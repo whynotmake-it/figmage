@@ -3,6 +3,7 @@ import 'package:figmage/src/data/generators/file_generators/base_file_generator.
 import 'package:figmage/src/data/generators/reference_generators/spacer_generator.dart';
 import 'package:figmage/src/domain/generators/file_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
+import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/util/token_filter_x.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
@@ -16,12 +17,14 @@ class SpacerFileGenerator extends BaseFileGenerator<double> {
   /// {@macro spacer_file_generator}
   SpacerFileGenerator({
     required super.tokens,
+    required super.implementsSettings,
   }) : super(type: TokenFileType.spacers);
 
   @override
   ThemeClassGenerator buildGeneratorForCollection({
     required String collectionName,
     required Iterable<DesignToken<double>> collectionTokens,
+    required Iterable<InterfaceSettings> interfaces,
   }) {
     return SpacerGenerator(
       className: getClassNameForCollection(collectionName),

@@ -1,0 +1,69 @@
+---
+title: Implementing Interfaces
+description: How to extend generated theme classes with your own interfaces for design tokens.
+---
+
+## Implementing Interfaces
+
+You can extend the generated theme classes with your own interfaces to provide additional structure, type safety, or shared APIs for your design tokens. This is especially useful when you want to enforce a contract for your color, typography, or other token collections, or when you want to share implementations across multiple collections.
+
+### How to Use
+
+In your configuration (YAML or Dart map), use the `implements` key under a token type (e.g., `colors`, `typography`). Each entry in `implements` can specify which collections it applies to and a list of interfaces to implement.
+
+#### Example YAML
+
+```yaml
+colors:
+  generate: true
+  implements:
+    - collections: ["semantic", "primitive"] # Will apply to both collections
+      interfaces:
+        - name: "MyColors"
+          import: "package:my_package/my_colors.dart"
+    - collections: [] # Applies to all collections
+      interfaces:
+        - name: "Tokens"
+          import: "package:my_package/tokens.dart"
+```
+
+- `collections`: List of collection names this interface applies to. An empty list means it applies to all collections.
+- `interfaces`: List of interfaces to implement, each witch a `name` and an `import` path.
+
+### What Gets Generated
+
+For each collection, the generator will:
+
+- Add the specified interfaces to the generated class.
+- Add the necessary import statements.
+- If multiple interfaces are specified, all will be implemented.
+
+#### Example Output
+
+```dart
+import 'my_colors.dart';
+import 'tokens.dart';
+
+@immutable
+class ColorsCollection1 extends ThemeExtension<ColorsCollection1>
+    implements MyColors, Tokens {
+  // ...existing code...
+}
+```
+
+### Notes
+
+- If you specify an empty `collections` list, the interface(s) will be applied to all collections of that type.
+- You can implement multiple interfaces per collection.
+- The generator ensures that the correct interfaces are applied to the correct collections, and that imports are included.
+
+### Test Coverage
+
+See the following test files for usage and expected output:
+- `test/src/data/generators/file_generators/color_file_generator_test.dart`
+- `test/src/data/generators/theme_extension_generators/color_theme_extension_generator_test.dart`
+- `test/src/domain/models/config/config_test.dart`
+
+---
+
+This approach allows you to integrate your own interfaces into the generated theme classes, making your design token system more flexible and type-safe.

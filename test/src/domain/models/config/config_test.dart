@@ -1,5 +1,8 @@
+// ignore_for_file: inference_failure_on_collection_literal
+
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:test/test.dart';
+import 'package:yaml/yaml.dart';
 
 void main() {
   group('Config', () {
@@ -24,35 +27,43 @@ void main() {
         "colors": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
         },
         "typography": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
           "useGoogleFonts": false,
         },
         "strings": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
         },
         "bools": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
         },
         "numbers": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
         },
         "spacers": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
         },
         "paddings": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
         },
         "radii": {
           "generate": true,
           "from": ["path1", "path2"],
+          "implements": [],
         },
         "assets": {
           "generate": true,
@@ -234,5 +245,114 @@ void main() {
         expect(fullExample.toJson(), full);
       });
     });
+
+    group('when deserializing docs examples', () {
+      test('works', () async {
+        final yamlMap = loadYaml(docsYaml) as YamlMap;
+        final config = Config.fromMap(yamlMap);
+
+        expect(config, isA<Config>());
+      });
+
+      test('implements settings are correct', () async {
+        final yamlMap = loadYaml(docsYaml) as YamlMap;
+        final config = Config.fromMap(yamlMap);
+
+        expect(config.colors.implements, hasLength(1));
+        expect(
+          config.colors.implements.first.collections,
+          equals(["semantic"]),
+        );
+        expect(
+          config.colors.implements.first.interfaces,
+          hasLength(1),
+        );
+        expect(
+          config.colors.implements.first.interfaces.first.name,
+          equals("MyColors"),
+        );
+        expect(
+          config.colors.implements.first.interfaces.first.import,
+          equals("package:my_package/my_colors.dart"),
+        );
+      });
+
+      test('rfc example works', () async {
+        final yamlMap = loadYaml(rfcYaml) as YamlMap;
+        final config = Config.fromMap(yamlMap);
+
+        expect(config, isA<Config>());
+        expect(config.colors.implements, hasLength(1));
+        expect(
+          config.colors.implements.first.collections,
+          equals(["semantic"]),
+        );
+        expect(
+          config.colors.implements.first.interfaces,
+          hasLength(1),
+        );
+        expect(
+          config.colors.implements.first.interfaces.first.name,
+          equals("MyColors"),
+        );
+        expect(
+          config.colors.implements.first.interfaces.first.import,
+          equals("package:my_app/core/my_colors.dart"),
+        );
+      });
+    });
   });
 }
+
+const docsYaml = '''
+
+fileId: "YOUR_FIGMA_FILE_ID"
+packageName: "design_tokens"
+packageDescription: "A generated package that contains all of our design tokens"
+asPackage: true
+tokenPath: "src"
+dropUnresolved: true
+stylesFromLibrary: false
+colors:
+  generate: true # default
+  from:
+    - "semantic/colors"
+  implements:
+    - collections: ["semantic"]
+      interfaces:
+      - name: "MyColors"
+        import: "package:my_package/my_colors.dart"
+typography:
+  generate: true # default
+  from:
+    - "semantic/typography"
+  useGoogleFonts: true
+numbers:
+  generate: true # false by default
+  # omitting `from` will generate all number tokens
+spacers:
+  generate: false # false by default
+paddings:
+  generate: false # false by default
+assets:
+  generate: true # false by default
+  "1:5":  # Figma node ID
+    name: "check" # name of the asset
+    scales: [1, 2] # different scales 
+  "23:1":
+    name: "example_name"
+''';
+
+const rfcYaml = '''
+fileId: "YOUR_FIGMA_FILE_ID"
+packageName: "design_tokens"
+asPackage: false
+colors:
+  from:
+    - "semantic/colors"
+  implements:
+    - collections: ["semantic"] # empty list would mean the following interface settings apply to all collections
+      interfaces:
+        - name: "MyColors"
+          import: "package:my_app/core/my_colors.dart"
+''';

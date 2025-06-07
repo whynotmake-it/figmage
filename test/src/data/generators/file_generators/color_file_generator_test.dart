@@ -1,5 +1,6 @@
 import 'package:code_builder/code_builder.dart';
 import 'package:figmage/src/data/generators/file_generators/color_file_generator.dart';
+import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:test/test.dart';
 
@@ -20,6 +21,25 @@ void main() {
           mockColorVariable,
           mockColorDesignStyle,
           mockColorVariableUnresolvable,
+        ],
+        implementsSettings: [
+          const ImplementsSettings(
+            collections: ['collection1'],
+            interfaces: [
+              InterfaceSettings(
+                name: 'MyColors',
+                import: 'my_colors.dart',
+              ),
+            ],
+          ),
+          const ImplementsSettings(
+            interfaces: [
+              InterfaceSettings(
+                name: 'Tokens',
+                import: 'tokens.dart',
+              ),
+            ],
+          ),
         ],
       );
     });
@@ -43,9 +63,12 @@ const expected = """
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'my_colors.dart';
+import 'tokens.dart';
 
 @immutable
-class ColorsCollection1 extends ThemeExtension<ColorsCollection1> {
+class ColorsCollection1 extends ThemeExtension<ColorsCollection1> 
+  implements MyColors, Tokens{
   const ColorsCollection1({
     required this.colorColorName,
     required this.colorNameUnresolvable,
@@ -101,7 +124,7 @@ extension ColorsCollection1BuildContextX on BuildContext {
 }
 
 @immutable
-class ColorsColors extends ThemeExtension<ColorsColors> {
+class ColorsColors extends ThemeExtension<ColorsColors> implements Tokens {
   const ColorsColors({required this.colorName});
 
   const ColorsColors.standard() : colorName = const Color(0xffffffff);

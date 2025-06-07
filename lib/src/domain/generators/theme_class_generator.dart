@@ -1,4 +1,5 @@
 import 'package:code_builder/code_builder.dart';
+import 'package:figmage/src/domain/models/config/config.dart';
 
 /// {@template generator}
 /// The superclass for all generators that can generate
@@ -36,4 +37,7 @@ abstract interface class ThemeExtensionGenerator
   /// A [Reference] to the symbol (e.g., Color, TextStyle) used in the theme
   /// extension.
   Reference get symbolReference;
+
+  /// The interfaces that the generated class should implement.
+  Iterable<InterfaceSettings> get interfaces;
 }

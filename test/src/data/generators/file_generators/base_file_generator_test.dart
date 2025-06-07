@@ -13,6 +13,7 @@ class _MockThemeClassGenerator extends Mock implements ThemeClassGenerator {}
 class _Generator extends BaseFileGenerator<int> with Mock {
   _Generator({
     required super.tokens,
+    required super.implementsSettings,
   }) : super(type: TokenFileType.color);
 }
 
@@ -35,6 +36,7 @@ void main() {
         mockColorDesignStyle,
         mockColorVariable,
       ],
+      implementsSettings: [],
     );
     generators = [];
 
@@ -42,6 +44,7 @@ void main() {
       () => sut.buildGeneratorForCollection(
         collectionName: any(named: 'collectionName'),
         collectionTokens: any(named: 'collectionTokens'),
+        interfaces: any(named: 'interfaces'),
       ),
     ).thenAnswer((_) => getGenerator(generators.length));
   });
@@ -59,19 +62,15 @@ void main() {
             named: "collectionTokens",
             that: equals([mockColorDesignStyle]),
           ),
+          interfaces: [],
         ),
       );
 
       verify(
         () => sut.buildGeneratorForCollection(
-          collectionName: any(
-            named: "collectionName",
-            that: equals(mockColorVariable.collectionName),
-          ),
-          collectionTokens: any(
-            named: "collectionTokens",
-            that: equals([mockColorVariable]),
-          ),
+          collectionName: mockColorVariable.collectionName,
+          collectionTokens: [mockColorVariable],
+          interfaces: [],
         ),
       );
 

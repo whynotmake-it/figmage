@@ -21,6 +21,7 @@ void main() {
     final generator = NumberThemeExtensionGenerator(
       className: 'MyNumbersTheme',
       valuesByNameByMode: valuesByNameByMode,
+      interfaces: [],
     );
     expect(
       generator.generateClass(),
@@ -43,6 +44,7 @@ void main() {
       className: 'MyNumbersTheme',
       valuesByNameByMode: valuesByNameByMode,
       buildContextExtensionNullable: true,
+      interfaces: [],
     );
     expect(
       generator.generateClass(),

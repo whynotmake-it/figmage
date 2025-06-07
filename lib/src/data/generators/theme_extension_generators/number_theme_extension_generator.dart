@@ -10,6 +10,7 @@ class NumberThemeExtensionGenerator
   NumberThemeExtensionGenerator({
     required super.className,
     required super.valuesByNameByMode,
+    required super.interfaces,
     super.buildContextExtensionNullable = false,
   }) : super(
           symbolReference: const Reference('double'),

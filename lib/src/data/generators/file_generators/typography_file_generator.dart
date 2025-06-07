@@ -2,6 +2,7 @@ import 'package:figmage/src/data/generators/file_generators/base_file_generator.
 import 'package:figmage/src/data/generators/theme_extension_generators/text_style_theme_extension_generator.dart';
 import 'package:figmage/src/domain/generators/file_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
+import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:figmage/src/domain/util/token_filter_x.dart';
@@ -17,6 +18,7 @@ class TypographyFileGenerator extends BaseFileGenerator<Typography> {
   TypographyFileGenerator({
     required super.tokens,
     required this.useGoogleFonts,
+    required super.implementsSettings,
   }) : super(type: TokenFileType.typography);
 
   /// Whether to use Google Fonts in the generated theme extensions.
@@ -26,11 +28,13 @@ class TypographyFileGenerator extends BaseFileGenerator<Typography> {
   ThemeClassGenerator buildGeneratorForCollection({
     required String collectionName,
     required Iterable<DesignToken<Typography>> collectionTokens,
+    required Iterable<InterfaceSettings> interfaces,
   }) {
     return TextStyleThemeExtensionGenerator(
       className: getClassNameForCollection(collectionName),
       valuesByNameByMode: collectionTokens.valuesByNameByMode,
       useGoogleFonts: useGoogleFonts,
+      interfaces: interfaces,
     );
   }
 }

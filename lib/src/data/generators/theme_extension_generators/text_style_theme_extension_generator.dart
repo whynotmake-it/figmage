@@ -24,6 +24,7 @@ class TextStyleThemeExtensionGenerator
     required super.className,
     required super.valuesByNameByMode,
     required this.useGoogleFonts,
+    required super.interfaces,
     super.buildContextExtensionNullable = false,
   }) : super(symbolReference: _textStyleReference);
 

@@ -4,6 +4,7 @@ import 'package:figmage/src/data/generators/generator_util.dart';
 import 'package:figmage/src/data/util/converters/string_dart_conversion_x.dart';
 import 'package:figmage/src/domain/generators/file_generator.dart';
 import 'package:figmage/src/domain/generators/theme_class_generator.dart';
+import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage_package_generator/figmage_package_generator.dart';
 import 'package:meta/meta.dart';
@@ -17,6 +18,7 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
   BaseFileGenerator({
     required this.type,
     required this.tokens,
+    required this.implementsSettings,
   });
 
   @override
@@ -27,6 +29,9 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
 
   @override
   late Iterable<ThemeClassGenerator> generators = _generators;
+
+  @override
+  final Iterable<ImplementsSettings> implementsSettings;
 
   /// Get the class name for a collection name of design tokens for the [type]
   /// of this generator.
@@ -63,6 +68,7 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
   ThemeClassGenerator buildGeneratorForCollection({
     required String collectionName,
     required Iterable<DesignToken<T>> collectionTokens,
+    required Iterable<InterfaceSettings> interfaces,
   });
 
   Iterable<ThemeClassGenerator> get _generators sync* {
@@ -80,6 +86,7 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
       yield buildGeneratorForCollection(
         collectionName: name,
         collectionTokens: value,
+        interfaces: _getInterfacesForCollection(name),
       );
     }
   }
@@ -89,5 +96,17 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
     return usedNames.contains(name)
         ? '$name${usedNames.where((item) => item == name).length}'
         : name;
+  }
+
+  Iterable<InterfaceSettings> _getInterfacesForCollection(
+    String collectionName,
+  ) {
+    return implementsSettings
+        .where(
+          (s) =>
+              s.appliesToAllCollections ||
+              s.collections.contains(collectionName),
+        )
+        .expand((s) => s.interfaces);
   }
 }

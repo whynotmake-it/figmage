@@ -18,7 +18,7 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
   BaseFileGenerator({
     required this.type,
     required this.tokens,
-    required this.implementsSettings,
+    required this.inheritanceSettings,
   });
 
   @override
@@ -31,7 +31,7 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
   late Iterable<ThemeClassGenerator> generators = _generators;
 
   @override
-  final Iterable<ImplementsSettings> implementsSettings;
+  final Iterable<InheritanceSettings> inheritanceSettings;
 
   /// Get the class name for a collection name of design tokens for the [type]
   /// of this generator.
@@ -101,7 +101,7 @@ abstract class BaseFileGenerator<T> implements DesignTokenFileGenerator<T> {
   Iterable<InterfaceSettings> _getInterfacesForCollection(
     String collectionName,
   ) {
-    return implementsSettings
+    return inheritanceSettings
         .where(
           (s) =>
               s.appliesToAllCollections ||

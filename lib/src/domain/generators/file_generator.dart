@@ -34,5 +34,5 @@ abstract interface class DesignTokenFileGenerator<T> implements FileGenerator {
 
   /// The settings that specify which collection should implement which
   /// interface.
-  Iterable<ImplementsSettings> get implementsSettings;
+  Iterable<InheritanceSettings> get inheritanceSettings;
 }

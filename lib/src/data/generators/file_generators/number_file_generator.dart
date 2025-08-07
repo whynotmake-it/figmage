@@ -16,7 +16,7 @@ class NumberFileGenerator extends BaseFileGenerator<double> {
   /// {@macro number_file_generator}
   NumberFileGenerator({
     required super.tokens,
-    required super.implementsSettings,
+    required super.inheritanceSettings,
   }) : super(type: TokenFileType.numbers);
 
   @override

@@ -46,24 +46,24 @@ final generatorsProvider =
         file: switch (type) {
           TokenFileType.color => ColorFileGenerator(
               tokens: tokensByType.colorTokens,
-              implementsSettings: settings.config.colors.implements,
+              inheritanceSettings: settings.config.colors.inheritance,
             ),
           TokenFileType.typography => TypographyFileGenerator(
               tokens: tokensByType.typographyTokens,
               useGoogleFonts: settings.config.typography.useGoogleFonts,
-              implementsSettings: settings.config.typography.implements,
+              inheritanceSettings: settings.config.typography.inheritance,
             ),
           TokenFileType.numbers => NumberFileGenerator(
               tokens: tokensByType.numberTokens,
-              implementsSettings: settings.config.numbers.implements,
+              inheritanceSettings: settings.config.numbers.inheritance,
             ),
           TokenFileType.spacers => SpacerFileGenerator(
               tokens: tokensByType.numberTokens,
-              implementsSettings: settings.config.spacers.implements,
+              inheritanceSettings: settings.config.spacers.inheritance,
             ),
           TokenFileType.paddings => PaddingFileGenerator(
               tokens: tokensByType.numberTokens,
-              implementsSettings: settings.config.paddings.implements,
+              inheritanceSettings: settings.config.paddings.inheritance,
             ),
           TokenFileType.assets =>
             AssetFileGenerator(assets: assets, packageName: packageName),

@@ -80,7 +80,7 @@ The following sub-options are available:
 
 - `generate`: Whether to generate color tokens of this type. Defaults to `true`.
 - `from`: An array of paths to generate color tokens from.
-- `implements`: A list of interfaces for specific collections to implement. See the [Implementing Interfaces](/reference/implementing-interfaces) documentation for more information.
+- `inheritance`: A list of interfaces for specific collections to implement. See the [Implementing Interfaces](/reference/implementing-interfaces) documentation for more information.
 
 See the [Filtering generated Tokens](#filtering-generated-tokens) section for more information.
 
@@ -90,7 +90,7 @@ The following sub-options are available:
 
 - `generate`: Whether to generate typography tokens of this type. Defaults to `true`.
 - `from`: An array of paths to generate typography tokens from.
-- `implements`: A list of interfaces for specific collections to implement. See the [Implementing Interfaces](/reference/implementing-interfaces) documentation for more information.
+- `inheritance`: A list of interfaces for specific collections to implement. See the [Implementing Interfaces](/reference/implementing-interfaces) documentation for more information.
 - `useGoogleFonts`: Whether to use Google Fonts for font families. Defaults to `true`.
 
 See the [Filtering generated Tokens](#filtering-generated-tokens) section for more information.
@@ -111,7 +111,7 @@ All three options have the following sub-options:
 
 - `generate`: Whether to generate tokens of this type. Defaults to `false`.
 - `from`: An array of paths to generate tokens from.
-- `implements`: A list of interfaces for specific collections to implement. See the [Implementing Interfaces](/reference/implementing-interfaces) documentation for more information.
+- `inheritance`: A list of interfaces for specific collections to implement. See the [Implementing Interfaces](/reference/implementing-interfaces) documentation for more information.
 
 See the [Filtering generated Tokens](#filtering-generated-tokens) section for more information.
 
@@ -223,7 +223,7 @@ colors:
   generate: true # default
   from:
     - "semantic/colors"
-  implements:
+  inheritance:
     - collections: ["semantic"]
       interfaces:
       - name: "MyColors"

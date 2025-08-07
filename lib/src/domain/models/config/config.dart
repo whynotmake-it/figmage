@@ -176,7 +176,7 @@ class GenerationSettings with EquatableMixin {
   const GenerationSettings({
     this.generate = true,
     this.from = const [],
-    this.implements = const [],
+    this.inheritance = const [],
   });
 
   /// Initializes a [GenerationSettings] from a json map.
@@ -189,17 +189,18 @@ class GenerationSettings with EquatableMixin {
   /// The paths to generate from, defaults to empty which means all paths.
   final Iterable<String> from;
 
-  /// The implements settings for this type of token.
+  /// The inheritance settings for this type of token.
   ///
-  /// By default, generated classes don't implement any interfaces, but you can
-  /// use this setting to specify a custom list of interfaces to implement.
-  final Iterable<ImplementsSettings> implements;
+  /// By default, generated classes don't implement interfaces or mixins, but
+  /// you can use this setting to specify a custom list of interfaces to
+  /// implement.
+  final Iterable<InheritanceSettings> inheritance;
 
   /// Converts a [GenerationSettings] to a map.
   Map<dynamic, dynamic> toJson() => _$GenerationSettingsToJson(this);
 
   @override
-  List<Object?> get props => [generate, ...from, ...implements];
+  List<Object?> get props => [generate, ...from, ...inheritance];
 }
 
 /// {@template typography_generation_settings}
@@ -213,7 +214,7 @@ class TypographyGenerationSettings extends GenerationSettings {
   const TypographyGenerationSettings({
     super.generate,
     super.from,
-    super.implements,
+    super.inheritance,
     this.useGoogleFonts = true,
   });
 
@@ -241,16 +242,16 @@ class TypographyGenerationSettings extends GenerationSettings {
 ///
 /// {@endtemplate}
 @JsonSerializable(anyMap: true, checked: true)
-class ImplementsSettings with EquatableMixin {
-  /// {@macro implements_settings}
-  const ImplementsSettings({
+class InheritanceSettings with EquatableMixin {
+  /// {@macro inheritance_settings}
+  const InheritanceSettings({
     this.collections = const [],
     this.interfaces = const [],
   });
 
-  /// Initializes a [ImplementsSettings] from a json map.
-  factory ImplementsSettings.fromJson(Map<String, dynamic> json) =>
-      _$ImplementsSettingsFromJson(json);
+  /// Initializes a [InheritanceSettings] from a json map.
+  factory InheritanceSettings.fromJson(Map<String, dynamic> json) =>
+      _$InheritanceSettingsFromJson(json);
 
   /// The paths to generate from, defaults to empty.
   ///
@@ -267,8 +268,8 @@ class ImplementsSettings with EquatableMixin {
   bool get appliesToAllCollections =>
       collections.isEmpty && interfaces.isNotEmpty;
 
-  /// Converts a [ImplementsSettings] to a map.
-  Map<String, dynamic> toJson() => _$ImplementsSettingsToJson(this);
+  /// Converts a [InheritanceSettings] to a map.
+  Map<String, dynamic> toJson() => _$InheritanceSettingsToJson(this);
 
   @override
   List<Object?> get props => [...collections, ...interfaces];
@@ -298,7 +299,7 @@ class InterfaceSettings with EquatableMixin {
   /// The content of the import directive for that interface.
   final String import;
 
-  /// Converts a [ImplementsSettings] to a map.
+  /// Converts a [InheritanceSettings] to a map.
   Map<String, dynamic> toJson() => _$InterfaceSettingsToJson(this);
 
   @override

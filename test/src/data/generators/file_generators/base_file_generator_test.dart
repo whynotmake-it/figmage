@@ -13,7 +13,7 @@ class _MockThemeClassGenerator extends Mock implements ThemeClassGenerator {}
 class _Generator extends BaseFileGenerator<int> with Mock {
   _Generator({
     required super.tokens,
-    required super.implementsSettings,
+    required super.inheritanceSettings,
   }) : super(type: TokenFileType.color);
 }
 
@@ -36,7 +36,7 @@ void main() {
         mockColorDesignStyle,
         mockColorVariable,
       ],
-      implementsSettings: [],
+      inheritanceSettings: [],
     );
     generators = [];
 

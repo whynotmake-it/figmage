@@ -27,43 +27,43 @@ void main() {
         "colors": {
           "generate": true,
           "from": ["path1", "path2"],
-          "implements": [],
+          "inheritance": [],
         },
         "typography": {
           "generate": true,
           "from": ["path1", "path2"],
-          "implements": [],
+          "inheritance": [],
           "useGoogleFonts": false,
         },
         "strings": {
           "generate": true,
           "from": ["path1", "path2"],
-          "implements": [],
+          "inheritance": [],
         },
         "bools": {
           "generate": true,
           "from": ["path1", "path2"],
-          "implements": [],
+          "inheritance": [],
         },
         "numbers": {
           "generate": true,
           "from": ["path1", "path2"],
-          "implements": [],
+          "inheritance": [],
         },
         "spacers": {
           "generate": true,
           "from": ["path1", "path2"],
-          "implements": [],
+          "inheritance": [],
         },
         "paddings": {
           "generate": true,
           "from": ["path1", "path2"],
-          "implements": [],
+          "inheritance": [],
         },
         "radii": {
           "generate": true,
           "from": ["path1", "path2"],
-          "implements": [],
+          "inheritance": [],
         },
         "assets": {
           "generate": true,
@@ -258,21 +258,21 @@ void main() {
         final yamlMap = loadYaml(docsYaml) as YamlMap;
         final config = Config.fromMap(yamlMap);
 
-        expect(config.colors.implements, hasLength(1));
+        expect(config.colors.inheritance, hasLength(1));
         expect(
-          config.colors.implements.first.collections,
+          config.colors.inheritance.first.collections,
           equals(["semantic"]),
         );
         expect(
-          config.colors.implements.first.interfaces,
+          config.colors.inheritance.first.interfaces,
           hasLength(1),
         );
         expect(
-          config.colors.implements.first.interfaces.first.name,
+          config.colors.inheritance.first.interfaces.first.name,
           equals("MyColors"),
         );
         expect(
-          config.colors.implements.first.interfaces.first.import,
+          config.colors.inheritance.first.interfaces.first.import,
           equals("package:my_package/my_colors.dart"),
         );
       });
@@ -282,21 +282,21 @@ void main() {
         final config = Config.fromMap(yamlMap);
 
         expect(config, isA<Config>());
-        expect(config.colors.implements, hasLength(1));
+        expect(config.colors.inheritance, hasLength(1));
         expect(
-          config.colors.implements.first.collections,
+          config.colors.inheritance.first.collections,
           equals(["semantic"]),
         );
         expect(
-          config.colors.implements.first.interfaces,
+          config.colors.inheritance.first.interfaces,
           hasLength(1),
         );
         expect(
-          config.colors.implements.first.interfaces.first.name,
+          config.colors.inheritance.first.interfaces.first.name,
           equals("MyColors"),
         );
         expect(
-          config.colors.implements.first.interfaces.first.import,
+          config.colors.inheritance.first.interfaces.first.import,
           equals("package:my_app/core/my_colors.dart"),
         );
       });
@@ -317,7 +317,7 @@ colors:
   generate: true # default
   from:
     - "semantic/colors"
-  implements:
+  inheritance:
     - collections: ["semantic"]
       interfaces:
       - name: "MyColors"
@@ -350,7 +350,7 @@ asPackage: false
 colors:
   from:
     - "semantic/colors"
-  implements:
+  inheritance:
     - collections: ["semantic"] # empty list would mean the following interface settings apply to all collections
       interfaces:
         - name: "MyColors"

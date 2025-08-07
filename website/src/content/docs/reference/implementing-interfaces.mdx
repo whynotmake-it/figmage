@@ -9,14 +9,14 @@ You can extend the generated theme classes with your own interfaces to provide a
 
 ### How to Use
 
-In your configuration (YAML or Dart map), use the `implements` key under a token type (e.g., `colors`, `typography`). Each entry in `implements` can specify which collections it applies to and a list of interfaces to implement.
+In your configuration, use the `inheritance` key under a token type (e.g., `colors`, `typography`). Each entry in `inheritance` can specify which collections it applies to and a list of interfaces to implement.
 
 #### Example YAML
 
 ```yaml
 colors:
   generate: true
-  implements:
+  inheritance:
     - collections: ["semantic", "primitive"] # Will apply to both collections
       interfaces:
         - name: "MyColors"

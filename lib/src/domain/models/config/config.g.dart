@@ -104,11 +104,12 @@ GenerationSettings _$GenerationSettingsFromJson(Map json) => $checkedCreate(
               'from',
               (v) =>
                   (v as List<dynamic>?)?.map((e) => e as String) ?? const []),
-          implements: $checkedConvert(
-              'implements',
+          inheritance: $checkedConvert(
+              'inheritance',
               (v) =>
-                  (v as List<dynamic>?)?.map((e) => ImplementsSettings.fromJson(
-                      Map<String, dynamic>.from(e as Map))) ??
+                  (v as List<dynamic>?)?.map((e) =>
+                      InheritanceSettings.fromJson(
+                          Map<String, dynamic>.from(e as Map))) ??
                   const []),
         );
         return val;
@@ -119,7 +120,7 @@ Map<String, dynamic> _$GenerationSettingsToJson(GenerationSettings instance) =>
     <String, dynamic>{
       'generate': instance.generate,
       'from': instance.from.toList(),
-      'implements': instance.implements.toList(),
+      'inheritance': instance.inheritance.toList(),
     };
 
 TypographyGenerationSettings _$TypographyGenerationSettingsFromJson(Map json) =>
@@ -133,11 +134,12 @@ TypographyGenerationSettings _$TypographyGenerationSettingsFromJson(Map json) =>
               'from',
               (v) =>
                   (v as List<dynamic>?)?.map((e) => e as String) ?? const []),
-          implements: $checkedConvert(
-              'implements',
+          inheritance: $checkedConvert(
+              'inheritance',
               (v) =>
-                  (v as List<dynamic>?)?.map((e) => ImplementsSettings.fromJson(
-                      Map<String, dynamic>.from(e as Map))) ??
+                  (v as List<dynamic>?)?.map((e) =>
+                      InheritanceSettings.fromJson(
+                          Map<String, dynamic>.from(e as Map))) ??
                   const []),
           useGoogleFonts:
               $checkedConvert('useGoogleFonts', (v) => v as bool? ?? true),
@@ -151,15 +153,15 @@ Map<String, dynamic> _$TypographyGenerationSettingsToJson(
     <String, dynamic>{
       'generate': instance.generate,
       'from': instance.from.toList(),
-      'implements': instance.implements.toList(),
+      'inheritance': instance.inheritance.toList(),
       'useGoogleFonts': instance.useGoogleFonts,
     };
 
-ImplementsSettings _$ImplementsSettingsFromJson(Map json) => $checkedCreate(
-      'ImplementsSettings',
+InheritanceSettings _$InheritanceSettingsFromJson(Map json) => $checkedCreate(
+      'InheritanceSettings',
       json,
       ($checkedConvert) {
-        final val = ImplementsSettings(
+        final val = InheritanceSettings(
           collections: $checkedConvert(
               'collections',
               (v) =>
@@ -178,7 +180,8 @@ ImplementsSettings _$ImplementsSettingsFromJson(Map json) => $checkedCreate(
       },
     );
 
-Map<String, dynamic> _$ImplementsSettingsToJson(ImplementsSettings instance) =>
+Map<String, dynamic> _$InheritanceSettingsToJson(
+        InheritanceSettings instance) =>
     <String, dynamic>{
       'collections': instance.collections,
       'interfaces': instance.interfaces,

@@ -295,8 +295,8 @@ void main() {
           packageName: "test_package",
           tokenPath: "custom/path/to/tokens",
           colors: GenerationSettings(
-            implements: [
-              ImplementsSettings(
+            inheritance: [
+              InheritanceSettings(
                 interfaces: [
                   InterfaceSettings(name: 'Tokens', import: 'tokens.dart'),
                 ],

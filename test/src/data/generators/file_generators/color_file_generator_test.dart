@@ -22,8 +22,8 @@ void main() {
           mockColorDesignStyle,
           mockColorVariableUnresolvable,
         ],
-        implementsSettings: [
-          const ImplementsSettings(
+        inheritanceSettings: [
+          const InheritanceSettings(
             collections: ['collection1'],
             interfaces: [
               InterfaceSettings(
@@ -32,7 +32,7 @@ void main() {
               ),
             ],
           ),
-          const ImplementsSettings(
+          const InheritanceSettings(
             interfaces: [
               InterfaceSettings(
                 name: 'Tokens',

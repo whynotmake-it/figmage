@@ -40,7 +40,7 @@ void main() {
         final exitCode = await FigmageCommandRunner(container).run([
           'forge',
           '-f',
-          '2Bb2hu36RVelvdE6J6ecw0',
+          'HHUVTJ7lsjhG24SQB5h0zX',
           '-t',
           token!,
         ]);

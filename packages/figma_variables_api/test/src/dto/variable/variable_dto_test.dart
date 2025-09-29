@@ -67,6 +67,16 @@ void main() {
           "iOS": "box-background-active",
         },
       );
+      expect(variable.deletedButReferenced, null);
+    });
+
+    test('works for deleted but referenced variable', () {
+      final (variable, _) = parseJsonFromFile(
+        'variable_deleted_but_referenced.json',
+        (json) => VariableDto.fromJson(json),
+      );
+      expect(variable.deletedButReferenced, isTrue);
+      expect(variable.name, "deleted-variable");
     });
     test('Throws for invalid json', () {
       final jsonString =
@@ -125,7 +135,30 @@ void main() {
             "id": "VariableID:28:14",
           },
         },
+        "deletedButReferenced": null,
       });
+    });
+
+    test('works for object with deletedButReferenced true', () {
+      final variable = VariableDto(
+        id: "VariableID:33:8",
+        name: "box-background-active",
+        remote: false,
+        key: "db60e2b2141198dff74e59f329863257348ec9d6",
+        variableCollectionId: "VariableCollectionId:33:7",
+        resolvedType: VariableType.color,
+        description: "",
+        hiddenFromPublishing: false,
+        scopes: ["ALL_SCOPES"],
+        codeSyntax: {},
+        valuesByMode: {},
+        deletedButReferenced: true,
+      );
+
+      final jsonMap = variable.toJson();
+
+      expect(jsonMap["deletedButReferenced"], isTrue);
+      expect(variable.deletedButReferenced, isTrue);
     });
   });
 }

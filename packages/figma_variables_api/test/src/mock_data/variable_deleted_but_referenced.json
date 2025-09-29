@@ -1,8 +1,8 @@
 {
-  "id": "VariableID:33:8",
-  "name": "box-background-active",
+  "id": "VariableID:deleted:1",
+  "name": "deleted-variable",
   "remote": false,
-  "key": "db60e2b2141198dff74e59f329863257348ec9d6",
+  "key": "deleted123456789",
   "variableCollectionId": "VariableCollectionId:33:7",
   "resolvedType": "COLOR",
   "description": "",
@@ -17,9 +17,9 @@
     "ALL_SCOPES"
   ],
   "codeSyntax": {
-    "WEB": "box-background-active",
-    "ANDROID": "box-background-active",
-    "iOS": "box-background-active"
+    "WEB": "deleted-variable",
+    "ANDROID": "deleted-variable",
+    "iOS": "deleted-variable"
   },
-  "deletedButReferenced": null
+  "deletedButReferenced": true
 }

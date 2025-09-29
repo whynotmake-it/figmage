@@ -113,6 +113,43 @@ final variablesProvider =
           "No variables found in file ${settings.fileId}",
         );
       case [...]:
+        // Filter out deleted variables if not included in config
+        final deletedVariables = variables.where(
+          (v) => v.deletedButReferenced ?? false,
+        );
+        if (deletedVariables.isNotEmpty) {
+          logger.warn(
+            " Found ${deletedVariables.length} variables that have been"
+            " deleted but are still referenced.",
+          );
+          if (logger.level == Level.verbose) {
+            for (final variable in deletedVariables) {
+              logger.info(" ${variable.fullName}");
+            }
+          }
+          
+          if (!settings.config.includeDeletedButReferenced) {
+            final filteredVariables = variables.where(
+              (v) => !(v.deletedButReferenced ?? false),
+            );
+            logger.warn(
+              " Excluding ${deletedVariables.length} deleted variables. "
+              "Set 'includeDeletedButReferenced: true' in figmage.yaml to "
+              "include them.",
+            );
+            varProgress.complete(
+              "Found ${filteredVariables.length} variables "
+              "(${deletedVariables.length} deleted variables excluded)",
+            );
+            return filteredVariables;
+          } else {
+            logger.info(
+              " Including ${deletedVariables.length} deleted variables"
+              " as per config.",
+            );
+          }
+        }
+        
         varProgress.complete("Found ${variables.length} variables");
         return variables;
     }

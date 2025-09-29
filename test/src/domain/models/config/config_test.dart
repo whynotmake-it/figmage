@@ -23,6 +23,7 @@ void main() {
         "asPackage": true,
         "tokenPath": "src",
         "dropUnresolved": false,
+        "includeDeletedButReferenced": false,
         "stylesFromLibrary": false,
         "colors": {
           "generate": true,
@@ -158,6 +159,18 @@ void main() {
         final result = Config.fromMap(full);
         expect(result, fullExample);
         expect(result.typography.useGoogleFonts, isFalse);
+      });
+
+      test('supports includeDeletedButReferenced configuration', () async {
+        final configMap = {
+          ...minimal,
+          "includeDeletedButReferenced": true,
+        };
+
+        final result = Config.fromMap(configMap);
+
+        expect(result.includeDeletedButReferenced, isTrue);
+        expect(result.toJson()["includeDeletedButReferenced"], isTrue);
       });
 
       test('supports asset configuration', () async {

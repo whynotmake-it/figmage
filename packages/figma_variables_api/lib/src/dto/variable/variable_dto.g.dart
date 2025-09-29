@@ -29,6 +29,8 @@ abstract class _$VariableDtoCWProxy {
 
   VariableDto codeSyntax(Map<String, String> codeSyntax);
 
+  VariableDto deletedButReferenced(bool? deletedButReferenced);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `VariableDto(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -47,6 +49,7 @@ abstract class _$VariableDtoCWProxy {
     Map<String, VariableModeValueDto>? valuesByMode,
     List<String>? scopes,
     Map<String, String>? codeSyntax,
+    bool? deletedButReferenced,
   });
 }
 
@@ -95,6 +98,10 @@ class _$VariableDtoCWProxyImpl implements _$VariableDtoCWProxy {
       this(codeSyntax: codeSyntax);
 
   @override
+  VariableDto deletedButReferenced(bool? deletedButReferenced) =>
+      this(deletedButReferenced: deletedButReferenced);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `VariableDto(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -114,6 +121,7 @@ class _$VariableDtoCWProxyImpl implements _$VariableDtoCWProxy {
     Object? valuesByMode = const $CopyWithPlaceholder(),
     Object? scopes = const $CopyWithPlaceholder(),
     Object? codeSyntax = const $CopyWithPlaceholder(),
+    Object? deletedButReferenced = const $CopyWithPlaceholder(),
   }) {
     return VariableDto(
       id: id == const $CopyWithPlaceholder() || id == null
@@ -168,6 +176,10 @@ class _$VariableDtoCWProxyImpl implements _$VariableDtoCWProxy {
               ? _value.codeSyntax
               // ignore: cast_nullable_to_non_nullable
               : codeSyntax as Map<String, String>,
+      deletedButReferenced: deletedButReferenced == const $CopyWithPlaceholder()
+          ? _value.deletedButReferenced
+          // ignore: cast_nullable_to_non_nullable
+          : deletedButReferenced as bool?,
     );
   }
 }
@@ -197,6 +209,7 @@ VariableDto _$VariableDtoFromJson(Map<String, dynamic> json) => VariableDto(
       scopes:
           (json['scopes'] as List<dynamic>).map((e) => e as String).toList(),
       codeSyntax: Map<String, String>.from(json['codeSyntax'] as Map),
+      deletedButReferenced: json['deletedButReferenced'] as bool?,
     );
 
 Map<String, dynamic> _$VariableDtoToJson(VariableDto instance) =>
@@ -213,6 +226,7 @@ Map<String, dynamic> _$VariableDtoToJson(VariableDto instance) =>
           instance.valuesByMode.map((k, e) => MapEntry(k, e.toJson())),
       'scopes': instance.scopes,
       'codeSyntax': instance.codeSyntax,
+      'deletedButReferenced': instance.deletedButReferenced,
     };
 
 const _$VariableTypeEnumMap = {

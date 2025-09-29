@@ -195,6 +195,7 @@ void main() {
             'hiddenFromPublishing': false,
             'scopes': ['ALL_SCOPES'],
             'codeSyntax': {},
+            'deletedButReferenced': null,
             'valuesByMode': {
               "33:0": {
                 "type": "VARIABLE_ALIAS",

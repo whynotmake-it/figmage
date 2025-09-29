@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:figmage/src/command_runner.dart';
 import 'package:path/path.dart' as path;
+import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
 import 'util/util.dart';
 
 void main() {
-  group('Full integration test', () {
+  group('Full integration test', timeout: const Timeout(Duration(minutes: 15)),
+      () {
     final (:token, :skipMessage) = getTokenOrSkip();
 
     test('prints help to console', () async {
@@ -28,20 +31,24 @@ void main() {
 
       logger.info('Running integration test in: ${testDir.path}');
 
-      final process = await runFigmage(
-        [
+      // Change to test directory and run figmage directly
+      final originalDir = Directory.current;
+      Directory.current = testDir;
+      
+      try {
+        final container = ProviderContainer();
+        final exitCode = await FigmageCommandRunner(container).run([
           'forge',
           '-f',
-          'HHUVTJ7lsjhG24SQB5h0zX',
+          '2Bb2hu36RVelvdE6J6ecw0',
           '-t',
           token!,
-        ],
-        attachLogger: true,
-        workingDirectory: testDir,
-      );
-
-      final exitCode = await process.exitCode;
-      expect(exitCode, 0);
+        ]);
+        expect(exitCode, 0);
+      } finally {
+        // Restore original directory
+        Directory.current = originalDir;
+      }
 
       final pubspec = File(path.join(testDir.path, 'pubspec.yaml'));
       expect(pubspec.existsSync(), true);

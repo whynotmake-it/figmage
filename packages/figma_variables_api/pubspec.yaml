@@ -12,16 +12,16 @@ dependencies:
   json_annotation: ^4.8.1
   equatable: ^2.0.5
   collection: ^1.17.2
-  copy_with_extension: ^5.0.2
-  figma: ^7.1.1
+  copy_with_extension: ^6.0.0
+  figma: ^7.4.0
 
 dev_dependencies:
   lints: ^2.1.1
   mocktail: ^1.0.0
   test: ^1.19.2
-  build_runner: ^2.4.6
+  build_runner: ^2.5.4
   json_serializable: ^6.7.0
-  copy_with_extension_gen: ^5.0.2
+  copy_with_extension_gen: ^6.0.0
   markdown: ^7.1.0
   args: ^2.4.1
   yaml: ^3.1.2

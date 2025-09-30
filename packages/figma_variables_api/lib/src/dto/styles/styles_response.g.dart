@@ -87,7 +87,7 @@ abstract class _$StylesResponseMetaCWProxy {
   /// StylesResponseMeta(...).copyWith(id: 12, name: "My name")
   /// ````
   StylesResponseMeta call({
-    List<Style>? styles,
+    List<Style> styles,
   });
 }
 
@@ -112,7 +112,7 @@ class _$StylesResponseMetaCWProxyImpl implements _$StylesResponseMetaCWProxy {
     Object? styles = const $CopyWithPlaceholder(),
   }) {
     return StylesResponseMeta(
-      styles: styles == const $CopyWithPlaceholder() || styles == null
+      styles: styles == const $CopyWithPlaceholder()
           ? _value.styles
           // ignore: cast_nullable_to_non_nullable
           : styles as List<Style>,

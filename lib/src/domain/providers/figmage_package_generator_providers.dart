@@ -31,6 +31,10 @@ final generatedPackageProvider =
       tokensByFileType.typographyTokens.isNotEmpty;
   final generateNumbers = settings.config.numbers.generate &&
       tokensByFileType.numberTokens.isNotEmpty;
+  final generateSpacers = settings.config.spacers.generate &&
+      tokensByFileType.numberTokens.isNotEmpty;
+  final generatePaddings = settings.config.paddings.generate &&
+      tokensByFileType.numberTokens.isNotEmpty;
   final generateAssets = settings.config.assets.generate && assets.isNotEmpty;
 
   final dir = Directory(settings.path);
@@ -56,9 +60,8 @@ final generatedPackageProvider =
       generateTypography: generateTypography,
       generateAssets: generateAssets,
       generateNumbers: generateNumbers,
-      // TODO(tim): support better
-      generatePaddings: generateNumbers,
-      generateSpacers: generateNumbers,
+      generatePaddings: generatePaddings,
+      generateSpacers: generateSpacers,
       // TODO(tim): support at all
       generateStrings: false,
       generateBools: false,

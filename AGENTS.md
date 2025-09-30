@@ -24,3 +24,4 @@
 - Freezed unions for variant types (e.g., AliasOr<T>)
 - Repository pattern for data access
 - Command pattern for CLI operations
+- Never bump a version number or add a changelog manually

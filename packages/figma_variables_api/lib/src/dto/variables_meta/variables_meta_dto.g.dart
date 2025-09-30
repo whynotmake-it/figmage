@@ -19,8 +19,8 @@ abstract class _$VariablesMetaDtoCWProxy {
   /// VariablesMetaDto(...).copyWith(id: 12, name: "My name")
   /// ````
   VariablesMetaDto call({
-    Map<String, VariableDto>? variables,
-    Map<String, VariableCollectionDto>? variableCollections,
+    Map<String, VariableDto> variables,
+    Map<String, VariableCollectionDto> variableCollections,
   });
 }
 
@@ -52,16 +52,14 @@ class _$VariablesMetaDtoCWProxyImpl implements _$VariablesMetaDtoCWProxy {
     Object? variableCollections = const $CopyWithPlaceholder(),
   }) {
     return VariablesMetaDto(
-      variables: variables == const $CopyWithPlaceholder() || variables == null
+      variables: variables == const $CopyWithPlaceholder()
           ? _value.variables
           // ignore: cast_nullable_to_non_nullable
           : variables as Map<String, VariableDto>,
-      variableCollections:
-          variableCollections == const $CopyWithPlaceholder() ||
-                  variableCollections == null
-              ? _value.variableCollections
-              // ignore: cast_nullable_to_non_nullable
-              : variableCollections as Map<String, VariableCollectionDto>,
+      variableCollections: variableCollections == const $CopyWithPlaceholder()
+          ? _value.variableCollections
+          // ignore: cast_nullable_to_non_nullable
+          : variableCollections as Map<String, VariableCollectionDto>,
     );
   }
 }

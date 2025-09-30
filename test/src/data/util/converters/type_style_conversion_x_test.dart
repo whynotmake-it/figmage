@@ -9,7 +9,7 @@ void main() {
   group('TypeStyleConversionX', () {
     group('toDomain', () {
       test('should convert a type style to a typography', () {
-        final typeStyle = TypeStyle(
+        const typeStyle = TypeStyle(
           fontFamily: 'Roboto',
           fontPostScriptName: 'Roboto-Regular',
           fontSize: 16,
@@ -31,7 +31,7 @@ void main() {
       });
 
       test('should convert a type style to a typography with italic', () {
-        final typeStyle = TypeStyle(
+        const typeStyle = TypeStyle(
           fontFamily: 'Roboto',
           fontPostScriptName: 'Roboto-Regular',
           fontSize: 16,
@@ -54,7 +54,7 @@ void main() {
 
       test('should convert a type style to a typography with no line height',
           () {
-        final typeStyle = TypeStyle(
+        const typeStyle = TypeStyle(
           fontFamily: 'Roboto',
           fontPostScriptName: 'Roboto-Regular',
           fontSize: 16,
@@ -76,7 +76,7 @@ void main() {
 
       test('should convert a type style to a typography with no font weight',
           () {
-        final typeStyle = TypeStyle(
+        const typeStyle = TypeStyle(
           fontFamily: 'Roboto',
           fontPostScriptName: 'Roboto-Regular',
           fontSize: 16,

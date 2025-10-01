@@ -1,3 +1,19 @@
+## 0.1.0-dev.14
+
+ - **REFACTOR**: rename `implements` to `inheritance` in config.
+ - **FIX**: create spacers and paddings only if configs opts in (#213).
+ - **FIX**: add flutter plugins files to gitignore in generated packages (#201).
+ - **FIX**: don't generate .gitignore and escape nested paths properly (#182).
+ - **FIX**: correctly fetch opacity for color styles (#175).
+ - **FEAT**: add support for deleted but referenced flag (#210).
+ - **FEAT**: allow for specifying an interface for generated `ThemeExtension`s to inherit (#192).
+ - **FEAT**: throttle asset requests (#187).
+ - **FEAT**: allow configuring the path under `lib/` where tokens are generated (#176).
+ - **FEAT**: allow for disabling the generation of a `pubspec.yaml` file (#174).
+ - **FEAT**: pull assets from Figma (#162).
+ - **DOCS**: update website docs to reflect reaname.
+ - **DOCS**: new theme and small fixes (#181).
+
 ## 0.1.0-dev.13
 
  - **FIX**: correctly fetch opacity for color styles (#175).

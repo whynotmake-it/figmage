@@ -1,3 +1,8 @@
+## 0.1.0-dev.8
+
+ - **FEAT**: add support for deleted but referenced flag (#210).
+ - **FEAT**: pull assets from Figma (#162).
+
 ## 0.1.0-dev.7
 
  - **FEAT**: pull assets from Figma (#162).

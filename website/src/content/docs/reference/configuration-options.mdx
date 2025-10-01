@@ -151,6 +151,23 @@ However, one of your variables might only be unresolved in one of the modes, and
 If you set this flag to `false`, all unresolved variables will be included in the generated tokens, but will return `null` as their value in the 
 respective modes. This comes with the drawback that the variable will be nullable in all modes, and you will have to handle the null case.
 
+### `includeDeletedButReferenced`
+Figma allows you to delete variables that are still referenced by other variables or bound to properties in your design. 
+These variables are marked as "deleted but referenced" in the Figma API.
+
+By default (`false`), Figmage excludes these deleted variables from token generation and logs a warning message. 
+This ensures your generated tokens only include active variables that are still maintained in your design system.
+
+If you set this flag to `true`, deleted but referenced variables will be included in the generated tokens.
+This might be useful if you have a complex design system with dependencies that you want to preserve temporarily.
+
+:::tip[Recommended Approach]
+It's generally recommended to keep this setting as `false` (default) and instead:
+1. Review the warning messages to identify deleted but referenced variables
+2. Either restore the deleted variables in Figma, or remove the references to them
+3. This helps maintain a clean and consistent design system
+:::
+
 ### `stylesFromLibrary`
 By default, Figmage fetches all styles from your Figma file, including local styles and styles from other libraries that were referenced.
 Styles will be at their most recent state, so your designs in the file will never be out of sync with your Flutter code.
@@ -218,6 +235,7 @@ packageDescription: "A generated package that contains all of our design tokens"
 asPackage: true
 tokenPath: "src"
 dropUnresolved: true
+includeDeletedButReferenced: false
 stylesFromLibrary: false
 colors:
   generate: true # default

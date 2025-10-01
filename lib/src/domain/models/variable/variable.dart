@@ -26,6 +26,7 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
     required this.scopes,
     required this.codeSyntax,
     required this.collectionModeNamesById,
+    this.deletedButReferenced,
   });
 
   /// The ID of this variable.
@@ -73,6 +74,12 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
   /// The collection mode names of this variable, by their mode's ID.
   final Map<String, String> collectionModeNamesById;
 
+  /// Whether this variable is deleted but still referenced.
+  ///
+  /// This occurs when you bind a property or variable alias to a variable,
+  /// and then use the "Local variables" menu to delete the variable.
+  final bool? deletedButReferenced;
+
   @override
   Map<String, AliasOr<T>> get valuesByModeName => valuesByModeId.map(
         (key, value) => MapEntry(collectionModeNamesById[key]!, value),
@@ -98,6 +105,7 @@ sealed class Variable<T> with EquatableMixin implements DesignToken<T> {
         scopes,
         codeSyntax,
         collectionModeNamesById,
+        deletedButReferenced,
       ];
 
   @override
@@ -123,6 +131,7 @@ class ColorVariable extends Variable<int> {
     required super.codeSyntax,
     required super.collectionModeNamesById,
     required this.valuesByModeId,
+    super.deletedButReferenced,
   });
 
   @override
@@ -148,6 +157,7 @@ class FloatVariable extends Variable<double> {
     required super.codeSyntax,
     required super.collectionModeNamesById,
     required this.valuesByModeId,
+    super.deletedButReferenced,
   });
 
   @override
@@ -173,6 +183,7 @@ class StringVariable extends Variable<String> {
     required super.codeSyntax,
     required super.collectionModeNamesById,
     required this.valuesByModeId,
+    super.deletedButReferenced,
   });
 
   @override
@@ -198,6 +209,7 @@ class BoolVariable extends Variable<bool> {
     required super.codeSyntax,
     required super.collectionModeNamesById,
     required this.valuesByModeId,
+    super.deletedButReferenced,
   });
 
   @override

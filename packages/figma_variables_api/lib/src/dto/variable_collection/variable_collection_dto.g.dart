@@ -30,14 +30,14 @@ abstract class _$VariableCollectionDtoCWProxy {
   /// VariableCollectionDto(...).copyWith(id: 12, name: "My name")
   /// ````
   VariableCollectionDto call({
-    String? defaultModeId,
-    String? id,
-    String? name,
-    bool? remote,
-    List<VariableModeDto>? modes,
-    String? key,
-    bool? hiddenFromPublishing,
-    List<String>? variableIds,
+    String defaultModeId,
+    String id,
+    String name,
+    bool remote,
+    List<VariableModeDto> modes,
+    String key,
+    bool hiddenFromPublishing,
+    List<String> variableIds,
   });
 }
 
@@ -95,42 +95,38 @@ class _$VariableCollectionDtoCWProxyImpl
     Object? variableIds = const $CopyWithPlaceholder(),
   }) {
     return VariableCollectionDto(
-      defaultModeId:
-          defaultModeId == const $CopyWithPlaceholder() || defaultModeId == null
-              ? _value.defaultModeId
-              // ignore: cast_nullable_to_non_nullable
-              : defaultModeId as String,
-      id: id == const $CopyWithPlaceholder() || id == null
+      defaultModeId: defaultModeId == const $CopyWithPlaceholder()
+          ? _value.defaultModeId
+          // ignore: cast_nullable_to_non_nullable
+          : defaultModeId as String,
+      id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
           : id as String,
-      name: name == const $CopyWithPlaceholder() || name == null
+      name: name == const $CopyWithPlaceholder()
           ? _value.name
           // ignore: cast_nullable_to_non_nullable
           : name as String,
-      remote: remote == const $CopyWithPlaceholder() || remote == null
+      remote: remote == const $CopyWithPlaceholder()
           ? _value.remote
           // ignore: cast_nullable_to_non_nullable
           : remote as bool,
-      modes: modes == const $CopyWithPlaceholder() || modes == null
+      modes: modes == const $CopyWithPlaceholder()
           ? _value.modes
           // ignore: cast_nullable_to_non_nullable
           : modes as List<VariableModeDto>,
-      key: key == const $CopyWithPlaceholder() || key == null
+      key: key == const $CopyWithPlaceholder()
           ? _value.key
           // ignore: cast_nullable_to_non_nullable
           : key as String,
-      hiddenFromPublishing:
-          hiddenFromPublishing == const $CopyWithPlaceholder() ||
-                  hiddenFromPublishing == null
-              ? _value.hiddenFromPublishing
-              // ignore: cast_nullable_to_non_nullable
-              : hiddenFromPublishing as bool,
-      variableIds:
-          variableIds == const $CopyWithPlaceholder() || variableIds == null
-              ? _value.variableIds
-              // ignore: cast_nullable_to_non_nullable
-              : variableIds as List<String>,
+      hiddenFromPublishing: hiddenFromPublishing == const $CopyWithPlaceholder()
+          ? _value.hiddenFromPublishing
+          // ignore: cast_nullable_to_non_nullable
+          : hiddenFromPublishing as bool,
+      variableIds: variableIds == const $CopyWithPlaceholder()
+          ? _value.variableIds
+          // ignore: cast_nullable_to_non_nullable
+          : variableIds as List<String>,
     );
   }
 }

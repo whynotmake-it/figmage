@@ -24,13 +24,22 @@ final filterUnresolvedTokensProvider =
 
   final tokensByType = await ref.watch(filteredTokensProvider(settings).future);
   tokensByType.asMap().forEach((name, tokens) {
-    final unresolvedTokens = tokens.getUnresolvedTokens();
+    final allUnresolvedTokens = tokens.getUnresolvedTokens();
+    // Filter out deleted variables from unresolved warnings when user chose to 
+    // exclude them
+    final unresolvedTokens = settings.config.includeDeletedButReferenced 
+        ? allUnresolvedTokens
+        : allUnresolvedTokens.where((token) => 
+            !(token is Variable && (token.deletedButReferenced ?? false)),
+          );
+
     if (unresolvedTokens.isNotEmpty) {
       logger.warn(
-          ' Found ${unresolvedTokens.length} ${name.toTitleCase()} where the'
-          '  value is, at least for one mode, unresolvable.');
+          'Found ${unresolvedTokens.length} ${name.toTitleCase()} where the '
+          'value is, at least for one mode, unresolvable.');
       if (logger.level == Level.verbose) {
-        for (final token in unresolvedTokens) {
+        // In verbose mode, show ALL unresolved tokens for complete debugging
+        for (final token in allUnresolvedTokens) {
           logger.info(' ${token.fullName}:');
           token.valuesByModeName.forEach((modeName, value) {
             logger.info('   $modeName : $value');
@@ -113,6 +122,43 @@ final variablesProvider =
           "No variables found in file ${settings.fileId}",
         );
       case [...]:
+        // Filter out deleted variables if not included in config
+        final deletedVariables = variables.where(
+          (v) => v.deletedButReferenced ?? false,
+        );
+        if (deletedVariables.isNotEmpty) {
+          logger.warn(
+            " Found ${deletedVariables.length} variables that have been"
+            " deleted but are still referenced.",
+          );
+          if (logger.level == Level.verbose) {
+            for (final variable in deletedVariables) {
+              logger.info(" ${variable.fullName}");
+            }
+          }
+          
+          if (!settings.config.includeDeletedButReferenced) {
+            final filteredVariables = variables.where(
+              (v) => !(v.deletedButReferenced ?? false),
+            );
+            logger.warn(
+              " Excluding ${deletedVariables.length} deleted variables. "
+              "Set 'includeDeletedButReferenced: true' in figmage.yaml to "
+              "include them.",
+            );
+            varProgress.complete(
+              "Found ${filteredVariables.length} variables "
+              "(${deletedVariables.length} deleted variables excluded)",
+            );
+            return filteredVariables;
+          } else {
+            logger.info(
+              " Including ${deletedVariables.length} deleted variables"
+              " as per config.",
+            );
+          }
+        }
+        
         varProgress.complete("Found ${variables.length} variables");
         return variables;
     }

@@ -156,3 +156,27 @@ final mockVariableEmptyCollection = BoolVariable(
     "34:0": AliasOr<bool>.data(data: false),
   },
 );
+
+
+final mockColorVariableDeleted = ColorVariable(
+  id: "color_id_deleted",
+  name: "deleted/color",
+  remote: false,
+  key: "deleted_key",
+  variableCollectionId: "variableCollectionId",
+  variableCollectionName: "collection1",
+  resolvedType: VariableType.color,
+  description: "A deleted but referenced color variable",
+  hiddenFromPublishing: false,
+  scopes: [],
+  codeSyntax: {},
+  deletedButReferenced: true,
+  collectionModeNamesById: {
+    "33:0": 'light',
+    "34:0": 'dark',
+  },
+  valuesByModeId: {
+    "33:0": AliasOr.data(data: 0xFF0000),
+    "34:0": AliasOr.data(data: 0x880000),
+  },
+);

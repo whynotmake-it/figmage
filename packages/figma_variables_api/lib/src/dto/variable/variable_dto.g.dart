@@ -29,6 +29,8 @@ abstract class _$VariableDtoCWProxy {
 
   VariableDto codeSyntax(Map<String, String> codeSyntax);
 
+  VariableDto deletedButReferenced(bool? deletedButReferenced);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `VariableDto(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -36,17 +38,18 @@ abstract class _$VariableDtoCWProxy {
   /// VariableDto(...).copyWith(id: 12, name: "My name")
   /// ````
   VariableDto call({
-    String? id,
-    String? name,
-    bool? remote,
-    String? key,
-    String? variableCollectionId,
-    VariableType? resolvedType,
-    String? description,
-    bool? hiddenFromPublishing,
-    Map<String, VariableModeValueDto>? valuesByMode,
-    List<String>? scopes,
-    Map<String, String>? codeSyntax,
+    String id,
+    String name,
+    bool remote,
+    String key,
+    String variableCollectionId,
+    VariableType resolvedType,
+    String description,
+    bool hiddenFromPublishing,
+    Map<String, VariableModeValueDto> valuesByMode,
+    List<String> scopes,
+    Map<String, String> codeSyntax,
+    bool? deletedButReferenced,
   });
 }
 
@@ -95,6 +98,10 @@ class _$VariableDtoCWProxyImpl implements _$VariableDtoCWProxy {
       this(codeSyntax: codeSyntax);
 
   @override
+  VariableDto deletedButReferenced(bool? deletedButReferenced) =>
+      this(deletedButReferenced: deletedButReferenced);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `VariableDto(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -114,60 +121,57 @@ class _$VariableDtoCWProxyImpl implements _$VariableDtoCWProxy {
     Object? valuesByMode = const $CopyWithPlaceholder(),
     Object? scopes = const $CopyWithPlaceholder(),
     Object? codeSyntax = const $CopyWithPlaceholder(),
+    Object? deletedButReferenced = const $CopyWithPlaceholder(),
   }) {
     return VariableDto(
-      id: id == const $CopyWithPlaceholder() || id == null
+      id: id == const $CopyWithPlaceholder()
           ? _value.id
           // ignore: cast_nullable_to_non_nullable
           : id as String,
-      name: name == const $CopyWithPlaceholder() || name == null
+      name: name == const $CopyWithPlaceholder()
           ? _value.name
           // ignore: cast_nullable_to_non_nullable
           : name as String,
-      remote: remote == const $CopyWithPlaceholder() || remote == null
+      remote: remote == const $CopyWithPlaceholder()
           ? _value.remote
           // ignore: cast_nullable_to_non_nullable
           : remote as bool,
-      key: key == const $CopyWithPlaceholder() || key == null
+      key: key == const $CopyWithPlaceholder()
           ? _value.key
           // ignore: cast_nullable_to_non_nullable
           : key as String,
-      variableCollectionId:
-          variableCollectionId == const $CopyWithPlaceholder() ||
-                  variableCollectionId == null
-              ? _value.variableCollectionId
-              // ignore: cast_nullable_to_non_nullable
-              : variableCollectionId as String,
-      resolvedType:
-          resolvedType == const $CopyWithPlaceholder() || resolvedType == null
-              ? _value.resolvedType
-              // ignore: cast_nullable_to_non_nullable
-              : resolvedType as VariableType,
-      description:
-          description == const $CopyWithPlaceholder() || description == null
-              ? _value.description
-              // ignore: cast_nullable_to_non_nullable
-              : description as String,
-      hiddenFromPublishing:
-          hiddenFromPublishing == const $CopyWithPlaceholder() ||
-                  hiddenFromPublishing == null
-              ? _value.hiddenFromPublishing
-              // ignore: cast_nullable_to_non_nullable
-              : hiddenFromPublishing as bool,
-      valuesByMode:
-          valuesByMode == const $CopyWithPlaceholder() || valuesByMode == null
-              ? _value.valuesByMode
-              // ignore: cast_nullable_to_non_nullable
-              : valuesByMode as Map<String, VariableModeValueDto>,
-      scopes: scopes == const $CopyWithPlaceholder() || scopes == null
+      variableCollectionId: variableCollectionId == const $CopyWithPlaceholder()
+          ? _value.variableCollectionId
+          // ignore: cast_nullable_to_non_nullable
+          : variableCollectionId as String,
+      resolvedType: resolvedType == const $CopyWithPlaceholder()
+          ? _value.resolvedType
+          // ignore: cast_nullable_to_non_nullable
+          : resolvedType as VariableType,
+      description: description == const $CopyWithPlaceholder()
+          ? _value.description
+          // ignore: cast_nullable_to_non_nullable
+          : description as String,
+      hiddenFromPublishing: hiddenFromPublishing == const $CopyWithPlaceholder()
+          ? _value.hiddenFromPublishing
+          // ignore: cast_nullable_to_non_nullable
+          : hiddenFromPublishing as bool,
+      valuesByMode: valuesByMode == const $CopyWithPlaceholder()
+          ? _value.valuesByMode
+          // ignore: cast_nullable_to_non_nullable
+          : valuesByMode as Map<String, VariableModeValueDto>,
+      scopes: scopes == const $CopyWithPlaceholder()
           ? _value.scopes
           // ignore: cast_nullable_to_non_nullable
           : scopes as List<String>,
-      codeSyntax:
-          codeSyntax == const $CopyWithPlaceholder() || codeSyntax == null
-              ? _value.codeSyntax
-              // ignore: cast_nullable_to_non_nullable
-              : codeSyntax as Map<String, String>,
+      codeSyntax: codeSyntax == const $CopyWithPlaceholder()
+          ? _value.codeSyntax
+          // ignore: cast_nullable_to_non_nullable
+          : codeSyntax as Map<String, String>,
+      deletedButReferenced: deletedButReferenced == const $CopyWithPlaceholder()
+          ? _value.deletedButReferenced
+          // ignore: cast_nullable_to_non_nullable
+          : deletedButReferenced as bool?,
     );
   }
 }
@@ -197,6 +201,7 @@ VariableDto _$VariableDtoFromJson(Map<String, dynamic> json) => VariableDto(
       scopes:
           (json['scopes'] as List<dynamic>).map((e) => e as String).toList(),
       codeSyntax: Map<String, String>.from(json['codeSyntax'] as Map),
+      deletedButReferenced: json['deletedButReferenced'] as bool?,
     );
 
 Map<String, dynamic> _$VariableDtoToJson(VariableDto instance) =>
@@ -213,6 +218,7 @@ Map<String, dynamic> _$VariableDtoToJson(VariableDto instance) =>
           instance.valuesByMode.map((k, e) => MapEntry(k, e.toJson())),
       'scopes': instance.scopes,
       'codeSyntax': instance.codeSyntax,
+      'deletedButReferenced': instance.deletedButReferenced,
     };
 
 const _$VariableTypeEnumMap = {

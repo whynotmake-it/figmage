@@ -23,6 +23,7 @@ class VariableDto extends Equatable {
     required this.valuesByMode,
     required this.scopes,
     required this.codeSyntax,
+    this.deletedButReferenced,
   });
 
   factory VariableDto.fromJson(Map<String, dynamic> json) =>
@@ -39,6 +40,7 @@ class VariableDto extends Equatable {
   final Map<String, VariableModeValueDto> valuesByMode;
   final List<String> scopes;
   final Map<String, String> codeSyntax;
+  final bool? deletedButReferenced;
 
   @override
   List<Object?> get props => [
@@ -53,6 +55,7 @@ class VariableDto extends Equatable {
         valuesByMode,
         scopes,
         codeSyntax,
+        deletedButReferenced,
       ];
 
   Map<String, dynamic> toJson() => _$VariableDtoToJson(this);

@@ -75,6 +75,7 @@ class FigmaVariablesRepository implements VariablesRepository {
             hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
             scopes: dtoVariable.scopes,
             codeSyntax: dtoVariable.codeSyntax,
+            deletedButReferenced: dtoVariable.deletedButReferenced,
             valuesByModeId: dtoVariable.valuesByMode.map(
               (key, value) => MapEntry(
                 key,
@@ -95,6 +96,7 @@ class FigmaVariablesRepository implements VariablesRepository {
             hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
             scopes: dtoVariable.scopes,
             codeSyntax: dtoVariable.codeSyntax,
+            deletedButReferenced: dtoVariable.deletedButReferenced,
             valuesByModeId: dtoVariable.valuesByMode.map(
               (key, value) => MapEntry(
                 key,
@@ -115,6 +117,7 @@ class FigmaVariablesRepository implements VariablesRepository {
             hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
             scopes: dtoVariable.scopes,
             codeSyntax: dtoVariable.codeSyntax,
+            deletedButReferenced: dtoVariable.deletedButReferenced,
             valuesByModeId: dtoVariable.valuesByMode.map(
               (key, value) => MapEntry(
                 key,
@@ -135,6 +138,7 @@ class FigmaVariablesRepository implements VariablesRepository {
             hiddenFromPublishing: dtoVariable.hiddenFromPublishing,
             scopes: dtoVariable.scopes,
             codeSyntax: dtoVariable.codeSyntax,
+            deletedButReferenced: dtoVariable.deletedButReferenced,
             valuesByModeId: dtoVariable.valuesByMode.map(
               (key, value) => MapEntry(
                 key,

@@ -20,9 +20,9 @@ abstract class _$VariablesResponseDtoCWProxy {
   /// VariablesResponseDto(...).copyWith(id: 12, name: "My name")
   /// ````
   VariablesResponseDto call({
-    int? status,
-    bool? error,
-    VariablesMetaDto? meta,
+    int status,
+    bool error,
+    VariablesMetaDto meta,
   });
 }
 
@@ -56,15 +56,15 @@ class _$VariablesResponseDtoCWProxyImpl
     Object? meta = const $CopyWithPlaceholder(),
   }) {
     return VariablesResponseDto(
-      status: status == const $CopyWithPlaceholder() || status == null
+      status: status == const $CopyWithPlaceholder()
           ? _value.status
           // ignore: cast_nullable_to_non_nullable
           : status as int,
-      error: error == const $CopyWithPlaceholder() || error == null
+      error: error == const $CopyWithPlaceholder()
           ? _value.error
           // ignore: cast_nullable_to_non_nullable
           : error as bool,
-      meta: meta == const $CopyWithPlaceholder() || meta == null
+      meta: meta == const $CopyWithPlaceholder()
           ? _value.meta
           // ignore: cast_nullable_to_non_nullable
           : meta as VariablesMetaDto,

@@ -40,6 +40,40 @@ void main() {
       final result = sut.generate();
       final emitter = DartEmitter(allocator: Allocator());
       expect(result, equalsDart(_expectedFile, emitter));
+  });
+
+    test('generate keeps duplicate style names by suffixing', () async {
+      sut = TypographyFileGenerator(
+        tokens: const [
+          TextDesignStyle(
+            id: "id-1",
+            fullName: "duplicate/name",
+            value: Typography(
+              fontFamily: 'Roboto',
+              fontFamilyPostScriptName: 'Roboto',
+              fontSize: 16,
+            ),
+          ),
+          TextDesignStyle(
+            id: "id-2",
+            fullName: "duplicate/name",
+            value: Typography(
+              fontFamily: 'Roboto',
+              fontFamilyPostScriptName: 'Roboto',
+              fontSize: 18,
+            ),
+          ),
+        ],
+        useGoogleFonts: false,
+        inheritanceSettings: const [],
+      );
+
+      final result = sut.generate();
+      final emitter = DartEmitter(allocator: Allocator());
+      final file = result.accept(emitter).toString();
+
+      expect(file, contains('final TextStyle name;'));
+      expect(file, contains('final TextStyle nameVariant2;'));
     });
   });
 }

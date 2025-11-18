@@ -1,5 +1,7 @@
 import 'package:figmage/src/domain/models/config/config.dart';
+import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
+import 'package:figmage/src/domain/models/variable/variable_type.dart';
 import 'package:figmage/src/domain/util/token_filter_x.dart';
 import 'package:test/test.dart';
 
@@ -76,6 +78,55 @@ void main() {
               ]),
             ),
           ),
+        );
+      });
+
+      test("should keep duplicates by suffixing the later occurrences", () {
+        final duplicateVariables = [
+          const BoolVariable(
+            id: "bool_1",
+            name: "duplicate",
+            remote: false,
+            key: "key_1",
+            variableCollectionId: "collection",
+            variableCollectionName: "collection",
+            resolvedType: VariableType.boolean,
+            description: "",
+            hiddenFromPublishing: false,
+            scopes: [],
+            codeSyntax: {},
+            collectionModeNamesById: {
+              "1": "light",
+            },
+            valuesByModeId: {
+              "1": AliasOr<bool>.data(data: true),
+            },
+          ),
+          const BoolVariable(
+            id: "bool_2",
+            name: "duplicate",
+            remote: false,
+            key: "key_2",
+            variableCollectionId: "collection",
+            variableCollectionName: "collection",
+            resolvedType: VariableType.boolean,
+            description: "",
+            hiddenFromPublishing: false,
+            scopes: [],
+            codeSyntax: {},
+            collectionModeNamesById: {
+              "1": "light",
+            },
+            valuesByModeId: {
+              "1": AliasOr<bool>.data(data: false),
+            },
+          ),
+        ];
+
+        final valuesByNameByMode = duplicateVariables.valuesByNameByMode;
+        expect(
+          valuesByNameByMode["light"]!.keys,
+          containsAll(["duplicate", "duplicateVariant2"]),
         );
       });
     });

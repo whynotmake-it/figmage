@@ -1,4 +1,6 @@
 import 'package:figmage/src/domain/models/config/config.dart';
+import 'package:figmage/src/domain/models/style/design_style.dart';
+import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/repositories/styles_repository.dart';
@@ -298,6 +300,42 @@ void main() {
         () => container.read(stylesProvider(mockSettings).future),
         throwsA(isA<ArgumentError>()),
       );
+    });
+    test('warns when duplicate style names are detected', () async {
+      const duplicateStyles = [
+        TextDesignStyle(
+          id: "style-1",
+          fullName: "duplicate/name",
+          value: Typography(
+            fontFamily: "Inter",
+            fontFamilyPostScriptName: "Inter",
+            fontSize: 12,
+          ),
+        ),
+        TextDesignStyle(
+          id: "style-2",
+          fullName: "duplicate/name",
+          value: Typography(
+            fontFamily: "Inter",
+            fontFamilyPostScriptName: "Inter",
+            fontSize: 14,
+          ),
+        ),
+      ];
+      when(
+        () => stylesRepository.getStyles(
+          fileId: any(named: "fileId"),
+          token: any(named: "token"),
+          fromLibrary: false,
+          onProgress: any(named: "onProgress"),
+        ),
+      ).thenAnswer((_) async => duplicateStyles);
+
+      await container.read(stylesProvider(mockSettings).future);
+
+      verify(
+        () => logger.warn(any(that: contains("duplicate/name"))),
+      ).called(1);
     });
     group('on StylesException', () {
       setUp(() {

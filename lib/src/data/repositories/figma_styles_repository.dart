@@ -71,8 +71,16 @@ class FigmaStylesRepository implements StylesRepository {
           : 'Fetching local styles metadata...',
     );
     final styles = switch (fromLibrary) {
-      true => await _getPublishedStyles(client, fileId),
-      false => await _getUnpublishedStyles(client, fileId),
+      true => await _getPublishedStyles(
+        client,
+        fileId,
+        onProgress: onProgress,
+      ),
+      false => await _getUnpublishedStyles(
+        client,
+        fileId,
+        onProgress: onProgress,
+      ),
     };
     onProgress?.call('Retrieved metadata for ${styles.length} styles.');
 
@@ -85,26 +93,52 @@ class FigmaStylesRepository implements StylesRepository {
         .whereType<String>()
         .toList();
     if (nodeIds.isEmpty) {
+      onProgress?.call(
+        'No node IDs were associated with the retrieved styles. '
+        'Skipping node hydration.',
+      );
       return [];
     }
 
-    onProgress?.call('Fetching ${nodeIds.length} style nodes...');
+    onProgress?.call(
+      'Discovered ${styles.length} style metadata entries; '
+      '${nodeIds.length} include node references.',
+    );
+    onProgress?.call(
+      'Fetching ${nodeIds.length} style nodes via /files/$fileId/nodes '
+      '(HTTP${client.useHttp2 ? '2' : '1.1'})...',
+    );
     final nodesResponse = await _fetchNodes(client, fileId, nodeIds);
     final styleNodes = nodesResponse.nodes.values
         .map((nodeMeta) => nodeMeta.document)
         .whereType<Node>()
         .toList();
-    onProgress?.call('Hydrated ${styleNodes.length} style nodes.');
-    return [
+    final missingNodes = nodeIds.length - styleNodes.length;
+    onProgress?.call(
+      'Hydrated ${styleNodes.length} node document(s); '
+      '${missingNodes.clamp(0, nodeIds.length)} node id(s) missing.',
+    );
+    final stylesFromNodes = [
       for (final node in styleNodes)
         if (_transformNode(node) case final style?) style,
     ];
+    final droppedNodes = styleNodes.length - stylesFromNodes.length;
+    onProgress?.call(
+      'Converted ${styleNodes.length} node document(s) into '
+      '${stylesFromNodes.length} supported style(s); '
+      '$droppedNodes unsupported node(s) skipped.',
+    );
+    return stylesFromNodes;
   }
 
   Future<List<_StyleInfo>> _getPublishedStyles(
     FigmaClient client,
-    String fileId,
-  ) async {
+    String fileId, {
+    void Function(String message)? onProgress,
+  }) async {
+    onProgress?.call(
+      'Requesting published styles via /files/$fileId/styles...',
+    );
     final StylesResponse stylesResponse;
     try {
       stylesResponse = await client.getFileStyles(fileId);
@@ -116,6 +150,9 @@ class FigmaStylesRepository implements StylesRepository {
     }
 
     final styles = stylesResponse.meta.styles;
+    onProgress?.call(
+      'Retrieved metadata for ${styles.length} published styles.',
+    );
 
     return [
       for (final style in styles)
@@ -131,18 +168,25 @@ class FigmaStylesRepository implements StylesRepository {
 
   Future<List<_StyleInfo>> _getUnpublishedStyles(
     FigmaClient client,
-    String fileId,
-  ) async {
+    String fileId, {
+    void Function(String message)? onProgress,
+  }) async {
     final uri = Uri.https(
       'api.figma.com',
       '/${client.apiVersion}/files/$fileId',
     );
     try {
+      onProgress?.call(
+        'Requesting /files/$fileId for local styles metadata...',
+      );
       final json = await client.authenticatedGet(uri.toString());
       final stylesRaw = json['styles'];
       if (stylesRaw is! Map<String, dynamic>) {
         return const [];
       }
+      onProgress?.call(
+        'Extracted ${stylesRaw.length} styles from /files response.',
+      );
 
       // TODO(figma-api): Swap this manual parsing once the official client
       // exposes local styles directly to avoid depending on raw JSON.
@@ -169,6 +213,9 @@ class FigmaStylesRepository implements StylesRepository {
           ),
         );
       }
+      onProgress?.call(
+        'Parsed ${results.length} local style metadata entries.',
+      );
       return results;
     } on FigmaException catch (e) {
       if (e.code == 403) {

@@ -14,7 +14,6 @@ void main() {
           fontPostScriptName: 'Roboto-Regular',
           fontSize: 16,
           fontWeight: 400,
-          italic: false,
           letterSpacing: 0,
           lineHeightPx: 20,
         );
@@ -59,7 +58,6 @@ void main() {
           fontPostScriptName: 'Roboto-Regular',
           fontSize: 16,
           fontWeight: 400,
-          italic: false,
           letterSpacing: 0,
         );
 
@@ -80,7 +78,6 @@ void main() {
           fontFamily: 'Roboto',
           fontPostScriptName: 'Roboto-Regular',
           fontSize: 16,
-          italic: false,
           letterSpacing: 0,
           lineHeightPx: 20,
         );

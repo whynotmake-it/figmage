@@ -263,6 +263,7 @@ void main() {
           fileId: any(named: "fileId"),
           token: any(named: "token"),
           fromLibrary: false,
+          onProgress: any(named: "onProgress"),
         ),
       ).thenAnswer((_) async => mockStyles);
       container = createContainer(
@@ -280,6 +281,7 @@ void main() {
           fileId: "fileId",
           token: "token",
           fromLibrary: false,
+          onProgress: any(named: "onProgress"),
         ),
       ).called(1);
     });
@@ -289,6 +291,7 @@ void main() {
           fileId: any(named: "fileId"),
           token: any(named: "token"),
           fromLibrary: false,
+          onProgress: any(named: "onProgress"),
         ),
       ).thenAnswer((_) async => []);
       expect(
@@ -303,6 +306,7 @@ void main() {
             fileId: any(named: "fileId"),
             token: any(named: "token"),
             fromLibrary: false,
+            onProgress: any(named: "onProgress"),
           ),
         ).thenThrow(const UnknownStylesException("unknown_message"));
       });
@@ -335,6 +339,7 @@ void main() {
             fileId: any(named: "fileId"),
             token: any(named: "token"),
             fromLibrary: false,
+            onProgress: any(named: "onProgress"),
           ),
         ).thenThrow(ArgumentError("error_message"));
       });

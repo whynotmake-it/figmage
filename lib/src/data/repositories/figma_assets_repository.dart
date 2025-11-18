@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:collection/collection.dart';
-import 'package:figma_variables_api/figma_variables_api.dart';
+import 'package:figma/figma.dart';
 import 'package:figmage/src/domain/models/config/config.dart';
 import 'package:figmage/src/domain/repositories/assets_repository.dart';
 import 'package:http/http.dart' as http;
@@ -44,16 +44,15 @@ class FigmaAssetsRepository implements AssetsRepository {
 
           final result = await client.getImages(
             fileId,
-            batch,
-            scale: scale,
+            GetImages(
+              ids: batch.join(','),
+              scale: scale,
+            ),
           );
 
-          if (result.err != null) {
-            throw UnknownAssetsException(result.err);
-          }
-
           final images = await _downloadImages(
-            images: result.images,
+            images: result.images
+                .map((key, value) => MapEntry(key, value?.toString())),
             nodeSettings: nodeSettings,
             scale: scale.toDouble(),
             outputDir: outputDir,

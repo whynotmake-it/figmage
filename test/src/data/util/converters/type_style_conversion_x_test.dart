@@ -1,4 +1,4 @@
-import 'package:figma_variables_api/figma_variables_api.dart';
+import 'package:figma/figma.dart';
 import 'package:figmage/src/data/util/converters/type_style_conversion_x.dart';
 import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:test/test.dart';

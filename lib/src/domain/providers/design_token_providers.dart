@@ -259,6 +259,7 @@ final stylesProvider =
       fileId: settings.fileId,
       token: settings.token,
       fromLibrary: settings.config.stylesFromLibrary,
+      onProgress: stylesProgress.update,
     );
   } on StylesException catch (e) {
     stylesProgress.fail("Failed to fetch styles: ${e.message}");

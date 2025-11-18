@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:figmage/src/data/util/converters/string_dart_conversion_x.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/figmage_settings.dart';
@@ -20,264 +21,313 @@ import 'package:riverpod/riverpod.dart';
 /// If false, includes all tokens, with unresolved ones returning null.
 final filterUnresolvedTokensProvider =
     FutureProvider.family<TokensByType, FigmageSettings>((ref, settings) async {
-  final logger = ref.watch(loggerProvider);
+      final logger = ref.watch(loggerProvider);
 
-  final tokensByType = await ref.watch(filteredTokensProvider(settings).future);
-  tokensByType.asMap().forEach((name, tokens) {
-    final allUnresolvedTokens = tokens.getUnresolvedTokens();
-    // Filter out deleted variables from unresolved warnings when user chose to 
-    // exclude them
-    final unresolvedTokens = settings.config.includeDeletedButReferenced 
-        ? allUnresolvedTokens
-        : allUnresolvedTokens.where((token) => 
-            !(token is Variable && (token.deletedButReferenced ?? false)),
+      final tokensByType = await ref.watch(
+        filteredTokensProvider(settings).future,
+      );
+      tokensByType.asMap().forEach((name, tokens) {
+        final allUnresolvedTokens = tokens.getUnresolvedTokens();
+        // Filter out deleted variables when the user chose to exclude them.
+        final unresolvedTokens = settings.config.includeDeletedButReferenced
+            ? allUnresolvedTokens
+            : allUnresolvedTokens.where(
+                (token) =>
+                    !(token is Variable &&
+                        (token.deletedButReferenced ?? false)),
+              );
+
+        if (unresolvedTokens.isNotEmpty) {
+          logger.warn(
+            'Found ${unresolvedTokens.length} ${name.toTitleCase()} '
+            'where the value is, at least for one mode, unresolvable.',
           );
-
-    if (unresolvedTokens.isNotEmpty) {
-      logger.warn(
-          'Found ${unresolvedTokens.length} ${name.toTitleCase()} where the '
-          'value is, at least for one mode, unresolvable.');
-      if (logger.level == Level.verbose) {
-        // In verbose mode, show ALL unresolved tokens for complete debugging
-        for (final token in allUnresolvedTokens) {
-          logger.info(' ${token.fullName}:');
-          token.valuesByModeName.forEach((modeName, value) {
-            logger.info('   $modeName : $value');
-          });
+          if (logger.level == Level.verbose) {
+            // In verbose mode, show all unresolved tokens for
+            // complete debugging.
+            for (final token in allUnresolvedTokens) {
+              logger.info(' ${token.fullName}:');
+              token.valuesByModeName.forEach((modeName, value) {
+                logger.info('   $modeName : $value');
+              });
+            }
+          }
         }
-      }
-    }
-  });
-  return settings.config.dropUnresolved
-      ? tokensByType.resolvable
-      : tokensByType;
-});
+      });
+      return settings.config.dropUnresolved
+          ? tokensByType.resolvable
+          : tokensByType;
+    });
 
 /// Filters all tokens by file type.
 final filteredTokensProvider =
     FutureProvider.family<TokensByType, FigmageSettings>((ref, settings) async {
-  late final Iterable<Variable> variables;
-  try {
-    variables = await ref.watch(variablesProvider(settings).future);
-  } catch (_) {
-    variables = [];
-  }
+      late final Iterable<Variable> variables;
+      try {
+        variables = await ref.watch(variablesProvider(settings).future);
+      } catch (_) {
+        variables = [];
+      }
 
-  late final Iterable<DesignStyle> styles;
-  try {
-    styles = await ref.watch(stylesProvider(settings).future);
-  } catch (_) {
-    styles = [];
-  }
+      late final Iterable<DesignStyle> styles;
+      try {
+        styles = await ref.watch(stylesProvider(settings).future);
+      } catch (_) {
+        styles = [];
+      }
 
-  final allTokens = <DesignToken>[...variables, ...styles];
-  if (allTokens.isEmpty) {
-    throw ArgumentError.value(
-      allTokens,
-      "Tokens",
-      "Neither styles nor variables could be obtained from file "
-          "${settings.fileId} ",
-    );
-  }
-  return TokensByType(
-    colorTokens: allTokens
-        .whereType<DesignToken<int>>()
-        .filterByFrom(settings.config.colors),
-    typographyTokens: allTokens
-        .whereType<DesignToken<Typography>>()
-        .filterByFrom(settings.config.typography),
-    numberTokens: allTokens
-        .whereType<DesignToken<double>>()
-        .filterByFrom(settings.config.numbers),
-    stringTokens: allTokens
-        .whereType<DesignToken<String>>()
-        .filterByFrom(settings.config.strings),
-    boolTokens: allTokens
-        .whereType<DesignToken<bool>>()
-        .filterByFrom(settings.config.bools),
-  );
-});
+      final allTokens = <DesignToken>[...variables, ...styles];
+      if (allTokens.isEmpty) {
+        throw ArgumentError.value(
+          allTokens,
+          "Tokens",
+          "Neither styles nor variables could be obtained from file "
+              "${settings.fileId} ",
+        );
+      }
+      return TokensByType(
+        colorTokens: allTokens.whereType<DesignToken<int>>().filterByFrom(
+          settings.config.colors,
+        ),
+        typographyTokens: allTokens
+            .whereType<DesignToken<Typography>>()
+            .filterByFrom(settings.config.typography),
+        numberTokens: allTokens.whereType<DesignToken<double>>().filterByFrom(
+          settings.config.numbers,
+        ),
+        stringTokens: allTokens.whereType<DesignToken<String>>().filterByFrom(
+          settings.config.strings,
+        ),
+        boolTokens: allTokens.whereType<DesignToken<bool>>().filterByFrom(
+          settings.config.bools,
+        ),
+      );
+    });
 
 /// Provides a Iterable of all variables obtained from the file in
 /// [FigmageSettings].
 ///
 /// This provider doesn't filter for anything yet.
 final variablesProvider =
-    FutureProvider.family<Iterable<Variable>, FigmageSettings>(
-        (ref, settings) async {
-  final logger = ref.watch(loggerProvider);
-  final repo = ref.watch(variablesRepositoryProvider);
-  final varProgress = logger.progress("Fetching all variables...");
-  try {
-    final variables = await repo.getVariables(
-      fileId: settings.fileId,
-      token: settings.token,
-    );
-    switch (variables) {
-      case []:
-        varProgress.fail("No variables found");
-        throw ArgumentError.value(
-          variables,
-          "variables",
-          "No variables found in file ${settings.fileId}",
+    FutureProvider.family<Iterable<Variable>, FigmageSettings>((
+      ref,
+      settings,
+    ) async {
+      final logger = ref.watch(loggerProvider);
+      final repo = ref.watch(variablesRepositoryProvider);
+      final varProgress = logger.progress("Fetching all variables...");
+      try {
+        final variables = await repo.getVariables(
+          fileId: settings.fileId,
+          token: settings.token,
         );
-      case [...]:
-        // Filter out deleted variables if not included in config
-        final deletedVariables = variables.where(
-          (v) => v.deletedButReferenced ?? false,
-        );
-        if (deletedVariables.isNotEmpty) {
-          logger.warn(
-            " Found ${deletedVariables.length} variables that have been"
-            " deleted but are still referenced.",
-          );
-          if (logger.level == Level.verbose) {
-            for (final variable in deletedVariables) {
-              logger.info(" ${variable.fullName}");
+        switch (variables) {
+          case []:
+            varProgress.fail("No variables found");
+            throw ArgumentError.value(
+              variables,
+              "variables",
+              "No variables found in file ${settings.fileId}",
+            );
+          case [...]:
+            // Filter out deleted variables if not included in config
+            final deletedVariables = variables.where(
+              (v) => v.deletedButReferenced ?? false,
+            );
+            if (deletedVariables.isNotEmpty) {
+              final warning = StringBuffer(
+                "Found ${deletedVariables.length} variables that have been "
+                "deleted but are still referenced.",
+              );
+              if (!settings.config.includeDeletedButReferenced) {
+                warning
+                  ..write(
+                    " Excluding ${deletedVariables.length} deleted variables.",
+                  )
+                  ..write(
+                    " Set 'includeDeletedButReferenced: true' in figmage.yaml "
+                    "to include them.",
+                  );
+              }
+              logger.warn(warning.toString());
+
+              if (logger.level == Level.verbose) {
+                for (final variable in deletedVariables) {
+                  logger.info(" ${variable.fullName}");
+                }
+              }
+
+              if (!settings.config.includeDeletedButReferenced) {
+                final filteredVariables = variables.where(
+                  (v) => !(v.deletedButReferenced ?? false),
+                );
+                varProgress.complete(
+                  "Found ${filteredVariables.length} variables "
+                  "(${deletedVariables.length} deleted variables excluded)",
+                );
+                return filteredVariables;
+              }
             }
-          }
-          
-          if (!settings.config.includeDeletedButReferenced) {
-            final filteredVariables = variables.where(
-              (v) => !(v.deletedButReferenced ?? false),
-            );
-            logger.warn(
-              " Excluding ${deletedVariables.length} deleted variables. "
-              "Set 'includeDeletedButReferenced: true' in figmage.yaml to "
-              "include them.",
-            );
-            varProgress.complete(
-              "Found ${filteredVariables.length} variables "
-              "(${deletedVariables.length} deleted variables excluded)",
-            );
-            return filteredVariables;
-          } else {
-            logger.info(
-              " Including ${deletedVariables.length} deleted variables"
-              " as per config.",
-            );
-          }
+
+            varProgress.complete("Found ${variables.length} variables");
+            return variables;
         }
-        
-        varProgress.complete("Found ${variables.length} variables");
-        return variables;
-    }
-  } on VariablesException catch (e) {
-    varProgress.fail("Failed to fetch variables: ${e.message}");
-    rethrow;
-  } catch (e) {
-    varProgress.fail("Failed to fetch variables for unknown reason ($e)");
-    rethrow;
-  }
-});
+      } on VariablesException catch (e) {
+        varProgress.fail("Failed to fetch variables: ${e.message}");
+        rethrow;
+      } catch (e) {
+        varProgress.fail("Failed to fetch variables for unknown reason ($e)");
+        rethrow;
+      }
+    });
 
 /// Provides a map of downloaded assets from the file in [FigmageSettings].
 ///
 /// Returns a map of node IDs to their downloaded asset file paths (per scale).
 final assetsProvider =
-    FutureProvider.family<Map<String, List<String>>, FigmageSettings>(
-        (ref, settings) async {
-  final logger = ref.watch(loggerProvider);
-  final repo = ref.watch(assetsRepositoryProvider);
-  final assetsProgress = logger.progress("Downloading assets...");
+    FutureProvider.family<Map<String, List<String>>, FigmageSettings>((
+      ref,
+      settings,
+    ) async {
+      final logger = ref.watch(loggerProvider);
+      final repo = ref.watch(assetsRepositoryProvider);
+      final assetsProgress = logger.progress("Downloading assets...");
 
-  try {
-    if (settings.config.assets.nodes.isEmpty) {
-      assetsProgress
-          .fail("No assets specified in figmage.yaml - nothing to download");
-      return {};
-    }
-    // Scale must be a number between 0.01 and 4
-    if (settings.config.assets.nodes.entries
-        .any((e) => e.value.scales.any((s) => s < 0.01 || s > 4))) {
-      logger.warn(
-        """
+      try {
+        if (settings.config.assets.nodes.isEmpty) {
+          assetsProgress.fail(
+            "No assets specified in figmage.yaml - nothing to download",
+          );
+          return {};
+        }
+        // Scale must be a number between 0.01 and 4
+        if (settings.config.assets.nodes.entries.any(
+          (e) => e.value.scales.any((s) => s < 0.01 || s > 4),
+        )) {
+          logger.warn(
+            """
 Figma only supports scale values between 0.01 and 4, values out of this range will be ignored""",
-      );
-    }
+          );
+        }
 
-    final assets = await repo.fetchAndSaveAssets(
-      fileId: settings.fileId,
-      token: settings.token,
-      nodeSettings: settings.config.assets.nodes,
-      outputDir: Directory('${settings.path}/assets'),
-    );
-    assetsProgress.update('Download complete.');
-    if (assets.values.any((l) => l.contains(null))) {
-      logger.warn(
-        '''
+        final assets = await repo.fetchAndSaveAssets(
+          fileId: settings.fileId,
+          token: settings.token,
+          nodeSettings: settings.config.assets.nodes,
+          outputDir: Directory('${settings.path}/assets'),
+        );
+        assetsProgress.update('Download complete.');
+        if (assets.values.any((l) => l.contains(null))) {
+          logger.warn(
+            '''
 Some assets failed to render. This may be due to: 
   - Invalid node IDs  
   - Nodes with no renderable components (e.g., invisible nodes or nodes with 0% opacity)
   ''',
-      );
-      for (final asset in assets.entries.where((e) => e.value.contains(null))) {
-        logger.warn('${asset.key} could not be rendered');
+          );
+          for (final asset in assets.entries.where(
+            (e) => e.value.contains(null),
+          )) {
+            logger.warn('${asset.key} could not be rendered');
+          }
+        }
+
+        // Remove all entries where rendering failed.
+        final successAssets = {
+          for (final entry in assets.entries)
+            // Create a filtered list without nulls
+            if (entry.value.whereType<String>().isNotEmpty)
+              entry.key: entry.value.whereType<String>().toList(),
+        };
+
+        if (successAssets.isEmpty) {
+          assetsProgress.fail("No assets downloaded");
+          return {};
+        } else {
+          assetsProgress.complete(
+            "Downloaded ${successAssets.length} assets",
+          );
+          return successAssets;
+        }
+      } on AssetsException catch (e) {
+        assetsProgress.fail("Failed to download assets: ${e.message}");
+        return {};
+      } catch (e) {
+        assetsProgress.fail(
+          "Failed to download assets for unknown reason ($e)",
+        );
+        return {};
       }
-    }
-
-    // Remove all entries where rendering failed.
-    final successAssets = {
-      for (final entry in assets.entries)
-        // Create a filtered list without nulls
-        if (entry.value.whereType<String>().isNotEmpty)
-          entry.key: entry.value.whereType<String>().toList(),
-    };
-
-    if (successAssets.isEmpty) {
-      assetsProgress.fail("No assets downloaded");
-      return {};
-    } else {
-      assetsProgress.complete(
-        "Downloaded ${successAssets.length} assets",
-      );
-      return successAssets;
-    }
-  } on AssetsException catch (e) {
-    assetsProgress.fail("Failed to download assets: ${e.message}");
-    return {};
-  } catch (e) {
-    assetsProgress.fail("Failed to download assets for unknown reason ($e)");
-    return {};
-  }
-});
+    });
 
 /// Provides a Iterable of all styles obtained from the file in
 /// [FigmageSettings].
 ///
 /// This provider doesn't filter for anything yet.
 final stylesProvider =
-    FutureProvider.family<Iterable<DesignStyle>, FigmageSettings>(
-        (ref, settings) async {
-  final logger = ref.watch(loggerProvider);
-  final repo = ref.watch(stylesRepositoryProvider);
-  final stylesProgress = logger.progress("Fetching all styles...");
+    FutureProvider.family<Iterable<DesignStyle>, FigmageSettings>((
+      ref,
+      settings,
+    ) async {
+      final logger = ref.watch(loggerProvider);
+      final repo = ref.watch(stylesRepositoryProvider);
+      final stylesProgress = logger.progress("Fetching all styles...");
 
-  final List<DesignStyle<dynamic>> styles;
-  try {
-    styles = await repo.getStyles(
-      fileId: settings.fileId,
-      token: settings.token,
-      fromLibrary: settings.config.stylesFromLibrary,
-    );
-  } on StylesException catch (e) {
-    stylesProgress.fail("Failed to fetch styles: ${e.message}");
-    rethrow;
-  } catch (e) {
-    stylesProgress.fail("Failed to fetch styles for unknown reason ($e)");
-    rethrow;
+      void onStylesProgress(String message) {
+        stylesProgress.update(message);
+      }
+
+      final List<DesignStyle<dynamic>> styles;
+      try {
+        styles = await repo.getStyles(
+          fileId: settings.fileId,
+          token: settings.token,
+          fromLibrary: settings.config.stylesFromLibrary,
+          onProgress: onStylesProgress,
+        );
+      } on StylesException catch (e) {
+        stylesProgress.fail("Failed to fetch styles: ${e.message}");
+        rethrow;
+      } catch (e) {
+        stylesProgress.fail("Failed to fetch styles for unknown reason ($e)");
+        rethrow;
+      }
+
+      switch (styles) {
+        case []:
+          stylesProgress.fail("No styles found");
+          throw ArgumentError.value(
+            styles,
+            "styles",
+            "No styles found in file ${settings.fileId}",
+          );
+        case [...]:
+          _warnAboutDuplicateStyleNames(logger, styles);
+          stylesProgress.complete("Found ${styles.length} styles");
+          return styles;
+      }
+    });
+
+void _warnAboutDuplicateStyleNames(
+  Logger logger,
+  Iterable<DesignStyle<dynamic>> styles,
+) {
+  final duplicates = groupBy(styles, (style) => style.fullName)
+      .entries
+      .where((entry) => entry.value.length > 1)
+      .toList();
+  if (duplicates.isEmpty) {
+    return;
   }
 
-  switch (styles) {
-    case []:
-      stylesProgress.fail("No styles found");
-      throw ArgumentError.value(
-        styles,
-        "styles",
-        "No styles found in file ${settings.fileId}",
-      );
-    case [...]:
-      stylesProgress.complete("Found ${styles.length} styles");
-      return styles;
+  final warning = StringBuffer(
+    'Detected duplicate style names from Figma. '
+    'Figmage will append Variant suffixes (Variant2, Variant3, ...) '
+    'to keep the generated members unique:\n',
+  );
+  for (final entry in duplicates) {
+    final nodeIds = entry.value.map((style) => style.id).join(', ');
+    warning.writeln(' - ${entry.key} (node IDs: $nodeIds)');
   }
-});
+  logger.warn(warning.toString().trimRight());
+}

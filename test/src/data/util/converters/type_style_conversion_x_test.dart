@@ -1,4 +1,4 @@
-import 'package:figma_variables_api/figma_variables_api.dart';
+import 'package:figma/figma.dart';
 import 'package:figmage/src/data/util/converters/type_style_conversion_x.dart';
 import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:test/test.dart';
@@ -14,7 +14,6 @@ void main() {
           fontPostScriptName: 'Roboto-Regular',
           fontSize: 16,
           fontWeight: 400,
-          italic: false,
           letterSpacing: 0,
           lineHeightPx: 20,
         );
@@ -59,7 +58,6 @@ void main() {
           fontPostScriptName: 'Roboto-Regular',
           fontSize: 16,
           fontWeight: 400,
-          italic: false,
           letterSpacing: 0,
         );
 
@@ -80,7 +78,6 @@ void main() {
           fontFamily: 'Roboto',
           fontPostScriptName: 'Roboto-Regular',
           fontSize: 16,
-          italic: false,
           letterSpacing: 0,
           lineHeightPx: 20,
         );

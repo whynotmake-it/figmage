@@ -74,6 +74,9 @@ abstract class ModeThemeExtensionGenerator<T>
 
   @override
   Class generateClass() {
+    final uniqueFieldNames =
+        _getUniqueVariableNames(valuesByNameByMode.values.first.keys);
+
     final validValueMaps = valuesByNameByMode.map(
       (key, value) => MapEntry(
         switch (key) {
@@ -81,7 +84,7 @@ abstract class ModeThemeExtensionGenerator<T>
           _ => convertToValidVariableName(key),
         },
         value.map(
-          (key, value) => MapEntry(convertToValidVariableName(key), value),
+          (key, value) => MapEntry(uniqueFieldNames[key]!, value),
         ),
       ),
     );
@@ -311,6 +314,28 @@ abstract class ModeThemeExtensionGenerator<T>
         ),
     ];
   }
+}
+
+Map<String, String> _getUniqueVariableNames(Iterable<String> names) {
+  final result = <String, String>{};
+  final usedNames = <String>{};
+  final counts = <String, int>{};
+
+  for (final name in names) {
+    final baseName = convertToValidVariableName(name);
+    var count = (counts[baseName] ?? 0) + 1;
+    counts[baseName] = count;
+    var candidate = count == 1 ? baseName : '${baseName}Variant$count';
+    while (usedNames.contains(candidate)) {
+      count += 1;
+      candidate = '${baseName}Variant$count';
+    }
+    counts[baseName] = count;
+    usedNames.add(candidate);
+    result[name] = candidate;
+  }
+
+  return result;
 }
 
 /// Extension on Reference

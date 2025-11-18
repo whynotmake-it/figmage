@@ -1,16 +1,13 @@
-import 'package:figma_variables_api/figma_variables_api.dart';
+import 'package:figma/figma.dart';
 
-/// Extension methods for converting [Color]s.
-extension ColorConversionX on Color {
-  /// Converts a figma [Color] to a 32 bit integer.
-  int toValue() {
-    if ((r, g, b, a) case (final r?, final g?, final b?, final a?)) {
-      final red = (r * 255).round();
-      final green = (g * 255).round();
-      final blue = (b * 255).round();
-      final alpha = (a * 255).round();
-      return (alpha << 24) | (red << 16) | (green << 8) | blue;
-    }
-    throw Exception('Color is not valid');
+/// Extension methods for converting [Rgba]s.
+extension ColorConversionX on Rgba {
+  /// Converts a figma [Rgba] to a 32 bit integer.
+  int toValue({num? opacity}) {
+    final red = (r * 255).round();
+    final green = (g * 255).round();
+    final blue = (b * 255).round();
+    final alpha = (a * (opacity ?? 1) * 255).round();
+    return (alpha << 24) | (red << 16) | (green << 8) | blue;
   }
 }

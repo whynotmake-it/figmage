@@ -6,3 +6,9 @@ sidebar:
 ---
 
 This page is currently under construction. Please check back later.
+
+## Avoiding Duplicate Style Names
+
+When working with styles, Figma allows multiple styles with identical names to exist in the same file. If Figmage encounters duplicate style names, it will automatically suffix them (`Variant2`, `Variant3`, etc.) in the generated code and display a warning listing the affected styles with their node IDs.
+
+The cleanest workaround is to use `stylesFromLibrary: true` in your configuration. Published library styles rarely have duplicates, and cleaning up invisible or orphaned styles in local files is surprisingly difficult.

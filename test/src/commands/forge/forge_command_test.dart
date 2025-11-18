@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/command_runner.dart';
 import 'package:figmage/src/commands/forge/forge_command.dart';
 import 'package:figmage/src/data/repositories/figma_variables_repository.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
+import 'package:figmage/src/domain/models/variable/variable_type.dart';
 import 'package:figmage/src/domain/providers/figmage_package_generator_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/repositories/variables_repository.dart';

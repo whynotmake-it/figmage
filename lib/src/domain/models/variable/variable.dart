@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
+import 'package:figmage/src/domain/models/variable/variable_type.dart';
 
 /// {@template variable}
 /// Represents a Figma variable with different data types.

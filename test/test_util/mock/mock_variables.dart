@@ -2,10 +2,10 @@
 // we have to ignore the prefer_const_constructors rule.
 // ignore_for_file: prefer_const_constructors
 
-import 'package:figma_variables_api/figma_variables_api.dart';
 import 'package:figmage/src/domain/models/tokens_by_file_type/tokens_by_type.dart';
 import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
+import 'package:figmage/src/domain/models/variable/variable_type.dart';
 
 final mockColorVariableUnresolvable = ColorVariable(
   id: "color_id_unresolvable",

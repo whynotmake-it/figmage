@@ -1,4 +1,4 @@
-import 'package:figma_variables_api/figma_variables_api.dart';
+import 'package:figma/figma.dart';
 import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:meta/meta.dart';
 
@@ -11,7 +11,7 @@ extension TypeStyleConversionX on TypeStyle {
         fontFamilyPostScriptName: fontPostScriptName,
         fontSize: fontSize!.toDouble(),
         fontWeight: convertFontWeight(fontWeight ?? 400),
-        fontStyle: italic ?? false ? FontStyle.italic : FontStyle.normal,
+        fontStyle: italic ? FontStyle.italic : FontStyle.normal,
         letterSpacing: letterSpacing?.toDouble() ?? 0,
         height: convertLineHeight(lineHeightPx, fontSize),
       );

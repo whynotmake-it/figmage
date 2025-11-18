@@ -51,12 +51,13 @@ extension TokenFilterX<X> on Iterable<DesignToken<X>> {
   Map<String, Map<String, X?>> get valuesByNameByMode {
     final sorted = sortTokensByName();
     final allModes = getAllUniqueSortedModes();
+    final uniqueNames = _getUniqueTokenNames(sorted);
     return {
       for (final mode in allModes)
         mode: {
           for (final token in sorted)
             if (token.valuesByModeName[mode] case final alias?)
-              token.name: alias.resolveValue,
+              uniqueNames[token]!: alias.resolveValue,
         },
     };
   }
@@ -73,4 +74,18 @@ extension TokenFilterX<X> on Iterable<DesignToken<X>> {
       );
     }
   }
+}
+
+Map<DesignToken<X>, String> _getUniqueTokenNames<X>(
+  Iterable<DesignToken<X>> tokens,
+) {
+  final occurrences = <String, int>{};
+  final names = <DesignToken<X>, String>{};
+  for (final token in tokens) {
+    final baseName = token.name;
+    final count = (occurrences[baseName] ?? 0) + 1;
+    occurrences[baseName] = count;
+    names[token] = count == 1 ? baseName : '${baseName}Variant$count';
+  }
+  return names;
 }

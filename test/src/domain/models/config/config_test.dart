@@ -6,22 +6,33 @@ import 'package:yaml/yaml.dart';
 
 void main() {
   group('Config', () {
-    late Map<dynamic, dynamic> minimal;
+    late Map<dynamic, dynamic> minimalWithFileId;
+    late Map<dynamic, dynamic> minimalWithJson;
     late Map<dynamic, dynamic> full;
 
     late Config fullExample;
 
     setUp(() {
-      minimal = {
-        "fileId": "fileId",
+      minimalWithFileId = {
         "packageName": "packageName",
+        "fileId": "fileId",
+      };
+
+      minimalWithJson = {
+        "packageName": "packageName",
+        "json": {
+          "paths": ["tokens.json"],
+        },
       };
 
       full = {
-        ...minimal,
+        ...minimalWithFileId,
         "packageDescription": "packageDescription",
         "asPackage": true,
         "tokenPath": "src",
+        "json": {
+          "paths": ["tokens.json", "tokens_extra.json"],
+        },
         "dropUnresolved": false,
         "includeDeletedButReferenced": false,
         "stylesFromLibrary": false,
@@ -81,6 +92,9 @@ void main() {
         fileId: "fileId",
         packageName: "packageName",
         packageDescription: "packageDescription",
+        json: const JsonTokenSourceConfig(
+          paths: ["tokens.json", "tokens_extra.json"],
+        ),
         colors: const GenerationSettings(
           from: ["path1", "path2"],
         ),
@@ -145,12 +159,24 @@ void main() {
 
     group('fromMap', () {
       test('supports generation from minimal map', () async {
-        final result = Config.fromMap(minimal);
+        final result = Config.fromMap(minimalWithFileId);
         expect(
           result,
           const Config(
             fileId: "fileId",
             packageName: "packageName",
+          ),
+        );
+      });
+
+      test('supports json-only minimal map', () async {
+        final result = Config.fromMap(minimalWithJson);
+
+        expect(
+          result,
+          const Config(
+            packageName: "packageName",
+            json: JsonTokenSourceConfig(paths: ["tokens.json"]),
           ),
         );
       });
@@ -163,7 +189,7 @@ void main() {
 
       test('supports includeDeletedButReferenced configuration', () async {
         final configMap = {
-          ...minimal,
+          ...minimalWithFileId,
           "includeDeletedButReferenced": true,
         };
 
@@ -173,9 +199,28 @@ void main() {
         expect(result.toJson()["includeDeletedButReferenced"], isTrue);
       });
 
+      test('supports json token sources', () async {
+        final configMap = {
+          ...minimalWithFileId,
+          "json": {
+            "paths": ["tokens.json", "tokens_extra.json"],
+          },
+        };
+
+        final result = Config.fromMap(configMap);
+
+        expect(result.json.paths, ["tokens.json", "tokens_extra.json"]);
+        expect(
+          result.toJson()["json"],
+          equals({
+            "paths": ["tokens.json", "tokens_extra.json"],
+          }),
+        );
+      });
+
       test('supports asset configuration', () async {
         final map = {
-          ...minimal,
+          ...minimalWithFileId,
           "assets": {
             "generate": true,
             "nodes": {

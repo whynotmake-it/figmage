@@ -81,6 +81,7 @@ void main() {
           config.packageDescription,
           'Design Tokens generated from our Figma',
         );
+        expect(config.json.paths, ['tokens.json', 'tokens_extra.json']);
 
         expect(config.colors.generate, true);
         expect(config.colors.from, ['color', 'color2']);
@@ -160,6 +161,10 @@ fileId: 'fileId'
 packageName: Design Token Package
 packageDescription: Design Tokens generated from our Figma
 outputPath: ./path
+json:
+  paths:
+    - 'tokens.json'
+    - 'tokens_extra.json'
 colors:
   generate: true
   from:

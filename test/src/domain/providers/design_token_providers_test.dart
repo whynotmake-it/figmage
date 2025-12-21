@@ -1,12 +1,16 @@
 import 'package:figmage/src/domain/models/config/config.dart';
+import 'package:figmage/src/domain/models/json_token.dart';
 import 'package:figmage/src/domain/models/style/design_style.dart';
 import 'package:figmage/src/domain/models/typography/typography.dart';
+import 'package:figmage/src/domain/models/variable/alias_or/alias_or.dart';
 import 'package:figmage/src/domain/providers/design_token_providers.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
+import 'package:figmage/src/domain/repositories/json_tokens_repository.dart';
 import 'package:figmage/src/domain/repositories/styles_repository.dart';
 import 'package:figmage/src/domain/repositories/variables_repository.dart';
 import 'package:mason_logger/mason_logger.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:path/path.dart' as path;
 import 'package:riverpod/riverpod.dart';
 import 'package:test/test.dart';
 
@@ -17,6 +21,8 @@ import '../../../test_util/mock/mock_variables.dart';
 class _MockStylesRepository extends Mock implements StylesRepository {}
 
 class _MockVariablesRepository extends Mock implements VariablesRepository {}
+
+class _MockJsonTokensRepository extends Mock implements JsonTokensRepository {}
 
 class _MockLogger extends Mock implements Logger {}
 
@@ -146,6 +152,84 @@ void main() {
       expect(
         () => container.read(filteredTokensProvider(mockSettings).future),
         throwsA(isA<ArgumentError>()),
+      );
+    });
+  });
+
+  group('jsonTokensProvider', () {
+    late ProviderContainer container;
+    late _MockJsonTokensRepository jsonTokensRepository;
+
+    setUp(() {
+      jsonTokensRepository = _MockJsonTokensRepository();
+      when(() => jsonTokensRepository.getTokens(paths: any(named: 'paths')))
+          .thenAnswer((_) async => []);
+      container = createContainer(
+        overrides: [
+          jsonTokensRepositoryProvider
+              .overrideWith((ref) => jsonTokensRepository),
+        ],
+      );
+    });
+
+    test('resolves relative paths against settings.path', () async {
+      const settings = (
+        config: Config(
+          json: JsonTokenSourceConfig(paths: ["tokens.json"]),
+        ),
+        fileId: null,
+        path: "root",
+        token: null,
+      );
+
+      await container.read(jsonTokensProvider(settings).future);
+
+      final captured = verify(
+        () => jsonTokensRepository.getTokens(
+          paths: captureAny(named: 'paths'),
+        ),
+      ).captured.single as Iterable<String>;
+      expect(captured.toList(), [path.join("root", "tokens.json")]);
+    });
+  });
+
+  group('filteredTokensProvider with json tokens', () {
+    late ProviderContainer container;
+
+    const jsonSettings = (
+      config: Config(
+        json: JsonTokenSourceConfig(paths: ["tokens.json"]),
+      ),
+      fileId: null,
+      path: ".",
+      token: null,
+    );
+
+    setUp(() {
+      final jsonToken = JsonToken<int>(
+        name: "colors/primary",
+        fullName: "ds/colors/primary",
+        collectionName: "ds",
+        collectionId: "ds",
+        valuesByModeName: {
+          "light": const AliasOr<int>.data(data: 0xffffffff),
+        },
+      );
+
+      container = createContainer(
+        overrides: [
+          jsonTokensProvider.overrideWith((ref, _) async => [jsonToken]),
+        ],
+      );
+    });
+
+    test('uses json tokens when figma sources are missing', () async {
+      final tokensByType =
+          await container.read(filteredTokensProvider(jsonSettings).future);
+      expect(tokensByType.colorTokens, hasLength(1));
+      expect(
+        tokensByType.colorTokens.first.fullName,
+        equals("ds/colors/primary"),
       );
     });
   });

@@ -75,6 +75,44 @@ void main() {
           ),
         );
       });
+
+      test('allows json-only config without fileId or token', () async {
+        const jsonConfig = Config(
+          packageName: "packageName",
+          json: JsonTokenSourceConfig(paths: ["tokens.json"]),
+        );
+        container = createContainer(
+          overrides: [
+            configProvider.overrideWith((ref, _) => jsonConfig),
+          ],
+        );
+        when(() => argResults['token']).thenReturn(null);
+        when(() => argResults['fileId']).thenReturn(null);
+
+        final result =
+            await container.read(settingsProvider(argResults).future);
+        expect(result.fileId, isNull);
+        expect(result.token, isNull);
+      });
+
+      test('throws ArgumentError if fileId is missing and no json paths',
+          () async {
+        const emptyConfig = Config(packageName: "packageName");
+        container = createContainer(
+          overrides: [
+            configProvider.overrideWith((ref, _) => emptyConfig),
+          ],
+        );
+        when(() => argResults['token']).thenReturn(null);
+        when(() => argResults['fileId']).thenReturn(null);
+        await expectLater(
+          () => container.read(settingsProvider(argResults).future),
+          throwsA(
+            isA<ArgumentError>().having((p0) => p0.name, 'name', 'fileId'),
+          ),
+        );
+      });
+
     });
   });
 }

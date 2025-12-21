@@ -126,6 +126,9 @@ void _collectTokens({
 Map<String, Set<String>> _detectModeBranches(
   List<_RawJsonToken> tokens,
 ) {
+  // Build per-collection candidate mode branches.
+  // Each branch stores the set of relative token names beneath it.
+  // Collection -> Branch -> Set<token-names>
   final branchesByCollection = <String, Map<String, Set<String>>>{};
   for (final token in tokens) {
     if (token.pathSegments.length < 3) {
@@ -134,12 +137,12 @@ Map<String, Set<String>> _detectModeBranches(
     final collection = token.pathSegments[0];
     final branch = token.pathSegments[1];
     final name = token.pathSegments.sublist(2).join('/');
+    // branchMap collects branch -> token-name-set for this collection.
     final branchMap = branchesByCollection.putIfAbsent(
       collection,
       () => <String, Set<String>>{},
     );
-  branchMap.putIfAbsent(branch, () => <String>{})
-    .add(name);
+    branchMap.putIfAbsent(branch, () => <String>{}).add(name);
   }
 
   final modeBranchesByCollection = <String, Set<String>>{};
@@ -149,6 +152,7 @@ Map<String, Set<String>> _detectModeBranches(
     for (final branchEntry in branches.entries) {
       final branchName = branchEntry.key;
       final names = branchEntry.value;
+      // A branch is a "mode" only if a sibling branch has the same name set.
       final hasMatchingSibling = branches.entries.any(
         (sibling) =>
             sibling.key != branchName &&
@@ -176,11 +180,13 @@ List<DesignToken<dynamic>> _buildTokens(
   List<_RawJsonToken> tokens,
   Map<String, Set<String>> modeBranchesByCollection,
 ) {
-  final colorTokens = <String, _TokenAccumulator<int>>{};
-  final numberTokens = <String, _TokenAccumulator<double>>{};
-  final boolTokens = <String, _TokenAccumulator<bool>>{};
-  final stringTokens = <String, _TokenAccumulator<String>>{};
-  final typographyTokens = <String, _TokenAccumulator<Typography>>{};
+  // If duplicates exist for the same (collection,name,mode), we create
+  // additional tokens so downstream name de-duplication can suffix them.
+  final colorTokens = <String, List<_TokenAccumulator<int>>>{};
+  final numberTokens = <String, List<_TokenAccumulator<double>>>{};
+  final boolTokens = <String, List<_TokenAccumulator<bool>>>{};
+  final stringTokens = <String, List<_TokenAccumulator<String>>>{};
+  final typographyTokens = <String, List<_TokenAccumulator<Typography>>>{};
 
   for (final token in tokens) {
     final pathSegments = token.pathSegments;
@@ -191,63 +197,60 @@ List<DesignToken<dynamic>> _buildTokens(
       );
     }
 
-    final mapped = _mapPath(
+    final mappedEntries = _mapPathsForToken(
       pathSegments,
       modeBranchesByCollection[pathSegments[0]] ?? const {},
     );
 
-    switch (token.type) {
-      case 'color':
-        final value = _parseColor(token.value, token);
-        _addToken<int>(
-          colorTokens,
-          mapped,
-          AliasOr<int>.data(data: value),
-          token,
-        );
-      case 'number':
-        final value = _parseNumber(token.value, token);
-        _addToken<double>(
-          numberTokens,
-          mapped,
-          AliasOr<double>.data(data: value),
-          token,
-        );
-      case 'boolean':
-        final value = _parseBool(token.value, token);
-        _addToken<bool>(
-          boolTokens,
-          mapped,
-          AliasOr<bool>.data(data: value),
-          token,
-        );
-      case 'text':
-        final value = _parseString(token.value, token);
-        _addToken<String>(
-          stringTokens,
-          mapped,
-          AliasOr<String>.data(data: value),
-          token,
-        );
-      case 'typography':
-        final value = _parseTypography(token.value, token);
-        _addToken<Typography>(
-          typographyTokens,
-          mapped,
-          AliasOr<Typography>.data(data: value),
-          token,
-        );
-      default:
-        throw FormatException(
-          'Unsupported token type "${token.type}" at '
-          '${_formatPath(token.pathSegments)}.',
-          token.filePath,
-        );
+    for (final mapped in mappedEntries) {
+      switch (token.type) {
+        case 'color':
+          final value = _parseColor(token.value, token);
+          _addToken<int>(
+            colorTokens,
+            mapped,
+            AliasOr<int>.data(data: value),
+          );
+        case 'number':
+          final value = _parseNumber(token.value, token);
+          _addToken<double>(
+            numberTokens,
+            mapped,
+            AliasOr<double>.data(data: value),
+          );
+        case 'boolean':
+          final value = _parseBool(token.value, token);
+          _addToken<bool>(
+            boolTokens,
+            mapped,
+            AliasOr<bool>.data(data: value),
+          );
+        case 'text':
+          final value = _parseString(token.value, token);
+          _addToken<String>(
+            stringTokens,
+            mapped,
+            AliasOr<String>.data(data: value),
+          );
+        case 'typography':
+          final value = _parseTypography(token.value, token);
+          _addToken<Typography>(
+            typographyTokens,
+            mapped,
+            AliasOr<Typography>.data(data: value),
+          );
+        default:
+          throw FormatException(
+            'Unsupported token type "${token.type}" at '
+            '${_formatPath(token.pathSegments)}.',
+            token.filePath,
+          );
+      }
     }
   }
 
   return [
-    ...colorTokens.values.map(
+    ...colorTokens.values.expand((list) => list).map(
       (acc) => JsonToken<int>(
         name: acc.name,
         fullName: acc.fullName,
@@ -256,7 +259,7 @@ List<DesignToken<dynamic>> _buildTokens(
         valuesByModeName: acc.valuesByModeName,
       ),
     ),
-    ...numberTokens.values.map(
+    ...numberTokens.values.expand((list) => list).map(
       (acc) => JsonToken<double>(
         name: acc.name,
         fullName: acc.fullName,
@@ -265,7 +268,7 @@ List<DesignToken<dynamic>> _buildTokens(
         valuesByModeName: acc.valuesByModeName,
       ),
     ),
-    ...boolTokens.values.map(
+    ...boolTokens.values.expand((list) => list).map(
       (acc) => JsonToken<bool>(
         name: acc.name,
         fullName: acc.fullName,
@@ -274,7 +277,7 @@ List<DesignToken<dynamic>> _buildTokens(
         valuesByModeName: acc.valuesByModeName,
       ),
     ),
-    ...stringTokens.values.map(
+    ...stringTokens.values.expand((list) => list).map(
       (acc) => JsonToken<String>(
         name: acc.name,
         fullName: acc.fullName,
@@ -283,7 +286,7 @@ List<DesignToken<dynamic>> _buildTokens(
         valuesByModeName: acc.valuesByModeName,
       ),
     ),
-    ...typographyTokens.values.map(
+    ...typographyTokens.values.expand((list) => list).map(
       (acc) => JsonToken<Typography>(
         name: acc.name,
         fullName: acc.fullName,
@@ -295,29 +298,46 @@ List<DesignToken<dynamic>> _buildTokens(
   ];
 }
 
-({String collectionName, String mode, String name, String fullName}) _mapPath(
+List<({String collectionName, String mode, String name, String fullName})>
+    _mapPathsForToken(
   List<String> pathSegments,
   Set<String> modeBranches,
 ) {
   if (pathSegments.length == 1) {
     final name = pathSegments.first;
-    return (
-      collectionName: '',
-      mode: '',
-      name: name,
-      fullName: name,
-    );
+    return [
+      (
+        collectionName: '',
+        mode: '',
+        name: name,
+        fullName: name,
+      ),
+    ];
   }
 
   if (pathSegments.length == 2) {
     final collectionName = pathSegments[0];
     final name = pathSegments[1];
-    return (
-      collectionName: collectionName,
-      mode: '',
-      name: name,
-      fullName: '$collectionName/$name',
-    );
+    if (modeBranches.isNotEmpty) {
+      final sortedModes = modeBranches.toList()..sort();
+      return [
+        for (final mode in sortedModes)
+          (
+            collectionName: collectionName,
+            mode: mode,
+            name: name,
+            fullName: '$collectionName/$name',
+          ),
+      ];
+    }
+    return [
+      (
+        collectionName: collectionName,
+        mode: '',
+        name: name,
+        fullName: '$collectionName/$name',
+      ),
+    ];
   }
 
   final collection = pathSegments[0];
@@ -325,45 +345,50 @@ List<DesignToken<dynamic>> _buildTokens(
   final name = pathSegments.sublist(2).join('/');
 
   if (modeBranches.contains(secondSegment)) {
-    return (
-      collectionName: collection,
-      mode: secondSegment,
-      name: name,
-      fullName: '$collection/$name',
-    );
+    return [
+      (
+        collectionName: collection,
+        mode: secondSegment,
+        name: name,
+        fullName: '$collection/$name',
+      ),
+    ];
   }
 
   final collectionName = '$collection/$secondSegment';
-  return (
-    collectionName: collectionName,
-    mode: '',
-    name: name,
-    fullName: '$collectionName/$name',
-  );
+  return [
+    (
+      collectionName: collectionName,
+      mode: '',
+      name: name,
+      fullName: '$collectionName/$name',
+    ),
+  ];
 }
 
 void _addToken<T>(
-  Map<String, _TokenAccumulator<T>> target,
+  Map<String, List<_TokenAccumulator<T>>> target,
   ({String collectionName, String mode, String name, String fullName}) mapped,
   AliasOr<T> value,
-  _RawJsonToken token,
 ) {
   final key = '${mapped.collectionName}|${mapped.name}';
-  final accumulator = target.putIfAbsent(
-    key,
-    () => _TokenAccumulator<T>(
-      collectionName: mapped.collectionName,
-      name: mapped.name,
-      fullName: mapped.fullName,
-    ),
+  final accumulators = target.putIfAbsent(key, () => []);
+  _TokenAccumulator<T>? accumulator;
+  for (final existing in accumulators) {
+    if (existing.valuesByModeName.containsKey(mapped.mode) == false) {
+      accumulator = existing;
+      break;
+    }
+  }
+
+  accumulator ??= _TokenAccumulator<T>(
+    collectionName: mapped.collectionName,
+    name: mapped.name,
+    fullName: mapped.fullName,
   );
 
-  if (accumulator.valuesByModeName.containsKey(mapped.mode)) {
-    throw FormatException(
-      'Duplicate token for mode "${mapped.mode}" at '
-      '${_formatPath(token.pathSegments)}.',
-      token.filePath,
-    );
+  if (accumulators.contains(accumulator) == false) {
+    accumulators.add(accumulator);
   }
   accumulator.valuesByModeName[mapped.mode] = value;
 }
@@ -463,7 +488,10 @@ Typography _parseTypography(Object? value, _RawJsonToken token) {
           allowValueWrapper: false,
         ).round();
 
-  final decoration = _parseDecoration(map['decoration'], token);
+  final decoration = _parseDecoration(
+    map['textDecoration'] ?? map['decoration'],
+    token,
+  );
   final fontStyle = _parseFontStyle(map['fontStyle'], token);
 
   final letterSpacing = map.containsKey('letterSpacing')
@@ -489,11 +517,10 @@ Typography _parseTypography(Object? value, _RawJsonToken token) {
       : map['height'];
   final lineHeight = lineHeightValue == null
       ? 1.0
-      : _parseDouble(
+      : _parseLineHeight(
           lineHeightValue,
           token,
-          fieldName: 'lineHeight',
-          allowValueWrapper: true,
+          fontSize: fontSize,
         );
 
   return Typography(
@@ -532,6 +559,28 @@ double _parseDouble(
     'Expected $fieldName to be numeric at '
     '${_formatPath(token.pathSegments)}.',
     token.filePath,
+  );
+}
+
+double _parseLineHeight(
+  Object? value,
+  _RawJsonToken token, {
+  required double fontSize,
+}) {
+  if (value is Map) {
+    final parsed = _parseDouble(
+      value['value'],
+      token,
+      fieldName: 'lineHeight',
+      allowValueWrapper: false,
+    );
+    return parsed / fontSize;
+  }
+  return _parseDouble(
+    value,
+    token,
+    fieldName: 'lineHeight',
+    allowValueWrapper: true,
   );
 }
 

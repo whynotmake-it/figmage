@@ -64,6 +64,10 @@ void main() {
                 r"$value": "#123456",
               },
             },
+            "gap": {
+              r"$type": "number",
+              r"$value": 12,
+            },
           },
           "topColor": {
             r"$type": "color",
@@ -93,6 +97,12 @@ void main() {
         (token) => token.fullName == 'ds/spacing/sm',
       );
       expect(spacing.valuesByModeName.keys, containsAll(['light', 'dark']));
+
+      final gap = numberTokens.firstWhere(
+        (token) => token.fullName == 'ds/gap',
+      );
+      expect(gap.valuesByModeName.keys, containsAll(['light', 'dark']));
+      expect(gap.valuesByModeName.keys, isNot(contains('')));
 
       final brand = colorTokens.firstWhere(
         (token) => token.fullName == 'ds/brand/brandColor',
@@ -125,6 +135,7 @@ void main() {
                 r"$value": {
                   "fontFamily": "Inter",
                   "fontSize": 16,
+                  "textDecoration": "underline",
                 },
               },
             },
@@ -133,10 +144,10 @@ void main() {
                 r"$type": "typography",
                 r"$value": {
                   "fontFamily": "Inter",
-                  "fontSize": 18,
+                  "fontSize": 12,
                   "fontWeight": 700,
                   "letterSpacing": {"value": 0.5},
-                  "lineHeight": 1.2,
+                  "lineHeight": {"value": 24, "unit": "px"},
                 },
               },
             },
@@ -155,11 +166,50 @@ void main() {
       expect(light.fontWeight, 400);
       expect(light.letterSpacing, 1.0);
       expect(light.height, 1.0);
+      expect(light.decoration, TextDecoration.underline);
 
       final dark = typographyToken.valuesByModeName['dark']!.resolveValue!;
       expect(dark.fontWeight, 700);
       expect(dark.letterSpacing, 0.5);
-      expect(dark.height, 1.2);
+      expect(dark.height, 2);
+    });
+
+    test('keeps duplicate tokens for the same mode', () async {
+      final fileA = await _writeJsonFile(
+        tempDir,
+        'dup_a.json',
+        {
+          "ds": {
+            "light": {
+              "color1": {
+                r"$type": "color",
+                r"$value": "#ffffff",
+              },
+            },
+          },
+        },
+      );
+      final fileB = await _writeJsonFile(
+        tempDir,
+        'dup_b.json',
+        {
+          "ds": {
+            "light": {
+              "color1": {
+                r"$type": "color",
+                r"$value": "#000000",
+              },
+            },
+          },
+        },
+      );
+
+      final tokens = await sut.getTokens(paths: [fileA.path, fileB.path]);
+      final colorTokens = tokens.whereType<DesignToken<int>>().toList();
+      expect(
+        colorTokens.where((token) => token.fullName == 'ds/color1').length,
+        2,
+      );
     });
 
     test('throws when type is missing', () async {
@@ -203,6 +253,57 @@ void main() {
         () => sut.getTokens(paths: [file.path]),
         throwsA(isA<FormatException>()),
       );
+    });
+
+    test('promotes branch to collection when mode sets do not match', () async {
+      final file = await _writeJsonFile(
+        tempDir,
+        'mismatch.json',
+        {
+          "ds": {
+            "light": {
+              "color1": {
+                r"$type": "color",
+                r"$value": "#ffffff",
+              },
+              "spacing": {
+                "sm": {
+                  r"$type": "number",
+                  r"$value": 4,
+                },
+              },
+            },
+            "dark": {
+              "color1": {
+                r"$type": "color",
+                r"$value": "#000000",
+              },
+            },
+          },
+        },
+      );
+
+      final tokens = await sut.getTokens(paths: [file.path]);
+      final colorTokens = tokens.whereType<DesignToken<int>>().toList();
+      final numberTokens = tokens.whereType<DesignToken<double>>().toList();
+
+      final lightColor = colorTokens.firstWhere(
+        (token) => token.fullName == 'ds/light/color1',
+      );
+      expect(lightColor.collectionName, 'ds/light');
+      expect(lightColor.valuesByModeName.keys, contains(''));
+
+      final darkColor = colorTokens.firstWhere(
+        (token) => token.fullName == 'ds/dark/color1',
+      );
+      expect(darkColor.collectionName, 'ds/dark');
+      expect(darkColor.valuesByModeName.keys, contains(''));
+
+      final spacing = numberTokens.firstWhere(
+        (token) => token.fullName == 'ds/light/spacing/sm',
+      );
+      expect(spacing.collectionName, 'ds/light');
+      expect(spacing.valuesByModeName.keys, contains(''));
     });
   });
 }

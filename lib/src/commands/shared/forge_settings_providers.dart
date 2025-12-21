@@ -21,15 +21,29 @@ final settingsProvider = FutureProvider.autoDispose
 
   final config = await ref.watch(configProvider(configPath).future);
 
+  final fileId = switch (args['fileId'] ?? config.fileId) {
+    final String fileId => fileId,
+    _ => null,
+  };
+
+  final token = switch (args['token']) {
+    final String token => token,
+    _ => null,
+  };
+
+  final hasJsonSources = config.json.paths.isNotEmpty;
+
+  if (fileId == null && hasJsonSources == false) {
+    throw ArgumentError.notNull('fileId');
+  }
+
+  if (fileId != null && token == null) {
+    throw ArgumentError.notNull('token');
+  }
+
   return (
-    token: switch (args['token']) {
-      final String token => token,
-      _ => throw ArgumentError.notNull('token'),
-    },
-    fileId: switch (args['fileId'] ?? config.fileId) {
-      final String fileId => fileId,
-      _ => throw ArgumentError.notNull('fileId'),
-    },
+    token: token,
+    fileId: fileId,
     path: dir.path,
     config: config,
   );

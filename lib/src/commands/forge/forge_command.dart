@@ -16,8 +16,7 @@ class ForgeCommand extends Command<int> {
       ..addOption(
         "token",
         abbr: "t",
-        help: "Your figma API token",
-        mandatory: true,
+        help: "Your figma API token (required when using fileId)",
       )
       ..addOption(
         "path",

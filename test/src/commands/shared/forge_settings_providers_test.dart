@@ -27,6 +27,8 @@ void main() {
       when(() => argResults['token']).thenReturn("arg_token");
       when(() => argResults['fileId']).thenReturn("arg_fileId");
       when(() => argResults['path']).thenReturn("arg_path");
+      when(() => argResults.wasParsed('token')).thenReturn(true);
+      when(() => argResults.wasParsed('fileId')).thenReturn(true);
       when(() => argResults.wasParsed('path')).thenReturn(true);
     });
 
@@ -45,6 +47,7 @@ void main() {
 
       test('takes fileId from config if not in args', () async {
         when(() => argResults['fileId']).thenReturn(null);
+        when(() => argResults.wasParsed('fileId')).thenReturn(false);
         final result =
             await container.read(settingsProvider(argResults).future);
         expect(result.fileId, config.fileId);
@@ -68,6 +71,7 @@ void main() {
 
       test('throws ArgumentError if token is missing', () async {
         when(() => argResults['token']).thenReturn(null);
+        when(() => argResults.wasParsed('token')).thenReturn(false);
         await expectLater(
           () => container.read(settingsProvider(argResults).future),
           throwsA(
@@ -88,6 +92,8 @@ void main() {
         );
         when(() => argResults['token']).thenReturn(null);
         when(() => argResults['fileId']).thenReturn(null);
+        when(() => argResults.wasParsed('token')).thenReturn(false);
+        when(() => argResults.wasParsed('fileId')).thenReturn(false);
 
         final result =
             await container.read(settingsProvider(argResults).future);
@@ -105,6 +111,8 @@ void main() {
         );
         when(() => argResults['token']).thenReturn(null);
         when(() => argResults['fileId']).thenReturn(null);
+        when(() => argResults.wasParsed('token')).thenReturn(false);
+        when(() => argResults.wasParsed('fileId')).thenReturn(false);
         await expectLater(
           () => container.read(settingsProvider(argResults).future),
           throwsA(

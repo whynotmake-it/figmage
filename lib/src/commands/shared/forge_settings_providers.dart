@@ -21,12 +21,14 @@ final settingsProvider = FutureProvider.autoDispose
 
   final config = await ref.watch(configProvider(configPath).future);
 
-  final fileId = switch (args['fileId'] ?? config.fileId) {
+  final fileIdFromArgs = args.wasParsed('fileId') ? args['fileId'] : null;
+  final fileId = switch (fileIdFromArgs ?? config.fileId) {
     final String fileId => fileId,
     _ => null,
   };
 
-  final token = switch (args['token']) {
+  final tokenFromArgs = args.wasParsed('token') ? args['token'] : null;
+  final token = switch (tokenFromArgs) {
     final String token => token,
     _ => null,
   };

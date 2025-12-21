@@ -94,6 +94,8 @@ Result:
 Aliases
 - All values are fully resolved by the export plugin.
 - The JSON source does not perform alias resolution.
+- If multiple JSON files define the same token for the same mode, all tokens
+  are kept and later suffixed by the generator per `doc/style-dedup.md`.
 
 Types
 - `$type` is required for JSON tokens to avoid guessing.

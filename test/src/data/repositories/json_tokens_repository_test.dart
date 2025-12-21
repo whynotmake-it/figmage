@@ -207,7 +207,7 @@ void main() {
       final tokens = await sut.getTokens(paths: [fileA.path, fileB.path]);
       final colorTokens = tokens.whereType<DesignToken<int>>().toList();
       expect(
-        colorTokens.where((token) => token.fullName == 'ds/color1').length,
+        colorTokens.where((token) => token.fullName == 'ds/light/color1').length,
         2,
       );
     });

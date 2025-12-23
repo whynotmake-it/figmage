@@ -437,7 +437,56 @@ int _parseColor(Object? value, _RawJsonToken token) {
       token.filePath,
     );
   }
-  return value.toHexColorValue();
+  final trimmed = value.trim();
+  if (trimmed.startsWith('rgba(') && trimmed.endsWith(')')) {
+    return _parseRgbaColor(trimmed, token);
+  }
+  return trimmed.toHexColorValue();
+}
+
+int _parseRgbaColor(String rgba, _RawJsonToken token) {
+  final content = rgba.substring(5, rgba.length - 1);
+  final parts = content.split(',').map((s) => s.trim()).toList();
+
+  if (parts.length != 4) {
+    throw FormatException(
+      'rgba() color must have 4 components (r, g, b, a) at '
+      '${_formatPath(token.pathSegments)}.',
+      token.filePath,
+    );
+  }
+
+  final r = int.tryParse(parts[0]);
+  final g = int.tryParse(parts[1]);
+  final b = int.tryParse(parts[2]);
+  final a = double.tryParse(parts[3]);
+
+  if (r == null || g == null || b == null || a == null) {
+    throw FormatException(
+      'Invalid rgba() color values at '
+      '${_formatPath(token.pathSegments)}.',
+      token.filePath,
+    );
+  }
+
+  if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
+    throw FormatException(
+      'rgba() color RGB values must be 0-255 at '
+      '${_formatPath(token.pathSegments)}.',
+      token.filePath,
+    );
+  }
+
+  if (a < 0 || a > 1) {
+    throw FormatException(
+      'rgba() color alpha value must be 0-1 at '
+      '${_formatPath(token.pathSegments)}.',
+      token.filePath,
+    );
+  }
+
+  final alpha = (a * 255).round();
+  return (alpha << 24) | (r << 16) | (g << 8) | b;
 }
 
 double _parseNumber(Object? value, _RawJsonToken token) {

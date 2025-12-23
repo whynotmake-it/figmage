@@ -101,8 +101,8 @@ void main() {
       final gap = numberTokens.firstWhere(
         (token) => token.fullName == 'ds/gap',
       );
-      expect(gap.valuesByModeName.keys, containsAll(['light', 'dark']));
-      expect(gap.valuesByModeName.keys, isNot(contains('')));
+      expect(gap.collectionName, 'ds/gap');
+      expect(gap.valuesByModeName.keys, contains(''));
 
       final brand = colorTokens.firstWhere(
         (token) => token.fullName == 'ds/brand/brandColor',
@@ -207,7 +207,9 @@ void main() {
       final tokens = await sut.getTokens(paths: [fileA.path, fileB.path]);
       final colorTokens = tokens.whereType<DesignToken<int>>().toList();
       expect(
-        colorTokens.where((token) => token.fullName == 'ds/light/color1').length,
+        colorTokens
+            .where((token) => token.fullName == 'ds/light/color1')
+            .length,
         2,
       );
     });
@@ -287,23 +289,127 @@ void main() {
       final colorTokens = tokens.whereType<DesignToken<int>>().toList();
       final numberTokens = tokens.whereType<DesignToken<double>>().toList();
 
-      final lightColor = colorTokens.firstWhere(
-        (token) => token.fullName == 'ds/light/color1',
+      final color1 = colorTokens.firstWhere(
+        (token) => token.fullName == 'ds/color1',
       );
-      expect(lightColor.collectionName, 'ds/light');
-      expect(lightColor.valuesByModeName.keys, contains(''));
-
-      final darkColor = colorTokens.firstWhere(
-        (token) => token.fullName == 'ds/dark/color1',
-      );
-      expect(darkColor.collectionName, 'ds/dark');
-      expect(darkColor.valuesByModeName.keys, contains(''));
+      expect(color1.collectionName, 'ds');
+      expect(color1.valuesByModeName.keys, containsAll(['light', 'dark']));
 
       final spacing = numberTokens.firstWhere(
         (token) => token.fullName == 'ds/light/spacing/sm',
       );
       expect(spacing.collectionName, 'ds/light');
       expect(spacing.valuesByModeName.keys, contains(''));
+    });
+
+    test('supports multiple mode groups per type', () async {
+      final file = await _writeJsonFile(
+        tempDir,
+        'multi_mode_groups.json',
+        {
+          "ds": {
+            "light": {
+              "primary": {
+                r"$type": "color",
+                r"$value": "#ffffff",
+              },
+            },
+            "dark": {
+              "primary": {
+                r"$type": "color",
+                r"$value": "#000000",
+              },
+            },
+            "secondBrandLight": {
+              "brandPrimary": {
+                r"$type": "color",
+                r"$value": "#eeeeee",
+              },
+            },
+            "secondBrandDark": {
+              "brandPrimary": {
+                r"$type": "color",
+                r"$value": "#111111",
+              },
+            },
+            "headline": {
+              "1": {
+                r"$type": "typography",
+                r"$value": {
+                  "fontFamily": "Inter",
+                  "fontSize": 16,
+                },
+              },
+              "2": {
+                r"$type": "typography",
+                r"$value": {
+                  "fontFamily": "Inter",
+                  "fontSize": 12,
+                },
+              },
+            },
+            "label": {
+              "1": {
+                r"$type": "typography",
+                r"$value": {
+                  "fontFamily": "Inter",
+                  "fontSize": 14,
+                },
+              },
+              "2": {
+                r"$type": "typography",
+                r"$value": {
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                },
+              },
+            },
+            "body": {
+              r"$type": "typography",
+              r"$value": {
+                "fontFamily": "Inter",
+                "fontSize": 18,
+              },
+            },
+          },
+        },
+      );
+
+      final tokens = await sut.getTokens(paths: [file.path]);
+      final colorTokens = tokens.whereType<DesignToken<int>>().toList();
+      final typographyTokens = tokens
+          .whereType<DesignToken<Typography>>()
+          .toList();
+
+      final primary = colorTokens.firstWhere(
+        (token) => token.fullName == 'ds/variant2/primary',
+      );
+      expect(primary.collectionName, 'ds/variant2');
+      expect(primary.valuesByModeName.keys, containsAll(['light', 'dark']));
+
+      final secondBrandPrimary = colorTokens.firstWhere(
+        (token) => token.fullName == 'ds/variant1/brandPrimary',
+      );
+      expect(secondBrandPrimary.collectionName, 'ds/variant1');
+      expect(
+        secondBrandPrimary.valuesByModeName.keys,
+        containsAll(['secondBrandLight', 'secondBrandDark']),
+      );
+
+      final headline = typographyTokens.firstWhere(
+        (token) => token.fullName == 'ds/1',
+      );
+      expect(headline.collectionName, 'ds');
+      expect(
+        headline.valuesByModeName.keys,
+        containsAll(['headline', 'label']),
+      );
+
+      final body = typographyTokens.firstWhere(
+        (token) => token.fullName == 'ds/body',
+      );
+      expect(body.collectionName, 'ds/body');
+      expect(body.valuesByModeName.keys, contains(''));
     });
   });
 }

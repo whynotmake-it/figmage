@@ -45,9 +45,13 @@ Rules
   (e.g., `ds.light.color1`).
 
 Mode Detection
+- Mode detection is scoped per collection and per token type.
 - For token paths with 3+ segments, treat the second segment as a mode name
   only if there is at least one other sibling branch under the same collection
-  whose token-name set matches (after removing the first two segments).
+  and type whose token-name set matches (after removing the first two
+  segments).
+- Mode groups are formed by matching token-name sets. Multiple mode groups can
+  coexist under the same collection and type.
 - If no matching sibling branch exists, the second segment is treated as part
   of the collection path (i.e. collectionName includes that segment), which
   results in a separate generated class.
@@ -79,6 +83,34 @@ Token Path Mapping
   - token name = `color`
   - fullName = `color`
 - The resulting `DesignToken` is created with `valuesByModeName[mode]`.
+
+Multiple Mode Groups (Same Type)
+- When two or more mode groups exist for the same collection and type, each
+  group becomes its own class.
+- If multiple groups exist, they are labeled `Variant1`, `Variant2`, ... in
+  deterministic order.
+- Mode names are preserved as the original branch names (no normalization).
+  - The mode names used for `valuesByModeName` are the original names with the
+    group label removed (e.g. `SecondBrandLight` -> `light`).
+
+Example:
+{
+  "ds": {
+    "light": { "primary": { "$type": "color", "$value": "#ffffff" } },
+    "dark": { "primary": { "$type": "color", "$value": "#000000" } },
+    "secondBrandLight": {
+      "brandPrimary": { "$type": "color", "$value": "#eeeeee" }
+    },
+    "secondBrandDark": {
+      "brandPrimary": { "$type": "color", "$value": "#111111" }
+    }
+  }
+}
+
+Result:
+- `ColorsDs` with constructors `light`/`dark` and field `primary`
+- `ColorsDsVariant1` with constructors `secondBrandLight`/`secondBrandDark`
+  and field `brandPrimary`
 
 Generated Class Example
 Input tokens:

@@ -45,8 +45,8 @@ class FileJsonTokensRepository implements JsonTokensRepository {
       return [];
     }
 
-    final modeBranchesByCollection = _detectModeBranches(rawTokens);
-    return _buildTokens(rawTokens, modeBranchesByCollection);
+    final modeGroupsByCollectionAndType = _detectModeGroups(rawTokens);
+    return _buildTokens(rawTokens, modeGroupsByCollectionAndType);
   }
 }
 
@@ -76,6 +76,7 @@ class _TokenAccumulator<T> {
   final String fullName;
   final Map<String, AliasOr<T>> valuesByModeName = {};
 }
+
 
 void _collectTokens({
   required Object? node,
@@ -123,62 +124,93 @@ void _collectTokens({
   }
 }
 
-Map<String, Set<String>> _detectModeBranches(
+Map<String, Map<String, Map<String, ({String groupLabel, String modeName})>>>
+    _detectModeGroups(
   List<_RawJsonToken> tokens,
 ) {
-  // Build per-collection candidate mode branches.
-  // Each branch stores the set of relative token names beneath it.
-  // Collection -> Branch -> Set<token-names>
-  final branchesByCollection = <String, Map<String, Set<String>>>{};
+  // Build per-collection and per-type candidate mode branches.
+  // Collection -> Type -> Branch -> Set<token-names>
+  final branchesByCollectionAndType =
+      <String, Map<String, Map<String, Set<String>>>>{};
   for (final token in tokens) {
     if (token.pathSegments.length < 3) {
       continue;
     }
     final collection = token.pathSegments[0];
+    final type = token.type;
     final branch = token.pathSegments[1];
     final name = token.pathSegments.sublist(2).join('/');
-    // branchMap collects branch -> token-name-set for this collection.
-    final branchMap = branchesByCollection.putIfAbsent(
+    // branchMap collects branch -> token-name-set for this collection+type.
+    final branchMapByType = branchesByCollectionAndType.putIfAbsent(
       collection,
+      () => <String, Map<String, Set<String>>>{},
+    );
+    final branchMap = branchMapByType.putIfAbsent(
+      type,
       () => <String, Set<String>>{},
     );
     branchMap.putIfAbsent(branch, () => <String>{}).add(name);
   }
 
-  final modeBranchesByCollection = <String, Set<String>>{};
-  for (final collectionEntry in branchesByCollection.entries) {
-    final modeBranches = <String>{};
-    final branches = collectionEntry.value;
-    for (final branchEntry in branches.entries) {
-      final branchName = branchEntry.key;
-      final names = branchEntry.value;
-      // A branch is a "mode" only if a sibling branch has the same name set.
-      final hasMatchingSibling = branches.entries.any(
-        (sibling) =>
-            sibling.key != branchName &&
-            _setsEqual(names, sibling.value),
-      );
-      if (hasMatchingSibling) {
-        modeBranches.add(branchName);
+  final modeGroupsByCollectionAndType = <String,
+      Map<String, Map<String, ({String groupLabel, String modeName})>>>{};
+  for (final collectionEntry in branchesByCollectionAndType.entries) {
+    final modeGroupsByType =
+        <String, Map<String, ({String groupLabel, String modeName})>>{};
+    for (final typeEntry in collectionEntry.value.entries) {
+      final branches = typeEntry.value;
+      final branchesBySignature = <String, List<String>>{};
+      for (final branchEntry in branches.entries) {
+        final signature = _signatureForNameSet(branchEntry.value);
+        branchesBySignature
+            .putIfAbsent(signature, () => <String>[])
+            .add(branchEntry.key);
+      }
+
+      final groupedSignatures = branchesBySignature.entries
+          .where((entry) => entry.value.length > 1)
+          .toList()
+        ..sort((a, b) => a.key.compareTo(b.key));
+
+      final useVariants = groupedSignatures.length > 1;
+      var variantIndex = 1;
+      final modeEntries =
+          <String, ({String groupLabel, String modeName})>{};
+      for (final groupEntry in groupedSignatures) {
+        final branchesInGroup = groupEntry.value.toList()..sort();
+        final groupLabel = useVariants ? 'variant$variantIndex' : '';
+        if (useVariants) {
+          variantIndex += 1;
+        }
+        for (final branch in branchesInGroup) {
+          final modeName = branch;
+          modeEntries[branch] = (
+            groupLabel: groupLabel,
+            modeName: modeName,
+          );
+        }
+      }
+
+      if (modeEntries.isNotEmpty) {
+        modeGroupsByType[typeEntry.key] = modeEntries;
       }
     }
-    if (modeBranches.isNotEmpty) {
-      modeBranchesByCollection[collectionEntry.key] = modeBranches;
+    if (modeGroupsByType.isNotEmpty) {
+      modeGroupsByCollectionAndType[collectionEntry.key] = modeGroupsByType;
     }
   }
-  return modeBranchesByCollection;
+  return modeGroupsByCollectionAndType;
 }
 
-bool _setsEqual(Set<String> left, Set<String> right) {
-  if (left.length != right.length) {
-    return false;
-  }
-  return left.containsAll(right);
+String _signatureForNameSet(Set<String> names) {
+  final sorted = names.toList()..sort();
+  return sorted.join('\t');
 }
 
 List<DesignToken<dynamic>> _buildTokens(
   List<_RawJsonToken> tokens,
-  Map<String, Set<String>> modeBranchesByCollection,
+  Map<String, Map<String, Map<String, ({String groupLabel, String modeName})>>>
+      modeGroupsByCollectionAndType,
 ) {
   // If duplicates exist for the same (collection,name,mode), we create
   // additional tokens so downstream name de-duplication can suffix them.
@@ -199,7 +231,8 @@ List<DesignToken<dynamic>> _buildTokens(
 
     final mappedEntries = _mapPathsForToken(
       pathSegments,
-      modeBranchesByCollection[pathSegments[0]] ?? const {},
+      modeGroupsByCollectionAndType[pathSegments[0]]?[token.type] ??
+          const <String, ({String groupLabel, String modeName})>{},
     );
 
     for (final mapped in mappedEntries) {
@@ -301,7 +334,7 @@ List<DesignToken<dynamic>> _buildTokens(
 List<({String collectionName, String mode, String name, String fullName})>
     _mapPathsForToken(
   List<String> pathSegments,
-  Set<String> modeBranches,
+  Map<String, ({String groupLabel, String modeName})> modeEntries,
 ) {
   if (pathSegments.length == 1) {
     final name = pathSegments.first;
@@ -318,16 +351,15 @@ List<({String collectionName, String mode, String name, String fullName})>
   if (pathSegments.length == 2) {
     final collectionName = pathSegments[0];
     final name = pathSegments[1];
-    if (modeBranches.isNotEmpty) {
-      final sortedModes = modeBranches.toList()..sort();
+    if (modeEntries.isNotEmpty) {
+      final promotedCollectionName = '$collectionName/$name';
       return [
-        for (final mode in sortedModes)
-          (
-            collectionName: collectionName,
-            mode: mode,
-            name: name,
-            fullName: '$collectionName/$name',
-          ),
+        (
+          collectionName: promotedCollectionName,
+          mode: '',
+          name: name,
+          fullName: '$collectionName/$name',
+        ),
       ];
     }
     return [
@@ -344,13 +376,17 @@ List<({String collectionName, String mode, String name, String fullName})>
   final secondSegment = pathSegments[1];
   final name = pathSegments.sublist(2).join('/');
 
-  if (modeBranches.contains(secondSegment)) {
+  final modeEntry = modeEntries[secondSegment];
+  if (modeEntry != null) {
+    final collectionName = modeEntry.groupLabel.isEmpty
+        ? collection
+        : '$collection/${modeEntry.groupLabel}';
     return [
       (
-        collectionName: collection,
-        mode: secondSegment,
+        collectionName: collectionName,
+        mode: modeEntry.modeName,
         name: name,
-        fullName: '$collection/$name',
+        fullName: '$collectionName/$name',
       ),
     ];
   }

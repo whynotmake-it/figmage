@@ -120,7 +120,12 @@ class FigmaStylesRepository implements StylesRepository {
     );
     final stylesFromNodes = [
       for (final node in styleNodes)
-        if (_transformNode(node) case final style?) style,
+        if (_transformNode(
+              node,
+              onDiagnostic: onProgress,
+            )
+            case final style?)
+          style,
     ];
     final droppedNodes = styleNodes.length - stylesFromNodes.length;
     onProgress?.call(
@@ -225,14 +230,24 @@ class FigmaStylesRepository implements StylesRepository {
     }
   }
 
-  DesignStyle<dynamic>? _transformNode(Node node) {
+  DesignStyle<dynamic>? _transformNode(
+    Node node, {
+    void Function(String message)? onDiagnostic,
+  }) {
     return switch (node) {
           TextNode(
             :final id,
             :final name,
             :final style,
           ) =>
-            TextDesignStyle(id: id, fullName: name, value: style.toDomain()),
+            TextDesignStyle(
+              id: id,
+              fullName: name,
+              value: style.toDomain(
+                onDiagnostic: onDiagnostic,
+                diagnosticContext: 'Figma style "$name" ($id)',
+              ),
+            ),
           RectangleNode(
             :final id,
             :final name,

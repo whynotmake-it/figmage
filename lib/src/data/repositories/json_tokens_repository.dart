@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:figmage/src/data/util/converters/hex_color_conversion_x.dart';
+import 'package:figmage/src/data/util/converters/type_style_conversion_x.dart';
 import 'package:figmage/src/domain/models/design_token.dart';
 import 'package:figmage/src/domain/models/json_token.dart';
 import 'package:figmage/src/domain/models/typography/typography.dart';
@@ -160,7 +161,8 @@ class FileJsonTokensRepository implements JsonTokensRepository {
       resolveTypography: (token) => _resolveValue<Typography>(
         token: token,
         expectedType: 'typography',
-        parseLiteral: _parseTypography,
+        parseLiteral: (value, token) =>
+            _parseTypography(value, token, diagnostics),
         tokensByKey: tokensByKey,
         tokensByCanonicalPath: tokensByCanonicalPath,
         documentsByPath: documentsByPath,
@@ -414,7 +416,8 @@ void _collectTokens({
 ({
   Map<String, Map<String, Map<String, ({String modeName})>>>
   modeGroupsByCollectionAndType,
-  Map<String, Map<String, Set<String>>> branchPrefixedBranchesByCollectionAndType,
+  Map<String, Map<String, Set<String>>>
+  branchPrefixedBranchesByCollectionAndType,
 })
 _detectModeGroups(
   List<_RawJsonToken> tokens,
@@ -453,9 +456,7 @@ _detectModeGroups(
         continue;
       }
 
-      final signatures = branches.values
-          .map(_signatureForNameSet)
-          .toSet();
+      final signatures = branches.values.map(_signatureForNameSet).toSet();
       final sortedBranches = branches.keys.toList()..sort();
       if (signatures.length == 1) {
         final modeEntries = <String, ({String modeName})>{};
@@ -489,10 +490,7 @@ String _signatureForNameSet(Set<String> names) {
 
 List<DesignToken<dynamic>> _buildTokens({
   required List<_RawJsonToken> tokens,
-  required Map<
-    String,
-    Map<String, Map<String, ({String modeName})>>
-  >
+  required Map<String, Map<String, Map<String, ({String modeName})>>>
   modeGroupsByCollectionAndType,
   required Map<String, Map<String, Set<String>>>
   branchPrefixedBranchesByCollectionAndType,
@@ -521,7 +519,8 @@ List<DesignToken<dynamic>> _buildTokens({
       pathSegments,
       modeGroupsByCollectionAndType[token.modeGroupScope]?[token.type] ??
           const <String, ({String modeName})>{},
-      branchPrefixedBranchesByCollectionAndType[token.modeGroupScope]?[token.type] ??
+      branchPrefixedBranchesByCollectionAndType[token.modeGroupScope]?[token
+              .type] ??
           const <String>{},
     );
 
@@ -707,7 +706,9 @@ AliasOr<T> _resolveValue<T>({
     }
   } else {
     try {
-      result = AliasOr<T>.data(data: parseLiteral(token.value, token));
+      result = AliasOr<T>.data(
+        data: parseLiteral(token.value, token),
+      );
     } on FormatException {
       visitStack.remove(tokenKey);
       rethrow;
@@ -1026,13 +1027,14 @@ bool _isTokenObject(Object? node) {
 }
 
 List<
-    ({
-      String collectionName,
-      String mode,
-      String name,
-      String fullName,
-      bool preserveCollectionScope,
-    })>
+  ({
+    String collectionName,
+    String mode,
+    String name,
+    String fullName,
+    bool preserveCollectionScope,
+  })
+>
 _mapPathsForToken(
   List<String> pathSegments,
   Map<String, ({String modeName})> modeEntries,
@@ -1119,26 +1121,22 @@ _mapPathsForToken(
   ];
 }
 
-(
-  {
+({
+  String collectionName,
+  String collectionId,
+  String mode,
+  String name,
+  String fullName,
+})
+_mapToSetScopedCollection({
+  required _RawJsonToken token,
+  required ({
     String collectionName,
-    String collectionId,
     String mode,
     String name,
     String fullName,
-  }
-)
-_mapToSetScopedCollection({
-  required _RawJsonToken token,
-  required (
-    {
-      String collectionName,
-      String mode,
-      String name,
-      String fullName,
-      bool preserveCollectionScope,
-    }
-  )
+    bool preserveCollectionScope,
+  })
   mapped,
 }) {
   final useScopedCollection = mapped.preserveCollectionScope;
@@ -1161,15 +1159,13 @@ _mapToSetScopedCollection({
 
 void _addToken<T>(
   Map<String, List<_TokenAccumulator<T>>> target,
-  (
-    {
-      String collectionName,
-      String collectionId,
-      String mode,
-      String name,
-      String fullName,
-    }
-  )
+  ({
+    String collectionName,
+    String collectionId,
+    String mode,
+    String name,
+    String fullName,
+  })
   mapped,
   AliasOr<T> value,
 ) {
@@ -1296,7 +1292,11 @@ String _parseString(Object? value, _RawJsonToken token) {
   );
 }
 
-Typography _parseTypography(Object? value, _RawJsonToken token) {
+Typography _parseTypography(
+  Object? value,
+  _RawJsonToken token,
+  List<String> diagnostics,
+) {
   if (value is! Map) {
     throw FormatException(
       'Typography tokens require an object at '
@@ -1330,14 +1330,21 @@ Typography _parseTypography(Object? value, _RawJsonToken token) {
   );
 
   final fontWeightValue = map['fontWeight'];
-  final fontWeight = fontWeightValue == null
+  final rawFontWeight = fontWeightValue == null
       ? 400
       : _parseDouble(
           fontWeightValue,
           token,
           fieldName: 'fontWeight',
           allowValueWrapper: false,
-        ).round();
+        );
+  final fontWeight = TypeStyleConversionX.convertFontWeight(
+    rawFontWeight,
+    onDiagnostic: diagnostics.add,
+    diagnosticContext:
+        '${_formatPath(token.pathSegments)} in '
+        '${token.filePath}',
+  );
 
   final decoration = _parseDecoration(
     map['textDecoration'] ?? map['decoration'],

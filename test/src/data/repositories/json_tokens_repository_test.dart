@@ -694,6 +694,7 @@ void main() {
                 r'$value': {
                   'fontFamily': 'Inter',
                   'fontSize': 16,
+                  'fontWeight': 463,
                   'textDecoration': 'underline',
                 },
               },
@@ -728,7 +729,7 @@ void main() {
       final light = typographyToken.valuesByModeName['light']!.resolveValue!;
       expect(light.fontFamily, 'Inter');
       expect(light.fontSize, 16);
-      expect(light.fontWeight, 400);
+      expect(light.fontWeight, 463);
       expect(light.letterSpacing, 1.0);
       expect(light.height, 1.0);
       expect(light.decoration, TextDecoration.underline);
@@ -738,6 +739,69 @@ void main() {
       expect(dark.letterSpacing, 0.5);
       expect(dark.height, 2);
     });
+
+    test(
+      'clamps out-of-range typography fontWeight values '
+      'and reports diagnostics',
+      () async {
+        await _writeJsonFile(
+          tempDir,
+          'typography.json',
+          {
+            'ds': {
+              'light': {
+                'text': {
+                  r'$type': 'typography',
+                  r'$value': {
+                    'fontFamily': 'Inter',
+                    'fontSize': 16,
+                    'fontWeight': 0,
+                  },
+                },
+              },
+              'dark': {
+                'text': {
+                  r'$type': 'typography',
+                  r'$value': {
+                    'fontFamily': 'Inter',
+                    'fontSize': 16,
+                    'fontWeight': 1200,
+                  },
+                },
+              },
+            },
+          },
+        );
+        final resolverFile = await _writeResolver(
+          tempDir,
+          setRefs: {
+            'typography': './typography.json',
+          },
+        );
+
+        final diagnostics = <String>[];
+        final tokens = await sut.getTokens(
+          paths: [resolverFile.path],
+          onDiagnostic: diagnostics.add,
+        );
+        final typographyToken = tokens
+            .whereType<DesignToken<Typography>>()
+            .singleWhere((token) => token.fullName.endsWith('ds/text'));
+        final light = typographyToken.valuesByModeName['light']!.resolveValue!;
+        final dark = typographyToken.valuesByModeName['dark']!.resolveValue!;
+
+        expect(light.fontWeight, 1);
+        expect(dark.fontWeight, 1000);
+        expect(
+          diagnostics.join('\n'),
+          contains('Clamped fontWeight from 0.0 to 1'),
+        );
+        expect(
+          diagnostics.join('\n'),
+          contains('Clamped fontWeight from 1200.0 to 1000'),
+        );
+      },
+    );
 
     test(
       'disables modes and keeps mixed-schema branches in one collection',
@@ -779,7 +843,13 @@ void main() {
             .toSet();
 
         expect(collectionNames, {'theme/colors'});
-        expect(names, {'light/surface', 'light/text', 'dark/surface', 'dark/text', 'compact/badge'});
+        expect(names, {
+          'light/surface',
+          'light/text',
+          'dark/surface',
+          'dark/text',
+          'compact/badge',
+        });
         expect(modeKeys, {''});
       },
     );

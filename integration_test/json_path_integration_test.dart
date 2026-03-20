@@ -77,11 +77,16 @@ void main() {
         expect(typographyCode, contains('class Label'));
         expect(typographyCode, contains('final TextStyle display1;'));
         expect(typographyCode, contains('final TextStyle body1;'));
+        expect(
+          typographyCode,
+          contains('fontWeight: const FontWeight(463),'),
+        );
       },
     );
 
     test(
-      'does not collapse branches with different schemas into one nullable class',
+      'does not collapse branches with different schemas '
+      'into one nullable class',
       () async {
         final tempDir = await Directory.systemTemp.createTemp(
           'figmage_json_branching_',

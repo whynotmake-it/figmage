@@ -39,29 +39,30 @@ void main() {
     },
   };
   test(
-      'Should create a TextStyleThemeExtension class and BuildContextExtension',
-      () async {
-    final generator = TextStyleThemeExtensionGenerator(
-      className: 'MyTextStyles',
-      valuesByNameByMode: valuesByNameByMode,
-      useGoogleFonts: false,
-      interfaces: [],
-    );
-    expect(
-      generator.generateClass(),
-      equalsDart(
-        _expectedTextStyleThemeExtensionString,
-        emitter,
-      ),
-    );
-    expect(
-      generator.generateExtension(),
-      equalsDart(
-        _expectedTextStyleThemeExtensionBuildContextExtensionString,
-        emitter,
-      ),
-    );
-  });
+    'Should create a TextStyleThemeExtension class and BuildContextExtension',
+    () async {
+      final generator = TextStyleThemeExtensionGenerator(
+        className: 'MyTextStyles',
+        valuesByNameByMode: valuesByNameByMode,
+        useGoogleFonts: false,
+        interfaces: [],
+      );
+      expect(
+        generator.generateClass(),
+        equalsDart(
+          _expectedTextStyleThemeExtensionString,
+          emitter,
+        ),
+      );
+      expect(
+        generator.generateExtension(),
+        equalsDart(
+          _expectedTextStyleThemeExtensionBuildContextExtensionString,
+          emitter,
+        ),
+      );
+    },
+  );
   test('Should create a class and nullable BuildContextExtension', () async {
     final generator = TextStyleThemeExtensionGenerator(
       className: 'MyTextStyles',
@@ -107,6 +108,36 @@ void main() {
         emitter,
       ),
     );
+  });
+
+  test('emits const FontWeight(value) for non-100-step weights', () {
+    final generator = TextStyleThemeExtensionGenerator(
+      className: 'MyTextStyles',
+      valuesByNameByMode: const {
+        'mode': {
+          'textStyle': Typography(
+            fontSize: 16,
+            fontFamily: 'Roboto',
+            fontFamilyPostScriptName: 'Roboto',
+            fontWeight: 463,
+          ),
+        },
+      },
+      useGoogleFonts: false,
+      interfaces: [],
+    );
+
+    final arguments = generator.getNamedArguments(
+      const Typography(
+        fontSize: 16,
+        fontFamily: 'Roboto',
+        fontFamilyPostScriptName: 'Roboto',
+        fontWeight: 463,
+      ),
+    );
+    final fontWeightCode = arguments['fontWeight']!.accept(emitter).toString();
+
+    expect(fontWeightCode, 'const FontWeight(463)');
   });
 }
 

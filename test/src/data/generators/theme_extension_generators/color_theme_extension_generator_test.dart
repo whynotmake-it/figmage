@@ -81,6 +81,29 @@ void main() {
       ),
     );
   });
+
+  test('Can deal with modes containing different token keys', () async {
+    final generator = ColorThemeExtensionGenerator(
+      className: 'MyColorTheme',
+      valuesByNameByMode: const {
+        'light': {'primary': 0xFFFFFFFF},
+        'dark': {'secondary': 0xFF000000},
+      },
+      interfaces: [],
+    );
+
+    final classOutput = generator.generateClass().accept(emitter).toString();
+    expect(classOutput, contains('const MyColorTheme.light()'));
+    expect(classOutput, contains('primary = const Color(0xffffffff)'));
+    expect(classOutput, contains('secondary = null'));
+
+    expect(classOutput, contains('const MyColorTheme.dark()'));
+    expect(classOutput, contains('primary = null'));
+    expect(classOutput, contains('secondary = const Color(0xff000000)'));
+
+    expect(classOutput, contains('final Color? primary;'));
+    expect(classOutput, contains('final Color? secondary;'));
+  });
 }
 
 // **************************************************************************

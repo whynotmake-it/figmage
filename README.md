@@ -87,7 +87,7 @@ And you can use it like this:
   - 🖋️ **Typography** styles (with optional `google_fonts` support!)
 - 🔢 **Number** variables, which can be generated as Paddings, and Spacers as well
 - 🌓 **Modes** support for variables: Generate different tokens for different themes (e.g. dark/light)
-- 📄 **JSON token sources**: Add `json.paths` in `figmage.yaml` to load Design Tokens JSON (can be used alongside Figma or on its own).
+- 📄 **JSON token sources**: Add `json.paths` in `figmage.yaml` with a resolver manifest (for example `resolver.json`) to load Design Tokens JSON across ordered sets.
 - 📦 **Package** generation: All your tokens end up in one convenient package. Depend on it from your app, and update it whenever neccessary!
 - 🤝 **Seamless** integration with `Theme`s from `material.dart`: Generated classes are `ThemeExtension`s, so they can be integrated into your app's theme easily!
 - 🎯 **Quick access** using `BuildContext` extensions.

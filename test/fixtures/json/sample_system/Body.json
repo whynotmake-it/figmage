@@ -1,0 +1,88 @@
+{
+  "Body 1": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans",
+      "fontWeight": 400,
+      "lineHeight": 1.33,
+      "fontSize": 40,
+      "letterSpacing": 0,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    },
+    "$description": "long-form content"
+  },
+  "Body 1 Medium": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans",
+      "fontWeight": 500,
+      "lineHeight": 1.33,
+      "fontSize": 40,
+      "letterSpacing": 0,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    }
+  },
+  "Body 2": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans",
+      "fontWeight": 400,
+      "lineHeight": 1.33,
+      "fontSize": 34,
+      "letterSpacing": 0,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    }
+  },
+  "Body 2 Medium": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans",
+      "fontWeight": 500,
+      "lineHeight": 1.33,
+      "fontSize": 34,
+      "letterSpacing": 0,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    }
+  },
+  "Body 3": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans",
+      "fontWeight": 400,
+      "lineHeight": 1.33,
+      "fontSize": 32,
+      "letterSpacing": 0,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    },
+    "$description": "dense content"
+  },
+  "Body 3 Medium": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans",
+      "fontWeight": 500,
+      "lineHeight": 1.33,
+      "fontSize": 32,
+      "letterSpacing": 0,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    }
+  }
+}

@@ -18,6 +18,7 @@ class PaddingFileGenerator extends BaseFileGenerator<double> {
   PaddingFileGenerator({
     required super.tokens,
     required super.inheritanceSettings,
+    super.isMixedTokenCollection,
   }) : super(type: TokenFileType.paddings);
 
   @override
@@ -27,10 +28,10 @@ class PaddingFileGenerator extends BaseFileGenerator<double> {
     required Iterable<InterfaceSettings> interfaces,
   }) {
     return PaddingGenerator(
-      className: getClassNameForCollection(collectionName),
+      className: collectionName,
       fromClass: refer(
-        getClassNameForCollectionAndType(
-          collectionName,
+        getClassNameForCollectionIdAndType(
+          collectionTokens.first.collectionId,
           TokenFileType.numbers,
         ),
         TokenFileType.numbers.filename,

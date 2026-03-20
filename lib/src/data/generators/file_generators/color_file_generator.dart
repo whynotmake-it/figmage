@@ -17,6 +17,7 @@ class ColorFileGenerator extends BaseFileGenerator<int> {
   ColorFileGenerator({
     required super.tokens,
     required super.inheritanceSettings,
+    super.isMixedTokenCollection,
   }) : super(type: TokenFileType.color);
 
   @override

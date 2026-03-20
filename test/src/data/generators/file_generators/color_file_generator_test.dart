@@ -67,18 +67,18 @@ import 'my_colors.dart';
 import 'tokens.dart';
 
 @immutable
-class ColorsCollection1 extends ThemeExtension<ColorsCollection1> 
+class Collection1 extends ThemeExtension<Collection1> 
   implements MyColors, Tokens{
-  const ColorsCollection1({
+  const Collection1({
     required this.colorColorName,
     required this.colorNameUnresolvable,
   });
 
-  const ColorsCollection1.dark()
+  const Collection1.dark()
       : colorColorName = const Color(0xffffffff),
         colorNameUnresolvable = null;
 
-  const ColorsCollection1.light()
+  const Collection1.light()
       : colorColorName = const Color(0xff000000),
         colorNameUnresolvable = const Color(0x00aaaaaa);
 
@@ -87,23 +87,23 @@ class ColorsCollection1 extends ThemeExtension<ColorsCollection1>
   final Color? colorNameUnresolvable;
 
   @override
-  ColorsCollection1 copyWith([
+  Collection1 copyWith([
     Color? colorColorName,
     Color? colorNameUnresolvable,
   ]) =>
-      ColorsCollection1(
+      Collection1(
         colorColorName: colorColorName ?? this.colorColorName,
         colorNameUnresolvable:
             colorNameUnresolvable ?? this.colorNameUnresolvable,
       );
 
   @override
-  ColorsCollection1 lerp(
-    ColorsCollection1 other,
+  Collection1 lerp(
+    Collection1 other,
     double t,
   ) {
-    if (other is! ColorsCollection1) return this;
-    return ColorsCollection1(
+    if (other is! Collection1) return this;
+    return Collection1(
       colorColorName: Color.lerp(
         colorColorName,
         other.colorColorName,
@@ -118,30 +118,30 @@ class ColorsCollection1 extends ThemeExtension<ColorsCollection1>
   }
 }
 
-extension ColorsCollection1BuildContextX on BuildContext {
-  ColorsCollection1 get colorsCollection1 =>
-      Theme.of(this).extension<ColorsCollection1>()!;
+extension Collection1BuildContextX on BuildContext {
+  Collection1 get collection1 =>
+      Theme.of(this).extension<Collection1>()!;
 }
 
 @immutable
-class ColorsColors extends ThemeExtension<ColorsColors> implements Tokens {
-  const ColorsColors({required this.colorName});
+class Colors extends ThemeExtension<Colors> implements Tokens {
+  const Colors({required this.colorName});
 
-  const ColorsColors.standard() : colorName = const Color(0xffffffff);
+  const Colors.standard() : colorName = const Color(0xffffffff);
 
   final Color colorName;
 
   @override
-  ColorsColors copyWith([Color? colorName]) =>
-      ColorsColors(colorName: colorName ?? this.colorName);
+  Colors copyWith([Color? colorName]) =>
+      Colors(colorName: colorName ?? this.colorName);
 
   @override
-  ColorsColors lerp(
-    ColorsColors other,
+  Colors lerp(
+    Colors other,
     double t,
   ) {
-    if (other is! ColorsColors) return this;
-    return ColorsColors(
+    if (other is! Colors) return this;
+    return Colors(
         colorName: Color.lerp(
       colorName,
       other.colorName,
@@ -150,7 +150,7 @@ class ColorsColors extends ThemeExtension<ColorsColors> implements Tokens {
   }
 }
 
-extension ColorsColorsBuildContextX on BuildContext {
-  ColorsColors get colorsColors => Theme.of(this).extension<ColorsColors>()!;
+extension ColorsBuildContextX on BuildContext {
+  Colors get colors => Theme.of(this).extension<Colors>()!;
 }
 """;

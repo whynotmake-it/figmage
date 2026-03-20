@@ -136,7 +136,11 @@ final jsonTokensProvider =
         }
         return join(settings.path, path);
       });
-      return repo.getTokens(paths: resolvedPaths);
+      final logger = ref.watch(loggerProvider);
+      return repo.getTokens(
+        paths: resolvedPaths,
+        onDiagnostic: logger.warn,
+      );
     });
 
 /// Provides a Iterable of all variables obtained from the file in
@@ -367,10 +371,10 @@ void _warnAboutDuplicateStyleNames(
   Logger logger,
   Iterable<DesignStyle<dynamic>> styles,
 ) {
-  final duplicates = groupBy(styles, (style) => style.fullName)
-      .entries
-      .where((entry) => entry.value.length > 1)
-      .toList();
+  final duplicates = groupBy(
+    styles,
+    (style) => style.fullName,
+  ).entries.where((entry) => entry.value.length > 1).toList();
   if (duplicates.isEmpty) {
     return;
   }

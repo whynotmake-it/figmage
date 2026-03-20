@@ -1,0 +1,58 @@
+{
+  "Label 1": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans",
+      "fontWeight": 400,
+      "lineHeight": 1.33,
+      "fontSize": 34,
+      "letterSpacing": 1,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    }
+  },
+  "Label 1 Medium": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans",
+      "fontWeight": 500,
+      "lineHeight": 1.33,
+      "fontSize": 34,
+      "letterSpacing": 1,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    }
+  },
+  "Label 2": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans",
+      "fontWeight": 400,
+      "lineHeight": 1.33,
+      "fontSize": 28,
+      "letterSpacing": 1,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    }
+  },
+  "Label 2 Medium": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans",
+      "fontWeight": 500,
+      "lineHeight": 1.33,
+      "fontSize": 28,
+      "letterSpacing": 1,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    }
+  }
+}

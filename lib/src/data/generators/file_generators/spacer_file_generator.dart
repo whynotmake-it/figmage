@@ -18,6 +18,7 @@ class SpacerFileGenerator extends BaseFileGenerator<double> {
   SpacerFileGenerator({
     required super.tokens,
     required super.inheritanceSettings,
+    super.isMixedTokenCollection,
   }) : super(type: TokenFileType.spacers);
 
   @override
@@ -27,10 +28,10 @@ class SpacerFileGenerator extends BaseFileGenerator<double> {
     required Iterable<InterfaceSettings> interfaces,
   }) {
     return SpacerGenerator(
-      className: getClassNameForCollection(collectionName),
+      className: collectionName,
       fromClass: refer(
-        getClassNameForCollectionAndType(
-          collectionName,
+        getClassNameForCollectionIdAndType(
+          collectionTokens.first.collectionId,
           TokenFileType.numbers,
         ),
         TokenFileType.numbers.filename,

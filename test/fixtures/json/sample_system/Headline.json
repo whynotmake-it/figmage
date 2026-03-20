@@ -1,0 +1,72 @@
+{
+  "Headline 1": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans",
+      "fontWeight": 500,
+      "lineHeight": 1.33,
+      "fontSize": 80,
+      "letterSpacing": -0.8,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    }
+  },
+  "Headline 2": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans",
+      "fontWeight": 500,
+      "lineHeight": 1.33,
+      "fontSize": 64,
+      "letterSpacing": -0.64,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    }
+  },
+  "Numeric Headline 2": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans Mono",
+      "fontWeight": 500,
+      "lineHeight": 1.33,
+      "fontSize": 64,
+      "letterSpacing": -0.64,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    }
+  },
+  "Headline 3": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans",
+      "fontWeight": 500,
+      "lineHeight": 1.33,
+      "fontSize": 48,
+      "letterSpacing": -0.48,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    }
+  },
+  "Headline 4": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans",
+      "fontWeight": 500,
+      "lineHeight": 1.33,
+      "fontSize": 44,
+      "letterSpacing": -0.44,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    }
+  }
+}

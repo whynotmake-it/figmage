@@ -104,8 +104,9 @@ void main() {
       );
     });
     test('returns correctly filtered tokens', () async {
-      final tokensByType =
-          await container.read(filteredTokensProvider(mockSettings).future);
+      final tokensByType = await container.read(
+        filteredTokensProvider(mockSettings).future,
+      );
       expect(
         tokensByType.colorTokens,
         containsAll([
@@ -136,24 +137,26 @@ void main() {
       );
       expect(tokensByType.stringTokens, hasLength(1));
     });
-    test('throws ArgumentError if neither variables nor tokens exist',
-        () async {
-      container = createContainer(
-        overrides: [
-          loggerProvider.overrideWith((ref) => logger),
-          variablesProvider.overrideWith(
-            (ref, args) => Future.value([]),
-          ),
-          stylesProvider.overrideWith(
-            (ref, args) => Future.value([]),
-          ),
-        ],
-      );
-      expect(
-        () => container.read(filteredTokensProvider(mockSettings).future),
-        throwsA(isA<ArgumentError>()),
-      );
-    });
+    test(
+      'throws ArgumentError if neither variables nor tokens exist',
+      () async {
+        container = createContainer(
+          overrides: [
+            loggerProvider.overrideWith((ref) => logger),
+            variablesProvider.overrideWith(
+              (ref, args) => Future.value([]),
+            ),
+            stylesProvider.overrideWith(
+              (ref, args) => Future.value([]),
+            ),
+          ],
+        );
+        expect(
+          () => container.read(filteredTokensProvider(mockSettings).future),
+          throwsA(isA<ArgumentError>()),
+        );
+      },
+    );
   });
 
   group('jsonTokensProvider', () {
@@ -162,12 +165,19 @@ void main() {
 
     setUp(() {
       jsonTokensRepository = _MockJsonTokensRepository();
-      when(() => jsonTokensRepository.getTokens(paths: any(named: 'paths')))
-          .thenAnswer((_) async => []);
+      when(
+        () => jsonTokensRepository.getTokens(
+          paths: any(named: 'paths'),
+          onDiagnostic: any(named: 'onDiagnostic'),
+        ),
+      ).thenAnswer((_) async => []);
+      when(() => logger.warn(any())).thenReturn(null);
       container = createContainer(
         overrides: [
-          jsonTokensRepositoryProvider
-              .overrideWith((ref) => jsonTokensRepository),
+          loggerProvider.overrideWith((ref) => logger),
+          jsonTokensRepositoryProvider.overrideWith(
+            (ref) => jsonTokensRepository,
+          ),
         ],
       );
     });
@@ -184,12 +194,43 @@ void main() {
 
       await container.read(jsonTokensProvider(settings).future);
 
-      final captured = verify(
-        () => jsonTokensRepository.getTokens(
-          paths: captureAny(named: 'paths'),
-        ),
-      ).captured.single as Iterable<String>;
+      final captured =
+          verify(
+                () => jsonTokensRepository.getTokens(
+                  paths: captureAny(named: 'paths'),
+                  onDiagnostic: any(named: 'onDiagnostic'),
+                ),
+              ).captured.single
+              as Iterable<String>;
       expect(captured.toList(), [path.join("root", "tokens.json")]);
+    });
+
+    test('forwards json token diagnostics to logger warnings', () async {
+      when(
+        () => jsonTokensRepository.getTokens(
+          paths: any(named: 'paths'),
+          onDiagnostic: any(named: 'onDiagnostic'),
+        ),
+      ).thenAnswer((invocation) async {
+        final callback =
+            invocation.namedArguments[#onDiagnostic]
+                as void Function(String message)?;
+        callback?.call('json diagnostic');
+        return [];
+      });
+
+      const settings = (
+        config: Config(
+          json: JsonTokenSourceConfig(paths: ["tokens.json"]),
+        ),
+        fileId: null,
+        path: "root",
+        token: null,
+      );
+
+      await container.read(jsonTokensProvider(settings).future);
+
+      verify(() => logger.warn('json diagnostic')).called(1);
     });
   });
 
@@ -206,13 +247,13 @@ void main() {
     );
 
     setUp(() {
-      final jsonToken = JsonToken<int>(
+      const jsonToken = JsonToken<int>(
         name: "colors/primary",
         fullName: "ds/colors/primary",
         collectionName: "ds",
         collectionId: "ds",
         valuesByModeName: {
-          "light": const AliasOr<int>.data(data: 0xffffffff),
+          "light": AliasOr<int>.data(data: 0xffffffff),
         },
       );
 
@@ -224,8 +265,9 @@ void main() {
     });
 
     test('uses json tokens when figma sources are missing', () async {
-      final tokensByType =
-          await container.read(filteredTokensProvider(jsonSettings).future);
+      final tokensByType = await container.read(
+        filteredTokensProvider(jsonSettings).future,
+      );
       expect(tokensByType.colorTokens, hasLength(1));
       expect(
         tokensByType.colorTokens.first.fullName,
@@ -247,8 +289,9 @@ void main() {
       ).thenAnswer((_) async => mockVariables);
       container = createContainer(
         overrides: [
-          variablesRepositoryProvider
-              .overrideWith((ref) => variablesRepository),
+          variablesRepositoryProvider.overrideWith(
+            (ref) => variablesRepository,
+          ),
           loggerProvider.overrideWith((ref) => logger),
         ],
       );

@@ -77,10 +77,10 @@ class Config with EquatableMixin {
   ///
   /// When false (default), variables marked as `deletedButReferenced` by Figma
   /// are filtered out during processing, and a warning is logged. When true,
-  /// these variables are included in the generated tokens. Variables in this 
-  /// state occur when you bind a property or variable alias to a variable, 
+  /// these variables are included in the generated tokens. Variables in this
+  /// state occur when you bind a property or variable alias to a variable,
   /// then delete the variable using the "Local variables" menu.
-  /// 
+  ///
   /// Defaults to false.
   final bool includeDeletedButReferenced;
 
@@ -144,45 +144,46 @@ class Config with EquatableMixin {
 
   /// All generation settings.
   List<GenerationSettings> get allGenerationSettings => [
-        colors,
-        typography,
-        strings,
-        bools,
-        numbers,
-        spacers,
-        paddings,
-        radii,
-      ];
+    colors,
+    typography,
+    strings,
+    bools,
+    numbers,
+    spacers,
+    paddings,
+    radii,
+  ];
 
   /// Whether any setting defines at least one `from` but has `generate: false`.
   ///
   /// Is used to warn the user that there might be a potential error.
-  bool get suspiciousFromDefined => allGenerationSettings
-      .any((element) => element.from.isNotEmpty && element.generate == false);
+  bool get suspiciousFromDefined => allGenerationSettings.any(
+    (element) => element.from.isNotEmpty && element.generate == false,
+  );
 
   /// Converts a [Config] to a map.
   Map<dynamic, dynamic> toJson() => _$ConfigToJson(this);
 
   @override
   List<Object?> get props => [
-        fileId,
-        packageName,
-        packageDescription,
-        dropUnresolved,
-        includeDeletedButReferenced,
-        stylesFromLibrary,
-        asPackage,
-        tokenPath,
-        json,
-        colors,
-        typography,
-        strings,
-        bools,
-        numbers,
-        spacers,
-        paddings,
-        radii,
-      ];
+    fileId,
+    packageName,
+    packageDescription,
+    dropUnresolved,
+    includeDeletedButReferenced,
+    stylesFromLibrary,
+    asPackage,
+    tokenPath,
+    json,
+    colors,
+    typography,
+    strings,
+    bools,
+    numbers,
+    spacers,
+    paddings,
+    radii,
+  ];
 }
 
 /// {@template generation_settings}
@@ -236,7 +237,9 @@ class JsonTokenSourceConfig with EquatableMixin {
   factory JsonTokenSourceConfig.fromJson(Map<dynamic, dynamic> json) =>
       _$JsonTokenSourceConfigFromJson(json);
 
-  /// The JSON file paths to read tokens from.
+  /// The JSON resolver manifest paths to read tokens from.
+  ///
+  /// JSON resolver mode expects exactly one path.
   final Iterable<String> paths;
 
   /// Converts a [JsonTokenSourceConfig] to a map.

@@ -40,9 +40,10 @@ class GenerationNotifier
         filteredTokensProvider(settings).future,
       );
     } catch (e) {
-      logger.err("Neither styles nor variables could be obtained from file "
-          "${settings.fileId}");
-      if (settings.config.stylesFromLibrary) {
+      logger.err(
+        "No tokens could be obtained from the configured sources.",
+      );
+      if (settings.config.stylesFromLibrary && settings.fileId != null) {
         logger.warn(
           "Make sure you have published the file's library, "
           "or set stylesFromLibrary to false.",

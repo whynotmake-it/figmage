@@ -1,0 +1,31 @@
+{
+  "version": "2025.10",
+  "sets": {
+    "Display": {
+      "$ref": "./Display.json"
+    },
+    "Headline": {
+      "$ref": "./Headline.json"
+    },
+    "Body": {
+      "$ref": "./Body.json"
+    },
+    "Label": {
+      "$ref": "./Label.json"
+    },
+    "Color Primitives": {
+      "$ref": "./Color Primitives.json"
+    },
+    "Color Aliases": {
+      "$ref": "./Color Aliases.json"
+    }
+  },
+  "resolutionOrder": [
+    "Display",
+    "Headline",
+    "Body",
+    "Label",
+    "Color Primitives",
+    "Color Aliases"
+  ]
+}

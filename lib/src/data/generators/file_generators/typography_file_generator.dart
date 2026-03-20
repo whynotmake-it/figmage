@@ -19,6 +19,7 @@ class TypographyFileGenerator extends BaseFileGenerator<Typography> {
     required super.tokens,
     required this.useGoogleFonts,
     required super.inheritanceSettings,
+    super.isMixedTokenCollection,
   }) : super(type: TokenFileType.typography);
 
   /// Whether to use Google Fonts in the generated theme extensions.

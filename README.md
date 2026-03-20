@@ -13,7 +13,7 @@ Figmage comes with a comprehensive documentation, which you can find [here](http
 If this is your first time here, check out our [Getting Started Guide](https://figmage.netlify.app/guides/getting-started/)!
 
 ## What's in the box 🎁
-Figmage is a magical CLI tool that helps you generate a flutter package from your Figma Design System. It uses the Figma APIs to fetch your design tokens from published **styles**, as well as **variables**, with full **modes** support.
+Figmage is a magical CLI tool that helps you generate a flutter package from your Figma Design System. It uses the Figma APIs to fetch your design tokens from published **styles**, as well as **variables**, with full **modes** support. It can also read **Design Tokens JSON** exported by plugins for offline generation.
 
 So a variables section like this:
 ![Example Screenshot of a Variables Section](doc/example_variables.jpg)
@@ -85,8 +85,9 @@ And you can use it like this:
 - 🎨 Supports many types of tokens:
   - 🌈 **Color** styles and variables
   - 🖋️ **Typography** styles (with optional `google_fonts` support!)
-  - 🔢 **Number** variables, which can be generated as Paddings, and Spacers as well
+- 🔢 **Number** variables, which can be generated as Paddings, and Spacers as well
 - 🌓 **Modes** support for variables: Generate different tokens for different themes (e.g. dark/light)
+- 📄 **JSON token sources**: Add `json.paths` in `figmage.yaml` with a resolver manifest (for example `resolver.json`) to load Design Tokens JSON across ordered sets.
 - 📦 **Package** generation: All your tokens end up in one convenient package. Depend on it from your app, and update it whenever neccessary!
 - 🤝 **Seamless** integration with `Theme`s from `material.dart`: Generated classes are `ThemeExtension`s, so they can be integrated into your app's theme easily!
 - 🎯 **Quick access** using `BuildContext` extensions.

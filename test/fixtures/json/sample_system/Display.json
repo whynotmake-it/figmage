@@ -1,0 +1,62 @@
+{
+  "Display 1": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans Condensed",
+      "fontWeight": 700,
+      "lineHeight": 0.9,
+      "fontSize": 224,
+      "letterSpacing": -2.24,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    },
+    "$description": "large hero text"
+  },
+  "Numeric Display 1": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans Condensed",
+      "fontWeight": 700,
+      "lineHeight": 0.9,
+      "fontSize": 224,
+      "letterSpacing": -2.24,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    },
+    "$description": "data panel value"
+  },
+  "Display 2": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans Condensed",
+      "fontWeight": 700,
+      "lineHeight": 1.16,
+      "fontSize": 156,
+      "letterSpacing": -1.56,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    },
+    "$description": "large header text"
+  },
+  "Numeric Display 2": {
+    "$type": "typography",
+    "$value": {
+      "fontFamily": "Synthetic Sans Condensed",
+      "fontWeight": 700,
+      "lineHeight": 1.16,
+      "fontSize": 156,
+      "letterSpacing": -1.56,
+      "paragraphSpacing": 0,
+      "paragraphIndent": 0,
+      "textCase": "none",
+      "textDecoration": "none"
+    },
+    "$description": "compact data panel value"
+  }
+}

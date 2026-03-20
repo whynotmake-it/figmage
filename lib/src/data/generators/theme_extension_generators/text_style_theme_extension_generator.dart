@@ -61,7 +61,7 @@ class TextStyleThemeExtensionGenerator
     return <String, Expression>{
       if (includeFamily) 'fontFamily': literalString(typography.fontFamily),
       'fontSize': literal(typography.fontSize),
-      'fontWeight': refer('FontWeight').property('w${typography.fontWeight}'),
+      'fontWeight': _getFontWeightExpression(typography.fontWeight),
       'fontStyle': refer('FontStyle').property(
         switch (typography.fontStyle) {
           FontStyle.italic => 'italic',
@@ -98,5 +98,12 @@ class TextStyleThemeExtensionGenerator
       //'package':
       //'overflow':
     };
+  }
+
+  Expression _getFontWeightExpression(int fontWeight) {
+    if (fontWeight >= 100 && fontWeight <= 900 && fontWeight % 100 == 0) {
+      return refer('FontWeight').property('w$fontWeight');
+    }
+    return refer('FontWeight').constInstance([literal(fontWeight)]);
   }
 }

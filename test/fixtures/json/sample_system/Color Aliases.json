@@ -1,0 +1,268 @@
+{
+  "Value": {
+    "Palette Core": {
+      "Overlay 50%": {
+        "$type": "color",
+        "$value": "#5d8fa980"
+      },
+      "Primary": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.coral.50}"
+      },
+      "Secondary": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.coral.70}"
+      },
+      "System Link": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.semantic.Signal Blue}"
+      },
+      "Highlight Cool": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.aqua.30}"
+      },
+      "Highlight Warm": {
+        "$type": "color",
+        "$value": "#e9e3de"
+      },
+      "Overlay 5%": {
+        "$type": "color",
+        "$value": "#5d8fa90d"
+      },
+      "Warm 5%": {
+        "$type": "color",
+        "$value": "#e9e3de0d"
+      },
+      "Warm 50%": {
+        "$type": "color",
+        "$value": "#e9e3de80"
+      },
+      "Primary 50%": {
+        "$type": "color",
+        "$value": "#f14f2880"
+      },
+      "Primary 5%": {
+        "$type": "color",
+        "$value": "#f14f280d"
+      }
+    },
+    "Control": {
+      "Disabled": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.55}"
+      },
+      "Primary": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.60}"
+      },
+      "Tertiary": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.95}"
+      }
+    },
+    "Canvas": {
+      "Low": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.95}"
+      },
+      "High": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.70}"
+      },
+      "Lowest": {
+        "$type": "color",
+        "$value": "#000000"
+      },
+      "Mid": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.80}"
+      },
+      "Low-Mid": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.90}"
+      },
+      "Inverted": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.50}"
+      }
+    },
+    "Text": {
+      "Primary": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.mist.50 (core)}"
+      },
+      "Secondary": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.40}"
+      },
+      "Inverted Primary": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.90}"
+      },
+      "Disabled": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.60}"
+      },
+      "Inverted Secondary": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.80}"
+      }
+    },
+    "Field States (beta)": {
+      "Primary": {
+        "Default": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.mist.60}"
+        },
+        "Dragged": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.slate.50}"
+        },
+        "Edit": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.slate.50}"
+        },
+        "Disabled": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.slate.60}"
+        },
+        "Pressed": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.slate.50}"
+        }
+      },
+      "Secondary": {
+        "Dragged": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.slate.90}"
+        },
+        "Pressed": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.slate.90}"
+        },
+        "Disabled": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.slate.60}"
+        },
+        "Edit": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.slate.90}"
+        },
+        "Default": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.slate.80}"
+        }
+      }
+    },
+    "Border": {
+      "Primary": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.55}"
+      },
+      "Secondary": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.60}"
+      }
+    },
+    "Icon": {
+      "Tip": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.aqua.60}"
+      },
+      "Secondary": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.40}"
+      },
+      "Inverted Primary": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.90}"
+      },
+      "Primary": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.mist.50 (core)}"
+      },
+      "Disabled": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.60}"
+      },
+      "Inverted Secondary": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.slate.80}"
+      },
+      "Signal Red": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.semantic.Signal Red}"
+      },
+      "Signal Yellow": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.semantic.Signal Yellow}"
+      },
+      "Signal Blue": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.semantic.Signal Blue}"
+      },
+      "Signal Green": {
+        "$type": "color",
+        "$value": "{Color Primitives.Value.semantic.Signal Green}"
+      }
+    },
+    "Alert": {
+      "Primary": {
+        "$type": "color",
+        "$value": "#d94a18"
+      },
+      "Secondary": {
+        "$type": "color",
+        "$value": "#3b1b16"
+      },
+      "Muted": {
+        "$type": "color",
+        "$value": "#77443a"
+      }
+    },
+    "Route Layer": {
+      "POI": {
+        "Cursor": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.aqua.10}"
+        },
+        "Destination": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.aqua.50 (core)}"
+        }
+      },
+      "Route": {
+        "Active": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.aqua.20}"
+        },
+        "Active Border": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.aqua.80}"
+        },
+        "Inactive": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.slate.60}"
+        },
+        "Inactive Border": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.slate.80}"
+        },
+        "Passed": {
+          "$type": "color",
+          "$value": "{Color Primitives.Value.slate.90}"
+        }
+      }
+    },
+    "Thermal": {
+      "Hot": {
+        "$type": "color",
+        "$value": "#f13535"
+      },
+      "Cold": {
+        "$type": "color",
+        "$value": "#3d7cf0"
+      }
+    }
+  }
+}

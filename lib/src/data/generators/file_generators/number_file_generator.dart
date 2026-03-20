@@ -17,6 +17,7 @@ class NumberFileGenerator extends BaseFileGenerator<double> {
   NumberFileGenerator({
     required super.tokens,
     required super.inheritanceSettings,
+    super.isMixedTokenCollection,
   }) : super(type: TokenFileType.numbers);
 
   @override

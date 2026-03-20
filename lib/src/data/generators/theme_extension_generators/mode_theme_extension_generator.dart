@@ -40,11 +40,7 @@ abstract class ModeThemeExtensionGenerator<T>
     required this.interfaces,
     this.buildContextExtensionNullable = false,
     this.lerpReference,
-  })  : className = convertToValidClassName(className),
-        assert(
-          ensureSameKeys(valuesByNameByMode.values.toList()),
-          'All value maps must have the same keys.',
-        );
+  }) : className = convertToValidClassName(className);
 
   @override
   final String className;
@@ -74,18 +70,30 @@ abstract class ModeThemeExtensionGenerator<T>
 
   @override
   Class generateClass() {
-    final uniqueFieldNames =
-        _getUniqueVariableNames(valuesByNameByMode.values.first.keys);
+    final valueNames = <String>[];
+    for (final valuesByName in valuesByNameByMode.values) {
+      for (final valueName in valuesByName.keys) {
+        if (!valueNames.contains(valueName)) {
+          valueNames.add(valueName);
+        }
+      }
+    }
+    if (valueNames.isEmpty) {
+      throw StateError('At least one token value is required per mode.');
+    }
+
+    final uniqueFieldNames = _getUniqueVariableNames(valueNames);
 
     final validValueMaps = valuesByNameByMode.map(
-      (key, value) => MapEntry(
-        switch (key) {
+      (modeName, valuesByName) => MapEntry(
+        switch (modeName) {
           "" => "",
-          _ => convertToValidVariableName(key),
+          _ => convertToValidVariableName(modeName),
         },
-        value.map(
-          (key, value) => MapEntry(uniqueFieldNames[key]!, value),
-        ),
+        {
+          for (final valueName in valueNames)
+            uniqueFieldNames[valueName]!: valuesByName[valueName],
+        },
       ),
     );
 
@@ -110,8 +118,9 @@ abstract class ModeThemeExtensionGenerator<T>
               ..returns = refer('$className$returnTypeSuffix')
               ..type = MethodType.getter
               ..lambda = true
-              ..body =
-                  Code('Theme.of(this).extension<$className>()$bodySuffix'),
+              ..body = Code(
+                'Theme.of(this).extension<$className>()$bodySuffix',
+              ),
           ),
         ),
     );
@@ -130,8 +139,10 @@ abstract class ModeThemeExtensionGenerator<T>
             'package:flutter/foundation.dart',
           ),
         )
-        ..extend =
-            refer('ThemeExtension<$className>', 'package:flutter/material.dart')
+        ..extend = refer(
+          'ThemeExtension<$className>',
+          'package:flutter/material.dart',
+        )
         ..implements.addAll([
           for (final i in interfaces) refer(i.name, i.import),
         ])
@@ -202,19 +213,19 @@ abstract class ModeThemeExtensionGenerator<T>
         for (final name in names)
           name: switch (valueMaps.allModesResolved(valueName: name)) {
             true => lerpReference.call(
-                [
-                  refer(name),
-                  refer('other.$name'),
-                  refer('t'),
-                ],
-              ).nullChecked,
+              [
+                refer(name),
+                refer('other.$name'),
+                refer('t'),
+              ],
+            ).nullChecked,
             false => lerpReference.call(
-                [
-                  refer(name),
-                  refer('other.$name'),
-                  refer('t'),
-                ],
-              ),
+              [
+                refer(name),
+                refer('other.$name'),
+                refer('t'),
+              ],
+            ),
           },
       },
     );
@@ -346,7 +357,7 @@ extension ReferenceX on Reference {
       switch (symbol) {
         final symbol? when !symbol.endsWith("?") => "$symbol?",
         final symbol? => symbol,
-        null => null
+        null => null,
       },
       url,
     );
@@ -366,7 +377,8 @@ extension _ConstructorBuilderX on ConstructorBuilder {
           in constructorsByParamName.entries)
         refer(name).assign(expression).code,
     ]);
-    constant = initializers.isEmpty ||
+    constant =
+        initializers.isEmpty ||
         constructorsByParamName.values.every(
           (element) => element.isConst || element is LiteralExpression,
         );

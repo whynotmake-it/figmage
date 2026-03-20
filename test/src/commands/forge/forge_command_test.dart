@@ -128,9 +128,9 @@ void main() {
 
 const usage = '''
 Usage: figmage forge [arguments]
--h, --help                 Print this usage information.
--t, --token (mandatory)    Your figma API token
--p, --path                 The ouptut path for the generated package, if not provided, the current directory will be used.
--f, --fileId               Your figma file ID, needs to be either given here, or in the figmage.yaml
+-h, --help      Print this usage information.
+-t, --token     Your figma API token (required when using fileId)
+-p, --path      The ouptut path for the generated package, if not provided, the current directory will be used.
+-f, --fileId    Your figma file ID, needs to be either given here, or in the figmage.yaml
 
 Run "figmage help" to see global options.''';

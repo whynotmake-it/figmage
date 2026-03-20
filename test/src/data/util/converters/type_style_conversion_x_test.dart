@@ -51,98 +51,96 @@ void main() {
         expect(result.height, 1.25);
       });
 
-      test('should convert a type style to a typography with no line height',
-          () {
-        const typeStyle = TypeStyle(
-          fontFamily: 'Roboto',
-          fontPostScriptName: 'Roboto-Regular',
-          fontSize: 16,
-          fontWeight: 400,
-          letterSpacing: 0,
-        );
+      test(
+        'should convert a type style to a typography with no line height',
+        () {
+          const typeStyle = TypeStyle(
+            fontFamily: 'Roboto',
+            fontPostScriptName: 'Roboto-Regular',
+            fontSize: 16,
+            fontWeight: 400,
+            letterSpacing: 0,
+          );
 
-        final result = typeStyle.toDomain();
+          final result = typeStyle.toDomain();
 
-        expect(result.fontFamily, 'Roboto');
-        expect(result.fontFamilyPostScriptName, 'Roboto-Regular');
-        expect(result.fontSize, 16);
-        expect(result.fontWeight, 400);
-        expect(result.fontStyle, FontStyle.normal);
-        expect(result.letterSpacing, 0);
-        expect(result.height, 1);
-      });
+          expect(result.fontFamily, 'Roboto');
+          expect(result.fontFamilyPostScriptName, 'Roboto-Regular');
+          expect(result.fontSize, 16);
+          expect(result.fontWeight, 400);
+          expect(result.fontStyle, FontStyle.normal);
+          expect(result.letterSpacing, 0);
+          expect(result.height, 1);
+        },
+      );
 
-      test('should convert a type style to a typography with no font weight',
-          () {
-        const typeStyle = TypeStyle(
-          fontFamily: 'Roboto',
-          fontPostScriptName: 'Roboto-Regular',
-          fontSize: 16,
-          letterSpacing: 0,
-          lineHeightPx: 20,
-        );
+      test(
+        'should convert a type style to a typography with no font weight',
+        () {
+          const typeStyle = TypeStyle(
+            fontFamily: 'Roboto',
+            fontPostScriptName: 'Roboto-Regular',
+            fontSize: 16,
+            letterSpacing: 0,
+            lineHeightPx: 20,
+          );
 
-        final result = typeStyle.toDomain();
+          final result = typeStyle.toDomain();
 
-        expect(result.fontFamily, 'Roboto');
-        expect(result.fontFamilyPostScriptName, 'Roboto-Regular');
-        expect(result.fontSize, 16);
-        expect(result.fontWeight, 400);
-        expect(result.fontStyle, FontStyle.normal);
-        expect(result.letterSpacing, 0);
-        expect(result.height, 1.25);
-      });
+          expect(result.fontFamily, 'Roboto');
+          expect(result.fontFamilyPostScriptName, 'Roboto-Regular');
+          expect(result.fontSize, 16);
+          expect(result.fontWeight, 400);
+          expect(result.fontStyle, FontStyle.normal);
+          expect(result.letterSpacing, 0);
+          expect(result.height, 1.25);
+        },
+      );
     });
 
     group('convertFontWeight', () {
-      test('should return 100 for 0', () {
-        expect(TypeStyleConversionX.convertFontWeight(0), 100);
+      test('should return 1 for 0', () {
+        expect(TypeStyleConversionX.convertFontWeight(0), 1);
       });
 
-      test('should return 100 for 100', () {
-        expect(TypeStyleConversionX.convertFontWeight(100), 100);
+      test('should return 1 for 1', () {
+        expect(TypeStyleConversionX.convertFontWeight(1), 1);
       });
 
-      test('should return 200 for 200', () {
-        expect(TypeStyleConversionX.convertFontWeight(200), 200);
+      test('should return 100 for 99.6', () {
+        expect(TypeStyleConversionX.convertFontWeight(99.6), 100);
       });
 
-      test('should return 300 for 300', () {
-        expect(TypeStyleConversionX.convertFontWeight(300), 300);
-      });
-
-      test('should return 400 for 400', () {
-        expect(TypeStyleConversionX.convertFontWeight(400), 400);
-      });
-
-      test('should return 500 for 500', () {
-        expect(TypeStyleConversionX.convertFontWeight(500), 500);
-      });
-
-      test('should return 600 for 600', () {
-        expect(TypeStyleConversionX.convertFontWeight(600), 600);
-      });
-
-      test('should return 700 for 700', () {
-        expect(TypeStyleConversionX.convertFontWeight(700), 700);
-      });
-
-      test('should return 800 for 800', () {
-        expect(TypeStyleConversionX.convertFontWeight(800), 800);
+      test('should preserve in-range arbitrary values', () {
+        expect(TypeStyleConversionX.convertFontWeight(463), 463);
       });
 
       test('should return 900 for 900', () {
         expect(TypeStyleConversionX.convertFontWeight(900), 900);
       });
 
-      test('should return 900 for 1000', () {
-        expect(TypeStyleConversionX.convertFontWeight(1000), 900);
+      test('should return 1000 for 1000', () {
+        expect(TypeStyleConversionX.convertFontWeight(1000), 1000);
       });
 
-      test('should round', () {
-        expect(TypeStyleConversionX.convertFontWeight(520), 500);
-        expect(TypeStyleConversionX.convertFontWeight(549), 500);
-        expect(TypeStyleConversionX.convertFontWeight(550), 600);
+      test('should return 1000 for 1200', () {
+        expect(TypeStyleConversionX.convertFontWeight(1200), 1000);
+      });
+
+      test('emits a diagnostic when clamping', () {
+        final diagnostics = <String>[];
+        final value = TypeStyleConversionX.convertFontWeight(
+          1200,
+          onDiagnostic: diagnostics.add,
+          diagnosticContext: 'my/path',
+        );
+
+        expect(value, 1000);
+        expect(
+          diagnostics.single,
+          'Clamped fontWeight from 1200 to 1000. '
+          'Valid range is 1..1000 at my/path.',
+        );
       });
     });
 

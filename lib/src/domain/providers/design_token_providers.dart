@@ -10,10 +10,12 @@ import 'package:figmage/src/domain/models/typography/typography.dart';
 import 'package:figmage/src/domain/models/variable/variable.dart';
 import 'package:figmage/src/domain/providers/logger_providers.dart';
 import 'package:figmage/src/domain/repositories/assets_repository.dart';
+import 'package:figmage/src/domain/repositories/json_tokens_repository.dart';
 import 'package:figmage/src/domain/repositories/styles_repository.dart';
 import 'package:figmage/src/domain/repositories/variables_repository.dart';
 import 'package:figmage/src/domain/util/token_filter_x.dart';
 import 'package:mason_logger/mason_logger.dart';
+import 'package:path/path.dart';
 import 'package:riverpod/riverpod.dart';
 
 /// Provides [TokensByType] based on [FigmageSettings].
@@ -63,26 +65,39 @@ final filterUnresolvedTokensProvider =
 final filteredTokensProvider =
     FutureProvider.family<TokensByType, FigmageSettings>((ref, settings) async {
       late final Iterable<Variable> variables;
-      try {
-        variables = await ref.watch(variablesProvider(settings).future);
-      } catch (_) {
+      if (settings.fileId != null && settings.token != null) {
+        try {
+          variables = await ref.watch(variablesProvider(settings).future);
+        } catch (_) {
+          variables = [];
+        }
+      } else {
         variables = [];
       }
 
       late final Iterable<DesignStyle> styles;
-      try {
-        styles = await ref.watch(stylesProvider(settings).future);
-      } catch (_) {
+      if (settings.fileId != null && settings.token != null) {
+        try {
+          styles = await ref.watch(stylesProvider(settings).future);
+        } catch (_) {
+          styles = [];
+        }
+      } else {
         styles = [];
       }
 
-      final allTokens = <DesignToken>[...variables, ...styles];
+      final jsonTokens = await ref.watch(jsonTokensProvider(settings).future);
+
+      final allTokens = <DesignToken>[
+        ...variables,
+        ...styles,
+        ...jsonTokens,
+      ];
       if (allTokens.isEmpty) {
         throw ArgumentError.value(
           allTokens,
           "Tokens",
-          "Neither styles nor variables could be obtained from file "
-              "${settings.fileId} ",
+          "No tokens could be obtained from the configured sources.",
         );
       }
       return TokensByType(
@@ -104,6 +119,30 @@ final filteredTokensProvider =
       );
     });
 
+/// Provides a Iterable of all JSON tokens configured in [FigmageSettings].
+final jsonTokensProvider =
+    FutureProvider.family<Iterable<DesignToken>, FigmageSettings>((
+      ref,
+      settings,
+    ) async {
+      final paths = settings.config.json.paths;
+      if (paths.isEmpty) {
+        return [];
+      }
+      final repo = ref.watch(jsonTokensRepositoryProvider);
+      final resolvedPaths = paths.map((path) {
+        if (isAbsolute(path)) {
+          return path;
+        }
+        return join(settings.path, path);
+      });
+      final logger = ref.watch(loggerProvider);
+      return repo.getTokens(
+        paths: resolvedPaths,
+        onDiagnostic: logger.warn,
+      );
+    });
+
 /// Provides a Iterable of all variables obtained from the file in
 /// [FigmageSettings].
 ///
@@ -113,13 +152,18 @@ final variablesProvider =
       ref,
       settings,
     ) async {
+      if (settings.fileId == null || settings.token == null) {
+        return [];
+      }
+      final fileId = settings.fileId!;
+      final token = settings.token!;
       final logger = ref.watch(loggerProvider);
       final repo = ref.watch(variablesRepositoryProvider);
       final varProgress = logger.progress("Fetching all variables...");
       try {
         final variables = await repo.getVariables(
-          fileId: settings.fileId,
-          token: settings.token,
+          fileId: fileId,
+          token: token,
         );
         switch (variables) {
           case []:
@@ -127,7 +171,7 @@ final variablesProvider =
             throw ArgumentError.value(
               variables,
               "variables",
-              "No variables found in file ${settings.fileId}",
+              "No variables found in file $fileId",
             );
           case [...]:
             // Filter out deleted variables if not included in config
@@ -200,6 +244,16 @@ final assetsProvider =
           );
           return {};
         }
+        if (settings.fileId == null || settings.token == null) {
+          assetsProgress.fail(
+            "Assets require both fileId and token to be configured.",
+          );
+          throw ArgumentError.notNull(
+            settings.fileId == null ? 'fileId' : 'token',
+          );
+        }
+        final fileId = settings.fileId!;
+        final token = settings.token!;
         // Scale must be a number between 0.01 and 4
         if (settings.config.assets.nodes.entries.any(
           (e) => e.value.scales.any((s) => s < 0.01 || s > 4),
@@ -211,8 +265,8 @@ Figma only supports scale values between 0.01 and 4, values out of this range wi
         }
 
         final assets = await repo.fetchAndSaveAssets(
-          fileId: settings.fileId,
-          token: settings.token,
+          fileId: fileId,
+          token: token,
           nodeSettings: settings.config.assets.nodes,
           outputDir: Directory('${settings.path}/assets'),
         );
@@ -269,6 +323,11 @@ final stylesProvider =
       ref,
       settings,
     ) async {
+      if (settings.fileId == null || settings.token == null) {
+        return [];
+      }
+      final fileId = settings.fileId!;
+      final token = settings.token!;
       final logger = ref.watch(loggerProvider);
       final repo = ref.watch(stylesRepositoryProvider);
       final stylesProgress = logger.progress("Fetching all styles...");
@@ -280,8 +339,8 @@ final stylesProvider =
       final List<DesignStyle<dynamic>> styles;
       try {
         styles = await repo.getStyles(
-          fileId: settings.fileId,
-          token: settings.token,
+          fileId: fileId,
+          token: token,
           fromLibrary: settings.config.stylesFromLibrary,
           onProgress: onStylesProgress,
         );
@@ -299,7 +358,7 @@ final stylesProvider =
           throw ArgumentError.value(
             styles,
             "styles",
-            "No styles found in file ${settings.fileId}",
+            "No styles found in file $fileId",
           );
         case [...]:
           _warnAboutDuplicateStyleNames(logger, styles);
@@ -312,10 +371,10 @@ void _warnAboutDuplicateStyleNames(
   Logger logger,
   Iterable<DesignStyle<dynamic>> styles,
 ) {
-  final duplicates = groupBy(styles, (style) => style.fullName)
-      .entries
-      .where((entry) => entry.value.length > 1)
-      .toList();
+  final duplicates = groupBy(
+    styles,
+    (style) => style.fullName,
+  ).entries.where((entry) => entry.value.length > 1).toList();
   if (duplicates.isEmpty) {
     return;
   }
